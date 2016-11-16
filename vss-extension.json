@@ -1,11 +1,11 @@
 {
     "manifestVersion": 1,
-    "id": "vsts-extension-ts-seed-simple",
-    "version": "0.1.1",
-    "name": "vsts-extension-ts-seed-simple",
+    "id": "wiql-search",
+    "version": "0.1.11",
+    "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
-    "description": "Describe your extension.",
-    "publisher": "your-publisher",
+    "description": "Search work items with wiql queries.",
+    "publisher": "ottostreifel",
     "icons": {
         "default": "img/logo.png"
     },
@@ -65,14 +65,14 @@
     ],
     "contributions": [
         {
-            "id": "vsts-extension-ts-seed-simple-action",
-            "type": "ms.vss-web.action-provider",
-            "description": "",
+            "id": "wiql-search-hub",
+            "type": "ms.vss-web.hub",
+            "description": "Hub for wiql queries",
             "targets": [
-                "ms.vss-work-web.work-item-context-menu"
+                "ms.vss-work-web.work-hub-group"
             ],
             "properties": {
-                "group": "contributed",
+                "name": "Wiql Search",
                 "uri": "index.html"
             }
         }

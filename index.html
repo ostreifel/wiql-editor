@@ -4,8 +4,21 @@
 <head>
     <meta charset="utf-8" />
     <script src="build/VSS.SDK.min.js"></script>
+    <style>
+        .wiql-box {
+            width: 100%;
+            height: 10em;
+        }
+        .wiql-search-wrapper {
+            overflow: scroll;
+        }
+    </style>
 </head>
-<body>
+<body class="wiql-search-wrapper">
+    <textarea class="wiql-box"></textarea>
+    <button class="search-button">Search</button>
+    <!--until ui is developed just print pretty json-->
+    <pre><code class="json-results"></code></pre>
     <script type="text/javascript">
         // Initialize framework 
         VSS.init({

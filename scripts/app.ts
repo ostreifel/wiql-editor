@@ -1,22 +1,16 @@
-import { MessageHelper } from "./logic/messageHelper";
+import {getClient as getWorkClient} from "TFS/WorkItemTracking/RestClient";
 
-var actionProvider =  {
-    getMenuItems: (context) => {
-        return [<IContributedMenuItem>{
-            title: "Work Item Menu Action",
-            action: (actionContext) => {
-                let workItemId = actionContext.id
-                    || (actionContext.ids && actionContext.ids.length > 0 && actionContext.ids[0])
-                    || (actionContext.workItemIds && actionContext.workItemIds.length > 0 && actionContext.workItemIds[0]);
-                    
-                if (workItemId) {
-                    let messageHelper = new MessageHelper();
-                    alert(messageHelper.format([workItemId]));
-                }
-            }
-        }];
-    }
-};
+function search() {
+    const wiqlText = $('.wiql-box').val();
+    getWorkClient().queryByWiql({query: wiqlText}).then((queryResult) => {
+        $('.json-results').text(JSON.stringify(queryResult, null, 2));
+    }, (error) => {
+        $('.json-results').text(JSON.stringify(error, null, 2));
+    })
+
+}
+
+$('.search-button').click(() => search());
 
 // Register context menu action provider
-VSS.register(VSS.getContribution().id, actionProvider);
+VSS.register(VSS.getContribution().id, {});
