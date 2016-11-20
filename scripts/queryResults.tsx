@@ -1,32 +1,47 @@
 import * as ReactDom from "react-dom";
 import * as React from "react";
-import {WorkItemQueryResult, QueryResultType, WorkItemReference, WorkItemRelation} from "TFS/WorkItemTracking/Contracts";
+import {WorkItemQueryResult, QueryResultType, WorkItemReference, WorkItemRelation, WorkItem} from "TFS/WorkItemTracking/Contracts";
 
-class WorkItemRow extends React.Component<{wiRef: WorkItemReference}, void> {
+class WorkItemRow extends React.Component<{wi: WorkItem}, void> {
     render() {
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
-        const wiUrl = `${uri}${project}/_workitems?id=${this.props.wiRef.id}&fullScreen=true`;
-        return <tr><td><a href={wiUrl} target={'_blank'}>{this.props.wiRef.id}</a></td></tr>;
+        const wiUrl = `${uri}${project}/_workitems?id=${this.props.wi.id}&fullScreen=true`;
+
+        const tds: JSX.Element[] = [];
+        for (const refName in this.props.wi.fields) {
+            tds.push(<td title={refName}>{this.props.wi.fields[refName]}</td>);
+        }
+        return (
+            <tr onClick={() => window.open(wiUrl, '_blank')}>
+                {tds}
+            </tr>
+        );
     }
 }
 
-class QueryResults extends React.Component<{results: WorkItemQueryResult}, void> {
+class WiQueryResults extends React.Component<{workItems: WorkItem[]}, void> {
     render() {
-        let rows;
-        if (this.props.results.queryResultType === QueryResultType.WorkItem) {
-            rows = this.props.results.workItems.map((wi) => <WorkItemRow wiRef={wi} />);
-        } else {
-            rows = <tr><td>{'TODO work item relations'}</td></tr>
-        }
+        const rows = this.props.workItems.map((wi) => <WorkItemRow wi={wi} />);
         return <table><tbody>{rows}</tbody></table>;
     }
 }
 
-export function renderQueryResults(result: WorkItemQueryResult) {
-    ReactDom.render(<QueryResults results={result}/>, document.getElementById('query-results'));
+export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkItem[]) {
+    let resultsView: JSX.Element;
+    if (result.queryResultType = QueryResultType.WorkItem) {
+        resultsView = <WiQueryResults workItems={workItems}/>;
+    } else {
+        resultsView = <div>{'TODO work item relations'}</div>
+    }
+    ReactDom.render(resultsView, document.getElementById('query-results'));
 }
 
-export function renderQueryError(error: TfsError) {
-    ReactDom.render(<div>{error.serverError['message']}</div>, document.getElementById('query-results'));
+export function renderError(error: TfsError) {
+    const exception = error.serverError || error;
+    ReactDom.render(<div>{exception['message']}</div>, document.getElementById('query-results'));
+}
+
+export function setLoadingMessage(message: string) {
+    ReactDom.render(<div class={'error-message'}>{message}</div>, document.getElementById('query-results'));
 }
