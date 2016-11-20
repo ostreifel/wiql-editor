@@ -1,13 +1,9 @@
 import {getClient as getWorkClient} from "TFS/WorkItemTracking/RestClient";
+import {renderQueryResults, renderQueryError} from "./queryResults";
 
 function search() {
     const wiqlText = $('.wiql-box').val();
-    getWorkClient().queryByWiql({query: wiqlText}).then((queryResult) => {
-        $('.json-results').text(JSON.stringify(queryResult, null, 2));
-    }, (error) => {
-        $('.json-results').text(JSON.stringify(error, null, 2));
-    })
-
+    getWorkClient().queryByWiql({query: wiqlText}).then(renderQueryResults, renderQueryError);
 }
 
 $('.search-button').click(() => search());

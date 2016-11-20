@@ -2,7 +2,9 @@
     "compilerOptions": {
         "module": "amd",
         "sourceMap": false,
-        "rootDir": "./scripts"
+        "rootDir": "./scripts",
+        "target": "es5",
+        "jsx": "react"
     },
     "filesGlob": [
         "./scripts/**/*.ts",
