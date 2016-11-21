@@ -42,7 +42,7 @@
                     expand: true, 
                     flatten: true, 
                     src: [
-                        "node_modules/vss-web-extension-sdk/lib/VSS.SDK.js",
+                        "node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js",
                         ], 
                     dest: "build",
                     filter: "isFile" 
@@ -50,7 +50,7 @@
                     expand: true,
                     flatten: false,
                     src: [
-                        "node_modules/monaco-editor/dev/vs/**/*",
+                        "node_modules/monaco-editor/min/vs/**/*",
                     ],
                     dest: "build",
                     filter: "isFile"

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <style>
-        .wiql-box {
+        #wiql-box {
             width: 100%;
             height: 10em;
         }
@@ -30,13 +30,11 @@
     </style>
 </head>
 <body class="wiql-search-wrapper">
-    <textarea class="wiql-box"></textarea>
+    <div id="wiql-box"></div>
     <button class="search-button">Search</button>
-    <!--until ui is developed just print pretty json-->
-    <pre><code class="json-results"></code></pre>
     <div id="query-results"></div>
 
-    <script src="build/VSS.SDK.js"></script>
+    <script src="build/VSS.SDK.min.js"></script>
     <script type="text/javascript">
         // Initialize framework 
         VSS.init({
@@ -45,9 +43,9 @@
             configureModuleLoader: true
         });
 
-        var require = { paths: { 'vs': 'build/node_modules/monaco-editor/dev/vs' } };
+        var require = { paths: { 'vs': 'build/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 
-        VSS.require(['build/node_modules/monaco-editor/dev/vs/loader'], function () {
+        VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], () => {
                 // Load main entry point for extension
                 VSS.require(['build/app'], () => {
