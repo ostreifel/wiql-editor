@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <script src="build/VSS.SDK.min.js"></script>
     <style>
         .wiql-box {
             width: 100%;
@@ -36,6 +35,8 @@
     <!--until ui is developed just print pretty json-->
     <pre><code class="json-results"></code></pre>
     <div id="query-results"></div>
+
+    <script src="build/VSS.SDK.js"></script>
     <script type="text/javascript">
         // Initialize framework 
         VSS.init({
@@ -43,11 +44,17 @@
             usePlatformScripts: true,
             configureModuleLoader: true
         });
-        
-        // Load main entry point for extension
-        VSS.require(["build/app"], function () {
-            // Loading succeeded
-            VSS.notifyLoadSucceeded();
+
+        var require = { paths: { 'vs': 'build/node_modules/monaco-editor/dev/vs' } };
+        // Loader needs to be done async or it errors with vss sdk 
+        VSS.require(['build/node_modules/monaco-editor/dev/vs/loader'], function () {
+            require(['vs/editor/editor.main'], () => {
+                // Load main entry point for extension
+                VSS.require(['build/app'], () => {
+                    // Loading succeeded
+                    VSS.notifyLoadSucceeded();
+                });
+            });
         });
     </script>
 </body>

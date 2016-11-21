@@ -19,5 +19,8 @@ function search() {
 
 $('.search-button').click(() => search());
 
+
+console.log(monaco);
+
 // Register context menu action provider
 VSS.register(VSS.getContribution().id, {});

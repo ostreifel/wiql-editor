@@ -4,7 +4,7 @@
     "jquery": "registry:dt/jquery#1.10.0+20160929162922",
     "knockout": "registry:dt/knockout#0.0.0+20160914182733",
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",
-    "monaco-editor": "github:Microsoft/monaco-editor/monaco.d.ts",
+    "monaco-editor": "github:Microsoft/monaco-editor/monaco.d.ts#25e381f6f912f9a94171263a7792d897458f0d07",
     "q": "registry:dt/q#0.0.0+20161004185634",
     "react": "registry:dt/react#0.14.0+20161117000655",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
