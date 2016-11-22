@@ -42,6 +42,6 @@ export function renderError(error: TfsError) {
     ReactDom.render(<div className={'error-message'}>{exception['message']}</div>, document.getElementById('query-results'));
 }
 
-export function setLoadingMessage(message: string) {
+export function setMessage(message: string) {
     ReactDom.render(<div>{message}</div>, document.getElementById('query-results'));
 }

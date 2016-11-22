@@ -18,6 +18,9 @@
         #query-results {
             font-size: 20px;
         }
+        #query-results .error-message {
+            color: red;
+        }
         #query-results tr:hover {
             border: solid black 1px;
         }
@@ -27,14 +30,10 @@
         #query-results td {
             padding-right: 20px;
         }
-        #query-results .error-message {
-            color: red;
-        }
     </style>
 </head>
 <body class="wiql-search-wrapper">
     <div id="wiql-box"></div>
-    <button class="search-button">Search</button>
     <div id="query-results"></div>
 
     <script src="build/VSS.SDK.min.js"></script>
