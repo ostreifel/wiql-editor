@@ -1,11 +1,18 @@
 import {getClient as getWitClient} from "TFS/WorkItemTracking/RestClient";
 import {WorkItem, WorkItemReference, WorkItemQueryResult} from "TFS/WorkItemTracking/Contracts";
 import {renderQueryResults, renderError, setLoadingMessage} from "./queryResults";
+import * as Wiql from "./wiql";
+
+monaco.languages.register(Wiql.def);
+monaco.languages.onLanguage(Wiql.def.id, () => {
+    monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
+    monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
+})
 
 const editor = monaco.editor.create(document.getElementById('wiql-box'), {
             value: `select title from workitems`,
-            language: 'sql'
-        });
+            language: Wiql.def.id,
+    });
 
 function loadWorkItems(result: WorkItemQueryResult) {
     setLoadingMessage('Loading workitems...');
@@ -13,7 +20,13 @@ function loadWorkItems(result: WorkItemQueryResult) {
     const wiIds = result.workItems.map((wi) => wi.id);
     const fieldRefNames = result.columns.map((col) => col.referenceName);
     getWitClient().getWorkItems(wiIds, fieldRefNames, result.asOf).then(
-        (workItems) => renderQueryResults(result, workItems), renderError); 
+        (workItems) =>  { 
+            const wiMap = {};
+            for(let wi of workItems) {
+                wiMap[wi.id] = wi;
+            }
+            renderQueryResults(result, wiIds.map((id) => wiMap[id]));
+        }, renderError);
 }
 
 function search() {

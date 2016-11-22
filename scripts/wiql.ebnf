@@ -1,0 +1,36 @@
+<select> ::= select <field list>
+from workitems
+[ where <expression> ]
+[ order by <order by field list> ]
+[ asof <datetime> ]
+
+<expression> ::= <expression4>
+
+<expression4> ::= <expression3> [ or <expression4> ]
+<expression3> ::= <expression2> [ and <expression3> ]
+
+<expression2> ::=   {[ not | ever ] <expression2> }
+                          | <expression1>
+
+<expression1> ::= <conditional expression>
+
+<conditional expression> ::=   { '(' <expression> ')' }  | <field reference name> <conditional operator> <value>  | <field reference name> [not] in '(' <value list> ')'
+
+<value> ::= <number>
+| <string>
+| <datetime>
+
+<value list> ::= <value> [ ',' <value list> ]
+
+<conditional operator> ::=   { '=' | '<>' | '<' | '<=' | '>' | '>=' } 
+                             | { [ever] [not] { like | under }} 
+
+<field list> ::= <field name> [ ',' <field list> ]
+<order by field list> ::= <field name> [ asc | desc ] [ ',' <order by field list> ]
+
+<number> ::= [ '-' ] <digit>* [ '.' [ <digit>* ]] [ { e | E } [ '-' ] <digit>* ]
+
+<string> ::=   { ''' { <anychar except '''> | '''' }* ''' } 
+                 | { '"' { <anychar except '"'> | '""' }* '"' }
+
+<datetime> ::= <string> Insert section body here.

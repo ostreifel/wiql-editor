@@ -13,6 +13,7 @@
     ],
     "files": [
         "scripts/app.ts",
+        "scripts/wiql.ts",
         "typings/index.d.ts"
     ]
 }

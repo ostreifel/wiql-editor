@@ -39,9 +39,9 @@ export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkI
 
 export function renderError(error: TfsError) {
     const exception = error.serverError || error;
-    ReactDom.render(<div>{exception['message']}</div>, document.getElementById('query-results'));
+    ReactDom.render(<div className={'error-message'}>{exception['message']}</div>, document.getElementById('query-results'));
 }
 
 export function setLoadingMessage(message: string) {
-    ReactDom.render(<div class={'error-message'}>{message}</div>, document.getElementById('query-results'));
+    ReactDom.render(<div>{message}</div>, document.getElementById('query-results'));
 }
