@@ -12,7 +12,8 @@ monaco.languages.onLanguage(Wiql.def.id, () => {
 const editor = monaco.editor.create(document.getElementById('wiql-box'), {
             value: `select title from workitems`,
             language: Wiql.def.id,
-    });
+});
+
 
 function loadWorkItems(result: WorkItemQueryResult) {
     setLoadingMessage('Loading workitems...');
@@ -34,6 +35,30 @@ function search() {
     setLoadingMessage('Running query...');
     getWitClient().queryByWiql({query: wiqlText}).then(loadWorkItems, renderError);
 }
+
+
+editor.addAction({
+	// An unique identifier of the contributed action.
+	id: 'search-wiql',
+
+	label: 'Seach Wiql',
+
+	// An optional array of keybindings for the action.
+	keybindings: [monaco.KeyMod.Shift | monaco.KeyCode.Enter],
+
+	keybindingContext: null,
+
+	contextMenuGroupId: 'navigation',
+
+	contextMenuOrder: 1.5,
+
+	// Method that will be executed when the action is triggered.
+	// @param editor The editor instance is passed in as a convinience
+	run: (function(ed) {
+		search();
+		return null;
+	})
+})
 
 $('.search-button').click(() => search());
 

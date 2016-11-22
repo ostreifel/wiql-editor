@@ -1,3 +1,103 @@
+<select> ::= <flat-select> | <one-hop-select> | <recursive-select>
+
+<flat-select> ::= select <field list>
+from workitems
+[ where <expression> ]
+[ order by <order by field list> ]
+[ asof <datetime> ]
+
+<one-hop-select> ::= select <field list>
+from workitemlinks
+[ where <one-hop-link-expression>  <source-expression>  <target-expression> ]
+[ order by <source-target order by field list> ]
+[ asof <datetime> ]
+mode( mustcontain | maycontain | doesnotcontain )
+
+<recursive-select> ::= select <field list>
+from workitemlinks
+where <recursive-link-expression> [ and <source-expression> <target-expression> ]
+mode ( recursive | returnmatchingchildren )
+
+<expression> ::= <expression4>
+
+<expression4> ::= <expression3> [ or <expression4> ]
+<expression3> ::= <expression2> [ and <expression3> ]
+
+<expression2> ::=   {[ not | ever ] <expression2> }
+                          | <expression1>
+
+<expression1> ::= <conditional expression>
+
+<conditional expression> ::=   { '(' <expression> ')' }  | <field reference name> <conditional operator> <value>  | <field reference name> [not] in '(' <value list> ')'
+
+<value> ::= <number>
+| <string>
+| <datetime>
+
+<value list> ::= <value> [ ',' <value list> ]
+
+<conditional operator> ::=   { '=' | '<>' | '<' | '<=' | '>' | '>=' } 
+                             | { [ever] [not] { like | under }} 
+<link operator> ::= '=' | '<>'
+
+<field list> ::= <field name> [ ',' <field list> ]
+<order by field list> ::= <order by field> [ ',' <order by field list> ]
+<source-target order by field list> ::= [ <source> |<target> ] <order by field> [ ',' <source-target order by field list> ]
+<order by field> ::= <field name> [ 'asc' | 'desc' ]
+
+<number> ::= [ '-' ] <digit>* [ '.' [ <digit>* ]] [ { e | E } [ '-' ] <digit>* ]
+
+<string> ::=   { ''' { <anychar except '''> | '''' }* ''' } 
+                 | { '"' { <anychar except '"'> | '""' }* '"' }
+
+<datetime> ::= <string>
+
+<source> ::= '[source].'
+<target> ::= '[target].'
+
+<one-hop-link-expression> ::= <one-hop-link-expression4> | ''
+
+<one-hop-link-expression4> ::= <one-hop-link-expression3> [ or <one-hop-link-expression4> ]
+<one-hop-link-expression3> ::= <one-hop-link-expression2> [ and <one-hop-link-expression3> ]
+
+<one-hop-link-expression2> ::= {[ not | ever ] <one-hop-link-expression2>}
+                         | <one-hop-link-expression1>
+
+<one-hop-link-expression1> ::= <conditional-link-expression>
+
+<conditional-link-expression> ::= { '(' <one-hop-link-expression> ')' } | <linktype-field> <link operator> <linktype-name><linktype-direction> | <linktype-field> [not] 'in  (' <linktype list> ')'
+
+<recursive-link-expression> ::= <linktype-field> '=' <linktype-name>'-forward'
+
+<linktype list> ::= <linktype-name><linktype-direction> [, <linktype-name><linktype-direction>]
+
+<linktype-direction> ::= '-forward' | '-reverse'
+
+<source-expression> ::= <source-expression4> | ''
+
+<source-expression4> ::= <source-expression3> [ or <source-expression4> ]
+<source-expression3> ::= <source-expression2> [ and <source-expression3> ]
+
+<source-expression2> ::=   {[ not | ever ] <source-expression2> }
+                          | <source-expression1>
+
+<source-expression1> ::= <conditional-source-expression>
+
+<conditional-source-expression> ::=   { '(' <source-expression> ')' }  | <source><field reference name> <conditional operator> <value>  | <source><field reference name> [not] in '(' <value list> ')'
+
+<target-expression> ::= <target-expression4> | ''
+
+<target-expression4> ::= <target-expression3> [ or <target-expression4> ]
+<target-expression3> ::= <target-expression2> [ and <target-expression3> ]
+
+<target-expression2> ::=   {[ not | ever ] <target-expression2> }
+                          | <target-expression1>
+
+<target-expression1> ::= <conditional-target-expression>
+
+<conditional-target-expression> ::=   { '(' <target-expression> ')' }  | <target><field reference name> <conditional operator> <value>  | <target><field reference name> [not] in '(' <value list> ')'
+
+<linktype-field> ::= '[System.Links.LinkType] = '
 <select> ::= select <field list>
 from workitems
 [ where <expression> ]
