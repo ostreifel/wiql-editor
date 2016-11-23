@@ -14,11 +14,24 @@ export const language = <monaco.languages.IMonarchLanguage>{
 	keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever','in', 'like', 'under'],
 	tokenizer: {
 		root: [
-			[/[a-z_]\w*/, {cases: {'@keywords': 'keyword', '@default': 'error'}}],
-			{ include: '@whitespace' },	
+			[/[a-z_]\w*/, {cases: {'@keywords': 'keyword', '@default': 'identifier'}}],
+			[/[ \t\r\n]+/, 'white'],
+			{ include: '@strings' }
 		],
-		whitespace: [
-			[/[ \t\r\n]+/, 'white']
-		]
+		strings: [
+			[/'/, { token: 'string.quote', bracket: '@open', next: '@string1' }],
+			[/"/, { token: 'string.quote', bracket: '@open', next: '@string2' }]
+		],
+		string1: [
+			[/[^']+/, 'string'],
+			[/''/, 'string'],
+			[/'/, { token: 'string.quote', bracket: '@close', next: '@pop' }]
+		],
+		string2: [
+			[/[^"]+/, 'string'],
+			[/""/, 'string'],
+			[/"/, { token: 'string.quote', bracket: '@close', next: '@pop' }]
+		],
+		
 	}
 };
