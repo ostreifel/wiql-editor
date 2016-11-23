@@ -30,6 +30,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
 			[/[ \t\r\n]+/, 'white'],
 			{ include: '@strings' },
 			[/[()[\]]/, '@brackets'],
+			{ include: '@number'}
 		],
 		strings: [
 			[/'/, { token: 'string.quote', bracket: '@open', next: '@string1' }],
@@ -45,6 +46,10 @@ export const language = <monaco.languages.IMonarchLanguage>{
 			[/""/, 'string'],
 			[/"/, { token: 'string.quote', bracket: '@close', next: '@pop' }]
 		],
-		
+		number: [
+			[/-?\d+(?:\.\d*)(?:e-?\d+)?/, 'number.float'],
+			[/-?\d+(?:\.\d*)?(?:e-?\d+)/, 'number.float'],
+			[/-?\d+?/, 'number']
+		]
 	}
 };
