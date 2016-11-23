@@ -4,7 +4,13 @@ export const def: monaco.languages.ILanguageExtensionPoint = {
 	aliases: [ 'WIQL' ],
 };
 export const conf: monaco.languages.LanguageConfiguration = {
-	brackets: [['[',']'],['(',')']]
+	brackets: [['[',']'],['(',')']],
+	autoClosingPairs: [
+		{ open: '"', close: '"', notIn: ['string'] },
+		{ open: '\'', close: '\'', notIn: ['string'] },
+		{ open: '[', close: ']', notIn: ['string'] },
+		{ open: '(', close: ')', notIn: ['string'] },
+	]
 };
 
 export const language = <monaco.languages.IMonarchLanguage>{
@@ -12,11 +18,18 @@ export const language = <monaco.languages.IMonarchLanguage>{
     tokenPostfix: '.wiql',
     
 	keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever','in', 'like', 'under'],
+	operators: ['=', '<>', '<=', '>=', '<', '>', ',' , 'ever', 'not', 'like', 'under','in', 'like', 'under'],
+
+	brackets: [
+		{ open: '[', close: ']', token: 'delimiter.square' },
+		{ open: '(', close: ')', token: 'delimiter.parenthesis' }
+	],
 	tokenizer: {
 		root: [
 			[/[a-z_]\w*/, {cases: {'@keywords': 'keyword', '@default': 'identifier'}}],
 			[/[ \t\r\n]+/, 'white'],
-			{ include: '@strings' }
+			{ include: '@strings' },
+			[/[()[\]]/, '@brackets'],
 		],
 		strings: [
 			[/'/, { token: 'string.quote', bracket: '@open', next: '@string1' }],
