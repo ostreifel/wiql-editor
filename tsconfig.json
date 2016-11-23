@@ -13,7 +13,9 @@
     ],
     "files": [
         "scripts/app.ts",
-        "scripts/wiql.ts",
+        "scripts/wiqlCompletion.ts",
+        "scripts/wiqlDefinition.ts",
+        "scripts/wiqlParser.ts",
         "typings/index.d.ts"
     ]
 }

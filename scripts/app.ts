@@ -1,13 +1,17 @@
 import {getClient as getWitClient} from "TFS/WorkItemTracking/RestClient";
 import {WorkItem, WorkItemReference, WorkItemQueryResult} from "TFS/WorkItemTracking/Contracts";
 import {renderQueryResults, renderError, setMessage} from "./queryResults";
-import * as Wiql from "./wiql";
+import * as Wiql from "./wiqlDefinition";
+import {getCompletionProvider} from "./wiqlCompletion"
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
     monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
     monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
-})
+});
+getWitClient().getFields().then((fields) => 
+    monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields))
+);
 
 const editor = monaco.editor.create(document.getElementById('wiql-box'), {
             value: `select title from workitems`,
