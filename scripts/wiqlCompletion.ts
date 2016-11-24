@@ -1,6 +1,11 @@
 import {WorkItemField} from 'TFS/WorkItemTracking/Contracts';
+import {tokenize} from './wiqlTokenizer';
 
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
+	const fieldRefNames = fields.map((f) => { return { 
+		label: f.referenceName, 
+		kind: monaco.languages.CompletionItemKind.Variable
+	}});
 	return {
 		provideCompletionItems: (model, position, token) => {
 			const val = model.getValueInRange({
@@ -9,7 +14,8 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 				endLineNumber: position.lineNumber,
 				endColumn: position.column,
 			});
-			if (val.match(/\s*/)) {
+			const tokens = tokenize(val);
+			if (tokens.length == 0) {
 				return [
 					{
 						label: 'SELECT',
@@ -17,7 +23,26 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 					}
 				];
 			}
-			return null;
+			const lastToken = tokens[tokens.length - 1];
+			if (tokens[0] === 'select' 
+				&& tokens.indexOf('from') < 0) {
+				if (lastToken === ',' || lastToken === '[' || tokens.length === 1) {
+					return fieldRefNames;
+				} else {
+					return [{
+						label: 'FROM workitems',
+						kind: monaco.languages.CompletionItemKind.Snippet
+					}]
+				}
+			}
+			if (tokens[0] === 'select' && lastToken === 'workitems') {
+				return [
+					{label:'WHERE', kind: monaco.languages.CompletionItemKind.Keyword},
+					{label:'ORDER BY', kind: monaco.languages.CompletionItemKind.Keyword},
+					{label:'ASOF', kind: monaco.languages.CompletionItemKind.Keyword},
+				]
+			}
+			return fieldRefNames;
 		}
 	}
 };
