@@ -15,7 +15,7 @@
         "scripts/app.ts",
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
-        "scripts/wiqlParser.ts",
+        "scripts/wiqlTokenizer.ts",
         "typings/index.d.ts"
     ]
 }
