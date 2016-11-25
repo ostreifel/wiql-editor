@@ -10,12 +10,5 @@
         "./scripts/**/*.ts",
         "!**/*.tests.ts",
         "./typings/index.d.ts"
-    ],
-    "files": [
-        "scripts/app.ts",
-        "scripts/wiqlCompletion.ts",
-        "scripts/wiqlDefinition.ts",
-        "scripts/wiqlTokenizer.ts",
-        "typings/index.d.ts"
     ]
 }

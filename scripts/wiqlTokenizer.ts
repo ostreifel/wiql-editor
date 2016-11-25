@@ -2,7 +2,7 @@
 /**
  * Tokenizes the value to wiql tokens. Uses own logic b/c monaco does not expose it's tokenizer
  */
-export function tokenize(value: string): string[] {
+export function tokenize(value: string[]): string[] {
     value = value.toLowerCase();
     const tokens: string[] = [];
     for (let i = 0; i < value.length; i++) {
