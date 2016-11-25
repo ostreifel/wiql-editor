@@ -39,6 +39,38 @@ export class LessThan extends Token {}
 export class GreaterOrEq extends Token {}
 export class LessOrEq extends Token {}
 
-export class String extends Token {}
-export class Field extends Token {}
-export class Number extends Token {}
+export class UnexpectedToken extends Token {
+    public readonly value: string;
+    constructor(line: number, column: number, value: string) {
+        super(line, column);
+        this.value = value;
+    }
+}
+export class String extends Token {
+    public readonly value: string;
+    constructor(line: number, column: number, value: string) {
+        super(line, column);
+        this.value = value;
+    }
+}
+export class NonterminatingString extends Token {
+    public readonly value: string;
+    constructor(line: number, column: number, value: string) {
+        super(line, column);
+        this.value = value;
+    }
+}
+export class Field extends Token {
+    public readonly identifier: string;
+    constructor(line: number, column: number, identifier: string) {
+        super(line, column);
+        this.identifier = identifier;
+    }
+}
+export class Number extends Token {
+    public readonly value: string
+    constructor(line: number, column: number, value: string) {
+        super(line, column);
+        this.value = value;
+    }
+}
