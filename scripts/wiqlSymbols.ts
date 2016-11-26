@@ -24,6 +24,8 @@ export class WorkItems extends Token { }
 export class WorkItemLinks extends Token { }
 export class And extends Token { }
 export class Or extends Token { }
+export class Contains extends Token { }
+export class Words extends Token { }
 //Operators
 export class RParen extends Token { }
 export class LParen extends Token { }
@@ -70,6 +72,7 @@ export class Number extends Token {
     }
 }
 
+export class ContainsWords extends Symbol { }
 export class DateTime extends Symbol {
     constructor(readonly dateString: String) {
         super();
@@ -88,7 +91,12 @@ export class FieldList extends Symbol {
     }
 }
 export class ConditionalOperator extends Symbol {
-    constructor(readonly conditionToken: Token) {
+
+    constructor(conditionToken: 
+    Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords);
+    constructor (conditoinToken: Like | Under, isEver: boolean, isNot: boolean);
+    constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | Like | Under,
+        readonly isEver = false, readonly isNot = false) {
         super();
     }
 }

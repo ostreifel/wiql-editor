@@ -16,7 +16,9 @@ const symbolMap = {
     workitems: Symbols.WorkItems,
     workitemlinks: Symbols.WorkItemLinks,
     and: Symbols.And,
-    or: Symbols.Or
+    or: Symbols.Or, 
+    contains: Symbols.Contains,
+    words: Symbols.Words
 };
 const opMap = {
     '(': Symbols.RParen,
