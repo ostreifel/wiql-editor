@@ -21,10 +21,10 @@ const symbolMap = {
     words: Symbols.Words
 };
 const opMap = {
-    '(': Symbols.RParen,
-    ')': Symbols.LParen,
-    '[': Symbols.RSqBracket,
-    ']': Symbols.LSqBracket,
+    '(': Symbols.LParen,
+    ')': Symbols.RParen,
+    '[': Symbols.LSqBracket,
+    ']': Symbols.RSqBracket,
     ',': Symbols.Comma,
     '=': Symbols.Equals,
     '<>': Symbols.NotEquals,
