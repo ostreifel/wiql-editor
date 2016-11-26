@@ -1,5 +1,8 @@
 import {WorkItemField} from 'TFS/WorkItemTracking/Contracts';
 import {tokenize} from './wiqlTokenizer';
+import {dfa} from './wiqlDfa';
+
+console.log(dfa);
 
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
 	const fieldRefNames = fields.map((f) => { return { 
@@ -8,7 +11,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 	}});
 	return {
 		provideCompletionItems: (model, position, token) => {
-			return null;
+			return [];
 			// const val = model.getValueInRange({
 			// 	startLineNumber: 1,
 			// 	startColumn: 1,

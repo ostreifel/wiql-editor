@@ -48,9 +48,9 @@
         var require = { paths: { 'vs': 'build/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 
         VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
-            require(['vs/editor/editor.main'], () => {
+            require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['build/app'], () => {
+                VSS.require(['build/app'], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });

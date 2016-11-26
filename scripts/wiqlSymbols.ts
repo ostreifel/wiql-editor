@@ -71,6 +71,7 @@ export class Number extends Token {
         super(line, column);
     }
 }
+export class EOF extends Token { }
 
 export class ContainsWords extends Symbol { }
 export class DateTime extends Symbol {
@@ -159,3 +160,12 @@ export class FlatSelect extends Symbol {
     }
 }
 //Link symbols not copied as workItemLink queries are not supported yet
+
+export function getSymbolName(symbolClass) {
+    const str: string = symbolClass.toString();
+    const match = str.match(/function (\S+)(?=\()/);
+    if (match) {
+        return match[1].toUpperCase();
+    }
+    throw new Error('type is not a function');
+}
