@@ -14,7 +14,9 @@ const symbolMap = {
     like: Symbols.Like,
     under: Symbols.Under,
     workitems: Symbols.WorkItems,
-    workitemlinks: Symbols.WorkItemLinks
+    workitemlinks: Symbols.WorkItemLinks,
+    and: Symbols.And,
+    or: Symbols.Or
 };
 const opMap = {
     '(': Symbols.RParen,
@@ -44,7 +46,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 //skip whitespace
             //keywords/identifiers
             } else if (char.match(/[a-z_]/)) {
-                const word = line.substr(j).match(/^[a-z_][\w_\.]*/)[0];
+                const word = (line.substr(j).match(/^[a-z_][\w_\.]*/) || [])[0];
                 const type = symbolMap[word];
                 if (type) {
                     tokens.push(new type(i, j))
@@ -72,7 +74,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     }
                 }
             } else if (char === "'") {
-                const str = line.substr(j).match(/^'(?:[^']|'')*'?/)[0];
+                const str = (line.substr(j).match(/^'(?:[^']|'')*'?/) || [])[0];
                 if (str[str.length - 1] === "'") {
                     tokens.push(new Symbols.String(i, j, str));
                 } else {
@@ -80,7 +82,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 }
                 j += str.length - 1;
             } else if (char === '"') {
-                const str = line.substr(j).match(/^"(?:[^"]|"")*"?/)[0];
+                const str = (line.substr(j).match(/^"(?:[^"]|"")*"?/) || [])[0];
                 if (str[str.length - 1] === '"') {
                     tokens.push(new Symbols.String(i, j, str));
                 } else {

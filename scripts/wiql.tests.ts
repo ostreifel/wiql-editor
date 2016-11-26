@@ -1,12 +1,9 @@
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
 import { tokenize } from './wiqlTokenizer';
+import * as Symbols from './wiqlSymbols';
 
 
 describe("Tokenizer", () => {
     it("Basic test", () => {
-        const tokens = tokenize('Select id from workitems where id=1 and title contains """"');
-
-        expect(['select', 'id', 'from', 'workitems', 'where', 'id', '=', '1',
-            'and', 'title', 'contains', '""""']).to.deep.equal(tokens);
     });
 });

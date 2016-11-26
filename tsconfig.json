@@ -4,11 +4,22 @@
         "sourceMap": false,
         "rootDir": "./scripts",
         "target": "es5",
-        "jsx": "react"
+        "jsx": "react",
+        "strictNullChecks": true
     },
     "filesGlob": [
         "./scripts/**/*.ts",
         "!**/*.tests.ts",
         "./typings/index.d.ts"
+    ],
+    "files": [
+        "scripts/app.ts",
+        "scripts/wiqlCompletion.ts",
+        "scripts/wiqlDefinition.ts",
+        "scripts/wiqlParser.ts",
+        "scripts/wiqlRules.ts",
+        "scripts/wiqlSymbols.ts",
+        "scripts/wiqlTokenizer.ts",
+        "typings/index.d.ts"
     ]
 }
