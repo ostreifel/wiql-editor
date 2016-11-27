@@ -1,0 +1,5055 @@
+[
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 0
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EQUALS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATEROREQ"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATERTHAN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSOREQ"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSTHAN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOTEQUALS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "FIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "FIELDLIST"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 6
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EQUALS"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATEROREQ"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATERTHAN"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSOREQ"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSTHAN"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LIKE"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOTEQUALS"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "UNDER"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "LIKE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "UNDER"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "DATETIME"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "NUMBER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EQUALS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATEROREQ"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "GREATERTHAN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSOREQ"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LESSTHAN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOTEQUALS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "LIKE"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "UNDER"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "DATETIME"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "NUMBER"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "DATETIME"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "NUMBER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "CONDITIONALOPERATOR",
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "LPAREN",
+                        "LOGICALEXPRESSION",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 8
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 8
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 8
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 2
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 8
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 8
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "LIKE"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "EVER",
+                        "NOT",
+                        "UNDER"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "DATETIME"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "NUMBER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE"
+                    ]
+                },
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "EVER",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "AND",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "LOGICALEXPRESSION",
+                    "inputs": [
+                        "NOT",
+                        "CONDITIONALEXPRESSION",
+                        "OR",
+                        "LOGICALEXPRESSION"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 9
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 9
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "FIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 9
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 9
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "DATETIME"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "NUMBER"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUE",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 2
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 5
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "EOF"
+                    ]
+                },
+                "pos": 10
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "DATETIME",
+                    "inputs": [
+                        "STRING"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 10
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "ASC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "ORDERBYFIELDLIST",
+                    "inputs": [
+                        "FIELD",
+                        "DESC",
+                        "COMMA",
+                        "ORDERBYFIELDLIST"
+                    ]
+                },
+                "pos": 4
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 10
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALEXPRESSION",
+                    "inputs": [
+                        "FIELD",
+                        "NOT",
+                        "IN",
+                        "LPAREN",
+                        "VALUELIST",
+                        "RPAREN"
+                    ]
+                },
+                "pos": 6
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "VALUELIST",
+                    "inputs": [
+                        "VALUE",
+                        "COMMA",
+                        "VALUELIST"
+                    ]
+                },
+                "pos": 3
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 11
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "FLATSELECT",
+                    "inputs": [
+                        "SELECT",
+                        "FIELDLIST",
+                        "FROM",
+                        "WORKITEMS",
+                        "WHERE",
+                        "LOGICALEXPRESSION",
+                        "ORDER",
+                        "BY",
+                        "ORDERBYFIELDLIST",
+                        "ASOF",
+                        "DATETIME",
+                        "EOF"
+                    ]
+                },
+                "pos": 12
+            }
+        ],
+        "sorted": true
+    }
+]

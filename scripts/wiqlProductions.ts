@@ -1,11 +1,11 @@
 import * as Symbols from './wiqlSymbols';
-export interface IRule {
+export interface IProduction {
     /** ? extends typeof Symbols.Symbol */
-    result: any,
+    result: Function,
     /** (? extends typeof Symbols.Symbol)[] */
-    inputs: any[]
+    inputs: Function[]
 }
-export const rules: IRule[] = [
+const rules: IProduction[] = [
     {
         result: Symbols.FlatSelect,
         inputs: [
@@ -414,3 +414,6 @@ export const rules: IRule[] = [
         ]
     }
 ];
+export function getProductionsFor(symbolClass) {
+    return rules.filter((r) => r.result === symbolClass);
+}

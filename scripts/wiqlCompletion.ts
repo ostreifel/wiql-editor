@@ -1,8 +1,18 @@
 import {WorkItemField} from 'TFS/WorkItemTracking/Contracts';
 import {tokenize} from './wiqlTokenizer';
-import {dfa} from './wiqlDfa';
+import {states, transitions} from './wiqlDfa';
+import {getSymbolName} from './wiqlSymbols';
 
-console.log(dfa);
+console.log(states);
+console.log(transitions);
+function replacer(k, v) {
+	if (typeof v === 'function') {
+		return getSymbolName(v);
+	}
+	return v;
+}
+console.log(JSON.stringify(states, replacer));
+console.log(JSON.stringify(transitions, replacer));
 
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
 	const fieldRefNames = fields.map((f) => { return { 
