@@ -145,23 +145,38 @@ function calcStatesAndEdges(): [State[], Transition[]] {
 }
 export const [states, transitions] = calcStatesAndEdges();
 
-//Debug info
-function replacer(k, v) {
-	if (typeof v === 'function') {
-		return Symbols.getSymbolName(v);
-	}
-	return v;
-}
-console.log(JSON.stringify(states, replacer));
-console.log(JSON.stringify(transitions, replacer));
+// //Debug info
+// function replacer(k, v) {
+// 	if (typeof v === 'function') {
+// 		return Symbols.getSymbolName(v);
+// 	}
+// 	return v;
+// }
+// console.log(JSON.stringify(states, replacer));
+// console.log(JSON.stringify(transitions, replacer));
 
-//Check for ambiguous end states
-let ambigousStates = 0;
-for (let stateIdx in states) {
-    const state = states[stateIdx];
-    if (state.productionPositions.filter((pos) => pos.isAtEnd()).length > 0 && state.productionPositions.length > 1) {
-        console.log(`Ambiguous state ${stateIdx}`);
-        ambigousStates++;
-    }
-}
-console.log(`Counted ${ambigousStates} ambiguous states`);
+// //Check for ambiguous states
+// let ambigousStates = 0;
+// for (let stateIdx in states) {
+//     const state = states[stateIdx];
+//     if (state.productionPositions.filter((pos) => pos.isAtEnd()).length > 0 && state.productionPositions.length > 1) {
+//         console.log(`Ambiguous resolution at ${stateIdx}`);
+//         ambigousStates++;
+//     }
+// }
+// console.log(`Counted ${ambigousStates} ambiguous resolutions`);
+
+// //Check for ambiguous end transitions
+// const transitionIds = {};
+// for (let transitionIdx in transitions) {
+//     const transition = transitions[transitionIdx];
+//     const id = `${transition.from}->${transition.to} : ${Symbols.getSymbolName(transition.symbolClass)}`;
+//     if (transitionIds[id]) {
+//         console.log(`ambiguous transition at ${transitionIdx}: ${id}`);
+//     } else {
+//         transitionIds[id] = id;
+//     }
+// }
+// console.log(`ambiguous transition count ${transitions.length - Object.keys(transitionIds).length}`);
+
+
