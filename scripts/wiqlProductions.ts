@@ -5,15 +5,14 @@ export interface IProduction {
     /** (? extends typeof Symbols.Symbol)[] */
     inputs: Function[]
 }
-const rules: IProduction[] = [
+const productions: IProduction[] = [
     {
         result: Symbols.FlatSelect,
         inputs: [
             Symbols.Select,
             Symbols.FieldList,
             Symbols.From,
-            Symbols.WorkItems,
-            Symbols.EOF
+            Symbols.WorkItems
         ]
     },
     {
@@ -24,8 +23,7 @@ const rules: IProduction[] = [
             Symbols.From,
             Symbols.WorkItems,
             Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.EOF
+            Symbols.LogicalExpression
         ]
     },
     {
@@ -39,8 +37,7 @@ const rules: IProduction[] = [
             Symbols.LogicalExpression,
             Symbols.Order,
             Symbols.By,
-            Symbols.OrderByFieldList,
-            Symbols.EOF
+            Symbols.OrderByFieldList
         ]
     },
     {
@@ -56,8 +53,7 @@ const rules: IProduction[] = [
             Symbols.By,
             Symbols.OrderByFieldList,
             Symbols.Asof,
-            Symbols.DateTime,
-            Symbols.EOF
+            Symbols.DateTime
         ]
     },
     {
@@ -71,8 +67,7 @@ const rules: IProduction[] = [
             Symbols.By,
             Symbols.OrderByFieldList,
             Symbols.Asof,
-            Symbols.DateTime,
-            Symbols.EOF
+            Symbols.DateTime
         ]
     },
     {
@@ -84,8 +79,7 @@ const rules: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Order,
             Symbols.By,
-            Symbols.OrderByFieldList,
-            Symbols.EOF
+            Symbols.OrderByFieldList
         ]
     },
     {
@@ -96,8 +90,7 @@ const rules: IProduction[] = [
             Symbols.From,
             Symbols.WorkItems,
             Symbols.Asof,
-            Symbols.DateTime,
-            Symbols.EOF
+            Symbols.DateTime
         ]
     },
     {
@@ -110,8 +103,7 @@ const rules: IProduction[] = [
             Symbols.Where,
             Symbols.FieldList,
             Symbols.Asof,
-            Symbols.DateTime,
-            Symbols.EOF
+            Symbols.DateTime
         ]
     },
     {
@@ -368,6 +360,25 @@ const rules: IProduction[] = [
         ]
     },
     {
+        result: Symbols.ConditionalOperator,
+        inputs: [
+            Symbols.Contains
+        ]
+    },
+    {
+        result: Symbols.ConditionalOperator,
+        inputs: [
+            Symbols.ContainsWords
+        ]
+    },
+    {
+        result: Symbols.ContainsWords,
+        inputs: [
+            Symbols.Contains,
+            Symbols.Words
+        ]
+    },
+    {
         result: Symbols.OrderByFieldList,
         inputs: [
             Symbols.Field
@@ -414,6 +425,63 @@ const rules: IProduction[] = [
         ]
     }
 ];
-export function getProductionsFor(symbolClass) {
-    return rules.filter((r) => r.result === symbolClass);
+export function getProductionsFor(symbolClass: Function): IProduction[] {
+    return productions.filter((r) => r.result === symbolClass);
+}
+function getProductionsUsing(symbolClass: Function): IProduction[] {
+    return productions.filter((p) =>
+        p.inputs.filter((input) => input === symbolClass).length > 0
+    );
+}
+function firstImpl(result: Function, visited: Function[]): Function[] {
+    if (Symbols.isTokenClass(result)) {
+        return [result];
+    }
+    const firsts: Function[] = [];
+    visited.push(result);
+    for (let prod of getProductionsFor(result)) {
+        const first = prod.inputs[0];
+        if (Symbols.isTokenClass(first)) {
+            if (firsts.indexOf(first) < 0) {
+                firsts.push(first);
+            }
+        } else if (visited.indexOf(first) < 0) {
+            for (let symbol of firstImpl(first, visited)) {
+                if (firsts.indexOf(symbol) < 0) {
+                    firsts.push(symbol);
+                }
+            }
+        }
+    }
+    return firsts;
+}
+            
+export function first(result: Function): Function[] {
+    return firstImpl(result, []);
+}
+
+function followsImpl(resultSymbol: Function, visited: Function[]): Function[] {
+    const follows: Function[] = [Symbols.EOF];
+    visited.push(resultSymbol);
+    for (let prod of getProductionsUsing(resultSymbol)) {
+        const idx = prod.inputs.indexOf(resultSymbol);
+        let recFollows: Function[] = [];
+        if (idx === prod.inputs.length - 1) {
+            if (visited.indexOf(prod.result) < 0) {
+                recFollows = followsImpl(prod.result, visited);
+            }
+        } else {
+            recFollows = first(prod.inputs[idx + 1])
+        }
+        for (let sym of recFollows) {
+            if (follows.indexOf(sym) < 0) {
+                follows.push(sym);
+            }
+        }
+    }
+
+    return follows;
+}
+export function follows(resultSymbol: Function): Function[] {
+    return followsImpl(resultSymbol, []);
 }

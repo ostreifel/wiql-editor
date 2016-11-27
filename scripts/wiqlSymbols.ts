@@ -71,8 +71,8 @@ export class Number extends Token {
         super(line, column);
     }
 }
-export class EOF extends Token { }
 
+export class EOF extends Symbol { }
 export class ContainsWords extends Symbol { }
 export class DateTime extends Symbol {
     constructor(readonly dateString: String) {
@@ -168,4 +168,7 @@ export function getSymbolName(symbolClass: Function) {
         return match[1].toUpperCase();
     }
     throw new Error('type is not a function');
+}
+export function isTokenClass(symbolClass: Function) {
+    symbolClass.prototype.__proto__.constructor === Token;
 }

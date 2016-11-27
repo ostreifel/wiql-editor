@@ -1,5 +1,5 @@
 import * as Symbols from './wiqlSymbols';
-import {IProduction, getProductionsFor} from './wiqlProductions';
+import {IProduction, getProductionsFor, follows} from './wiqlProductions';
 
 export class ProductionPosition {
     constructor(readonly production: IProduction, readonly pos: number) {
@@ -14,7 +14,7 @@ export class ProductionPosition {
         return new ProductionPosition(this.production, this.pos + 1);
     }
     public equals(prodPos: ProductionPosition) {
-        //                                instance equality is fine for rules
+        //                                instance equality is fine for productions
         return prodPos.pos === this.pos && prodPos.production === this.production;
     }
 }
@@ -82,6 +82,17 @@ export class Transition {
         );
     }
 }
+export class Resolution {
+    constructor(readonly stateIdx: number, readonly symbolClass: Function, readonly production: IProduction) {
+    }
+    equals(other: Resolution) {
+        return (
+            other.stateIdx === this.stateIdx
+            && other.symbolClass === this.symbolClass
+            && other.production === this.production
+        );
+    }
+}
 
 function closure(state: State) {
     let change: boolean;
@@ -143,7 +154,22 @@ function calcStatesAndEdges(): [State[], Transition[]] {
     } while (change);
     return [states, transitions];
 }
+function calcResolutions(states: State[]) {
+    const resolutions: Resolution[] = [];
+    for (let stateIdx in states) {
+        const state = states[stateIdx];
+        const endPositions = state.productionPositions.filter((p) => p.isAtEnd());
+        for (let pos of endPositions) {
+            for (let symbolClass of follows(pos.production.result)) {
+                const resolution = new Resolution(Number(stateIdx), symbolClass, pos.production);
+                addIfNotPresent(resolutions, resolution);
+            }
+        }
+    }
+    return resolutions;
+}
 export const [states, transitions] = calcStatesAndEdges();
+export const resolutions = calcResolutions(states);
 
 // //Debug info
 // function replacer(k, v) {
@@ -154,29 +180,4 @@ export const [states, transitions] = calcStatesAndEdges();
 // }
 // console.log(JSON.stringify(states, replacer));
 // console.log(JSON.stringify(transitions, replacer));
-
-// //Check for ambiguous states
-// let ambigousStates = 0;
-// for (let stateIdx in states) {
-//     const state = states[stateIdx];
-//     if (state.productionPositions.filter((pos) => pos.isAtEnd()).length > 0 && state.productionPositions.length > 1) {
-//         console.log(`Ambiguous resolution at ${stateIdx}`);
-//         ambigousStates++;
-//     }
-// }
-// console.log(`Counted ${ambigousStates} ambiguous resolutions`);
-
-// //Check for ambiguous end transitions
-// const transitionIds = {};
-// for (let transitionIdx in transitions) {
-//     const transition = transitions[transitionIdx];
-//     const id = `${transition.from}->${transition.to} : ${Symbols.getSymbolName(transition.symbolClass)}`;
-//     if (transitionIds[id]) {
-//         console.log(`ambiguous transition at ${transitionIdx}: ${id}`);
-//     } else {
-//         transitionIds[id] = id;
-//     }
-// }
-// console.log(`ambiguous transition count ${transitions.length - Object.keys(transitionIds).length}`);
-
-
+// console.log(JSON.stringify(resolutions, replacer));

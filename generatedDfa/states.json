@@ -8,8 +8,7 @@
                         "SELECT",
                         "FIELDLIST",
                         "FROM",
-                        "WORKITEMS",
-                        "EOF"
+                        "WORKITEMS"
                     ]
                 },
                 "pos": 0
@@ -23,8 +22,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 0
@@ -38,8 +36,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 0
@@ -54,8 +51,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 0
@@ -71,8 +67,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 0
@@ -89,8 +84,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 0
@@ -107,8 +101,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 0
@@ -127,8 +120,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 0
@@ -165,8 +157,7 @@
                         "SELECT",
                         "FIELDLIST",
                         "FROM",
-                        "WORKITEMS",
-                        "EOF"
+                        "WORKITEMS"
                     ]
                 },
                 "pos": 1
@@ -180,8 +171,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 1
@@ -195,8 +185,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 1
@@ -211,8 +200,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 1
@@ -228,8 +216,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 1
@@ -246,8 +233,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 1
@@ -264,8 +250,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 1
@@ -284,8 +269,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 1
@@ -327,8 +311,7 @@
                         "SELECT",
                         "FIELDLIST",
                         "FROM",
-                        "WORKITEMS",
-                        "EOF"
+                        "WORKITEMS"
                     ]
                 },
                 "pos": 2
@@ -342,8 +325,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 2
@@ -357,8 +339,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 2
@@ -373,8 +354,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 2
@@ -390,8 +370,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 2
@@ -408,8 +387,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 2
@@ -426,8 +404,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 2
@@ -446,8 +423,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 2
@@ -500,8 +476,7 @@
                         "SELECT",
                         "FIELDLIST",
                         "FROM",
-                        "WORKITEMS",
-                        "EOF"
+                        "WORKITEMS"
                     ]
                 },
                 "pos": 3
@@ -515,8 +490,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 3
@@ -530,8 +504,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 3
@@ -546,8 +519,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 3
@@ -563,8 +535,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 3
@@ -581,8 +552,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 3
@@ -599,8 +569,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 3
@@ -619,8 +588,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 3
@@ -653,8 +621,7 @@
                         "SELECT",
                         "FIELDLIST",
                         "FROM",
-                        "WORKITEMS",
-                        "EOF"
+                        "WORKITEMS"
                     ]
                 },
                 "pos": 4
@@ -668,8 +635,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 4
@@ -683,8 +649,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 4
@@ -699,8 +664,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 4
@@ -716,8 +680,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 4
@@ -734,8 +697,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 4
@@ -752,8 +714,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 4
@@ -772,29 +733,10 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 4
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "EOF"
-                    ]
-                },
-                "pos": 5
             }
         ],
         "sorted": true
@@ -819,8 +761,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 5
@@ -1007,8 +948,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 5
@@ -1024,8 +964,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 5
@@ -1042,8 +981,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 5
@@ -1062,8 +1000,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 5
@@ -1083,8 +1020,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 5
@@ -1101,8 +1037,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 5
@@ -1135,8 +1070,7 @@
                         "FROM",
                         "WORKITEMS",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 6
@@ -1146,6 +1080,24 @@
     },
     {
         "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "CONTAINS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "CONTAINSWORDS"
+                    ]
+                },
+                "pos": 0
+            },
             {
                 "production": {
                     "result": "CONDITIONALOPERATOR",
@@ -1282,6 +1234,16 @@
             },
             {
                 "production": {
+                    "result": "CONTAINSWORDS",
+                    "inputs": [
+                        "CONTAINS",
+                        "WORDS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
                     "result": "CONDITIONALEXPRESSION",
                     "inputs": [
                         "FIELD",
@@ -1728,8 +1690,7 @@
                         "FROM",
                         "WORKITEMS",
                         "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
+                        "LOGICALEXPRESSION"
                     ]
                 },
                 "pos": 6
@@ -1746,8 +1707,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 6
@@ -1766,8 +1726,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 6
@@ -1788,8 +1747,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 6
@@ -1873,8 +1831,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 6
@@ -1891,8 +1848,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 6
@@ -1904,18 +1860,36 @@
         "productionPositions": [
             {
                 "production": {
-                    "result": "FLATSELECT",
+                    "result": "CONDITIONALOPERATOR",
                     "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "CONTAINS"
                     ]
                 },
-                "pos": 7
+                "pos": 1
+            },
+            {
+                "production": {
+                    "result": "CONTAINSWORDS",
+                    "inputs": [
+                        "CONTAINS",
+                        "WORDS"
+                    ]
+                },
+                "pos": 1
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "CONTAINSWORDS"
+                    ]
+                },
+                "pos": 1
             }
         ],
         "sorted": true
@@ -2194,6 +2168,24 @@
                 "production": {
                     "result": "CONDITIONALOPERATOR",
                     "inputs": [
+                        "CONTAINS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
+                        "CONTAINSWORDS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
+                    "result": "CONDITIONALOPERATOR",
+                    "inputs": [
                         "EQUALS"
                     ]
                 },
@@ -2326,6 +2318,16 @@
             },
             {
                 "production": {
+                    "result": "CONTAINSWORDS",
+                    "inputs": [
+                        "CONTAINS",
+                        "WORDS"
+                    ]
+                },
+                "pos": 0
+            },
+            {
+                "production": {
                     "result": "CONDITIONALEXPRESSION",
                     "inputs": [
                         "FIELD",
@@ -2783,26 +2785,6 @@
                     ]
                 },
                 "pos": 2
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "WHERE",
-                        "LOGICALEXPRESSION",
-                        "EOF"
-                    ]
-                },
-                "pos": 7
             }
         ],
         "sorted": true
@@ -2821,8 +2803,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 7
@@ -2841,8 +2822,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 7
@@ -2872,8 +2852,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 7
@@ -2962,8 +2941,7 @@
                         "WORKITEMS",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 7
@@ -2980,11 +2958,25 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 7
+            }
+        ],
+        "sorted": true
+    },
+    {
+        "productionPositions": [
+            {
+                "production": {
+                    "result": "CONTAINSWORDS",
+                    "inputs": [
+                        "CONTAINS",
+                        "WORDS"
+                    ]
+                },
+                "pos": 2
             }
         ],
         "sorted": true
@@ -4022,8 +4014,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 8
@@ -4042,8 +4033,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 8
@@ -4064,8 +4054,7 @@
                         "WHERE",
                         "FIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 8
@@ -4211,27 +4200,6 @@
         "productionPositions": [
             {
                 "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "ORDER",
-                        "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
-                    ]
-                },
-                "pos": 8
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
                     "result": "DATETIME",
                     "inputs": [
                         "STRING"
@@ -4251,8 +4219,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 8
@@ -4492,8 +4459,7 @@
                         "LOGICALEXPRESSION",
                         "ORDER",
                         "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
+                        "ORDERBYFIELDLIST"
                     ]
                 },
                 "pos": 9
@@ -4512,30 +4478,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
-                    ]
-                },
-                "pos": 9
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "WHERE",
-                        "FIELDLIST",
-                        "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 9
@@ -4735,8 +4678,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 9
@@ -4857,29 +4799,6 @@
         "productionPositions": [
             {
                 "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "WHERE",
-                        "LOGICALEXPRESSION",
-                        "ORDER",
-                        "BY",
-                        "ORDERBYFIELDLIST",
-                        "EOF"
-                    ]
-                },
-                "pos": 10
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
                     "result": "DATETIME",
                     "inputs": [
                         "STRING"
@@ -4901,8 +4820,7 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 10
@@ -4940,29 +4858,6 @@
                     ]
                 },
                 "pos": 4
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "ORDER",
-                        "BY",
-                        "ORDERBYFIELDLIST",
-                        "ASOF",
-                        "DATETIME",
-                        "EOF"
-                    ]
-                },
-                "pos": 10
             }
         ],
         "sorted": true
@@ -5018,36 +4913,10 @@
                         "BY",
                         "ORDERBYFIELDLIST",
                         "ASOF",
-                        "DATETIME",
-                        "EOF"
+                        "DATETIME"
                     ]
                 },
                 "pos": 11
-            }
-        ],
-        "sorted": true
-    },
-    {
-        "productionPositions": [
-            {
-                "production": {
-                    "result": "FLATSELECT",
-                    "inputs": [
-                        "SELECT",
-                        "FIELDLIST",
-                        "FROM",
-                        "WORKITEMS",
-                        "WHERE",
-                        "LOGICALEXPRESSION",
-                        "ORDER",
-                        "BY",
-                        "ORDERBYFIELDLIST",
-                        "ASOF",
-                        "DATETIME",
-                        "EOF"
-                    ]
-                },
-                "pos": 12
             }
         ],
         "sorted": true

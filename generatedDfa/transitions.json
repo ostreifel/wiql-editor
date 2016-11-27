@@ -42,237 +42,237 @@
     {
         "from": 7,
         "to": 8,
-        "symbolClass": "EOF"
+        "symbolClass": "ASOF"
     },
     {
         "from": 7,
         "to": 9,
-        "symbolClass": "ASOF"
-    },
-    {
-        "from": 7,
-        "to": 10,
         "symbolClass": "WHERE"
     },
     {
         "from": 7,
-        "to": 11,
+        "to": 10,
         "symbolClass": "ORDER"
     },
     {
-        "from": 9,
-        "to": 12,
+        "from": 8,
+        "to": 11,
         "symbolClass": "STRING"
+    },
+    {
+        "from": 8,
+        "to": 12,
+        "symbolClass": "DATETIME"
     },
     {
         "from": 9,
         "to": 13,
-        "symbolClass": "DATETIME"
-    },
-    {
-        "from": 10,
-        "to": 14,
         "symbolClass": "FIELD"
     },
     {
-        "from": 10,
-        "to": 15,
+        "from": 9,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 10,
-        "to": 16,
+        "from": 9,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 10,
-        "to": 17,
+        "from": 9,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
-        "from": 10,
-        "to": 18,
+        "from": 9,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
-        "from": 10,
-        "to": 19,
+        "from": 9,
+        "to": 18,
         "symbolClass": "LOGICALEXPRESSION"
+    },
+    {
+        "from": 9,
+        "to": 19,
+        "symbolClass": "FIELDLIST"
     },
     {
         "from": 10,
         "to": 20,
-        "symbolClass": "FIELDLIST"
-    },
-    {
-        "from": 11,
-        "to": 21,
         "symbolClass": "BY"
     },
     {
         "from": 13,
-        "to": 22,
-        "symbolClass": "EOF"
+        "to": 21,
+        "symbolClass": "CONTAINS"
     },
     {
-        "from": 14,
+        "from": 13,
+        "to": 22,
+        "symbolClass": "CONTAINSWORDS"
+    },
+    {
+        "from": 13,
         "to": 23,
         "symbolClass": "EQUALS"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 24,
         "symbolClass": "GREATEROREQ"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 25,
         "symbolClass": "GREATERTHAN"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 26,
         "symbolClass": "LESSOREQ"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 27,
         "symbolClass": "LESSTHAN"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 28,
         "symbolClass": "LIKE"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 29,
         "symbolClass": "NOTEQUALS"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 30,
         "symbolClass": "UNDER"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 31,
         "symbolClass": "EVER"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 32,
         "symbolClass": "NOT"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 33,
         "symbolClass": "CONDITIONALOPERATOR"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 34,
         "symbolClass": "IN"
     },
     {
-        "from": 14,
+        "from": 13,
         "to": 4,
         "symbolClass": "COMMA"
     },
     {
-        "from": 15,
+        "from": 14,
         "to": 35,
         "symbolClass": "FIELD"
     },
     {
-        "from": 15,
-        "to": 15,
+        "from": 14,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 15,
-        "to": 16,
+        "from": 14,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 15,
-        "to": 17,
+        "from": 14,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
-        "from": 15,
-        "to": 18,
+        "from": 14,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
-        "from": 15,
+        "from": 14,
         "to": 36,
         "symbolClass": "LOGICALEXPRESSION"
     },
     {
-        "from": 16,
+        "from": 15,
         "to": 37,
         "symbolClass": "AND"
     },
     {
-        "from": 16,
+        "from": 15,
         "to": 38,
         "symbolClass": "OR"
     },
     {
-        "from": 17,
+        "from": 16,
         "to": 35,
         "symbolClass": "FIELD"
     },
     {
-        "from": 17,
-        "to": 15,
+        "from": 16,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 17,
+        "from": 16,
         "to": 39,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 18,
+        "from": 17,
         "to": 35,
         "symbolClass": "FIELD"
     },
     {
-        "from": 18,
-        "to": 15,
+        "from": 17,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 18,
+        "from": 17,
         "to": 40,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 19,
+        "from": 18,
         "to": 41,
-        "symbolClass": "EOF"
+        "symbolClass": "ORDER"
     },
     {
         "from": 19,
         "to": 42,
-        "symbolClass": "ORDER"
+        "symbolClass": "ASOF"
     },
     {
         "from": 20,
         "to": 43,
-        "symbolClass": "ASOF"
+        "symbolClass": "FIELD"
     },
     {
-        "from": 21,
+        "from": 20,
         "to": 44,
-        "symbolClass": "FIELD"
+        "symbolClass": "ORDERBYFIELDLIST"
     },
     {
         "from": 21,
         "to": 45,
-        "symbolClass": "ORDERBYFIELDLIST"
+        "symbolClass": "WORDS"
     },
     {
         "from": 31,
@@ -328,6 +328,16 @@
         "from": 34,
         "to": 56,
         "symbolClass": "LPAREN"
+    },
+    {
+        "from": 35,
+        "to": 21,
+        "symbolClass": "CONTAINS"
+    },
+    {
+        "from": 35,
+        "to": 22,
+        "symbolClass": "CONTAINSWORDS"
     },
     {
         "from": 35,
@@ -401,22 +411,22 @@
     },
     {
         "from": 37,
-        "to": 15,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
         "from": 37,
-        "to": 16,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
         "from": 37,
-        "to": 17,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
         "from": 37,
-        "to": 18,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
@@ -431,22 +441,22 @@
     },
     {
         "from": 38,
-        "to": 15,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
         "from": 38,
-        "to": 16,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
         "from": 38,
-        "to": 17,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
         "from": 38,
-        "to": 18,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
@@ -475,58 +485,53 @@
         "symbolClass": "OR"
     },
     {
-        "from": 42,
+        "from": 41,
         "to": 64,
         "symbolClass": "BY"
     },
     {
-        "from": 43,
-        "to": 12,
+        "from": 42,
+        "to": 11,
         "symbolClass": "STRING"
     },
     {
-        "from": 43,
+        "from": 42,
         "to": 65,
         "symbolClass": "DATETIME"
     },
     {
-        "from": 44,
+        "from": 43,
         "to": 66,
         "symbolClass": "ASC"
     },
     {
-        "from": 44,
+        "from": 43,
         "to": 67,
         "symbolClass": "DESC"
     },
     {
-        "from": 44,
+        "from": 43,
         "to": 68,
         "symbolClass": "COMMA"
     },
     {
-        "from": 45,
+        "from": 44,
         "to": 69,
-        "symbolClass": "EOF"
-    },
-    {
-        "from": 45,
-        "to": 70,
         "symbolClass": "ASOF"
     },
     {
         "from": 48,
-        "to": 71,
+        "to": 70,
         "symbolClass": "LIKE"
     },
     {
         "from": 48,
-        "to": 72,
+        "to": 71,
         "symbolClass": "UNDER"
     },
     {
         "from": 51,
-        "to": 73,
+        "to": 72,
         "symbolClass": "LPAREN"
     },
     {
@@ -546,12 +551,12 @@
     },
     {
         "from": 56,
-        "to": 74,
+        "to": 73,
         "symbolClass": "VALUE"
     },
     {
         "from": 56,
-        "to": 75,
+        "to": 74,
         "symbolClass": "VALUELIST"
     },
     {
@@ -561,277 +566,257 @@
     },
     {
         "from": 60,
-        "to": 15,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
         "from": 60,
-        "to": 16,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
         "from": 60,
-        "to": 17,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
         "from": 60,
-        "to": 18,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
         "from": 60,
+        "to": 75,
+        "symbolClass": "LOGICALEXPRESSION"
+    },
+    {
+        "from": 61,
+        "to": 35,
+        "symbolClass": "FIELD"
+    },
+    {
+        "from": 61,
+        "to": 14,
+        "symbolClass": "LPAREN"
+    },
+    {
+        "from": 61,
+        "to": 15,
+        "symbolClass": "CONDITIONALEXPRESSION"
+    },
+    {
+        "from": 61,
+        "to": 16,
+        "symbolClass": "EVER"
+    },
+    {
+        "from": 61,
+        "to": 17,
+        "symbolClass": "NOT"
+    },
+    {
+        "from": 61,
         "to": 76,
         "symbolClass": "LOGICALEXPRESSION"
     },
     {
-        "from": 61,
+        "from": 62,
         "to": 35,
         "symbolClass": "FIELD"
     },
     {
-        "from": 61,
-        "to": 15,
+        "from": 62,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 61,
-        "to": 16,
+        "from": 62,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 61,
-        "to": 17,
+        "from": 62,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
-        "from": 61,
-        "to": 18,
+        "from": 62,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
-        "from": 61,
+        "from": 62,
         "to": 77,
         "symbolClass": "LOGICALEXPRESSION"
     },
     {
-        "from": 62,
+        "from": 63,
         "to": 35,
         "symbolClass": "FIELD"
     },
     {
-        "from": 62,
-        "to": 15,
+        "from": 63,
+        "to": 14,
         "symbolClass": "LPAREN"
     },
     {
-        "from": 62,
-        "to": 16,
+        "from": 63,
+        "to": 15,
         "symbolClass": "CONDITIONALEXPRESSION"
     },
     {
-        "from": 62,
-        "to": 17,
+        "from": 63,
+        "to": 16,
         "symbolClass": "EVER"
     },
     {
-        "from": 62,
-        "to": 18,
+        "from": 63,
+        "to": 17,
         "symbolClass": "NOT"
     },
     {
-        "from": 62,
+        "from": 63,
         "to": 78,
         "symbolClass": "LOGICALEXPRESSION"
     },
     {
-        "from": 63,
-        "to": 35,
+        "from": 64,
+        "to": 43,
         "symbolClass": "FIELD"
     },
     {
-        "from": 63,
-        "to": 15,
-        "symbolClass": "LPAREN"
-    },
-    {
-        "from": 63,
-        "to": 16,
-        "symbolClass": "CONDITIONALEXPRESSION"
-    },
-    {
-        "from": 63,
-        "to": 17,
-        "symbolClass": "EVER"
-    },
-    {
-        "from": 63,
-        "to": 18,
-        "symbolClass": "NOT"
-    },
-    {
-        "from": 63,
+        "from": 64,
         "to": 79,
-        "symbolClass": "LOGICALEXPRESSION"
-    },
-    {
-        "from": 64,
-        "to": 44,
-        "symbolClass": "FIELD"
-    },
-    {
-        "from": 64,
-        "to": 80,
         "symbolClass": "ORDERBYFIELDLIST"
     },
     {
-        "from": 65,
-        "to": 81,
-        "symbolClass": "EOF"
-    },
-    {
         "from": 66,
-        "to": 82,
+        "to": 80,
         "symbolClass": "COMMA"
     },
     {
         "from": 67,
-        "to": 83,
+        "to": 81,
         "symbolClass": "COMMA"
     },
     {
         "from": 68,
-        "to": 44,
+        "to": 43,
         "symbolClass": "FIELD"
     },
     {
         "from": 68,
-        "to": 84,
+        "to": 82,
         "symbolClass": "ORDERBYFIELDLIST"
     },
     {
-        "from": 70,
-        "to": 12,
+        "from": 69,
+        "to": 11,
         "symbolClass": "STRING"
     },
     {
-        "from": 70,
-        "to": 85,
+        "from": 69,
+        "to": 83,
         "symbolClass": "DATETIME"
     },
     {
-        "from": 73,
+        "from": 72,
         "to": 52,
         "symbolClass": "STRING"
     },
     {
-        "from": 73,
+        "from": 72,
         "to": 53,
         "symbolClass": "DATETIME"
     },
     {
-        "from": 73,
+        "from": 72,
         "to": 54,
         "symbolClass": "NUMBER"
     },
     {
-        "from": 73,
-        "to": 74,
+        "from": 72,
+        "to": 73,
         "symbolClass": "VALUE"
     },
     {
-        "from": 73,
-        "to": 86,
+        "from": 72,
+        "to": 84,
         "symbolClass": "VALUELIST"
+    },
+    {
+        "from": 73,
+        "to": 85,
+        "symbolClass": "COMMA"
     },
     {
         "from": 74,
-        "to": 87,
-        "symbolClass": "COMMA"
-    },
-    {
-        "from": 75,
-        "to": 88,
+        "to": 86,
         "symbolClass": "RPAREN"
     },
     {
-        "from": 80,
-        "to": 89,
-        "symbolClass": "EOF"
-    },
-    {
-        "from": 80,
-        "to": 90,
+        "from": 79,
+        "to": 87,
         "symbolClass": "ASOF"
     },
     {
-        "from": 82,
-        "to": 44,
+        "from": 80,
+        "to": 43,
         "symbolClass": "FIELD"
     },
     {
-        "from": 82,
-        "to": 91,
+        "from": 80,
+        "to": 88,
         "symbolClass": "ORDERBYFIELDLIST"
     },
     {
-        "from": 83,
-        "to": 44,
+        "from": 81,
+        "to": 43,
         "symbolClass": "FIELD"
     },
     {
-        "from": 83,
-        "to": 92,
+        "from": 81,
+        "to": 89,
         "symbolClass": "ORDERBYFIELDLIST"
     },
     {
-        "from": 85,
-        "to": 93,
-        "symbolClass": "EOF"
-    },
-    {
-        "from": 86,
-        "to": 94,
+        "from": 84,
+        "to": 90,
         "symbolClass": "RPAREN"
     },
     {
-        "from": 87,
+        "from": 85,
         "to": 52,
         "symbolClass": "STRING"
     },
     {
-        "from": 87,
+        "from": 85,
         "to": 53,
         "symbolClass": "DATETIME"
     },
     {
-        "from": 87,
+        "from": 85,
         "to": 54,
         "symbolClass": "NUMBER"
     },
     {
-        "from": 87,
-        "to": 74,
+        "from": 85,
+        "to": 73,
         "symbolClass": "VALUE"
     },
     {
-        "from": 87,
-        "to": 95,
+        "from": 85,
+        "to": 91,
         "symbolClass": "VALUELIST"
     },
     {
-        "from": 90,
-        "to": 12,
+        "from": 87,
+        "to": 11,
         "symbolClass": "STRING"
     },
     {
-        "from": 90,
-        "to": 96,
+        "from": 87,
+        "to": 92,
         "symbolClass": "DATETIME"
-    },
-    {
-        "from": 96,
-        "to": 97,
-        "symbolClass": "EOF"
     }
 ]
