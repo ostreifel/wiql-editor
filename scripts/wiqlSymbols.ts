@@ -161,7 +161,7 @@ export class FlatSelect extends Symbol {
 }
 //Link symbols not copied as workItemLink queries are not supported yet
 
-export function getSymbolName(symbolClass: Function) {
+export function getSymbolName(symbolClass: Function): string {
     const str: string = symbolClass.toString();
     const match = str.match(/function (\S+)(?=\()/);
     if (match) {
@@ -169,6 +169,6 @@ export function getSymbolName(symbolClass: Function) {
     }
     throw new Error('type is not a function');
 }
-export function isTokenClass(symbolClass: Function) {
-    symbolClass.prototype.__proto__.constructor === Token;
+export function isTokenClass(symbolClass: Function): boolean {
+    return symbolClass.prototype.__proto__.constructor === Token;
 }

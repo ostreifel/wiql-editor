@@ -1,0 +1,2438 @@
+[
+    {
+        "SELECT": {
+            "action": 0,
+            "state": 1
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 2
+        },
+        "FIELDLIST": {
+            "action": 2,
+            "state": 3
+        }
+    },
+    {
+        "COMMA": {
+            "action": 0,
+            "state": 4
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        },
+        "FROM": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        }
+    },
+    {
+        "FROM": {
+            "action": 0,
+            "state": 5
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 2
+        },
+        "FIELDLIST": {
+            "action": 2,
+            "state": 6
+        }
+    },
+    {
+        "WORKITEMS": {
+            "action": 0,
+            "state": 7
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "COMMA",
+                    "FIELDLIST"
+                ]
+            }
+        },
+        "FROM": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "COMMA",
+                    "FIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "ASOF": {
+            "action": 0,
+            "state": 8
+        },
+        "WHERE": {
+            "action": 0,
+            "state": 9
+        },
+        "ORDER": {
+            "action": 0,
+            "state": 10
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS"
+                ]
+            }
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 11
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 12
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 13
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 18
+        },
+        "FIELDLIST": {
+            "action": 2,
+            "state": 19
+        }
+    },
+    {
+        "BY": {
+            "action": 0,
+            "state": 20
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "COMMA": {
+            "action": 1,
+            "production": {
+                "result": "DATETIME",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "ASOF",
+                    "DATETIME"
+                ]
+            }
+        }
+    },
+    {
+        "CONTAINS": {
+            "action": 0,
+            "state": 21
+        },
+        "CONTAINSWORDS": {
+            "action": 2,
+            "state": 22
+        },
+        "EQUALS": {
+            "action": 0,
+            "state": 23
+        },
+        "GREATEROREQ": {
+            "action": 0,
+            "state": 24
+        },
+        "GREATERTHAN": {
+            "action": 0,
+            "state": 25
+        },
+        "LESSOREQ": {
+            "action": 0,
+            "state": 26
+        },
+        "LESSTHAN": {
+            "action": 0,
+            "state": 27
+        },
+        "LIKE": {
+            "action": 0,
+            "state": 28
+        },
+        "NOTEQUALS": {
+            "action": 0,
+            "state": 29
+        },
+        "UNDER": {
+            "action": 0,
+            "state": 30
+        },
+        "EVER": {
+            "action": 0,
+            "state": 31
+        },
+        "NOT": {
+            "action": 0,
+            "state": 32
+        },
+        "CONDITIONALOPERATOR": {
+            "action": 2,
+            "state": 33
+        },
+        "IN": {
+            "action": 0,
+            "state": 34
+        },
+        "COMMA": {
+            "action": 0,
+            "state": 4
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        },
+        "FROM": {
+            "action": 1,
+            "production": {
+                "result": "FIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 36
+        }
+    },
+    {
+        "AND": {
+            "action": 0,
+            "state": 37
+        },
+        "OR": {
+            "action": 0,
+            "state": 38
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 39
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 40
+        }
+    },
+    {
+        "ORDER": {
+            "action": 0,
+            "state": 41
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "WHERE",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "ASOF": {
+            "action": 0,
+            "state": 42
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 43
+        },
+        "ORDERBYFIELDLIST": {
+            "action": 2,
+            "state": 44
+        }
+    },
+    {
+        "WORDS": {
+            "action": 0,
+            "state": 45
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINS"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINS"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINS"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINSWORDS"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINSWORDS"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "CONTAINSWORDS"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EQUALS"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EQUALS"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EQUALS"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATEROREQ"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATEROREQ"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATEROREQ"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATERTHAN"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATERTHAN"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "GREATERTHAN"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSOREQ"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSOREQ"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSOREQ"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSTHAN"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSTHAN"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LESSTHAN"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LIKE"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LIKE"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "LIKE"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOTEQUALS"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOTEQUALS"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOTEQUALS"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "UNDER"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "UNDER"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "UNDER"
+                ]
+            }
+        }
+    },
+    {
+        "LIKE": {
+            "action": 0,
+            "state": 46
+        },
+        "UNDER": {
+            "action": 0,
+            "state": 47
+        },
+        "NOT": {
+            "action": 0,
+            "state": 48
+        }
+    },
+    {
+        "LIKE": {
+            "action": 0,
+            "state": 49
+        },
+        "UNDER": {
+            "action": 0,
+            "state": 50
+        },
+        "IN": {
+            "action": 0,
+            "state": 51
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 52
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 53
+        },
+        "NUMBER": {
+            "action": 0,
+            "state": 54
+        },
+        "VALUE": {
+            "action": 2,
+            "state": 55
+        }
+    },
+    {
+        "LPAREN": {
+            "action": 0,
+            "state": 56
+        }
+    },
+    {
+        "CONTAINS": {
+            "action": 0,
+            "state": 21
+        },
+        "CONTAINSWORDS": {
+            "action": 2,
+            "state": 22
+        },
+        "EQUALS": {
+            "action": 0,
+            "state": 23
+        },
+        "GREATEROREQ": {
+            "action": 0,
+            "state": 24
+        },
+        "GREATERTHAN": {
+            "action": 0,
+            "state": 25
+        },
+        "LESSOREQ": {
+            "action": 0,
+            "state": 26
+        },
+        "LESSTHAN": {
+            "action": 0,
+            "state": 27
+        },
+        "LIKE": {
+            "action": 0,
+            "state": 28
+        },
+        "NOTEQUALS": {
+            "action": 0,
+            "state": 29
+        },
+        "UNDER": {
+            "action": 0,
+            "state": 30
+        },
+        "EVER": {
+            "action": 0,
+            "state": 31
+        },
+        "NOT": {
+            "action": 0,
+            "state": 32
+        },
+        "CONDITIONALOPERATOR": {
+            "action": 2,
+            "state": 33
+        },
+        "IN": {
+            "action": 0,
+            "state": 34
+        }
+    },
+    {
+        "RPAREN": {
+            "action": 0,
+            "state": 57
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 58
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 59
+        }
+    },
+    {
+        "AND": {
+            "action": 0,
+            "state": 60
+        },
+        "OR": {
+            "action": 0,
+            "state": 61
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "AND": {
+            "action": 0,
+            "state": 62
+        },
+        "OR": {
+            "action": 0,
+            "state": 63
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "BY": {
+            "action": 0,
+            "state": 64
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 11
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 65
+        }
+    },
+    {
+        "ASC": {
+            "action": 0,
+            "state": 66
+        },
+        "DESC": {
+            "action": 0,
+            "state": 67
+        },
+        "COMMA": {
+            "action": 0,
+            "state": 68
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD"
+                ]
+            }
+        }
+    },
+    {
+        "ASOF": {
+            "action": 0,
+            "state": 69
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "ORDER",
+                    "BY",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONTAINSWORDS",
+                "inputs": [
+                    "CONTAINS",
+                    "WORDS"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONTAINSWORDS",
+                "inputs": [
+                    "CONTAINS",
+                    "WORDS"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONTAINSWORDS",
+                "inputs": [
+                    "CONTAINS",
+                    "WORDS"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "LIKE"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "LIKE"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "LIKE"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "UNDER"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "UNDER"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "UNDER"
+                ]
+            }
+        }
+    },
+    {
+        "LIKE": {
+            "action": 0,
+            "state": 70
+        },
+        "UNDER": {
+            "action": 0,
+            "state": 71
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        }
+    },
+    {
+        "LPAREN": {
+            "action": 0,
+            "state": 72
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        },
+        "COMMA": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "STRING"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        },
+        "COMMA": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "DATETIME"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        },
+        "COMMA": {
+            "action": 1,
+            "production": {
+                "result": "VALUE",
+                "inputs": [
+                    "NUMBER"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "CONDITIONALOPERATOR",
+                    "VALUE"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "CONDITIONALOPERATOR",
+                    "VALUE"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "CONDITIONALOPERATOR",
+                    "VALUE"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "CONDITIONALOPERATOR",
+                    "VALUE"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "CONDITIONALOPERATOR",
+                    "VALUE"
+                ]
+            }
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 52
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 53
+        },
+        "NUMBER": {
+            "action": 0,
+            "state": 54
+        },
+        "VALUE": {
+            "action": 2,
+            "state": 73
+        },
+        "VALUELIST": {
+            "action": 2,
+            "state": 74
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "LPAREN",
+                    "LOGICALEXPRESSION",
+                    "RPAREN"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "LPAREN",
+                    "LOGICALEXPRESSION",
+                    "RPAREN"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "LPAREN",
+                    "LOGICALEXPRESSION",
+                    "RPAREN"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "LPAREN",
+                    "LOGICALEXPRESSION",
+                    "RPAREN"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "LPAREN",
+                    "LOGICALEXPRESSION",
+                    "RPAREN"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 75
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 76
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 77
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 35
+        },
+        "LPAREN": {
+            "action": 0,
+            "state": 14
+        },
+        "CONDITIONALEXPRESSION": {
+            "action": 2,
+            "state": 15
+        },
+        "EVER": {
+            "action": 0,
+            "state": 16
+        },
+        "NOT": {
+            "action": 0,
+            "state": 17
+        },
+        "LOGICALEXPRESSION": {
+            "action": 2,
+            "state": 78
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 43
+        },
+        "ORDERBYFIELDLIST": {
+            "action": 2,
+            "state": 79
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "WHERE",
+                    "FIELDLIST",
+                    "ASOF",
+                    "DATETIME"
+                ]
+            }
+        }
+    },
+    {
+        "COMMA": {
+            "action": 0,
+            "state": 80
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "ASC"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "ASC"
+                ]
+            }
+        }
+    },
+    {
+        "COMMA": {
+            "action": 0,
+            "state": 81
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "DESC"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "DESC"
+                ]
+            }
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 43
+        },
+        "ORDERBYFIELDLIST": {
+            "action": 2,
+            "state": 82
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 11
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 83
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "LIKE"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        },
+        "NUMBER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        },
+        "STRING": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALOPERATOR",
+                "inputs": [
+                    "EVER",
+                    "NOT",
+                    "UNDER"
+                ]
+            }
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 52
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 53
+        },
+        "NUMBER": {
+            "action": 0,
+            "state": 54
+        },
+        "VALUE": {
+            "action": 2,
+            "state": 73
+        },
+        "VALUELIST": {
+            "action": 2,
+            "state": 84
+        }
+    },
+    {
+        "COMMA": {
+            "action": 0,
+            "state": 85
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "VALUELIST",
+                "inputs": [
+                    "VALUE"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "VALUELIST",
+                "inputs": [
+                    "VALUE"
+                ]
+            }
+        }
+    },
+    {
+        "RPAREN": {
+            "action": 0,
+            "state": 86
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "EVER",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "AND",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "LOGICALEXPRESSION",
+                "inputs": [
+                    "NOT",
+                    "CONDITIONALEXPRESSION",
+                    "OR",
+                    "LOGICALEXPRESSION"
+                ]
+            }
+        }
+    },
+    {
+        "ASOF": {
+            "action": 0,
+            "state": 87
+        },
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "WHERE",
+                    "LOGICALEXPRESSION",
+                    "ORDER",
+                    "BY",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 43
+        },
+        "ORDERBYFIELDLIST": {
+            "action": 2,
+            "state": 88
+        }
+    },
+    {
+        "FIELD": {
+            "action": 0,
+            "state": 43
+        },
+        "ORDERBYFIELDLIST": {
+            "action": 2,
+            "state": 89
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "ORDER",
+                    "BY",
+                    "ORDERBYFIELDLIST",
+                    "ASOF",
+                    "DATETIME"
+                ]
+            }
+        }
+    },
+    {
+        "RPAREN": {
+            "action": 0,
+            "state": 90
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 52
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 53
+        },
+        "NUMBER": {
+            "action": 0,
+            "state": 54
+        },
+        "VALUE": {
+            "action": 2,
+            "state": 73
+        },
+        "VALUELIST": {
+            "action": 2,
+            "state": 91
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        }
+    },
+    {
+        "STRING": {
+            "action": 0,
+            "state": 11
+        },
+        "DATETIME": {
+            "action": 2,
+            "state": 92
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "ASC",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "ASC",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "DESC",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        },
+        "ASOF": {
+            "action": 1,
+            "production": {
+                "result": "ORDERBYFIELDLIST",
+                "inputs": [
+                    "FIELD",
+                    "DESC",
+                    "COMMA",
+                    "ORDERBYFIELDLIST"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "NOT",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "OR": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "NOT",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "AND": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "NOT",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "ORDER": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "NOT",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "CONDITIONALEXPRESSION",
+                "inputs": [
+                    "FIELD",
+                    "NOT",
+                    "IN",
+                    "LPAREN",
+                    "VALUELIST",
+                    "RPAREN"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "VALUELIST",
+                "inputs": [
+                    "VALUE",
+                    "COMMA",
+                    "VALUELIST"
+                ]
+            }
+        },
+        "RPAREN": {
+            "action": 1,
+            "production": {
+                "result": "VALUELIST",
+                "inputs": [
+                    "VALUE",
+                    "COMMA",
+                    "VALUELIST"
+                ]
+            }
+        }
+    },
+    {
+        "EOF": {
+            "action": 1,
+            "production": {
+                "result": "FLATSELECT",
+                "inputs": [
+                    "SELECT",
+                    "FIELDLIST",
+                    "FROM",
+                    "WORKITEMS",
+                    "WHERE",
+                    "LOGICALEXPRESSION",
+                    "ORDER",
+                    "BY",
+                    "ORDERBYFIELDLIST",
+                    "ASOF",
+                    "DATETIME"
+                ]
+            }
+        }
+    }
+]

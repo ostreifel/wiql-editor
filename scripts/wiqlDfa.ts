@@ -72,7 +72,7 @@ export class State {
     }
 }
 export class Transition {
-    constructor(readonly from: number, readonly to: number, readonly symbolClass) {
+    constructor(readonly from: number, readonly to: number, readonly symbolClass: Function) {
     }
     public equals(other: Transition) {
         return (
