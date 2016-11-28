@@ -2,6 +2,7 @@ import * as Symbols from './wiqlSymbols';
 
 const symbolMap = {
     select: Symbols.Select,
+    from: Symbols.From,
     where: Symbols.Where,
     order: Symbols.Order,
     by: Symbols.By,
@@ -40,7 +41,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
     const tokens: Symbols.Token[] = [];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLowerCase();
-        for (let j = 0; j < line.length; i++) {
+        for (let j = 0; j < line.length; j++) {
 
             const char = line.charAt(j);
             //ignore whitespace
@@ -51,7 +52,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 const word = (line.substr(j).match(/^[a-z_][\w_\.]*/) || [])[0];
                 const type = symbolMap[word];
                 if (type) {
-                    tokens.push(new type(i, j))
+                    tokens.push(new type(i, j, j + word.length - 1))
                 } else {
                     tokens.push(new Symbols.Field(i, j, word));
                 }
@@ -70,7 +71,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 const substr = line.substr(j, 2);
                 for (let op of ['<>', '<=', '>=', '<', '>', '=', '[', ']', '[', ']', ',']) {
                     if (substr.indexOf(op) == 0) {
-                        tokens.push(new opMap[op](i, j));
+                        tokens.push(new opMap[op](i, j, j + op.length - 1));
                         j += op.length - 1;
                         break;
                     }
@@ -98,5 +99,6 @@ export function tokenize(lines: string[]): Symbols.Token[] {
     }
     const eofLine = lines.length - 1;
     const eofCol = lines[0] ? lines[0].length : 0; 
+    tokens.push(new Symbols.EOF(eofLine, eofCol, eofCol))
     return tokens;
 }
