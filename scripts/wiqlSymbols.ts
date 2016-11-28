@@ -95,9 +95,9 @@ export class ConditionalOperator extends Symbol {
 
     constructor(conditionToken: 
     Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords);
-    constructor (conditoinToken: Like | Under, isEver: boolean, isNot: boolean);
+    constructor (conditionToken: Like | Under, ever?: Ever, not?: Not);
     constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | Like | Under,
-        readonly isEver = false, readonly isNot = false) {
+        readonly ever?: Ever, readonly not?: Not) {
         super();
     }
 }
@@ -107,12 +107,21 @@ export class Value extends Symbol {
     }
 }
 export class ValueList extends Symbol {
-    constructor(readonly value: Value, readonly restOfList: ValueList) {
+    constructor(readonly value: Value, readonly restOfList?: ValueList) {
         super();
     }
 }
 /** Combines the expression[1 - 4] from ebnf into one */
 export class LogicalExpression extends Symbol {
+    constructor(condition: ConditionalExpression);
+    constructor(condition: ConditionalExpression, blank: undefined, or: Or, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, blank: undefined, and: And, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, not: Not);
+    constructor(condition: ConditionalExpression, not: Not, or: Or, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, not: Not, and: And, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, not: Ever);
+    constructor(condition: ConditionalExpression, not: Ever, or: Or, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, not: Ever, and: And, expression: LogicalExpression);
     constructor(readonly condition: ConditionalExpression,
         readonly everNot?: Ever | Not,
         readonly orAnd?: Or | And,

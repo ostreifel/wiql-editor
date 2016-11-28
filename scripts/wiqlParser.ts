@@ -3,31 +3,37 @@ import * as Symbols from './wiqlSymbols';
 import {IProduction} from './wiqlProductions';
 import {tokenize} from './wiqlTokenizer';
 
-export enum Action  {
+enum Action  {
     Shift,
     Reduce,
     Goto
 }
 function computeTable() {
     const table: {
-        [symbolName: string]: 
-        {action: Action.Shift | Action.Goto, state: number} |
-        {action: Action.Reduce, production: IProduction}
+        tokens: {
+            [symbolName: string]: 
+            {action: Action.Shift, state: number} |
+            {action: Action.Reduce, production: IProduction} |
+            undefined
+        }
+        symbols: {
+            [symbolName: string]: number | undefined
+        }
     }[] = [];
     for (let i = 0; i < states.length; i++) {
-        table[i] = {};
+        table[i] = {tokens:{}, symbols: {}};
     }
     for (let transition of transitions) {
         const symbolName = Symbols.getSymbolName(transition.symbolClass);
         if (Symbols.isTokenClass(transition.symbolClass)) {
-            table[transition.from][symbolName] = {action: Action.Shift, state: transition.to};
+            table[transition.from].tokens[symbolName] = {action: Action.Shift, state: transition.to};
         } else {
-            table[transition.from][symbolName] = {action: Action.Goto, state: transition.to};
+            table[transition.from].symbols[symbolName] = transition.to;
         }
     }
     for (let resolution of resolutions) {
         const symbolName = Symbols.getSymbolName(resolution.symbolClass);
-        table[resolution.stateIdx][symbolName] = {action: Action.Reduce, production: resolution.production};
+        table[resolution.stateIdx].tokens[symbolName] = {action: Action.Reduce, production: resolution.production};
     }
     return table;
 }
@@ -35,13 +41,48 @@ function computeTable() {
 export const table = computeTable();
 
 export interface IParseResults {
-    wiqlTree?;
+    wiqlTree?: Symbols.Symbol;
     errorMessage?: string;
     completionTokens?: monaco.languages.CompletionItem[]
 }
 
-const tokenKind = monaco.languages.CompletionItemKind;
-export function parse(lines: string[]): IParseResults {
-    const tokens = tokenize(lines);
-    throw new Error('unimplemented');
+type tokenKind = monaco.languages.CompletionItemKind;
+export function parse(tokens: Symbols.Token[]): IParseResults {
+    tokens.reverse();
+    type stackState = {state: number, symbol: Symbols.Symbol};
+    const stack: stackState[] = [];
+    const peekToken = () => tokens[tokens.length - 1];
+    const currState = () => stack.length ? stack[stack.length - 1].state : 0;
+    const symbolName = (symbol: Symbols.Symbol) => Symbols.getSymbolName(Object.getPrototypeOf(symbol).contructor);
+    while (tokens.length) {
+        const state = currState();
+        const nextToken = peekToken();
+        const nextTokenName = symbolName(nextToken);
+        const action = table[state].tokens[nextTokenName];
+        if (action === undefined) {
+            return {
+                errorMessage: `Unexpected token ${nextTokenName} at (${nextToken.line}, ${nextToken.column}) expected one of {${Object.keys(table[state].tokens).join(', ')}}`
+                // TODO completions
+            }
+        }
+        if (action.action === Action.Shift) {
+            stack.push({state: action.state, symbol: <Symbols.Token>tokens.pop()});
+        } else if (action.action === Action.Reduce) {
+            const args: Symbols.Symbol[] = [];
+            for (let input of action.production.inputs) {
+                args.push((<stackState>stack.pop()).symbol);
+            }
+            args.reverse();
+            let symName = symbolName(action.production.fromInputs(args));
+            const nextState = table[currState()].symbols[symbolName(symName)];
+            if (nextState === undefined) {
+                return {
+                    errorMessage: `Grammar error: unexpected symbol ${symbolName}`
+                    // No completions here, if this happens its a bug in the grammar
+                };
+            }
+            stack.push({state: nextState, symbol: symName});
+        }
+    }
+    return {wiqlTree: (<stackState>stack.pop()).symbol};
 }
