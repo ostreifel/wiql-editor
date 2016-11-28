@@ -43,11 +43,13 @@ function computeTable() {
 
 const table = computeTable();
 
-export type IParseResults = Symbols.Symbol | {
-    errorMessage: string,
-    expectedTokenClasses: string[],
-    errorToken: Symbols.Token
+export class ParseError {
+    constructor(readonly expectedTokens: string[],
+        readonly errorToken: Symbols.Token,
+        readonly remainingTokens: number) {
+    }
 }
+export type IParseResults = Symbols.Symbol | ParseError
 
 export function parse(lines: string[]): IParseResults {
     const tokens = tokenize(lines).reverse();
@@ -62,12 +64,12 @@ export function parse(lines: string[]): IParseResults {
         const nextTokenName = symbolName(nextToken);
         const action = table[state].tokens[nextTokenName];
         if (action === undefined) {
-            const expectedTokenClasses = Object.keys(table[state].tokens);
-            return {
-                errorMessage: `Unexpected token ${nextTokenName} at (${nextToken.line}, ${nextToken.startColumn}) expected one of {${expectedTokenClasses.join(', ')}}`,
-                expectedTokenClasses: expectedTokenClasses,
-                errorToken: nextToken
-            }
+            const expectedTokens = Object.keys(table[state].tokens);
+            return new ParseError(
+                expectedTokens,
+                nextToken,
+                tokens.length
+            );
         }
         if (action.action === Action.Shift) {
             stack.push({state: action.state, symbol: <Symbols.Token>tokens.pop()});
@@ -81,12 +83,9 @@ export function parse(lines: string[]): IParseResults {
             const symName = symbolName(sym);
             const nextState = table[currState()].symbols[symName];
             if (nextState === undefined) {
-                return {
-                    errorMessage: `Grammar error: unexpected symbol ${symName}`
-                    // No completions here, if this happens its a bug in the grammar
-                };
+                throw new Error(`Grammar error: unexpected symbol ${symName}`);
             } else if (nextState === -1) {
-                return {wiqlTree: sym};
+                return sym;
             } else {
                 stack.push({state: nextState, symbol: sym});
             }

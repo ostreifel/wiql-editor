@@ -1,5 +1,5 @@
 import * as Symbols from './wiqlSymbols';
-import {IProduction, getProductionsFor, follows} from './wiqlProductions';
+import { IProduction, getProductionsFor, follows } from './wiqlProductions';
 
 export class ProductionPosition {
     constructor(readonly production: IProduction, readonly pos: number) {
@@ -19,21 +19,21 @@ export class ProductionPosition {
     }
 }
 function compareProdPos(a: ProductionPosition, b: ProductionPosition): number {
-        if (a.pos !== b.pos) {
-            return a.pos - b.pos;
+    if (a.pos !== b.pos) {
+        return a.pos - b.pos;
+    }
+    if (a.production.result !== b.production.result) {
+        return a.production.result < b.production.result ? -1 : 1;
+    }
+    if (a.production.inputs.length !== b.production.inputs.length) {
+        return a.production.inputs.length - b.production.inputs.length;
+    }
+    for (let i = 0; i < b.production.inputs.length; i++) {
+        if (a.production.inputs[i] !== b.production.inputs[i]) {
+            return a.production.inputs[i] < b.production.inputs[i] ? -1 : 1;
         }
-        if (a.production.result !== b.production.result) {
-            return a.production.result < b.production.result ? -1 : 1;
-        }
-        if (a.production.inputs.length !== b.production.inputs.length) {
-            return a.production.inputs.length - b.production.inputs.length;
-        }
-        for (let i = 0; i < b.production.inputs.length; i++) {
-            if (a.production.inputs[i] !== b.production.inputs[i]) {
-                return a.production.inputs[i] < b.production.inputs[i] ? -1 : 1;
-            }
-        }
-        return 0;
+    }
+    return 0;
 }
 export class State {
     private sorted = false;
@@ -63,7 +63,7 @@ export class State {
         }
         this.sort();
         state.sort();
-        for (let i = 0 ; i < this.productionPositions.length; i++) {
+        for (let i = 0; i < this.productionPositions.length; i++) {
             if (!this.productionPositions[i].equals(state.productionPositions[i])) {
                 return false;
             }
@@ -76,7 +76,7 @@ export class Transition {
     }
     public equals(other: Transition) {
         return (
-            this.symbolClass === other.symbolClass 
+            this.symbolClass === other.symbolClass
             && this.from === other.from
             && this.to === other.to
         );
@@ -119,7 +119,7 @@ function goto(state: State, symbolClass: Function) {
     return closure(new State(productions));
 }
 
-function addIfNotPresent(arr: {equals: (other) => boolean}[], obj: {equals: (other) => boolean}): [boolean, number] {
+function addIfNotPresent(arr: { equals: (other) => boolean }[], obj: { equals: (other) => boolean }): [boolean, number] {
     for (let idx in arr) {
         if (arr[idx].equals(obj)) {
             return [false, Number(idx)];
@@ -143,7 +143,7 @@ function calcStatesAndEdges(): [State[], Transition[]] {
             for (let prodPos of state.productionPositions.filter((pos) => !pos.isAtEnd())) {
                 const symbolClass = prodPos.nextInput();
                 const nextState = goto(state, symbolClass);
-                const [stateAdded, nextStateIdx] = addIfNotPresent(states, nextState); 
+                const [stateAdded, nextStateIdx] = addIfNotPresent(states, nextState);
                 const transition = new Transition(Number(stateIdx), nextStateIdx, symbolClass);
                 const transitionAdded = addIfNotPresent(transitions, transition)[0];
                 if (stateAdded || transitionAdded) {

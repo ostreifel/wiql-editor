@@ -1,6 +1,6 @@
 import * as Symbols from './wiqlSymbols';
 
-const symbolMap = {
+export const symbolMap = {
     select: Symbols.Select,
     from: Symbols.From,
     where: Symbols.Where,
@@ -21,7 +21,7 @@ const symbolMap = {
     contains: Symbols.Contains,
     words: Symbols.Words
 };
-const opMap = {
+export const opMap = {
     '(': Symbols.LParen,
     ')': Symbols.RParen,
     '[': Symbols.LSqBracket,
