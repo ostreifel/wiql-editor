@@ -168,7 +168,7 @@ const productions: IProduction[] = [
             Symbols.From,
             Symbols.WorkItems,
             Symbols.Where,
-            Symbols.FieldList,
+            Symbols.LogicalExpression,
             Symbols.Asof,
             Symbols.DateTime
         ],
