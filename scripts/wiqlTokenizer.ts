@@ -8,7 +8,7 @@ export const symbolMap = {
     by: Symbols.By,
     asc: Symbols.Asc,
     desc: Symbols.Desc,
-    asof: Symbols.Asc,
+    asof: Symbols.Asof,
     not: Symbols.Not,
     ever: Symbols.Ever,
     in: Symbols.In,

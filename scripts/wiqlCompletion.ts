@@ -3,14 +3,19 @@ import {tokenize, opMap, symbolMap} from './wiqlTokenizer';
 import * as Symbols from './wiqlSymbols';
 import {parse, ParseError} from './wiqlParser';
 
+// These symbols are buggy when suggested
+const doNotSuggest = ['(', ')', ',']
+
 const symbolSuggestionMap: {[symbolName: string]: monaco.languages.CompletionItem} = {};
 for (let map of [opMap, symbolMap]) {
 	for (let label in map) {
-		const symName = Symbols.getSymbolName(map[label]);
-		symbolSuggestionMap[symName] = {
-			label: label,
-			kind: monaco.languages.CompletionItemKind.Keyword
-		};
+		if (doNotSuggest.indexOf(label) < 0) {
+			const symName = Symbols.getSymbolName(map[label]);
+			symbolSuggestionMap[symName] = {
+				label: label,
+				kind: monaco.languages.CompletionItemKind.Keyword
+			};
+		}
 	}
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
