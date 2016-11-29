@@ -32,19 +32,24 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 			if (lines.length > 0 ) {
 				lines[lines.length - 1] = lines[lines.length - 1].substr(0, position.column - 1);
 			}
-			const parseResult = parse(lines, true);
-			console.log(parseResult);
-			if (!(parseResult instanceof ParseError) || parseResult.remainingTokens > 2) {
+			const parseResult = parse(lines);
+			//if asof has value don't suggest, otherwise suggest thinks its in an expression
+			if (parseResult instanceof Symbols.FlatSelect && parseResult.asOf) {
+				return [];
+			}
+			const parseNext = parse(lines, true);
+			console.log(parseNext);
+			if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
 				// valid query, can't suggest
 				return [];
 			} else {
 				const suggestions: monaco.languages.CompletionItem[] = [];
-				for (let token of parseResult.expectedTokens) {
+				for (let token of parseNext.expectedTokens) {
 					if (symbolSuggestionMap[token]) {
 						suggestions.push(symbolSuggestionMap[token]);
 					}
 				}
-				if (parseResult.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Field)) >= 0) {
+				if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Field)) >= 0) {
 					suggestions.push(...fieldSuggestions);
 				}
 				return suggestions;
