@@ -51,7 +51,8 @@ export class ParseError {
 }
 export type IParseResults = Symbols.Symbol | ParseError
 
-export function parse(lines: string[]): IParseResults {
+const EOF = Symbols.getSymbolName(Symbols.EOF);
+export function parse(lines: string[], forceSuggest = false): IParseResults {
     const tokens = tokenize(lines).reverse();
     type stackState = {state: number, symbol: Symbols.Symbol};
     const stack: stackState[] = [];
@@ -63,12 +64,13 @@ export function parse(lines: string[]): IParseResults {
         const nextToken = peekToken();
         const nextTokenName = symbolName(nextToken);
         const action = table[state].tokens[nextTokenName];
-        if (action === undefined) {
+        if (action === undefined || (forceSuggest && nextTokenName === EOF)) {
             const expectedTokens = Object.keys(table[state].tokens);
             return new ParseError(
                 expectedTokens,
                 nextToken,
-                tokens.length
+                tokens.length,
+
             );
         }
         if (action.action === Action.Shift) {

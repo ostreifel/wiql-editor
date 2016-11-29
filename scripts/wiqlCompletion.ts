@@ -27,7 +27,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 			if (lines.length > 0 ) {
 				lines[lines.length - 1] = lines[lines.length - 1].substr(0, position.column - 1);
 			}
-			const parseResult = parse(lines);
+			const parseResult = parse(lines, true);
 			console.log(parseResult);
 			if (!(parseResult instanceof ParseError) || parseResult.remainingTokens > 2) {
 				// valid query, can't suggest
