@@ -19,13 +19,13 @@ for (let map of [opMap, symbolMap]) {
 	}
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
-	const fieldSuggestions = fields.filter((f) => f.name.indexOf(' ') < 0).map((f) => { return {
-		label: f.name,
+	const fieldLabels = fields.filter((f) => f.name.indexOf(' ') < 0)
+		.map((f) => f.name)
+		.concat(fields.map((f) => f.referenceName))
+	const fieldSuggestions = fieldLabels.map((label) => { return { 
+		label: label, 
 		kind: monaco.languages.CompletionItemKind.Variable
-	}}).concat(fields.map((f) => { return { 
-		label: f.referenceName, 
-		kind: monaco.languages.CompletionItemKind.Variable
-	}}));
+	}});
 	return {
 		provideCompletionItems: (model, position, token) => {
 			const lines = model.getLinesContent().slice(0, position.lineNumber);
@@ -42,6 +42,12 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 			if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
 				// valid query, can't suggest
 				return [];
+			} else if (parseNext.previousToken instanceof Symbols.Field
+				&& position.column - 2 === parseNext.previousToken.endColumn
+				&& fieldLabels.indexOf(parseNext.previousToken.identifier) < 0) {
+				// In process of typing field name
+				// (parser just consumes this becuase it doesn't know which fields are valid)
+				return fieldSuggestions;
 			} else {
 				const suggestions: monaco.languages.CompletionItem[] = [];
 				for (let token of parseNext.expectedTokens) {
