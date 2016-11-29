@@ -4,7 +4,8 @@ import * as Symbols from './wiqlSymbols';
 import {parse, ParseError} from './wiqlParser';
 
 // These symbols are buggy when suggested
-const doNotSuggest = ['(', ')', ',']
+// brackets are not paired, rbrackets and commas suggested when its a syntax error to do so 
+const doNotSuggest = ['(', ')', ',', '[', ']'];
 
 const symbolSuggestionMap: {[symbolName: string]: monaco.languages.CompletionItem} = {};
 for (let map of [opMap, symbolMap]) {
@@ -42,9 +43,9 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 			if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
 				// valid query, can't suggest
 				return [];
-			} else if (parseNext.previousToken instanceof Symbols.Field
+			} else if (parseNext.previousToken instanceof Symbols.Identifier
 				&& position.column - 2 === parseNext.previousToken.endColumn
-				&& fieldLabels.indexOf(parseNext.previousToken.identifier) < 0) {
+				&& fieldLabels.indexOf(parseNext.previousToken.value) < 0) {
 				// In process of typing field name
 				// (parser just consumes this becuase it doesn't know which fields are valid)
 				return fieldSuggestions;
@@ -55,7 +56,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 						suggestions.push(symbolSuggestionMap[token]);
 					}
 				}
-				if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Field)) >= 0) {
+				if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
 					suggestions.push(...fieldSuggestions);
 				}
 				return suggestions;

@@ -206,6 +206,28 @@ const productions: IProduction[] = [
         ]) => new Symbols.FieldList(inputs[0], inputs[2])
     },
     {
+        result: Symbols.Field,
+        inputs: [
+            Symbols.Identifier
+        ],
+        fromInputs: (inputs: [
+            Symbols.Identifier
+        ]) => new Symbols.Field(inputs[0])
+    },
+    {
+        result: Symbols.Field,
+        inputs: [
+            Symbols.LSqBracket,
+            Symbols.Identifier,
+            Symbols.RSqBracket
+        ],
+        fromInputs: (inputs: [
+            Symbols.LSqBracket,
+            Symbols.Identifier,
+            Symbols.RSqBracket
+        ]) => new Symbols.Field(inputs[1])
+    },
+    {
         result: Symbols.LogicalExpression,
         inputs: [
             Symbols.Not,

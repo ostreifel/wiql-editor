@@ -60,10 +60,10 @@ export class NonterminatingString extends Token {
         this.value = value;
     }
 }
-export class Field extends Token {
-    constructor(line: number, column: number, readonly identifier: string) {
-        super(line, column, column + identifier.length - 1);
-        this.identifier = identifier;
+export class Identifier extends Token {
+    constructor(line: number, column: number, readonly value: string) {
+        super(line, column, column + value.length - 1);
+        this.value = value;
     }
 }
 export class Number extends Token {
@@ -77,6 +77,11 @@ export class EOF extends Token {
     }
 }
 
+export class Field extends Symbol {
+    constructor(readonly identifier: Identifier) {
+        super();
+    }
+}
 export class ContainsWords extends Symbol { }
 export class DateTime extends Symbol {
     constructor(readonly dateString: String) {

@@ -29,8 +29,13 @@ export const language = <monaco.languages.IMonarchLanguage>{
 			[/[a-z_]\w*/, {cases: {'@keywords': 'keyword', '@default': 'identifier'}}],
 			[/[ \t\r\n]+/, 'white'],
 			{ include: '@strings' },
+			[/\[/, { token: 'bracket.square', bracket: '@open', next: '@bracketedIdentifier' }],
 			[/[()[\]]/, '@brackets'],
 			{ include: '@number'}
+		], 
+		bracketedIdentifier: [
+		[/[^\]]+/, 'identifier'],  
+		[/\]/, {token: 'bracket.square', bracket: '@close', next: '@pop'}]
 		],
 		strings: [
 			[/'/, { token: 'string.quote', bracket: '@open', next: '@string1' }],

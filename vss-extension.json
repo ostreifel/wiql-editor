@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.216",
+    "version": "0.1.218",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",

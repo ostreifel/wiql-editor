@@ -54,7 +54,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 if (type) {
                     tokens.push(new type(i, j, j + word.length - 1))
                 } else {
-                    tokens.push(new Symbols.Field(i, j, word));
+                    tokens.push(new Symbols.Identifier(i, j, word));
                 }
                 j += word.length - 1;
             } else if ('-0123456789'.indexOf(char) >= 0) {
@@ -73,6 +73,15 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     if (substr.indexOf(op) == 0) {
                         tokens.push(new opMap[op](i, j, j + op.length - 1));
                         j += op.length - 1;
+                        if (op === '[') {
+                            //using brackets allows spaces
+                            const match = line.substr(j).match(/[^.,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/)
+                            if (match) {
+                                const word = match[0];
+                                tokens.push(new Symbols.Identifier(i, j, word));
+                                j += word.length - 1;
+                            }
+                        }
                         break;
                     }
                 }
