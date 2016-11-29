@@ -72,8 +72,8 @@ export class Number extends Token {
     }
 }
 export class Variable extends Token {
-    constructor(line: number, column: number, readonly value: string) {
-        super(line, column, column + value.length - 1);
+    constructor(line: number, column: number, readonly name: string) {
+        super(line, column, column + name.length - 1);
     }
 }
 export class EOF extends Token { 

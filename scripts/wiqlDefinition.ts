@@ -1,3 +1,5 @@
+export const validVariableNames = ['@me', '@currentiteration', '@project', '@today', '[any]'];
+
 export const def: monaco.languages.ILanguageExtensionPoint = {
 	id: 'wiql',
 	extensions: [ '.wiql' ],
@@ -17,7 +19,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
 	ignoreCase: true,
     tokenPostfix: '.wiql',
     
-	keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever','in', 'like', 'under'],
+	keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever','in', 'like', 'under', 'and', 'or'],
 	operators: ['=', '<>', '<=', '>=', '<', '>', ',' , 'ever', 'not', 'like', 'under','in', 'like', 'under'],
 
 	brackets: [

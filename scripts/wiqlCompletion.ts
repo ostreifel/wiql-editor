@@ -40,12 +40,13 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 			}
 			const parseNext = parse(lines, true);
 			console.log(parseNext);
+			let prevToken: Symbols.Symbol;
 			if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
 				// valid query, can't suggest
 				return [];
-			} else if (parseNext.previousToken instanceof Symbols.Identifier
-				&& position.column - 2 === parseNext.previousToken.endColumn
-				&& fieldLabels.indexOf(parseNext.previousToken.value) < 0) {
+			} else if ((prevToken = parseNext.parsedTokens[parseNext.parsedTokens.length -1]) instanceof Symbols.Identifier
+				&& position.column - 2 === prevToken.endColumn
+				&& fieldLabels.indexOf(prevToken.value) < 0) {
 				// In process of typing field name
 				// (parser just consumes this becuase it doesn't know which fields are valid)
 				return fieldSuggestions;

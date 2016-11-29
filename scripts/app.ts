@@ -10,17 +10,17 @@ monaco.languages.onLanguage(Wiql.def.id, () => {
     monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
     monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
 });
-getWitClient().getFields().then((fields) => 
+getWitClient().getFields().then((fields) => {
     monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields))
-);
+    const highlighter = getErrorHighlighter(editor.getModel(), fields);
+    editor.onDidChangeModelContent(highlighter);
+});
 
 const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {
             value: `select title from workitems`,
             language: Wiql.def.id,
 });
 
-const highlighter = getErrorHighlighter(editor);
-editor.onDidChangeModelContent(highlighter);
 
 
 function loadWorkItems(result: WorkItemQueryResult) {
