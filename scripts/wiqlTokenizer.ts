@@ -99,6 +99,6 @@ export function tokenize(lines: string[]): Symbols.Token[] {
     }
     const eofLine = lines.length - 1;
     const eofCol = lines[0] ? lines[0].length : 0; 
-    tokens.push(new Symbols.EOF(eofLine, eofCol, eofCol))
+    tokens.push(new Symbols.EOF(eofLine, eofCol, tokens[tokens.length - 1]))
     return tokens;
 }

@@ -2,7 +2,8 @@ import {getClient as getWitClient} from "TFS/WorkItemTracking/RestClient";
 import {WorkItem, WorkItemReference, WorkItemQueryResult} from "TFS/WorkItemTracking/Contracts";
 import {renderQueryResults, renderError, setMessage} from "./queryResults";
 import * as Wiql from "./wiqlDefinition";
-import {getCompletionProvider} from "./wiqlCompletion"
+import {getCompletionProvider} from "./wiqlCompletion";
+import {getErrorHighlighter} from "./wiqlErrorHighlighter";
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
@@ -13,13 +14,20 @@ getWitClient().getFields().then((fields) =>
     monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields))
 );
 
-const editor = monaco.editor.create(document.getElementById('wiql-box'), {
+const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {
             value: `select title from workitems`,
             language: Wiql.def.id,
 });
 
+const highlighter = getErrorHighlighter(editor);
+editor.onDidChangeModelContent(highlighter);
+
 
 function loadWorkItems(result: WorkItemQueryResult) {
+    if (result.workItems.length == 0) {
+        setMessage("No work items found");
+        return;
+    }
     setMessage('Loading workitems...');
 
     const wiIds = result.workItems.map((wi) => wi.id);

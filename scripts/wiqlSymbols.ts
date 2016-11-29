@@ -71,7 +71,11 @@ export class Number extends Token {
         super(line, column, column + numberString.length - 1);
     }
 }
-export class EOF extends Token { }
+export class EOF extends Token { 
+    constructor(line: number, column: number, readonly prev: Token) {
+        super(line, column, column + 1);
+    }
+}
 
 export class ContainsWords extends Symbol { }
 export class DateTime extends Symbol {

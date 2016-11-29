@@ -34,14 +34,14 @@ export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkI
     } else {
         resultsView = <div>{'TODO work item relations'}</div>
     }
-    ReactDom.render(resultsView, document.getElementById('query-results'));
+    ReactDom.render(resultsView, document.getElementById('query-results') as HTMLElement);
 }
 
 export function renderError(error: TfsError) {
     const exception = error.serverError || error;
-    ReactDom.render(<div className={'error-message'}>{exception['message']}</div>, document.getElementById('query-results'));
+    ReactDom.render(<div className={'error-message'}>{exception['message']}</div>, document.getElementById('query-results') as HTMLElement);
 }
 
 export function setMessage(message: string) {
-    ReactDom.render(<div>{message}</div>, document.getElementById('query-results'));
+    ReactDom.render(<div>{message}</div>, document.getElementById('query-results') as HTMLElement);
 }

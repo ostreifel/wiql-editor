@@ -17,6 +17,7 @@
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
         "scripts/wiqlDfa.ts",
+        "scripts/wiqlErrorHighlighter.ts",
         "scripts/wiqlParser.ts",
         "scripts/wiqlProductions.ts",
         "scripts/wiqlSymbols.ts",
