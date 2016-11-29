@@ -71,6 +71,11 @@ export class Number extends Token {
         super(line, column, column + numberString.length - 1);
     }
 }
+export class Variable extends Token {
+    constructor(line: number, column: number, readonly value: string) {
+        super(line, column, column + value.length - 1);
+    }
+}
 export class EOF extends Token { 
     constructor(line: number, column: number, readonly prev: Token) {
         super(line, column, column + 1);
@@ -111,7 +116,7 @@ export class ConditionalOperator extends Symbol {
     }
 }
 export class Value extends Symbol {
-    constructor(readonly value: Number | String | DateTime) {
+    constructor(readonly value: Number | String | DateTime | Variable) {
         super();
     }
 }

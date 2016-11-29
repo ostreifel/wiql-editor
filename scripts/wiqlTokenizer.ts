@@ -66,6 +66,15 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 } else {
                     tokens.push(new Symbols.UnexpectedToken(i, j, char));
                 }
+            } else if ('@' === char || line.indexOf('[any]') === j) {
+                const substr = line.substr(j);
+                const match = substr.match(/^@\w*|^\[any\]/);
+                if (match) {
+                    tokens.push(new Symbols.Variable(i, j, match[0]));
+                    j += match[0].length - 1;
+                } else {
+                    tokens.push(new Symbols.UnexpectedToken(i ,j, char));
+                }
             //special chars
             } else if ('<>=()[],'.indexOf(char) >= 0) {
                 const substr = line.substr(j, 2);
@@ -74,7 +83,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                         tokens.push(new opMap[op](i, j, j + op.length - 1));
                         j += op.length - 1;
                         if (op === '[') {
-                            //using brackets allows spaces
+                            //using brackets allows spaces in identifier
                             const match = line.substr(j).match(/[^.,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/)
                             if (match) {
                                 const word = match[0];

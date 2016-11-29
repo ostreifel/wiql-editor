@@ -14,7 +14,7 @@ export const conf: monaco.languages.LanguageConfiguration = {
 };
 
 export const language = <monaco.languages.IMonarchLanguage>{
-	ignoreCase: true,		
+	ignoreCase: true,
     tokenPostfix: '.wiql',
     
 	keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever','in', 'like', 'under'],
