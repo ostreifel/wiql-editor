@@ -25,7 +25,7 @@ const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-b
 
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length == 0) {
-        setMessage("No work items found");
+        setMessage('No work items found');
         return;
     }
     setMessage('Loading workitems...');
@@ -50,7 +50,7 @@ function search() {
 
 
 
-setMessage("Press Shift+Enter to search");
+setMessage('Press Shift+Enter to search');
 $(window).bind('keydown', function (event) {
     if (event.shiftKey && event.which === 13) {
         event.preventDefault();

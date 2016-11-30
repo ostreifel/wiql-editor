@@ -8,7 +8,7 @@ function toPosition(token: Symbols.Token) {
         token.line + 1,
         token.startColumn + 1,
         token.line + 1,
-        token.endColumn + 2,
+        token.endColumn + 1,
     );
 }
 function findSyntaxErrors(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {

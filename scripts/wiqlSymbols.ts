@@ -44,38 +44,38 @@ export class Plus extends Token { }
 export class UnexpectedToken extends Token {
     public readonly value: string;
     constructor(line: number, column: number, value: string) {
-        super(line, column, column + value.length - 1);
+        super(line, column, column + value.length);
         this.value = value;
     }
 }
 export class String extends Token {
     public readonly value: string;
     constructor(line: number, column: number, value: string) {
-        super(line, column, column + value.length - 1);
+        super(line, column, column + value.length);
         this.value = value;
     }
 }
 export class NonterminatingString extends Token {
     public readonly value: string;
     constructor(line: number, column: number, value: string) {
-        super(line, column, column + value.length - 1);
+        super(line, column, column + value.length);
         this.value = value;
     }
 }
 export class Identifier extends Token {
     constructor(line: number, column: number, readonly value: string) {
-        super(line, column, column + value.length - 1);
+        super(line, column, column + value.length);
         this.value = value;
     }
 }
 export class Number extends Token {
     constructor(line: number, column: number, readonly numberString: string) {
-        super(line, column, column + numberString.length - 1);
+        super(line, column, column + numberString.length);
     }
 }
 export class Variable extends Token {
     constructor(line: number, column: number, readonly name: string) {
-        super(line, column, column + name.length - 1);
+        super(line, column, column + name.length);
     }
 }
 export class EOF extends Token { 

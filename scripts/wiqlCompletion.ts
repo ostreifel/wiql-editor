@@ -45,7 +45,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 				// valid query, can't suggest
 				return [];
 			} else if ((prevToken = parseNext.parsedTokens[parseNext.parsedTokens.length -1]) instanceof Symbols.Identifier
-				&& position.column - 2 === prevToken.endColumn
+				&& position.column - 1 === prevToken.endColumn
 				&& fieldLabels.indexOf(prevToken.value) < 0) {
 				// In process of typing field name
 				// (parser just consumes this becuase it doesn't know which fields are valid)
