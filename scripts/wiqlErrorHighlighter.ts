@@ -1,7 +1,7 @@
 import { parse, IParseResults, ParseError } from './wiqlParser';
 import * as Symbols from './wiqlSymbols';
 import { validVariableNames } from './wiqlDefinition';
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 
 function toPosition(token: Symbols.Token) {
     return new monaco.Range(
@@ -66,7 +66,7 @@ function symbolsOfType<T extends Symbols.Symbol>(parseResult: IParseResults, typ
 }
 function findNameErrors(parseResult: IParseResults, validFieldIdentifiers: string[]): monaco.editor.IModelDeltaDecoration[] {
     const errors: monaco.editor.IModelDeltaDecoration[] = [];
-    //variable name errors
+    // variable name errors
     const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
     for (let variable of variables) {
         if (validVariableNames.indexOf(variable.name) < 0) {
@@ -80,7 +80,7 @@ function findNameErrors(parseResult: IParseResults, validFieldIdentifiers: strin
             });
         }
     }
-    //field name errors
+    // field name errors
     const identifiers = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Identifier);
     for (let identifier of identifiers) {
         if (validFieldIdentifiers.indexOf(identifier.value) < 0) {

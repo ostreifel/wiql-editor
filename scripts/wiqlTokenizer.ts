@@ -17,7 +17,7 @@ export const symbolMap = {
     workitems: Symbols.WorkItems,
     workitemlinks: Symbols.WorkItemLinks,
     and: Symbols.And,
-    or: Symbols.Or, 
+    or: Symbols.Or,
     contains: Symbols.Contains,
     words: Symbols.Words
 };
@@ -35,7 +35,7 @@ export const opMap = {
     '<=': Symbols.LessOrEq,
     '+': Symbols.Plus,
     '-': Symbols.Minus
-}
+};
 /**
  * Tokenizes the value to wiql tokens. Uses own logic b/c monaco does not expose it's tokenizer
  */
@@ -43,18 +43,18 @@ export function tokenize(lines: string[]): Symbols.Token[] {
     const tokens: Symbols.Token[] = [];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLowerCase();
-        for (let j = 0; j < line.length;) {
+        for (let j = 0; j < line.length; ) {
 
             const char = line.charAt(j);
-            //ignore whitespace
+            // ignore whitespace
             if (' \r\t\n'.indexOf(char) >= 0) {
                 j++;
-            //keywords/identifiers
+            // keywords/identifiers
             } else if (char.match(/[a-z_]/)) {
-                const word = (line.substr(j).match(/^[a-z_][\w_\.]*/) || [])[0];
+                const word = (<RegExpMatchArray>line.substr(j).match(/^[a-z_][\w_\.]*/))[0];
                 const type = symbolMap[word];
                 if (type) {
-                    tokens.push(new type(i, j, j + word.length))
+                    tokens.push(new type(i, j, j + word.length));
                 } else {
                     tokens.push(new Symbols.Identifier(i, j, word));
                 }
@@ -76,19 +76,19 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     tokens.push(new Symbols.Variable(i, j, match[0]));
                     j += match[0].length;
                 } else {
-                    tokens.push(new Symbols.UnexpectedToken(i ,j, char));
+                    tokens.push(new Symbols.UnexpectedToken(i , j, char));
                     j++;
                 }
-            //special chars
+            // special chars
             } else if ('<>=()[],+-'.indexOf(char) >= 0) {
                 const substr = line.substr(j, 2);
                 for (let op of ['<>', '<=', '>=', '<', '>', '=', '[', ']', '(', ')', ',', '+', '-']) {
-                    if (substr.indexOf(op) == 0) {
+                    if (substr.indexOf(op) === 0) {
                         tokens.push(new opMap[op](i, j, j + op.length));
                         j += op.length;
                         if (op === '[') {
-                            //using brackets allows spaces in identifier
-                            const match = line.substr(j).match(/[^,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/)
+                            // using brackets allows spaces in identifier
+                            const match = line.substr(j).match(/[^,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/);
                             if (match) {
                                 const word = match[0];
                                 tokens.push(new Symbols.Identifier(i, j, word));
@@ -98,9 +98,9 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                         break;
                     }
                 }
-            } else if (char === "'") {
+            } else if (char === '\'') {
                 const str = (line.substr(j).match(/^'(?:[^']|'')*'?/) || [])[0];
-                if (str[str.length - 1] === "'") {
+                if (str[str.length - 1] === '\'') {
                     tokens.push(new Symbols.String(i, j, str));
                 } else {
                     tokens.push(new Symbols.NonterminatingString(i, j, str));
@@ -121,7 +121,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
         }
     }
     const eofLine = lines.length - 1;
-    const eofCol = lines[0] ? lines[0].length : 0; 
-    tokens.push(new Symbols.EOF(eofLine, eofCol, tokens[tokens.length - 1]))
+    const eofCol = lines[0] ? lines[0].length : 0;
+    tokens.push(new Symbols.EOF(eofLine, eofCol, tokens[tokens.length - 1]));
     return tokens;
 }

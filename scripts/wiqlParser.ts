@@ -11,7 +11,7 @@ enum Action  {
 function computeTable() {
     const table: {
         tokens: {
-            [symbolName: string]: 
+            [symbolName: string]:
             {action: Action.Shift, state: number} |
             {action: Action.Reduce, production: IProduction} |
             undefined
@@ -21,7 +21,7 @@ function computeTable() {
         }
     }[] = [];
     for (let i = 0; i < states.length; i++) {
-        table[i] = {tokens:{}, symbols: {}};
+        table[i] = {tokens: {}, symbols: {}};
     }
     for (let transition of transitions) {
         const symbolName = Symbols.getSymbolName(transition.symbolClass);
@@ -45,12 +45,12 @@ const table = computeTable();
 
 export class ParseError {
     constructor(readonly expectedTokens: string[],
-        readonly errorToken: Symbols.Token,
-        readonly remainingTokens: number,
-        readonly parsedTokens: Symbols.Symbol[]) {
+                readonly errorToken: Symbols.Token,
+                readonly remainingTokens: number,
+                readonly parsedTokens: Symbols.Symbol[]) {
     }
 }
-export type IParseResults = Symbols.Symbol | ParseError
+export type IParseResults = Symbols.Symbol | ParseError;
 
 const EOF = Symbols.getSymbolName(Symbols.EOF);
 export function parse(lines: string[], forceSuggest = false): IParseResults {

@@ -1,10 +1,10 @@
 import * as Symbols from './wiqlSymbols';
 export interface IProduction {
     /** ? extends typeof Symbols.Symbol */
-    result: Function,
+    result: Function;
     /** (? extends typeof Symbols.Symbol)[] */
-    inputs: Function[],
-    fromInputs: (inputs: Symbols.Symbol[]) => Symbols.Symbol
+    inputs: Function[];
+    fromInputs: (inputs: Symbols.Symbol[]) => Symbols.Symbol;
 }
 const productions: IProduction[] = [
     {
@@ -775,7 +775,7 @@ function firstImpl(result: Function, visited: Function[]): Function[] {
     }
     return firsts;
 }
-            
+
 export function first(result: Function): Function[] {
     return firstImpl(result, []);
 }
@@ -791,7 +791,7 @@ function followsImpl(resultSymbol: Function, visited: Function[]): Function[] {
                 recFollows = followsImpl(prod.result, visited);
             }
         } else {
-            recFollows = first(prod.inputs[idx + 1])
+            recFollows = first(prod.inputs[idx + 1]);
         }
         for (let sym of recFollows) {
             if (follows.indexOf(sym) < 0) {

@@ -11,7 +11,7 @@ monaco.languages.onLanguage(Wiql.def.id, () => {
     monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
 });
 getWitClient().getFields().then((fields) => {
-    monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields))
+    monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
     const highlighter = getErrorHighlighter(editor.getModel(), fields);
     editor.onDidChangeModelContent(highlighter);
 });
@@ -24,7 +24,7 @@ const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-b
 
 
 function loadWorkItems(result: WorkItemQueryResult) {
-    if (result.workItems.length == 0) {
+    if (result.workItems.length === 0) {
         setMessage('No work items found');
         return;
     }
@@ -56,7 +56,7 @@ $(window).bind('keydown', function (event) {
         event.preventDefault();
         search();
     }
-})
+});
 
 // Register context menu action provider
 VSS.register(VSS.getContribution().id, {});

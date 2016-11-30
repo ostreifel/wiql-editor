@@ -1,6 +1,6 @@
-import * as ReactDom from "react-dom";
-import * as React from "react";
-import {WorkItemQueryResult, QueryResultType, WorkItemReference, WorkItemRelation, WorkItem} from "TFS/WorkItemTracking/Contracts";
+import * as ReactDom from 'react-dom';
+import * as React from 'react';
+import {WorkItemQueryResult, QueryResultType, WorkItemReference, WorkItemRelation, WorkItem} from 'TFS/WorkItemTracking/Contracts';
 
 class WorkItemRow extends React.Component<{wi: WorkItem}, void> {
     render() {
@@ -32,7 +32,7 @@ export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkI
     if (result.queryResultType = QueryResultType.WorkItem) {
         resultsView = <WiQueryResults workItems={workItems}/>;
     } else {
-        resultsView = <div>{'TODO work item relations'}</div>
+        resultsView = <div>{'TODO work item relations'}</div>;
     }
     ReactDom.render(resultsView, document.getElementById('query-results') as HTMLElement);
 }
