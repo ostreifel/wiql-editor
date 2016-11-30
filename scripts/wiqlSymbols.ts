@@ -38,6 +38,8 @@ export class GreaterThan extends Token { }
 export class LessThan extends Token { }
 export class GreaterOrEq extends Token { }
 export class LessOrEq extends Token { }
+export class Minus extends Token { }
+export class Plus extends Token { }
 
 export class UnexpectedToken extends Token {
     public readonly value: string;
@@ -116,7 +118,14 @@ export class ConditionalOperator extends Symbol {
     }
 }
 export class Value extends Symbol {
-    constructor(readonly value: Number | String | DateTime | Variable) {
+    constructor(value: Number);
+    constructor(value: String);
+    constructor(value: DateTime);
+    constructor(value: Variable);
+    constructor(value: Variable, operator: Plus | Minus, number: Number);
+    constructor(readonly value: Number | String | DateTime | Variable,
+        readonly operator?: Plus | Minus,
+        readonly number?: Number) {
         super();
     }
 }

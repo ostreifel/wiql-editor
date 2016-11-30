@@ -443,6 +443,32 @@ const productions: IProduction[] = [
         ]) => new Symbols.Value(inputs[0])
     },
     {
+        result: Symbols.Value,
+        inputs: [
+            Symbols.Variable,
+            Symbols.Minus,
+            Symbols.Number
+        ],
+        fromInputs: (inputs: [
+            Symbols.Variable,
+            Symbols.Minus,
+            Symbols.Number
+        ]) => new Symbols.Value(inputs[0], inputs[1], inputs[2])
+    },
+    {
+        result: Symbols.Value,
+        inputs: [
+            Symbols.Variable,
+            Symbols.Plus,
+            Symbols.Number
+        ],
+        fromInputs: (inputs: [
+            Symbols.Variable,
+            Symbols.Plus,
+            Symbols.Number
+        ]) => new Symbols.Value(inputs[0], inputs[1], inputs[2])
+    },
+    {
         result: Symbols.DateTime,
         inputs: [
             Symbols.String

@@ -1,9 +1,9 @@
-import {getClient as getWitClient} from "TFS/WorkItemTracking/RestClient";
-import {WorkItem, WorkItemReference, WorkItemQueryResult} from "TFS/WorkItemTracking/Contracts";
-import {renderQueryResults, renderError, setMessage} from "./queryResults";
-import * as Wiql from "./wiqlDefinition";
-import {getCompletionProvider} from "./wiqlCompletion";
-import {getErrorHighlighter} from "./wiqlErrorHighlighter";
+import { getClient as getWitClient } from 'TFS/WorkItemTracking/RestClient';
+import { WorkItem, WorkItemReference, WorkItemQueryResult } from 'TFS/WorkItemTracking/Contracts';
+import { renderQueryResults, renderError, setMessage } from './queryResults';
+import * as Wiql from './wiqlDefinition';
+import { getCompletionProvider } from './wiqlCompletion';
+import { getErrorHighlighter } from './wiqlErrorHighlighter';
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
@@ -17,8 +17,8 @@ getWitClient().getFields().then((fields) => {
 });
 
 const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {
-            value: `select title from workitems`,
-            language: Wiql.def.id,
+    value: `select title from workitems`,
+    language: Wiql.def.id,
 });
 
 
@@ -33,9 +33,9 @@ function loadWorkItems(result: WorkItemQueryResult) {
     const wiIds = result.workItems.map((wi) => wi.id);
     const fieldRefNames = result.columns.map((col) => col.referenceName);
     getWitClient().getWorkItems(wiIds, fieldRefNames, result.asOf).then(
-        (workItems) =>  { 
+        (workItems) => {
             const wiMap = {};
-            for(let wi of workItems) {
+            for (let wi of workItems) {
                 wiMap[wi.id] = wi;
             }
             renderQueryResults(result, wiIds.map((id) => wiMap[id]));
@@ -45,13 +45,13 @@ function loadWorkItems(result: WorkItemQueryResult) {
 function search() {
     const wiqlText = editor.getValue();
     setMessage('Running query...');
-    getWitClient().queryByWiql({query: wiqlText}).then(loadWorkItems, renderError);
+    getWitClient().queryByWiql({ query: wiqlText }).then(loadWorkItems, renderError);
 }
 
 
 
 setMessage("Press Shift+Enter to search");
-$(window).bind('keydown', function(event) {
+$(window).bind('keydown', function (event) {
     if (event.shiftKey && event.which === 13) {
         event.preventDefault();
         search();

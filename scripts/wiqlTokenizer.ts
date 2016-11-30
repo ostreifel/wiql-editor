@@ -33,6 +33,8 @@ export const opMap = {
     '<': Symbols.LessThan,
     '>=': Symbols.GreaterOrEq,
     '<=': Symbols.LessOrEq,
+    '+': Symbols.Plus,
+    '-': Symbols.Minus
 }
 /**
  * Tokenizes the value to wiql tokens. Uses own logic b/c monaco does not expose it's tokenizer
@@ -64,7 +66,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     tokens.push(new Symbols.Number(i, j, numberMatch[0]));
                     j += numberMatch[0].length - 1;
                 } else {
-                    tokens.push(new Symbols.UnexpectedToken(i, j, char));
+                    tokens.push(new Symbols.Minus(i, j, j));
                 }
             } else if ('@' === char || line.indexOf('[any]') === j) {
                 const substr = line.substr(j);
@@ -76,19 +78,19 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     tokens.push(new Symbols.UnexpectedToken(i ,j, char));
                 }
             //special chars
-            } else if ('<>=()[],'.indexOf(char) >= 0) {
+            } else if ('<>=()[],+-'.indexOf(char) >= 0) {
                 const substr = line.substr(j, 2);
-                for (let op of ['<>', '<=', '>=', '<', '>', '=', '[', ']', '[', ']', ',']) {
+                for (let op of ['<>', '<=', '>=', '<', '>', '=', '[', ']', '[', ']', ',', '+', '-']) {
                     if (substr.indexOf(op) == 0) {
                         tokens.push(new opMap[op](i, j, j + op.length - 1));
                         j += op.length - 1;
                         if (op === '[') {
                             //using brackets allows spaces in identifier
-                            const match = line.substr(j).match(/[^.,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/)
+                            const match = line.substr(j).match(/[^,;'`:~\\\/\*|?"&%$!+=()[\]{}<>-]+/)
                             if (match) {
                                 const word = match[0];
                                 tokens.push(new Symbols.Identifier(i, j, word));
-                                j += word.length - 1;
+                                j += word.length;
                             }
                         }
                         break;
