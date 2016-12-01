@@ -680,6 +680,26 @@ const productions: IProduction[] = [
         ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
+        result: Symbols.ConditionalOperator,
+        inputs: [
+            Symbols.InGroup
+        ],
+        fromInputs: (inputs: [
+            Symbols.InGroup
+        ]) => new Symbols.ConditionalOperator(inputs[0])
+    },
+    {
+        result: Symbols.ConditionalOperator,
+        inputs: [
+            Symbols.Not,
+            Symbols.InGroup
+        ],
+        fromInputs: (inputs: [
+            Symbols.Not,
+            Symbols.InGroup
+        ]) => new Symbols.ConditionalOperator(inputs[1], inputs[0])
+    },
+    {
         result: Symbols.ContainsWords,
         inputs: [
             Symbols.Contains,
@@ -689,6 +709,17 @@ const productions: IProduction[] = [
             Symbols.Contains,
             Symbols.Words
         ]) => new Symbols.ContainsWords()
+    },
+    {
+        result: Symbols.InGroup,
+        inputs: [
+            Symbols.In,
+            Symbols.Group
+        ],
+        fromInputs: (inputs: [
+            Symbols.In,
+            Symbols.Group
+        ]) => new Symbols.InGroup()
     },
     {
         result: Symbols.OrderByFieldList,

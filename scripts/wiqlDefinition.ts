@@ -19,7 +19,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
     ignoreCase: true,
     tokenPostfix: '.wiql',
 
-    keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever', 'in', 'like', 'under', 'and', 'or', 'contains', 'words'],
+    keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever', 'in', 'like', 'under', 'and', 'or', 'contains', 'words', 'group'],
     operators: ['=', '<>', '<=', '>=', '<', '>', ',' , 'ever', 'not', 'like', 'under', 'in', 'like', 'under'],
 
     brackets: [
