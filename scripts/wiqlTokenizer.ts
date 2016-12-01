@@ -59,14 +59,14 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     tokens.push(new Symbols.Identifier(i, j, word));
                 }
                 j += word.length;
-            } else if ('-0123456789'.indexOf(char) >= 0) {
+            } else if ('0123456789'.indexOf(char) >= 0) {
                 const substr = line.substr(j);
-                const numberMatch = substr.match(/^-?\d+(?:\.\d*)?(?:e-?\d+)?/);
+                const numberMatch = substr.match(/^\d+(?:\.\d*)?(?:e-?\d+)?/);
                 if (numberMatch) {
-                    tokens.push(new Symbols.Number(i, j, numberMatch[0]));
+                    tokens.push(new Symbols.Digits(i, j, numberMatch[0]));
                     j += numberMatch[0].length;
                 } else {
-                    tokens.push(new Symbols.Minus(i, j, j));
+                    tokens.push(new Symbols.UnexpectedToken(i, j, char));
                     j++;
                 }
             } else if ('@' === char || line.indexOf('[any]') === j) {

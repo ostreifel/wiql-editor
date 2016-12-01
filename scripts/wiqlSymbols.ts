@@ -68,7 +68,7 @@ export class Identifier extends Token {
         this.value = value;
     }
 }
-export class Number extends Token {
+export class Digits extends Token {
     constructor(line: number, column: number, readonly numberString: string) {
         super(line, column, column + numberString.length);
     }
@@ -84,6 +84,11 @@ export class EOF extends Token {
     }
 }
 
+export class Number extends Symbol {
+    constructor(readonly digits: Digits, readonly minus?: Minus) {
+        super();
+    }
+}
 export class Field extends Symbol {
     constructor(readonly identifier: Identifier) {
         super();

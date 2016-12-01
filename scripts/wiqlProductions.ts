@@ -407,6 +407,26 @@ const productions: IProduction[] = [
         ]) => new Symbols.ConditionalExpression(inputs[0], false, inputs[4])
     },
     {
+        result: Symbols.Number,
+        inputs: [
+            Symbols.Digits
+        ],
+        fromInputs: (inputs: [
+            Symbols.Digits
+        ]) => new Symbols.Number(inputs[0])
+    },
+    {
+        result: Symbols.Number,
+        inputs: [
+            Symbols.Minus,
+            Symbols.Digits
+        ],
+        fromInputs: (inputs: [
+            Symbols.Minus,
+            Symbols.Digits
+        ]) => new Symbols.Number(inputs[1], inputs[0])
+    },
+    {
         result: Symbols.Value,
         inputs: [
             Symbols.Number
