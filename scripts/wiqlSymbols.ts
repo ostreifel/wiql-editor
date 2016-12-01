@@ -27,6 +27,8 @@ export class Or extends Token { }
 export class Contains extends Token { }
 export class Words extends Token { }
 export class Group extends Token { }
+export class True extends Token { }
+export class False extends Token { }
 // Operators
 export class RParen extends Token { }
 export class LParen extends Token { }
@@ -137,7 +139,9 @@ export class Value extends Symbol {
     constructor(value: DateTime);
     constructor(value: Variable);
     constructor(value: Variable, operator: Plus | Minus, num: Number);
-    constructor(readonly value: Number | String | DateTime | Variable,
+    constructor(value: True);
+    constructor(value: False);
+    constructor(readonly value: Number | String | DateTime | Variable | True | False,
                 readonly operator?: Plus | Minus,
                 readonly num?: Number) {
         super();

@@ -20,7 +20,9 @@ export const symbolMap = {
     or: Symbols.Or,
     contains: Symbols.Contains,
     words: Symbols.Words,
-    group: Symbols.Group
+    group: Symbols.Group,
+    true: Symbols.True,
+    false: Symbols.False
 };
 export const opMap = {
     '(': Symbols.LParen,
