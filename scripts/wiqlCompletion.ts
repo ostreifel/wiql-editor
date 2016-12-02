@@ -21,15 +21,16 @@ for (let map of [opMap, symbolMap]) {
     }
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
-    const fieldLabels = fields.filter((f) => f.name.indexOf(' ') < 0)
+    const fieldLabels = fields
         .map((f) => f.name)
         .concat(fields.map((f) => f.referenceName));
-    const fieldSuggestions = fieldLabels.map((label) => {
-        return {
-            label: label,
-            kind: monaco.languages.CompletionItemKind.Variable
-        };
-    });
+    const fieldSuggestions = fields.map((field) => { return <monaco.languages.CompletionItem>{
+        label: field.name,
+        kind: monaco.languages.CompletionItemKind.Variable
+    };}).concat(fields.map((field) => {return <monaco.languages.CompletionItem>{
+        label: field.referenceName,
+        kind: monaco.languages.CompletionItemKind.Variable
+    };}));
     const variableSuggestions = validVariableNames.map((v) => {
         return {
             label: v,
@@ -37,7 +38,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
         };
     });
     return {
-        triggerCharacters: [' ', '['],
+        triggerCharacters: [' ', '[', '.'],
         provideCompletionItems: (model, position, token) => {
             const lines = model.getLinesContent().slice(0, position.lineNumber);
             if (lines.length > 0) {
@@ -48,19 +49,42 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             if (parseResult instanceof Symbols.FlatSelect && parseResult.asOf) {
                 return [];
             }
+
             const parseNext = parse(lines, true);
             console.log(parseNext);
-            let prevToken: Symbols.Symbol;
             if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
                 // valid query, can't suggest
                 return [];
-            } else if ((prevToken = parseNext.parsedTokens[parseNext.parsedTokens.length - 1]) instanceof Symbols.Identifier
+            }
+            const parsedCount = parseNext.parsedTokens.length;
+            const prevToken = parseNext.parsedTokens[parsedCount - 1];
+            if (prevToken instanceof Symbols.Identifier
                 && position.column - 1 === prevToken.endColumn) {
                 // In process of typing field name
                 // (parser just consumes this becuase it doesn't know which fields are valid)
-                return fieldSuggestions;
-            } else if ((prevToken = parseNext.parsedTokens[parseNext.parsedTokens.length - 1]) instanceof Symbols.Variable
-                && position.column - 1 === prevToken.endColumn) {
+                const beforeIdent = parseNext.parsedTokens[parsedCount - 2];
+                let suggestions: monaco.languages.CompletionItem[];
+                if (beforeIdent instanceof Symbols.LSqBracket) {
+                    suggestions = fieldSuggestions;
+                } else {
+                    suggestions = fieldSuggestions.filter((s) => s.label.indexOf(' ') < 0);
+                }
+                const spaceIdx = prevToken.value.lastIndexOf(' ');
+                const dotIdx = prevToken.value.lastIndexOf('.');
+                const charIdx = Math.max(spaceIdx, dotIdx);
+                if (charIdx >= 0) {
+                    const prefix = prevToken.value.substr(0, charIdx + 1);
+                    suggestions = suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0)
+                        .map((s) => {return {
+                            label: s.label,
+                            kind: monaco.languages.CompletionItemKind.Variable,
+                            insertText: s.label.substr(charIdx + 1)
+                    };});
+                }
+                return suggestions;
+            } else if (prevToken instanceof Symbols.Variable
+                       && position.column - 1 === prevToken.endColumn) {
+                const beforeIdentifier = parseNext.parsedTokens[parsedCount - 2];
                 return variableSuggestions;
             } else {
                 const suggestions: monaco.languages.CompletionItem[] = [];
@@ -70,7 +94,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     }
                 }
                 if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
-                    suggestions.push(...fieldSuggestions);
+                    suggestions.push(...fieldSuggestions.filter((s) => s.label.indexOf(' ') < 0));
                 }
                 if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
                     suggestions.push(...variableSuggestions);
