@@ -37,6 +37,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
         };
     });
     return {
+        triggerCharacters: [' ', '['],
         provideCompletionItems: (model, position, token) => {
             const lines = model.getLinesContent().slice(0, position.lineNumber);
             if (lines.length > 0) {
