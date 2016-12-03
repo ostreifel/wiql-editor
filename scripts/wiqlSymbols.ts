@@ -124,9 +124,9 @@ export class ConditionalOperator extends Symbol {
     constructor(conditionToken: GreaterOrEq);
     constructor(conditionToken: LessThan);
     constructor(conditionToken: LessOrEq);
-    constructor(conditionToken: Contains);
-    constructor(conditionToken: ContainsWords);
-    constructor(conditionToken: InGroup, not?: Not)
+    constructor(conditionToken: Contains, empty?: undefined, not?: Not);
+    constructor(conditionToken: ContainsWords, empty?: undefined, not?: Not);
+    constructor(conditionToken: InGroup, empty?: undefined, not?: Not)
     constructor(conditionToken: Like | Under, ever?: Ever, not?: Not);
     constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | Like | Under | InGroup,
                 readonly ever?: Ever, readonly not?: Not) {
@@ -160,9 +160,9 @@ export class LogicalExpression extends Symbol {
     constructor(condition: ConditionalExpression, not: Not);
     constructor(condition: ConditionalExpression, not: Not, or: Or, expression: LogicalExpression);
     constructor(condition: ConditionalExpression, not: Not, and: And, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, not: Ever);
-    constructor(condition: ConditionalExpression, not: Ever, or: Or, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, not: Ever, and: And, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, ever: Ever);
+    constructor(condition: ConditionalExpression, ever: Ever, or: Or, expression: LogicalExpression);
+    constructor(condition: ConditionalExpression, ever: Ever, and: And, expression: LogicalExpression);
     constructor(readonly condition: ConditionalExpression,
                 readonly everNot?: Ever | Not,
                 readonly orAnd?: Or | And,

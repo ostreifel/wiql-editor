@@ -700,6 +700,28 @@ const productions: IProduction[] = [
     {
         result: Symbols.ConditionalOperator,
         inputs: [
+            Symbols.Not,
+            Symbols.Contains
+        ],
+        fromInputs: (inputs: [
+            Symbols.Not,
+            Symbols.Contains
+        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
+    },
+    {
+        result: Symbols.ConditionalOperator,
+        inputs: [
+            Symbols.Not,
+            Symbols.ContainsWords
+        ],
+        fromInputs: (inputs: [
+            Symbols.Not,
+            Symbols.ContainsWords
+        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
+    },
+    {
+        result: Symbols.ConditionalOperator,
+        inputs: [
             Symbols.InGroup
         ],
         fromInputs: (inputs: [
@@ -715,7 +737,7 @@ const productions: IProduction[] = [
         fromInputs: (inputs: [
             Symbols.Not,
             Symbols.InGroup
-        ]) => new Symbols.ConditionalOperator(inputs[1], inputs[0])
+        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ContainsWords,
