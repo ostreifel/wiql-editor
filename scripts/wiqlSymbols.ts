@@ -141,7 +141,8 @@ export class Value extends Symbol {
     constructor(value: Variable, operator: Plus | Minus, num: Number);
     constructor(value: True);
     constructor(value: False);
-    constructor(readonly value: Number | String | DateTime | Variable | True | False,
+    constructor(value: Field);
+    constructor(readonly value: Number | String | DateTime | Variable | True | False | Field,
                 readonly operator?: Plus | Minus,
                 readonly num?: Number) {
         super();
