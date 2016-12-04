@@ -97,8 +97,16 @@ export class Field extends Symbol {
         super();
     }
 }
-export class ContainsWords extends Symbol { }
-export class InGroup extends Symbol { }
+export class ContainsWords extends Symbol {
+    constructor(readonly contains: Contains, readonly words: Words) {
+        super();
+    }
+}
+export class InGroup extends Symbol {
+    constructor(readonly inToken: In, readonly group: Group) {
+        super();
+    }
+ }
 export class DateTime extends Symbol {
     constructor(readonly dateString: String) {
         super();
@@ -128,7 +136,7 @@ export class ConditionalOperator extends Symbol {
     constructor(conditionToken: ContainsWords, empty?: undefined, not?: Not);
     constructor(conditionToken: InGroup, empty?: undefined, not?: Not);
     constructor(conditionToken: Like | Under, ever?: Ever, not?: Not);
-    constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | Like | Under | InGroup,
+    constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords | Like | Under | InGroup,
                 readonly ever?: Ever, readonly not?: Not) {
         super();
     }

@@ -13,7 +13,7 @@ export class ErrorChecker implements IErrorChecker {
         this.errorCheckers = [
             new SyntaxErrorChecker(),
             new NameErrorChecker(fields),
-            // new TypeErrorChecker(fields)
+            new TypeErrorChecker(fields)
         ];
     }
     public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {

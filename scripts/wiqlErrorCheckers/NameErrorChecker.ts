@@ -3,7 +3,7 @@ import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 import { IParseResults, parse } from '../wiqlParser';
 import * as Symbols from '../wiqlSymbols';
 import { validVariableNames } from '../wiqlDefinition';
-import { toPosition, symbolsOfType } from './errorCheckUtils';
+import { toDecoration, symbolsOfType } from './errorCheckUtils';
 
 export class NameErrorChecker implements IErrorChecker {
     private readonly validFieldIdentifiers: string[];
@@ -20,28 +20,14 @@ export class NameErrorChecker implements IErrorChecker {
         const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
         for (let variable of variables) {
             if (validVariableNames.indexOf(variable.name) < 0) {
-                errors.push({
-                    range: toPosition(variable),
-                    options: {
-                        hoverMessage: `Valid names are include {${validVariableNames.join(', ')}}`,
-                        className: 'wiql-error',
-                        linesDecorationsClassName: 'wiql-error-margin',
-                    }
-                });
+                errors.push(toDecoration(variable, `Valid names are include {${validVariableNames.join(', ')}}`));
             }
         }
         // field name errors
         const identifiers = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Identifier);
         for (let identifier of identifiers) {
             if (this.validFieldIdentifiers.indexOf(identifier.value) < 0) {
-                errors.push({
-                    range: toPosition(identifier),
-                    options: {
-                        hoverMessage: 'Field does not exist',
-                        className: 'wiql-error',
-                        linesDecorationsClassName: 'wiql-error-margin',
-                    }
-                });
+                errors.push(toDecoration(identifier, 'Field does not exist'));
             }
         }
         return errors;

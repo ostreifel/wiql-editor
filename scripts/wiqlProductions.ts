@@ -757,7 +757,7 @@ const productions: IProduction[] = [
         fromInputs: (inputs: [
             Symbols.Contains,
             Symbols.Words
-        ]) => new Symbols.ContainsWords()
+        ]) => new Symbols.ContainsWords(inputs[0], inputs[1])
     },
     {
         result: Symbols.InGroup,
@@ -768,7 +768,7 @@ const productions: IProduction[] = [
         fromInputs: (inputs: [
             Symbols.In,
             Symbols.Group
-        ]) => new Symbols.InGroup()
+        ]) => new Symbols.InGroup(inputs[0], inputs[1])
     },
     {
         result: Symbols.OrderByFieldList,

@@ -1,6 +1,6 @@
 import { IParseResults, ParseError, parse } from '../wiqlParser';
 import * as Symbols from '../wiqlSymbols';
-import { toPosition } from './errorCheckUtils';
+import { toDecoration } from './errorCheckUtils';
 
 enum ComparisonType {
     Literal,
@@ -27,14 +27,6 @@ export class SyntaxErrorChecker {
             `Expected ${parseResult.expectedTokens[0]}` :
             `Expected one of {${parseResult.expectedTokens.join(', ')}}`;
     }
-    const decorations: monaco.editor.IModelDeltaDecoration[] = [{
-        range: toPosition(errorToken),
-        options: {
-            hoverMessage: hoverMessage,
-            className: 'wiql-error',
-            linesDecorationsClassName: 'wiql-error-margin',
-        }
-    }];
-    return decorations;
+    return [toDecoration(errorToken, hoverMessage)];
     }
 }
