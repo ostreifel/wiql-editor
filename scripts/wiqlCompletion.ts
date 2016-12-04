@@ -24,13 +24,17 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
     const fieldLabels = fields
         .map((f) => f.name)
         .concat(fields.map((f) => f.referenceName));
-    const fieldSuggestions = fields.map((field) => { return <monaco.languages.CompletionItem>{
-        label: field.name,
-        kind: monaco.languages.CompletionItemKind.Variable
-    };}).concat(fields.map((field) => {return <monaco.languages.CompletionItem>{
-        label: field.referenceName,
-        kind: monaco.languages.CompletionItemKind.Variable
-    };}));
+    const fieldSuggestions = fields.map((field) => {
+        return <monaco.languages.CompletionItem>{
+            label: field.name,
+            kind: monaco.languages.CompletionItemKind.Variable
+        };
+    }).concat(fields.map((field) => {
+        return <monaco.languages.CompletionItem>{
+            label: field.referenceName,
+            kind: monaco.languages.CompletionItemKind.Variable
+        };
+    }));
     const variableSuggestions = validVariableNames.map((v) => {
         return {
             label: v,
@@ -75,15 +79,17 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 if (charIdx >= 0) {
                     const prefix = prevToken.value.substr(0, charIdx + 1);
                     suggestions = suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0)
-                        .map((s) => {return {
-                            label: s.label,
-                            kind: monaco.languages.CompletionItemKind.Variable,
-                            insertText: s.label.substr(charIdx + 1)
-                    };});
+                        .map((s) => {
+                            return {
+                                label: s.label,
+                                kind: monaco.languages.CompletionItemKind.Variable,
+                                insertText: s.label.substr(charIdx + 1)
+                            };
+                        });
                 }
                 return suggestions;
             } else if (prevToken instanceof Symbols.Variable
-                       && position.column - 1 === prevToken.endColumn) {
+                && position.column - 1 === prevToken.endColumn) {
                 const beforeIdentifier = parseNext.parsedTokens[parsedCount - 2];
                 return variableSuggestions;
             } else {

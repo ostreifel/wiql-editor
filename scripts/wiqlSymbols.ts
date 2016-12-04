@@ -126,7 +126,7 @@ export class ConditionalOperator extends Symbol {
     constructor(conditionToken: LessOrEq);
     constructor(conditionToken: Contains, empty?: undefined, not?: Not);
     constructor(conditionToken: ContainsWords, empty?: undefined, not?: Not);
-    constructor(conditionToken: InGroup, empty?: undefined, not?: Not)
+    constructor(conditionToken: InGroup, empty?: undefined, not?: Not);
     constructor(conditionToken: Like | Under, ever?: Ever, not?: Not);
     constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | Like | Under | InGroup,
                 readonly ever?: Ever, readonly not?: Not) {

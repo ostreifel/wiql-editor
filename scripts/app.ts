@@ -3,7 +3,7 @@ import { WorkItem, WorkItemReference, WorkItemQueryResult } from 'TFS/WorkItemTr
 import { renderQueryResults, renderError, setMessage } from './queryResults';
 import * as Wiql from './wiqlDefinition';
 import { getCompletionProvider } from './wiqlCompletion';
-import { getErrorHighlighter } from './wiqlErrorHighlighter';
+import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
@@ -12,8 +12,7 @@ monaco.languages.onLanguage(Wiql.def.id, () => {
 });
 getWitClient().getFields().then((fields) => {
     monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
-    const highlighter = getErrorHighlighter(editor.getModel(), fields);
-    editor.onDidChangeModelContent(highlighter);
+    new ErrorChecker(fields).register(editor);
 });
 
 const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {

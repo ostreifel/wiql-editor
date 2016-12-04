@@ -495,7 +495,7 @@ const productions: IProduction[] = [
         ],
         fromInputs: (inputs: [
             Symbols.True
-        ]) => new Symbols.Value(inputs[0]) 
+        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
@@ -504,7 +504,7 @@ const productions: IProduction[] = [
         ],
         fromInputs: (inputs: [
             Symbols.False
-        ]) => new Symbols.Value(inputs[0]) 
+        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
@@ -513,7 +513,7 @@ const productions: IProduction[] = [
         ],
         fromInputs: (inputs: [
             Symbols.Field
-        ]) => new Symbols.Value(inputs[0]) 
+        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.DateTime,
