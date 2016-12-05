@@ -66,7 +66,8 @@ function loadWorkItems(result: WorkItemQueryResult) {
 function search() {
     const wiqlText = editor.getValue();
     setMessage('Running query...');
-    getWitClient().queryByWiql({ query: wiqlText }, undefined, undefined, undefined, 50).then(loadWorkItems, setError);
+    const context = VSS.getWebContext();
+    getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(loadWorkItems, setError);
 }
 
 setMessage([
