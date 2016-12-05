@@ -385,7 +385,7 @@ const productions: IProduction[] = [
             Symbols.LParen,
             Symbols.ValueList,
             Symbols.RParen
-        ]) => new Symbols.ConditionalExpression(inputs[0], true, inputs[3])
+        ]) => new Symbols.ConditionalExpression(inputs[0], undefined, inputs[3])
     },
     {
         result: Symbols.ConditionalExpression,
@@ -404,7 +404,7 @@ const productions: IProduction[] = [
             Symbols.LParen,
             Symbols.ValueList,
             Symbols.RParen
-        ]) => new Symbols.ConditionalExpression(inputs[0], false, inputs[4])
+        ]) => new Symbols.ConditionalExpression(inputs[0], inputs[1], inputs[4])
     },
     {
         result: Symbols.Number,

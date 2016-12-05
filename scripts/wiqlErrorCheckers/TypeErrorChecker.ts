@@ -59,10 +59,66 @@ export class TypeErrorChecker {
             }
         }
     }
-    private getTargetType(value?: Symbols.Value, valueList?: Symbols.ValueList) {
-        if (valueList) {
-            return 'group';
+    private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: 'literal' | 'field'): monaco.editor.IModelDeltaDecoration[] {
+        const operatorToken = comp.conditionToken;
+        const validOps: Function[] = this.fieldLookup[field.identifier.value][rhsType];
+        if (validOps.length === 0) {
+            return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier} and ${rhsType}`)];
         }
+        if (validOps.filter((op) => operatorToken instanceof op).length === 0) {
+            const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(', ')}`;
+            return [toDecoration(operatorToken, message)];
+        }
+        return [];
+    }
+    private checkRhsValue(value: Symbols.Value, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
+        const error = toDecoration(value.value, `Expected ${FieldType[expectedType]}`);
+        // Potentially additonal checkers to validate value formats here: ex date and guid validators
+        switch (expectedType) {
+            case FieldType.String:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.Integer:
+                return value.value instanceof Symbols.Number ? [] : [error];
+            case FieldType.DateTime:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.PlainText:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.Html:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.TreePath:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.History:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.Double:
+                return value.value instanceof Symbols.Number ? [] : [error];
+            case FieldType.Guid:
+                return value.value instanceof Symbols.String ? [] : [error];
+            case FieldType.Boolean:
+                return value.value instanceof Symbols.True || value.value instanceof Symbols.False ? [] : [error];
+        }
+        throw new Error(`Unexpected field type ${expectedType}`);
+    }
+    private checkRhsGroup(valueList: Symbols.ValueList, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
+        const errors: monaco.editor.IModelDeltaDecoration[] = [];
+        let currList: Symbols.ValueList | undefined = valueList;
+        while (currList) {
+            if (currList.value.value instanceof Symbols.Field) {
+                errors.push(toDecoration(currList.value.value, 'Values in list must be literals'));
+            } else {
+                errors.push(...this.checkRhsValue(currList.value, expectedType));
+            }
+            currList = currList.restOfList;
+        }
+        return errors;
+    }
+    private checkRhsField(targetField: Symbols.Field, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
+        if (targetField.identifier.value in this.fieldLookup
+            && this.fieldLookup[targetField.identifier.value].fieldType !== expectedType) {
+            return [toDecoration(targetField.identifier, `Expected field of type ${FieldType[expectedType]}`)];
+        }
+        return [];
+    }
+    private getRhsType(value: Symbols.Value): 'field' | 'literal' {
         if (value && value.value instanceof Symbols.Field) {
             return 'field';
         }
@@ -73,21 +129,27 @@ export class TypeErrorChecker {
         const allConditions = symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression);
         const fieldConditions = allConditions.filter((c) => c.field !== undefined && c.conditionalOperator !== undefined);
         for (let condition of allConditions) {
-            if (condition.field && condition.conditionalOperator) {
-                const operatorToken = condition.conditionalOperator.conditionToken;
+            if (!condition.field || !(condition.field.identifier.value in this.fieldLookup)) {
+                continue;
+            }
+            const type = this.fieldLookup[condition.field.identifier.value].fieldType;
+            if (condition.conditionalOperator && condition.value) {
                 const field = condition.field;
-                const target = this.getTargetType(condition.value, condition.valueList);
-                if (!(field.identifier.value in this.fieldLookup)) {
+                const rhsType = this.getRhsType(condition.value);
+
+                const compErrors = this.checkComparisonOperator(condition.conditionalOperator, condition.field, rhsType);
+                if (compErrors.length > 0) {
+                    errors.push(...compErrors);
                     continue;
                 }
-                const validOps: Function[] = this.fieldLookup[field.identifier.value][target];
-                if (validOps.length === 0) {
-                    errors.push(toDecoration(operatorToken, `There is no valid operation for ${field.identifier} and ${target}`));
+                if (condition.value.value instanceof Symbols.Field) {
+                    const targetField: Symbols.Field = condition.value.value;
+                    errors.push(...this.checkRhsField(targetField, type));
+                } else {
+                    errors.push(...this.checkRhsValue(condition.value, type));
                 }
-                if (validOps.filter((op) => operatorToken instanceof op).length === 0) {
-                    const message = `Expected one of ${validOps.map((op) => Symbols.getSymbolName(op)).join(', ')}`;
-                    errors.push( toDecoration(operatorToken, message));
-                }
+            } else if (condition.valueList) {
+                errors.push(...this.checkRhsGroup(condition.valueList, type));
             }
         }
         return errors;

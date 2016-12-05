@@ -23,14 +23,4 @@ export class ErrorChecker implements IErrorChecker {
         }
         return errors;
     }
-    public register(editor: monaco.editor.IStandaloneCodeEditor) {
-        const model = editor.getModel();
-        let oldDecorations: string[] = [];
-        editor.onDidChangeModelContent((event) => {
-            const lines = model.getLinesContent();
-            const parseResult = parse(lines);
-            const newDecorations = this.check(parseResult);
-            oldDecorations = model.deltaDecorations(oldDecorations, newDecorations);
-        });
-    }
 };

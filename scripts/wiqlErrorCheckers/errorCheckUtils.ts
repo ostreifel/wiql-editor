@@ -7,17 +7,23 @@ export function toPosition(symbol: Symbols.Symbol) {
     if (symbol instanceof Symbols.Token) {
         startToken = endToken = symbol;
     } else {
-        for (let key in symbol) {
-            const prop = symbol[key];
-            if (prop instanceof Symbols.Token) {
-                if (!startToken || prop.line < startToken.line || prop.startColumn < startToken.startColumn) {
-                    startToken = prop;
-                }
-                if (!endToken || prop.line > endToken.line || prop.endColumn > endToken.endColumn) {
-                    endToken = prop;
+        const symbols = [symbol];
+        do {
+            const sym = <Symbols.Symbol>symbols.pop();
+            for (let key in sym) {
+                const prop = sym[key];
+                if (prop instanceof Symbols.Token) {
+                    if (!startToken || prop.line < startToken.line || prop.startColumn < startToken.startColumn) {
+                        startToken = prop;
+                    }
+                    if (!endToken || prop.line > endToken.line || prop.endColumn > endToken.endColumn) {
+                        endToken = prop;
+                    }
+                } else if (prop instanceof Symbols.Symbol) {
+                    symbols.push(prop);
                 }
             }
-        }
+        } while (symbols.length > 0);
     }
     if (!startToken || !endToken) {
         throw new Error('Could not find token in symbol');

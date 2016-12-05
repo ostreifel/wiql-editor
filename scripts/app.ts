@@ -4,6 +4,7 @@ import { renderQueryResults, renderError, setMessage } from './queryResults';
 import * as Wiql from './wiqlDefinition';
 import { getCompletionProvider } from './wiqlCompletion';
 import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
+import { parse } from './wiqlParser';
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
@@ -12,7 +13,15 @@ monaco.languages.onLanguage(Wiql.def.id, () => {
 });
 getWitClient().getFields().then((fields) => {
     monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
-    new ErrorChecker(fields).register(editor);
+    const model = editor.getModel();
+    const errorChecker = new ErrorChecker(fields);
+    let oldDecorations: string[] = [];
+    editor.onDidChangeModelContent((event) => {
+        const lines = model.getLinesContent();
+        const parseResult = parse(lines);
+        const errors = errorChecker.check(parseResult);
+        oldDecorations = model.deltaDecorations(oldDecorations, errors);
+    });
 });
 
 const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {

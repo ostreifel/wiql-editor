@@ -187,12 +187,12 @@ export class ConditionalExpression extends Symbol {
     public readonly conditionalOperator?: ConditionalOperator;
     public readonly value?: Value;
 
-    public readonly isNot: boolean;
+    public readonly not?: Not;
     public readonly valueList?: ValueList;
     constructor(expression: LogicalExpression);
     constructor(field: Field, cond: ConditionalOperator, value: Value);
-    constructor(field: Field, isin: boolean, value: ValueList);
-    constructor(arg1: Field | LogicalExpression, arg2?: ConditionalOperator | boolean, arg3?: Value | ValueList) {
+    constructor(field: Field, not: Not | undefined, value: ValueList);
+    constructor(arg1: Field | LogicalExpression, arg2?: ConditionalOperator | Not, arg3?: Value | ValueList) {
         super();
         if (arg1 instanceof LogicalExpression) {
             this.expression = arg1;
@@ -201,9 +201,9 @@ export class ConditionalExpression extends Symbol {
             this.conditionalOperator = arg2;
             this.value = arg3;
             let a: number;
-        } else if (typeof arg2 === 'boolean' && arg3 instanceof ValueList) {
+        } else if ((arg2 instanceof Not || arg2 === undefined) && arg3 instanceof ValueList) {
             this.field = arg1;
-            this.isNot = arg2;
+            this.not = <Not | undefined>arg2;
             this.valueList = arg3;
         } else {
             throw new Error('Improper ConditionalExpression arguments');
