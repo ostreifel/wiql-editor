@@ -60,6 +60,10 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 // valid query, can't suggest
                 return [];
             }
+            // Don't complete strings
+            if (parseNext.errorToken instanceof Symbols.NonterminatingString) {
+                return [];
+            }
             const parsedCount = parseNext.parsedTokens.length;
             const prevToken = parseNext.parsedTokens[parsedCount - 1];
             if (prevToken instanceof Symbols.Identifier

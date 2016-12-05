@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.262",
+    "version": "0.1.263",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -68,14 +68,14 @@
     ],
     "contributions": [
         {
-            "id": "wiql-search-hub",
+            "id": "wiql-playground-hub",
             "type": "ms.vss-web.hub",
-            "description": "Hub for wiql queries",
+            "description": "Playground for wiql queries",
             "targets": [
                 "ms.vss-work-web.work-hub-group"
             ],
             "properties": {
-                "name": "Wiql Search",
+                "name": "Wiql Playground",
                 "uri": "index.html"
             }
         }
