@@ -125,7 +125,6 @@ export class FieldList extends Symbol {
     }
 }
 export class ConditionalOperator extends Symbol {
-
     constructor(conditionToken: Equals);
     constructor(conditionToken: NotEquals);
     constructor(conditionToken: GreaterThan);

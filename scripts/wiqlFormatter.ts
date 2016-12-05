@@ -3,6 +3,17 @@ import * as Symbols from './wiqlSymbols';
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 
 type FieldMap = { [name: string]: WorkItemField };
+
+function insert(line: string, text: string) {
+    const match = line.match(/(\s*)(.*)/);
+    if (match) {
+        return match[1] + text + match[2];
+    }
+    return line;
+}
+function tabs(tab: string, indent: number) {
+    return Array(indent + 1).join(tab);
+}
 function formatField(field: Symbols.Field, fields: FieldMap): string {
     return `[${fields[field.identifier.value].name}]`;
 }
@@ -15,8 +26,97 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string
     }
     return fieldStrs.join(', ');
 }
+function formatNumber(num: Symbols.Number) {
+    return (num.minus ? '-' : '') + num.digits.numberString;
+}
+function formatValue(value: Symbols.Value, fields: FieldMap): string {
+    if (value.value instanceof Symbols.Number) {
+        return formatNumber(value.value);
+    } else if (value.value instanceof Symbols.String) {
+        return value.value.value;
+    } else if (value.value instanceof Symbols.DateTime) {
+        return value.value.dateString.value;
+    } else if (value.value instanceof Symbols.Variable) {
+        if (value.operator && value.num) {
+            const opStr = value.operator instanceof Symbols.Minus ? ' - ' : ' + ';
+            return value.value.name + opStr + formatNumber(value.num);
+        } else {
+            return value.value.name;
+        }
+    } else if (value.value instanceof Symbols.True) {
+        return 'true';
+    } else if (value.value instanceof Symbols.False) {
+        return 'false';
+    } else if (value.value instanceof Symbols.Field) {
+        return formatField(value.value, fields);
+    }
+    throw new Error('Unkown value');
+}
+function formatValueList(valueList: Symbols.ValueList, fields: FieldMap): string {
+    const valueStrs: string[] = [];
+    let currValueList: Symbols.ValueList | undefined = valueList;
+    while (currValueList) {
+        valueStrs.push(formatValue(currValueList.value, fields));
+        currValueList = currValueList.restOfList;
+    }
+    return valueStrs.join(', ');
+}
+function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
+    if (cond.conditionToken instanceof Symbols.Equals) {
+        return '=';
+    } else if (cond.conditionToken instanceof Symbols.NotEquals) {
+        return '<>';
+    } else if (cond.conditionToken instanceof Symbols.GreaterThan) {
+        return '>';
+    } else if (cond.conditionToken instanceof Symbols.GreaterOrEq) {
+        return '>=';
+    } else if (cond.conditionToken instanceof Symbols.LessThan) {
+        return '<';
+    } else if (cond.conditionToken instanceof Symbols.LessOrEq) {
+        return '<=';
+    } else if (cond.conditionToken instanceof Symbols.Contains) {
+        return (cond.not ? 'NOT ' : '') + 'CONTAINS';
+    } else if (cond.conditionToken instanceof Symbols.ContainsWords) {
+        return (cond.not ? 'NOT ' : '') + 'CONTAINS WORDS';
+    } else if (cond.conditionToken instanceof Symbols.InGroup) {
+        return (cond.not ? 'NOT ' : '') + 'IN GROUP';
+    } else if (cond.conditionToken instanceof Symbols.Like) {
+        return (cond.ever ? 'EVER ' : '') + (cond.not ? 'NOT ' : '') + 'LIKE';
+    } else if (cond.conditionToken instanceof Symbols.Under) {
+        return (cond.ever ? 'EVER ' : '') + (cond.not ? 'NOT ' : '') + 'UNDER';
+    }
+    throw new Error('Unexpected condtional operator');
+}
+function formatConditionalExpression(conditionalExpression: Symbols.ConditionalExpression, tab: string, indent: number, fields: FieldMap): string[] {
+    if (conditionalExpression.expression) {
+        return [
+            tabs(tab, indent) + '(',
+            ...formatLogicalExpression(conditionalExpression.expression, tab, indent + 1, fields),
+            tabs(tab, indent) + ')',
+        ];
+    }
+    if (conditionalExpression.field && conditionalExpression.valueList) {
+        const op = conditionalExpression.not ? ' NOT IN ' : ' IN ';
+        return [tabs(tab, indent) + formatField(conditionalExpression.field, fields) + op + '(' + formatValueList(conditionalExpression.valueList, fields) + ')'];
+    }
+    if (conditionalExpression.field && conditionalExpression.conditionalOperator && conditionalExpression.value) {
+        return [`${tabs(tab, indent)}${formatField(conditionalExpression.field, fields)} ${formatConditionalOperator(conditionalExpression.conditionalOperator)} ${formatValue(conditionalExpression.value, fields)}`];
+    }
+    return [];
+}
 function formatLogicalExpression(logicalExpression: Symbols.LogicalExpression, tab: string, indent: number, fields: FieldMap): string[] {
-    const lines: string[] = [];
+    const lines: string[] = formatConditionalExpression(logicalExpression.condition, tab, indent, fields);
+    if (logicalExpression.everNot instanceof Symbols.Ever) {
+        lines[0] = insert(lines[0], 'EVER ');
+    } else if (<Symbols.Not | undefined>logicalExpression.everNot instanceof Symbols.Not) {
+        lines[0] = insert(lines[0], 'NOT ');
+    }
+    if (logicalExpression.orAnd && logicalExpression.expression) {
+        const orAndStr = logicalExpression.orAnd instanceof Symbols.Or ? 'OR ' : 'AND ';
+        const secondExpLines = formatLogicalExpression(logicalExpression.expression, tab, indent, fields);
+        secondExpLines[0] = insert(secondExpLines[0], orAndStr);
+        lines.push(...secondExpLines);
+    }
     return lines;
 }
 function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList, fields: FieldMap): string {
