@@ -1,6 +1,6 @@
 import { getClient as getWitClient } from 'TFS/WorkItemTracking/RestClient';
 import { WorkItem, WorkItemReference, WorkItemQueryResult } from 'TFS/WorkItemTracking/Contracts';
-import { renderQueryResults, renderError, setMessage } from './queryResults';
+import { renderQueryResults, setError, setMessage } from './queryResults';
 import * as Wiql from './wiqlDefinition';
 import { getCompletionProvider } from './wiqlCompletion';
 import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
@@ -21,6 +21,11 @@ getWitClient().getFields().then((fields) => {
         const parseResult = parse(lines);
         const errors = errorChecker.check(parseResult);
         oldDecorations = model.deltaDecorations(oldDecorations, errors);
+        if (errors.length > 0) {
+            setError('Resolve errors to search');
+        } else {
+            search();
+        }
     });
 });
 
@@ -47,13 +52,13 @@ function loadWorkItems(result: WorkItemQueryResult) {
                 wiMap[wi.id] = wi;
             }
             renderQueryResults(result, wiIds.map((id) => wiMap[id]));
-        }, renderError);
+        }, setError);
 }
 
 function search() {
     const wiqlText = editor.getValue();
     setMessage('Running query...');
-    getWitClient().queryByWiql({ query: wiqlText }).then(loadWorkItems, renderError);
+    getWitClient().queryByWiql({ query: wiqlText }, undefined, undefined, undefined, 50).then(loadWorkItems, setError);
 }
 
 
