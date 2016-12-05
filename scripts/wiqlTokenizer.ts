@@ -45,7 +45,7 @@ export const opMap = {
 export function tokenize(lines: string[]): Symbols.Token[] {
     const tokens: Symbols.Token[] = [];
     for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].toLowerCase();
+        const line = lines[i].toLocaleLowerCase();
         for (let j = 0; j < line.length; ) {
 
             const char = line.charAt(j);
@@ -102,7 +102,8 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     }
                 }
             } else if (char === '\'') {
-                const str = (line.substr(j).match(/^'(?:[^']|'')*'?/) || [])[0];
+                const strLength = (line.substr(j).match(/^'(?:[^']|'')*'?/) || [])[0].length;
+                const str = lines[i].substr(j, strLength); // Don't convert strings to lowercase
                 if (str[str.length - 1] === '\'') {
                     tokens.push(new Symbols.String(i, j, str));
                 } else {
@@ -110,7 +111,8 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                 }
                 j += str.length;
             } else if (char === '"') {
-                const str = (line.substr(j).match(/^"(?:[^"]|"")*"?/) || [])[0];
+                const strLength = (line.substr(j).match(/^"(?:[^"]|"")*"?/) || [])[0].length;
+                const str = lines[i].substr(j, strLength); // Don't conver strings to lowercase
                 if (str[str.length - 1] === '"') {
                     tokens.push(new Symbols.String(i, j, str));
                 } else {

@@ -42,6 +42,10 @@ export function setError(error: TfsError | string) {
     ReactDom.render(<div className={'error-message'}>{message}</div>, document.getElementById('query-results') as HTMLElement);
 }
 
-export function setMessage(message: string) {
-    ReactDom.render(<div>{message}</div>, document.getElementById('query-results') as HTMLElement);
+export function setMessage(message: string | string[]) {
+    if (typeof message === 'string') {
+        message = [message];
+    }
+    const messageElems = message.map((m) => <div>{m}</div>);
+    ReactDom.render(<div>{messageElems}</div>, document.getElementById('query-results') as HTMLElement);
 }

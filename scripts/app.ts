@@ -5,6 +5,7 @@ import * as Wiql from './wiqlDefinition';
 import { getCompletionProvider } from './wiqlCompletion';
 import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
 import { parse } from './wiqlParser';
+import { format } from './wiqlFormatter';
 
 monaco.languages.register(Wiql.def);
 monaco.languages.onLanguage(Wiql.def.id, () => {
@@ -25,6 +26,12 @@ getWitClient().getFields().then((fields) => {
             setError('Resolve errors to search');
         } else {
             search();
+        }
+    });
+    $(window).keydown((event) => {
+        if (event.shiftKey && event.altKey && event.which === 70) {
+            event.preventDefault();
+            format(editor.getModel(), fields);
         }
     });
 });
@@ -61,10 +68,12 @@ function search() {
     getWitClient().queryByWiql({ query: wiqlText }, undefined, undefined, undefined, 50).then(loadWorkItems, setError);
 }
 
-
-
-setMessage('Press Shift+Enter to search');
-$(window).bind('keydown', function (event) {
+setMessage([
+    'Key bindings:',
+    'Shift + Enter : search',
+    'Alt + Shift + F : format'
+]);
+$(window).keydown((event) => {
     if (event.shiftKey && event.which === 13) {
         event.preventDefault();
         search();

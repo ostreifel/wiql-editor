@@ -23,6 +23,7 @@
         "scripts/wiqlErrorCheckers/NameErrorChecker.ts",
         "scripts/wiqlErrorCheckers/SyntaxErrorChecker.ts",
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
+        "scripts/wiqlFormatter.ts",
         "scripts/wiqlParser.ts",
         "scripts/wiqlProductions.ts",
         "scripts/wiqlSymbols.ts",
