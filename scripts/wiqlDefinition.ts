@@ -3,7 +3,7 @@ export const definedVariables = {
     '@me': FieldType.String,
     '@currentiteration': FieldType.String,
     '@project': FieldType.String,
-    '@today': FieldType.String,
+    '@today': FieldType.DateTime,
     '[any]': FieldType.String
 };
 

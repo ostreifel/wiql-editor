@@ -38,7 +38,7 @@ getWitClient().getFields().then((fields) => {
 });
 
 const editor = monaco.editor.create(<HTMLElement>document.getElementById('wiql-box'), {
-    value: `select title from workitems`,
+    value: `select id, [work item type], title, state, [area path], [iteration path] from workitems`,
     language: Wiql.def.id,
 });
 
