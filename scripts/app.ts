@@ -29,7 +29,8 @@ getWitClient().getFields().then((fields) => {
         }
     });
     $(window).keydown((event) => {
-        if (event.shiftKey && event.altKey && event.which === 70) {
+        if ((event.altKey && event.shiftKey && event.which === 70) ||
+            (event.ctrlKey && event.shiftKey && event.which === 70)) {
             event.preventDefault();
             format(editor.getModel(), fields);
         }
@@ -71,7 +72,7 @@ function search() {
 setMessage([
     'Key bindings:',
     'Shift + Enter : search',
-    'Alt + Shift + F : format'
+    'Alt + Shift + F or Ctr + Shift + F : format',
 ]);
 $(window).keydown((event) => {
     if (event.shiftKey && event.which === 13) {
