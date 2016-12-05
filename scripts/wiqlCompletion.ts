@@ -2,7 +2,7 @@ import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 import { tokenize, opMap, symbolMap } from './wiqlTokenizer';
 import * as Symbols from './wiqlSymbols';
 import { parse, ParseError } from './wiqlParser';
-import { validVariableNames } from './wiqlDefinition';
+import { definedVariables } from './wiqlDefinition';
 
 // These symbols are buggy when suggested
 // brackets are not paired, rbrackets and commas suggested when its a syntax error to do so 
@@ -35,14 +35,14 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             kind: monaco.languages.CompletionItemKind.Variable
         };
     }));
-    const variableSuggestions = validVariableNames.map((v) => {
+    const variableSuggestions = Object.keys(definedVariables).map((v) => {
         return {
             label: v,
             kind: monaco.languages.CompletionItemKind.Variable
         };
     });
     return {
-        triggerCharacters: [' ', '[', '.'],
+        triggerCharacters: [' ', '[', '.', '@'],
         provideCompletionItems: (model, position, token) => {
             const lines = model.getLinesContent().slice(0, position.lineNumber);
             if (lines.length > 0) {
@@ -91,7 +91,13 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             } else if (prevToken instanceof Symbols.Variable
                 && position.column - 1 === prevToken.endColumn) {
                 const beforeIdentifier = parseNext.parsedTokens[parsedCount - 2];
-                return variableSuggestions;
+                return Object.keys(definedVariables).map((v) => {
+                    return {
+                        label: v,
+                        kind: monaco.languages.CompletionItemKind.Value,
+                        insertText: v.replace('@', '')
+                    };
+                });
             } else {
                 const suggestions: monaco.languages.CompletionItem[] = [];
                 for (let token of parseNext.expectedTokens) {

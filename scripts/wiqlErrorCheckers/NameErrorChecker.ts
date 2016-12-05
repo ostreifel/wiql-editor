@@ -2,7 +2,7 @@ import { IErrorChecker } from './IErrorChecker';
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 import { IParseResults, parse } from '../wiqlParser';
 import * as Symbols from '../wiqlSymbols';
-import { validVariableNames } from '../wiqlDefinition';
+import { definedVariables } from '../wiqlDefinition';
 import { toDecoration, symbolsOfType } from './errorCheckUtils';
 
 export class NameErrorChecker implements IErrorChecker {
@@ -19,8 +19,8 @@ export class NameErrorChecker implements IErrorChecker {
         // variable name errors
         const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
         for (let variable of variables) {
-            if (validVariableNames.indexOf(variable.name) < 0) {
-                errors.push(toDecoration(variable, `Valid names are include {${validVariableNames.join(', ')}}`));
+            if (!(variable.name in definedVariables)) {
+                errors.push(toDecoration(variable, `Valid names are include {${Object.keys(definedVariables).join(', ')}}`));
             }
         }
         // field name errors

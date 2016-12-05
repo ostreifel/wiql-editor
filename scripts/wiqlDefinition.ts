@@ -1,9 +1,16 @@
-export const validVariableNames = ['@me', '@currentiteration', '@project', '@today', '[any]'];
+import { FieldType } from 'TFS/WorkItemTracking/Contracts';
+export const definedVariables = {
+    '@me': FieldType.String,
+    '@currentiteration': FieldType.String,
+    '@project': FieldType.String,
+    '@today': FieldType.String,
+    '[any]': FieldType.String
+};
 
 export const def: monaco.languages.ILanguageExtensionPoint = {
     id: 'wiql',
-    extensions: [ '.wiql' ],
-    aliases: [ 'WIQL' ],
+    extensions: ['.wiql'],
+    aliases: ['WIQL'],
 };
 export const conf: monaco.languages.LanguageConfiguration = {
     brackets: [['[', ']'], ['(', ')']],
@@ -20,7 +27,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
     tokenPostfix: '.wiql',
 
     keywords: ['select', 'from', 'where', 'order', 'by', 'asc', 'desc', 'asof', 'not', 'ever', 'in', 'like', 'under', 'and', 'or', 'contains', 'words', 'group'],
-    operators: ['=', '<>', '<=', '>=', '<', '>', ',' , 'ever', 'not', 'like', 'under', 'in', 'like', 'under'],
+    operators: ['=', '<>', '<=', '>=', '<', '>', ',', 'ever', 'not', 'like', 'under', 'in', 'like', 'under'],
 
     brackets: [
         { open: '[', close: ']', token: 'delimiter.square' },
@@ -28,16 +35,16 @@ export const language = <monaco.languages.IMonarchLanguage>{
     ],
     tokenizer: {
         root: [
-            [/[a-z_]\w*/, {cases: {'@keywords': 'keyword', '@default': 'identifier'}}],
+            [/[a-z_]\w*/, { cases: { '@keywords': 'keyword', '@default': 'identifier' } }],
             [/[ \t\r\n]+/, 'white'],
             { include: '@strings' },
             [/\[/, { token: 'bracket.square', bracket: '@open', next: '@bracketedIdentifier' }],
             [/[()[\]]/, '@brackets'],
-            { include: '@number'}
+            { include: '@number' }
         ],
         bracketedIdentifier: [
-        [/[^\]]+/, 'identifier'],
-        [/\]/, {token: 'bracket.square', bracket: '@close', next: '@pop'}]
+            [/[^\]]+/, 'identifier'],
+            [/\]/, { token: 'bracket.square', bracket: '@close', next: '@pop' }]
         ],
         strings: [
             [/'/, { token: 'string.quote', bracket: '@open', next: '@string1' }],

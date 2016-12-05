@@ -3,6 +3,7 @@ import { IParseResults, parse } from '../wiqlParser';
 import { WorkItemField, FieldType } from 'TFS/WorkItemTracking/Contracts';
 import { symbolsOfType, toDecoration } from './errorCheckUtils';
 import * as Symbols from '../wiqlSymbols';
+import { definedVariables } from '../wiqlDefinition';
 
 const operationLookup: {
     [opName: string]: {
@@ -72,8 +73,11 @@ export class TypeErrorChecker {
         return [];
     }
     private checkRhsValue(value: Symbols.Value, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
-        const error = toDecoration(value.value, `Expected ${FieldType[expectedType]}`);
+        const error = toDecoration(value.value, `Expected value of type ${FieldType[expectedType]}`);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
+        if (value.value instanceof Symbols.Variable) {
+            return definedVariables[value.value.name] === expectedType ? [] : [error];
+        }
         switch (expectedType) {
             case FieldType.String:
                 return value.value instanceof Symbols.String ? [] : [error];
