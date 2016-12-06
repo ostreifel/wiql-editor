@@ -27,7 +27,8 @@ function showDialog(query: IQuery) {
                         navigationService.reload();
                     });
                 }, (error: TfsError) => {
-                    const message = (error.serverError || error)['message'];
+                    const exception = (error.serverError || error);
+                    const message = exception['message'] || exception['value']['Message'];
                     dialogService.openMessageDialog(message);
                 });
                 return '';

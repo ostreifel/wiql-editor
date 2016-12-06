@@ -20,6 +20,7 @@ const operationLookup: {
         'In Group': { target: 'literal', class: Symbols.InGroup },
         'Contains': { target: 'literal', class: Symbols.Contains },
         'Contains Words': { target: 'literal', class: Symbols.ContainsWords },
+        'Under': { target: 'literal', class: Symbols.Under },
         'in': { target: 'group', class: Symbols.In },
         '= [Field]': { target: 'field', class: Symbols.Equals },
         '<> [Field]': { target: 'field', class: Symbols.NotEquals },

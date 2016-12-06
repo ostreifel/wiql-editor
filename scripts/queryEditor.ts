@@ -15,10 +15,16 @@ const editor = setupEditor(target, (count) => updateSaveButton(count === 0), con
 function saveQuery(): IPromise<any> {
     console.log('saving query');
     const context = VSS.getWebContext();
-    return getWITClient().updateQuery(<QueryHierarchyItem>{
+    const queryItem = <QueryHierarchyItem>{
         wiql: editor.getValue(),
         path: configuration.query.path,
-    }, context.project.name, configuration.query.id);
+        name: configuration.query.name,
+    };
+    if (configuration.query.id) {
+        return getWITClient().updateQuery(queryItem, context.project.name, configuration.query.id);
+    } else {
+        return getWITClient().createQuery(queryItem, context.project.name, configuration.query.id);
+    }
 }
 const callbacks: ICallbacks = {
     okCallback: saveQuery,
