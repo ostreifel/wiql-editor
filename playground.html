@@ -28,7 +28,8 @@
         VSS.init({
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
-            configureModuleLoader: true
+            configureModuleLoader: true,
+            moduleLoaderConfig: {waitSeconds: 15}
         });
 
         var require = { paths: { 'vs': 'build/node_modules/monaco-editor/min/vs' } };
