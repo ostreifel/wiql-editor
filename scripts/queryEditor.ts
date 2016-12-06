@@ -12,13 +12,13 @@ let updateSaveButton = (enabled: boolean) => {
     console.log('update button not set');
 }
 const editor = setupEditor(target, (count) => updateSaveButton(count === 0), configuration.query.wiql);
-function saveQuery() {
+function saveQuery(): IPromise<any> {
     console.log('saving query');
     const context = VSS.getWebContext();
-    getWITClient().updateQuery(<QueryHierarchyItem>{
+    return getWITClient().updateQuery(<QueryHierarchyItem>{
         wiql: editor.getValue(),
         path: configuration.query.path,
-    }, context.project.name, configuration.query.name);
+    }, context.project.name, configuration.query.id);
 }
 const callbacks: ICallbacks = {
     okCallback: saveQuery,
