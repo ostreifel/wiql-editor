@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.263",
+    "version": "0.1.265",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -59,7 +59,7 @@
             "addressable": true
         },
         {
-            "path": "index.html",
+            "path": "playground.html",
             "addressable": true
         }
     ],
@@ -76,7 +76,7 @@
             ],
             "properties": {
                 "name": "Wiql Playground",
-                "uri": "index.html"
+                "uri": "playground.html"
             }
         }
     ]

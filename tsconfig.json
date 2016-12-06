@@ -13,7 +13,7 @@
         "./typings/index.d.ts"
     ],
     "files": [
-        "scripts/app.ts",
+        "scripts/playground.ts",
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
         "scripts/wiqlDfa.ts",

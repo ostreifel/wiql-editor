@@ -54,7 +54,7 @@
         VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['build/app'], function() {
+                VSS.require(['build/playground'], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });
