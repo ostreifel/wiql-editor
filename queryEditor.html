@@ -25,13 +25,6 @@
             usePlatformScripts: true,
             configureModuleLoader: true
         });
-
-        // Lie to vss, this stuff takes too long to load and will timeout if we dont lie
-        VSS.notifyLoadSucceeded();
-        VSS.register('showProperties', function (context) {
-            return {};
-        });
-        
         var require = { paths: { 'vs': 'build/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 
         VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {

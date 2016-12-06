@@ -41,6 +41,7 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
 FROM workitems
 `,
         language: Wiql.def.id,
+        automaticLayout: true
     });
     return editor;
 }

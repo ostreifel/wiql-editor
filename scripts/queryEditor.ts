@@ -1,43 +1,22 @@
 import { setupEditor } from './wiqlEditor';
+import { QueryHierarchyItem } from 'TFS/WorkItemTracking/Contracts';
+import { getClient as getWITClient } from 'TFS/WorkItemTracking/RestClient';
+import { IQuery, IContextOptions } from './contextContracts';
 
+const configuration: IContextOptions = VSS.getConfiguration();
 const target = document.getElementById('wiql-box');
 if (!target) {
     throw new Error('Could not find wiql editor div');
 }
-const editor = setupEditor(target);
+const editor = setupEditor(target, (count) => configuration.updateSaveButton(count === 0));
+editor.setValue(configuration.query.wiql);
+function saveQuery() {
+    const context = VSS.getWebContext();
+    getWITClient().updateQuery(<QueryHierarchyItem>{
+        wiql: editor.getValue(),
+        path: configuration.query.path,
+    }, context.project.name, configuration.query.name);
+}
+configuration.okCallback = saveQuery;
 
-const showPropertiesMenuProvider = {
-    showPropertiesInDialog: function (properties, title) {
-
-
-        VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
-
-            const extInfo = VSS.getExtensionContext();
-
-            const dialogOptions: IHostDialogOptions = {
-                title: title || 'Properties',
-                width: 800,
-                height: 600,
-                okCallback: () => console.log('ok clicked'),
-                okText: 'Save Query'
-            };
-
-            const contributionConfig = {
-                properties: properties
-            };
-
-            dialogService.openDialog(VSS.getContribution().id, dialogOptions, contributionConfig).then((dialog) => {
-                console.log('dialog opened');
-                console.log(properties);
-                console.log(Window);
-            });
-        });
-    },
-    execute: function (actionContext) {
-        this.showPropertiesInDialog(actionContext);
-    }
-};
-
-VSS.register('showProperties', function (context) {
-    return showPropertiesMenuProvider;
-});
+VSS.register(VSS.getContribution().id, {});

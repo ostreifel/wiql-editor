@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.287",
+    "version": "0.1.299",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -69,6 +69,10 @@
         {
             "path": "queryEditor.html",
             "addressable": true
+        },
+        {
+            "path": "queryContext.html",
+            "addressable": true
         }
     ],
     "categories": [
@@ -88,19 +92,41 @@
             }
         },
         {
-            "id": "edit-current-query",
+            "id": "results-context-menu",
             "type": "ms.vss-web.action",
-            "description": "Shows the target properties for work item query results toolbar menu.",
+            "description": "Edit the current query",
             "targets": [
                 "ms.vss-work-web.work-item-query-results-toolbar-menu"
             ],
             "properties": {
-                "text": "Custom query results toolbar menu",
-                "title": "ms.vss-work-web.work-item-query-results-toolbar-menu (Custom query results toolbar action)",
+                "text": "Edit current query wiql",
+                "group": "actions",
+                "uri": "queryContext.html",
+                "registeredObjectId": "showProperties"
+            }
+        },
+        {
+            "id": "query-menu",
+            "type": "ms.vss-web.action",
+            "description": "Edit query in menu",
+            "targets": [
+                "ms.vss-work-web.work-item-query-menu"
+            ],
+            "properties": {
+                "text": "Edit query",
                 "icon": "images/show-properties.png",
                 "group": "actions",
-                "uri": "queryEditor.html",
+                "uri": "queryContext.html",
                 "registeredObjectId": "showProperties"
+            }
+        },
+        {
+            "id": "contextForm",
+            "type": "ms.vss-web.control",
+            "description": "Editor for the given query",
+            "targets": [ ],
+            "properties": {
+                "uri": "queryEditor.html"
             }
         }
     ]
