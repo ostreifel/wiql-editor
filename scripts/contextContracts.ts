@@ -7,8 +7,12 @@ export interface IQuery {
 }
 export interface IContextOptions {
     query: IQuery;
+}
+
+export interface ICallbacks {
     /** To be set by consumer and read by provider*/
     okCallback: () => void;
     /** Not set until after dialog created */
-    updateSaveButton: (enabled: boolean) => void;
+    setUpdateSaveButton: (callback: (enabled: boolean) => void) => void;
+
 }

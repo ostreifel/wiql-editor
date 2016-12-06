@@ -1,30 +1,41 @@
 
-import { IQuery, IContextOptions } from './contextContracts';
+import { IQuery, IContextOptions, ICallbacks } from './contextContracts';
 
 function showDialog(query: IQuery) {
 
     VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
+        let i = 0;
         const context: IContextOptions = {
             query: query,
-            okCallback: () => {},
-            updateSaveButton: (enabled: boolean) => {}
-        }
+        };
+        let okCallback: () => void = () => {
+            console.log('ok callback not set');
+         };
+        let updateSaveButton = (enabled: boolean) => { };
         const dialogOptions: IHostDialogOptions = {
             title: query.name,
             width: 800,
             height: 600,
-            okCallback: () => context.okCallback(),
+            okCallback: () => {
+                console.log('calling ok callback');
+                okCallback();
+            },
             okText: 'Save Query',
             resizable: false,
         };
         const extInfo = VSS.getExtensionContext();
 
-        dialogService.openDialog(`${extInfo.publisherId}.${extInfo.extensionId}.contextForm`, dialogOptions, context).then((dialog) => {
+        const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
+        dialogService.openDialog(contentContribution, dialogOptions, context).then((dialog) => {
             console.log('dialog opened');
-            context.updateSaveButton = (enabled) => {
-                console.log('updating ok button', enabled);
-                dialog.updateOkButton(enabled);
-            };
+            dialog.getContributionInstance(contentContribution + '.callbacks').then((callbacks: ICallbacks) => {
+                console.log('got contribution intance');
+                okCallback = callbacks.okCallback;
+                callbacks.setUpdateSaveButton((enabled) => {
+                    console.log('updating ok button');
+                    dialog.updateOkButton(enabled);
+                });
+            });
         });
     });
 }
