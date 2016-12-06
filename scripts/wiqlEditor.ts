@@ -5,7 +5,7 @@ import { format } from './wiqlFormatter';
 import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
 import * as Wiql from './wiqlDefinition';
 
-export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void): monaco.editor.IStandaloneCodeEditor {
+export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
     monaco.languages.onLanguage(Wiql.def.id, () => {
         monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
@@ -25,6 +25,10 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
                 onChange(errors.length);
             }
         });
+        intialValue = intialValue ||
+            `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems`;
+        editor.setValue(intialValue);
+        format(editor.getModel(), fields);
         $(window).keydown((event) => {
             if ((event.altKey && event.shiftKey && event.which === 70) ||
                 (event.ctrlKey && event.shiftKey && event.which === 70)) {
@@ -35,11 +39,6 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
     });
 
     const editor = monaco.editor.create(target, {
-        value:
-`SELECT
-    [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path]
-FROM workitems
-`,
         language: Wiql.def.id,
         automaticLayout: true
     });

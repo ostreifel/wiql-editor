@@ -8,8 +8,7 @@ const target = document.getElementById('wiql-box');
 if (!target) {
     throw new Error('Could not find wiql editor div');
 }
-const editor = setupEditor(target, (count) => configuration.updateSaveButton(count === 0));
-editor.setValue(configuration.query.wiql);
+const editor = setupEditor(target, (count) => configuration.updateSaveButton(count === 0), configuration.query.wiql);
 function saveQuery() {
     const context = VSS.getWebContext();
     getWITClient().updateQuery(<QueryHierarchyItem>{
