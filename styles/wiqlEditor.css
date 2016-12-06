@@ -1,0 +1,22 @@
+.wiql-error {
+    border-bottom:2px dotted red;
+}
+.wiql-error-margin {
+    background: red;
+    width: 5px !important;
+}
+#query-results {
+    font-size: 20px;
+}
+#query-results .error-message {
+    color: red;
+}
+#query-results tr:hover {
+    border: solid black 1px;
+}
+#query-results tr {
+    cursor: pointer;
+}
+#query-results td {
+    padding-right: 20px;
+}

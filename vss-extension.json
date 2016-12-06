@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.265",
+    "version": "0.1.287",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -59,7 +59,15 @@
             "addressable": true
         },
         {
+            "path": "styles",
+            "addressable": true
+        },
+        {
             "path": "playground.html",
+            "addressable": true
+        },
+        {
+            "path": "queryEditor.html",
             "addressable": true
         }
     ],
@@ -77,6 +85,22 @@
             "properties": {
                 "name": "Wiql Playground",
                 "uri": "playground.html"
+            }
+        },
+        {
+            "id": "edit-current-query",
+            "type": "ms.vss-web.action",
+            "description": "Shows the target properties for work item query results toolbar menu.",
+            "targets": [
+                "ms.vss-work-web.work-item-query-results-toolbar-menu"
+            ],
+            "properties": {
+                "text": "Custom query results toolbar menu",
+                "title": "ms.vss-work-web.work-item-query-results-toolbar-menu (Custom query results toolbar action)",
+                "icon": "images/show-properties.png",
+                "group": "actions",
+                "uri": "queryEditor.html",
+                "registeredObjectId": "showProperties"
             }
         }
     ]
