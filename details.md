@@ -1,16 +1,16 @@
-Search work items with a the expressiveness of the wiql query language.
+Search work items with a the expressiveness of the work item query language.
 
-Explore the wiql syntax in the wiql playground
+Explore the wiql syntax on the wiql playground
 ![Image of query playground](img/playground.png)
 
 Use the wiql editor to modify existing queries
 
 ![Image of context menu](img/contextMenu.png)
 
-Save changes queries when done.
+Save changes to the query when finished.
 
  ![Image of wiql dialog](img/dialog.png)
 
 # Change Log
-#### v1.0.0
+#### v1.0.1
 Initial Release
