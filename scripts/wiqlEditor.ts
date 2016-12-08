@@ -16,17 +16,8 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         const model = editor.getModel();
         const errorChecker = new ErrorChecker(fields);
         let oldDecorations: string[] = [];
-        editor.onDidChangeModelContent((event) => {
-            const lines = model.getLinesContent();
-            const parseResult = parse(lines);
-            const errors = errorChecker.check(parseResult);
-            oldDecorations = model.deltaDecorations(oldDecorations, errors);
-            if (onChange) {
-                onChange(errors.length);
-            }
-        });
         intialValue = intialValue ||
-            `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems`;
+            `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems where [Team Project] = @project`;
         editor.setValue(intialValue);
         format(editor.getModel(), fields);
         $(window).keydown((event) => {
@@ -34,6 +25,15 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
                 (event.ctrlKey && event.shiftKey && event.which === 70)) {
                 event.preventDefault();
                 format(editor.getModel(), fields);
+            }
+        });
+        editor.onDidChangeModelContent((event) => {
+            const lines = model.getLinesContent();
+            const parseResult = parse(lines);
+            const errors = errorChecker.check(parseResult);
+            oldDecorations = model.deltaDecorations(oldDecorations, errors);
+            if (onChange) {
+                onChange(errors.length);
             }
         });
     });

@@ -18,10 +18,9 @@ export function showDialog(query: IQuery) {
         let updateSaveButton = (enabled: boolean) => { };
         const dialogOptions: IHostDialogOptions = {
             title: query.name,
-            width: 800,
-            height: 600,
+            width: 900,
+            height: 800,
             getDialogResult: function () {
-                console.log('calling getDialogResult');
                 console.log(this);
                 okCallback().then(() => {
                     VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
@@ -35,19 +34,16 @@ export function showDialog(query: IQuery) {
                 return '';
             },
             okText: 'Save Query',
-            resizable: false,
+            resizable: true,
         };
         const extInfo = VSS.getExtensionContext();
 
         const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
         dialogService.openDialog(contentContribution, dialogOptions, context).then((dialog) => {
-            console.log('dialog opened');
             closeDialog = () => dialog.close();
             dialog.getContributionInstance(contentContribution + '.callbacks').then((callbacks: ICallbacks) => {
-                console.log('got contribution intance');
                 okCallback = callbacks.okCallback;
                 callbacks.setUpdateSaveButton((enabled) => {
-                    console.log('updating ok button');
                     dialog.updateOkButton(enabled);
                 });
             });

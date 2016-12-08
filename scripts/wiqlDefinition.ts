@@ -4,6 +4,7 @@ export const definedVariables = {
     '@currentiteration': FieldType.TreePath,
     '@project': FieldType.String,
     '@today': FieldType.DateTime,
+    '@follows': FieldType.Integer,
     '[any]': FieldType.String
 };
 

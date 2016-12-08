@@ -151,6 +151,7 @@ function formatFlatSelect(flatSelect: Symbols.FlatSelect, tab: string, fields: F
     if (flatSelect.asOf) {
         lines.push('ASOF ' + flatSelect.asOf.dateString.value);
     }
+    lines.push('');
     return lines;
 }
 

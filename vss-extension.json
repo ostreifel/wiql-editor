@@ -1,8 +1,8 @@
 {
     "manifestVersion": 1,
-    "id": "wiql-search",
-    "version": "0.1.345",
-    "name": "Wiql Search",
+    "id": "wiql-editor",
+    "version": "0.1.359",
+    "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
     "publisher": "ottostreifel",
@@ -26,23 +26,14 @@
         }
     },
     "links": {
-        "home": {
-            "uri": "https://bit.ly"
-        },
-        "getstarted": {
-            "uri": "https://bit.ly"
+        "support": {
+            "uri": "https://github.com/ostreifel/wiql-editor/issues"
         },
         "learn": {
-            "uri": "https://bit.ly"
-        },
-        "support": {
-            "uri": "https://bit.ly"
-        },
-        "repository": {
-            "uri": "https://bit.ly"
+            "uri": "https://github.com/ostreifel/wiql-editor"
         },
         "issues": {
-            "uri": "https://bit.ly"
+            "uri": "https://github.com/ostreifel/wiql-editor/issues"
         }
     },
     "branding": {

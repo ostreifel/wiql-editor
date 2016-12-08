@@ -11,7 +11,7 @@ if (!target) {
 let updateSaveButton = (enabled: boolean) => {
     console.log('update button not set');
 }
-const editor = setupEditor(target, (count) => updateSaveButton(count === 0), configuration.query.wiql);
+const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql);
 function saveQuery(): IPromise<any> {
     console.log('saving query');
     const context = VSS.getWebContext();
