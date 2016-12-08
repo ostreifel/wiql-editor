@@ -1,61 +1,18 @@
-import { IQuery, IContextOptions, ICallbacks } from './contextContracts';
+import { isSupportedQueryId, showDialog } from './wiqlDialog';
 
-function showDialog(query: IQuery) {
-
-    VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
-        const context: IContextOptions = {
-            query: query,
-        };
-        console.log(query);
-        let okCallback: () => IPromise<any> = () => {
-            console.log('ok callback not set');
-            return Q(null);
-        };
-        let closeDialog = () => {
-            console.log('could not find close dialog function');
+const menuAction = <IContributedMenuSource>{
+    getMenuItems: (context): IContributedMenuItem | null => {
+        if (!context || !context.query || !isSupportedQueryId(context.query.id)) {
+            return null;
         }
-        let updateSaveButton = (enabled: boolean) => { };
-        const dialogOptions: IHostDialogOptions = {
-            title: query.name,
-            width: 800,
-            height: 600,
-            getDialogResult: function () {
-                console.log('calling getDialogResult');
-                console.log(this);
-                okCallback().then(() => {
-                    VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
-                        navigationService.reload();
-                    });
-                }, (error: TfsError) => {
-                    const exception = (error.serverError || error);
-                    const message = exception['message'] || exception['value']['Message'];
-                    dialogService.openMessageDialog(message);
-                });
-                return '';
-            },
-            okText: 'Save Query',
-            resizable: false,
-        };
-        const extInfo = VSS.getExtensionContext();
-
-        const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
-        dialogService.openDialog(contentContribution, dialogOptions, context).then((dialog) => {
-            console.log('dialog opened');
-            closeDialog = () => dialog.close();
-            dialog.getContributionInstance(contentContribution + '.callbacks').then((callbacks: ICallbacks) => {
-                console.log('got contribution intance');
-                okCallback = callbacks.okCallback;
-                callbacks.setUpdateSaveButton((enabled) => {
-                    console.log('updating ok button');
-                    dialog.updateOkButton(enabled);
-                });
-            });
-        });
-    });
-}
-
-VSS.register('showProperties', {
-    execute: function (actionContext) {
-        showDialog(actionContext.query);
+        return [<IContributedMenuItem>{
+            text: 'Edit query wiql',
+            icon: 'img/smallLogo.png',
+            action: function (actionContext) {
+                showDialog(actionContext.query);
+            }
+        }];
     }
-});
+};
+
+VSS.register(VSS.getContribution().id, menuAction);

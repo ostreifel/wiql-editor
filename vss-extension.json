@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-search",
-    "version": "0.1.328",
+    "version": "0.1.339",
     "name": "Wiql Search",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -92,31 +92,15 @@
             }
         },
         {
-            "id": "results-context-menu",
-            "type": "ms.vss-web.action",
-            "description": "Edit the current query",
-            "targets": [
-                "ms.vss-work-web.work-item-query-results-toolbar-menu"
-            ],
-            "properties": {
-                "text": "Edit query wiql",
-                "group": "actions",
-                "uri": "queryContext.html",
-                "registeredObjectId": "showProperties"
-            }
-        },
-        {
             "id": "query-menu",
-            "type": "ms.vss-web.action",
+            "type": "ms.vss-web.action-provider",
             "description": "Edit query in menu",
             "targets": [
                 "ms.vss-work-web.work-item-query-menu"
             ],
             "properties": {
-                "text": "Edit query wiql",
-                "group": "actions",
-                "uri": "queryContext.html",
-                "registeredObjectId": "showProperties"
+                "group": "contributed",
+                "uri": "queryContext.html"
             }
         },
         {

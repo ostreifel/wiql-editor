@@ -20,6 +20,7 @@
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
         "scripts/wiqlDfa.ts",
+        "scripts/wiqlDialog.ts",
         "scripts/wiqlEditor.ts",
         "scripts/wiqlErrorCheckers/ErrorChecker.ts",
         "scripts/wiqlErrorCheckers/errorCheckUtils.ts",
