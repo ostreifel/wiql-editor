@@ -12,7 +12,8 @@
     color: red;
 }
 #query-results tr:hover {
-    border: solid black 1px;
+    font-style: italic;
+    background: azure;
 }
 #query-results tr {
     cursor: pointer;
