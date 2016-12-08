@@ -1,16 +1,19 @@
 import * as ReactDom from 'react-dom';
 import * as React from 'react';
-import {WorkItemQueryResult, QueryResultType, WorkItemReference, WorkItemRelation, WorkItem} from 'TFS/WorkItemTracking/Contracts';
+import {
+    WorkItemQueryResult, QueryResultType, WorkItemReference,
+    WorkItemRelation, WorkItem, WorkItemFieldReference
+} from 'TFS/WorkItemTracking/Contracts';
 
-class WorkItemRow extends React.Component<{wi: WorkItem}, void> {
+class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemFieldReference[] }, void> {
     render() {
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
         const wiUrl = `${uri}${project}/_workitems?id=${this.props.wi.id}&fullScreen=true`;
 
         const tds: JSX.Element[] = [];
-        for (const refName in this.props.wi.fields) {
-            tds.push(<td title={refName}>{this.props.wi.fields[refName]}</td>);
+        for (const fieldRef of this.props.columns) {
+            tds.push(<td title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</td>);
         }
         return (
             <tr onClick={() => window.open(wiUrl, '_blank')}>
@@ -20,9 +23,9 @@ class WorkItemRow extends React.Component<{wi: WorkItem}, void> {
     }
 }
 
-class WiQueryResults extends React.Component<{workItems: WorkItem[]}, void> {
+class WiQueryResults extends React.Component<{ workItems: WorkItem[], columns: WorkItemFieldReference[]}, void> {
     render() {
-        const rows = this.props.workItems.map((wi) => <WorkItemRow wi={wi} />);
+        const rows = this.props.workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.columns} />);
         return <table><tbody>{rows}</tbody></table>;
     }
 }
@@ -30,9 +33,9 @@ class WiQueryResults extends React.Component<{workItems: WorkItem[]}, void> {
 export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkItem[]) {
     let resultsView: JSX.Element;
     if (result.queryResultType = QueryResultType.WorkItem) {
-        resultsView = <WiQueryResults workItems={workItems}/>;
+        resultsView = <WiQueryResults workItems={workItems} columns={result.columns} />;
     } else {
-        resultsView = <div>{'TODO work item relations'}</div>;
+        resultsView = <div>{'TODO render work item relations'}</div>;
     }
     ReactDom.render(resultsView, document.getElementById('query-results') as HTMLElement);
 }
