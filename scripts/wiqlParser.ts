@@ -46,7 +46,7 @@ const table = computeTable();
 export class ParseError {
     constructor(readonly expectedTokens: string[],
                 readonly errorToken: Symbols.Token,
-                readonly remainingTokens: number,
+                readonly remainingTokens: Symbols.Token[],
                 readonly parsedTokens: Symbols.Symbol[]) {
     }
 }
@@ -70,7 +70,7 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
             return new ParseError(
                 expectedTokens,
                 nextToken,
-                tokens.length,
+                tokens,
                 stack.map((i) => i.symbol)
             );
         }

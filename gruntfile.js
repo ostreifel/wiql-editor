@@ -39,18 +39,22 @@
         copy: {
             scripts: {
                 files: [{
-                    expand: true, 
-                    flatten: true, 
+                    expand: true,
+                    flatten: true,
                     src: [
                         "node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js",
-                        ], 
+                    ],
                     dest: "build",
-                    filter: "isFile" 
-                },{
+                    filter: "isFile"
+                }, {
                     expand: true,
                     flatten: false,
                     src: [
-                        "node_modules/monaco-editor/min/vs/**/*",
+                        // Everything but the languages folder
+                        "node_modules/monaco-editor/min/vs/base/**/*",
+                        "node_modules/monaco-editor/min/vs/basic-languages/**/*",
+                        "node_modules/monaco-editor/min/vs/editor/**/*",
+                        "node_modules/monaco-editor/min/vs/loader.js",
                     ],
                     dest: "build",
                     filter: "isFile"
@@ -68,7 +72,7 @@
             }
         }
     });
-    
+
     grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks("grunt-exec");
     grunt.loadNpmTasks("grunt-contrib-copy");
@@ -81,8 +85,8 @@
 
     grunt.registerTask("package-dev", ["build", "exec:package_dev"]);
     grunt.registerTask("package-release", ["build", "exec:package_release"]);
-    grunt.registerTask("publish-dev", ["package-dev", "exec:publish_dev"]);        
-    grunt.registerTask("publish-release", ["package-release", "exec:publish_release"]);        
-    
+    grunt.registerTask("publish-dev", ["package-dev", "exec:publish_dev"]);
+    grunt.registerTask("publish-release", ["package-release", "exec:publish_release"]);
+
     grunt.registerTask("default", ["package-dev"]);
 };

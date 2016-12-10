@@ -54,7 +54,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
 
             const parseNext = parse(lines, true);
             console.log(parseNext);
-            if (!(parseNext instanceof ParseError) || parseNext.remainingTokens > 2) {
+            if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
                 // valid query, can't suggest
                 return [];
             }
