@@ -50,8 +50,7 @@ const productions: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Where,
             Symbols.LogicalExpression,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList
         ],
         fromInputs: (inputs: [
@@ -61,10 +60,9 @@ const productions: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Where,
             Symbols.LogicalExpression,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList
-        ]) => new Symbols.FlatSelect(inputs[1], inputs[5], inputs[8])
+        ]) => new Symbols.FlatSelect(inputs[1], inputs[5], inputs[7])
     },
     {
         result: Symbols.FlatSelect,
@@ -75,8 +73,7 @@ const productions: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Where,
             Symbols.LogicalExpression,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList,
             Symbols.Asof,
             Symbols.DateTime
@@ -88,12 +85,11 @@ const productions: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Where,
             Symbols.LogicalExpression,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList,
             Symbols.Asof,
             Symbols.DateTime
-        ]) =>  new Symbols.FlatSelect(inputs[1], inputs[5], inputs[8], inputs[10])
+        ]) =>  new Symbols.FlatSelect(inputs[1], inputs[5], inputs[7], inputs[9])
     },
     {
         result: Symbols.FlatSelect,
@@ -102,8 +98,7 @@ const productions: IProduction[] = [
             Symbols.FieldList,
             Symbols.From,
             Symbols.WorkItems,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList,
             Symbols.Asof,
             Symbols.DateTime
@@ -113,12 +108,11 @@ const productions: IProduction[] = [
             Symbols.FieldList,
             Symbols.From,
             Symbols.WorkItems,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList,
             Symbols.Asof,
             Symbols.DateTime
-        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[6], inputs[8])
+        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[5], inputs[7])
     },
     {
         result: Symbols.FlatSelect,
@@ -127,8 +121,7 @@ const productions: IProduction[] = [
             Symbols.FieldList,
             Symbols.From,
             Symbols.WorkItems,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList
         ],
         fromInputs: (inputs: [
@@ -136,10 +129,9 @@ const productions: IProduction[] = [
             Symbols.FieldList,
             Symbols.From,
             Symbols.WorkItems,
-            Symbols.Order,
-            Symbols.By,
+            Symbols.OrderBy,
             Symbols.OrderByFieldList
-        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[6])
+        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[5])
     },
     {
         result: Symbols.FlatSelect,

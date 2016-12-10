@@ -12,8 +12,7 @@ export abstract class Token extends Symbol {
 export class Select extends Token { }
 export class From extends Token { }
 export class Where extends Token { }
-export class Order extends Token { }
-export class By extends Token { }
+export class OrderBy extends Token { }
 export class Asc extends Token { }
 export class Desc extends Token { }
 export class Asof extends Token { }

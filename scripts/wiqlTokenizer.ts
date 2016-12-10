@@ -11,8 +11,7 @@ export const tokenPatterns: TokenPattern[] = [
     { match: 'SELECT', token: Symbols.Select },
     { match: 'FROM', token: Symbols.From },
     { match: 'WHERE', token: Symbols.Where },
-    { match: 'ORDER', token: Symbols.Order },
-    { match: 'BY', token: Symbols.By },
+    { match: 'ORDER BY', token: Symbols.OrderBy },
     { match: 'ASC', token: Symbols.Asc },
     { match: 'DESC', token: Symbols.Desc },
     { match: 'ASOF', token: Symbols.Asof },
@@ -42,7 +41,7 @@ export const tokenPatterns: TokenPattern[] = [
             { match: /]/, token: Symbols.RSqBracket, popState: true }
         ]
     },
-    { match: /\w+/, token: Symbols.Identifier },
+    { match: /[a-z_][\w\.]*/, token: Symbols.Identifier },
     { match: ']', token: Symbols.RSqBracket },
     { match: ',', token: Symbols.Comma },
     { match: '=', token: Symbols.Equals },
