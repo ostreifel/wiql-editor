@@ -15,7 +15,7 @@ function tabs(tab: string, indent: number) {
     return Array(indent + 1).join(tab);
 }
 function formatField(field: Symbols.Field, fields: FieldMap): string {
-    return `[${fields[field.identifier.value].name}]`;
+    return `[${fields[field.identifier.text.toLocaleLowerCase()].name}]`;
 }
 function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string {
     const fieldStrs: string[] = [];
@@ -27,21 +27,21 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string
     return fieldStrs.join(', ');
 }
 function formatNumber(num: Symbols.Number) {
-    return (num.minus ? '-' : '') + num.digits.numberString;
+    return (num.minus ? '-' : '') + num.digits.text;
 }
 function formatValue(value: Symbols.Value, fields: FieldMap): string {
     if (value.value instanceof Symbols.Number) {
         return formatNumber(value.value);
     } else if (value.value instanceof Symbols.String) {
-        return value.value.value;
+        return value.value.text;
     } else if (value.value instanceof Symbols.DateTime) {
-        return value.value.dateString.value;
+        return value.value.dateString.text;
     } else if (value.value instanceof Symbols.Variable) {
         if (value.operator && value.num) {
             const opStr = value.operator instanceof Symbols.Minus ? ' - ' : ' + ';
-            return value.value.name + opStr + formatNumber(value.num);
+            return value.value.text + opStr + formatNumber(value.num);
         } else {
-            return value.value.name;
+            return value.value.text;
         }
     } else if (value.value instanceof Symbols.True) {
         return 'true';
@@ -143,13 +143,13 @@ function formatFlatSelect(flatSelect: Symbols.FlatSelect, tab: string, fields: F
     lines.push('FROM workitems');
     if (flatSelect.whereExp) {
         lines.push('WHERE');
-        lines.push(...formatLogicalExpression(flatSelect.whereExp, tab, 1, fields))
+        lines.push(...formatLogicalExpression(flatSelect.whereExp, tab, 1, fields));
     }
     if (flatSelect.orderBy) {
         lines.push(formatOrderByFieldList(flatSelect.orderBy, fields));
     }
     if (flatSelect.asOf) {
-        lines.push('ASOF ' + flatSelect.asOf.dateString.value);
+        lines.push('ASOF ' + flatSelect.asOf.dateString.text);
     }
     lines.push('');
     return lines;

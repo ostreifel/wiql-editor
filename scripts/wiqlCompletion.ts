@@ -1,5 +1,5 @@
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
-import { tokenize, opMap, symbolMap } from './wiqlTokenizer';
+import { tokenize, tokenPatterns } from './wiqlTokenizer';
 import * as Symbols from './wiqlSymbols';
 import { parse, ParseError } from './wiqlParser';
 import { definedVariables } from './wiqlDefinition';
@@ -9,15 +9,13 @@ import { definedVariables } from './wiqlDefinition';
 const doNotSuggest = ['(', ')', ',', '[', ']'];
 
 const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
-for (let map of [opMap, symbolMap]) {
-    for (let label in map) {
-        if (doNotSuggest.indexOf(label) < 0) {
-            const symName = Symbols.getSymbolName(map[label]);
-            symbolSuggestionMap[symName] = {
-                label: label,
-                kind: monaco.languages.CompletionItemKind.Keyword
-            };
-        }
+for (let pattern of tokenPatterns) {
+    if (typeof pattern.match === 'string' && doNotSuggest.indexOf(pattern.match) < 0) {
+        const symName = Symbols.getSymbolName(pattern.token);
+        symbolSuggestionMap[symName] = {
+            label: pattern.match,
+            kind: monaco.languages.CompletionItemKind.Keyword
+        };
     }
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
@@ -77,11 +75,11 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 } else {
                     suggestions = fieldSuggestions.filter((s) => s.label.indexOf(' ') < 0);
                 }
-                const spaceIdx = prevToken.value.lastIndexOf(' ');
-                const dotIdx = prevToken.value.lastIndexOf('.');
+                const spaceIdx = prevToken.text.lastIndexOf(' ');
+                const dotIdx = prevToken.text.lastIndexOf('.');
                 const charIdx = Math.max(spaceIdx, dotIdx);
                 if (charIdx >= 0) {
-                    const prefix = prevToken.value.substr(0, charIdx + 1);
+                    const prefix = prevToken.text.substr(0, charIdx + 1);
                     suggestions = suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0)
                         .map((s) => {
                             return {

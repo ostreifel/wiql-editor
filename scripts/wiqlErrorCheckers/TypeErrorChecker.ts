@@ -63,7 +63,7 @@ export class TypeErrorChecker {
     }
     private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: 'literal' | 'field'): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;
-        const validOps: Function[] = this.fieldLookup[field.identifier.value][rhsType];
+        const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
             return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier} and ${rhsType}`)];
         }
@@ -88,7 +88,7 @@ export class TypeErrorChecker {
         const error = toDecoration(value.value, `Expected value of type ${Symbols.getSymbolName(symbolType)}`);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
         if (value.value instanceof Symbols.Variable) {
-            const varType = this.mapType(definedVariables[value.value.name]);
+            const varType = this.mapType(definedVariables[value.value.text]);
             return varType === symbolType ? [] : [error];
         }
         switch (expectedType) {
@@ -130,8 +130,8 @@ export class TypeErrorChecker {
         return errors;
     }
     private checkRhsField(targetField: Symbols.Field, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
-        if (targetField.identifier.value in this.fieldLookup
-            && this.fieldLookup[targetField.identifier.value].fieldType !== expectedType) {
+        if (targetField.identifier.text.toLocaleLowerCase() in this.fieldLookup
+            && this.fieldLookup[targetField.identifier.text.toLocaleLowerCase()].fieldType !== expectedType) {
             return [toDecoration(targetField.identifier, `Expected field of type ${FieldType[expectedType]}`)];
         }
         return [];
@@ -147,10 +147,10 @@ export class TypeErrorChecker {
         const allConditions = symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression);
         const fieldConditions = allConditions.filter((c) => c.field !== undefined && c.conditionalOperator !== undefined);
         for (let condition of allConditions) {
-            if (!condition.field || !(condition.field.identifier.value in this.fieldLookup)) {
+            if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in this.fieldLookup)) {
                 continue;
             }
-            const type = this.fieldLookup[condition.field.identifier.value].fieldType;
+            const type = this.fieldLookup[condition.field.identifier.text.toLocaleLowerCase()].fieldType;
             if (condition.conditionalOperator && condition.value) {
                 const field = condition.field;
                 const rhsType = this.getRhsType(condition.value);

@@ -19,14 +19,14 @@ export class NameErrorChecker implements IErrorChecker {
         // variable name errors
         const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
         for (let variable of variables) {
-            if (!(variable.name in definedVariables)) {
+            if (!(variable.text.toLocaleLowerCase() in definedVariables)) {
                 errors.push(toDecoration(variable, `Valid names are include {${Object.keys(definedVariables).join(', ')}}`));
             }
         }
         // field name errors
         const identifiers = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Identifier);
         for (let identifier of identifiers) {
-            if (this.validFieldIdentifiers.indexOf(identifier.value) < 0) {
+            if (this.validFieldIdentifiers.indexOf(identifier.text.toLocaleLowerCase()) < 0) {
                 errors.push(toDecoration(identifier, 'Field does not exist'));
             }
         }
