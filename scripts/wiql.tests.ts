@@ -1,7 +1,7 @@
 import { expect, assert } from 'chai';
 import { tokenize } from './wiqlTokenizer';
 import * as Symbols from './wiqlSymbols';
-import {parse} from './wiqlParser';
+import { parse } from './wiqlParser';
 
 
 // describe('Parser', () => {
@@ -30,3 +30,11 @@ describe('Tokenizer', () => {
     });
 });
 
+describe('Symbols', () => {
+    it('number', () => {
+        const inputs: Symbols.Symbol[] = [new Symbols.Minus(0, 1, '-'), new Symbols.Digits(1, 1, 'asdf')];
+        const num = new Symbols.Number(inputs);
+        expect(num.digits instanceof Symbols.Digits, 'expecting digits').to.be.true;
+        expect(num.minus instanceof Symbols.Minus, 'expecting minus').to.be.true;
+    });
+});

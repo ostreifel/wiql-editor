@@ -32,7 +32,7 @@ export const tokenPatterns: TokenPattern[] = [
     { match: '(', token: Symbols.LParen },
     { match: ')', token: Symbols.RParen },
     { match: '[any]', token: Symbols.Variable },
-    { match: /@\w+/, token: Symbols.Variable },
+    { match: /@\w*/, token: Symbols.Variable },
     {
         match: '[',
         token: Symbols.LSqBracket,

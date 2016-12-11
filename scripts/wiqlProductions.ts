@@ -4,7 +4,6 @@ export interface IProduction {
     result: Function;
     /** (? extends typeof Symbols.Symbol)[] */
     inputs: Function[];
-    fromInputs: (inputs: Symbols.Symbol[]) => Symbols.Symbol;
 }
 const productions: IProduction[] = [
     {
@@ -14,13 +13,7 @@ const productions: IProduction[] = [
             Symbols.FieldList,
             Symbols.From,
             Symbols.WorkItems
-        ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems
-        ]) => new Symbols.FlatSelect(inputs[1])
+        ]
     },
     {
         result: Symbols.FlatSelect,
@@ -31,15 +24,7 @@ const productions: IProduction[] = [
             Symbols.WorkItems,
             Symbols.Where,
             Symbols.LogicalExpression
-        ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression
-        ]) => new Symbols.FlatSelect(inputs[1], inputs[5])
+        ]
     },
     {
         result: Symbols.FlatSelect,
@@ -53,16 +38,6 @@ const productions: IProduction[] = [
             Symbols.OrderBy,
             Symbols.OrderByFieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList
-        ]) => new Symbols.FlatSelect(inputs[1], inputs[5], inputs[7])
     },
     {
         result: Symbols.FlatSelect,
@@ -78,18 +53,6 @@ const productions: IProduction[] = [
             Symbols.Asof,
             Symbols.DateTime
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList,
-            Symbols.Asof,
-            Symbols.DateTime
-        ]) =>  new Symbols.FlatSelect(inputs[1], inputs[5], inputs[7], inputs[9])
     },
     {
         result: Symbols.FlatSelect,
@@ -103,16 +66,6 @@ const productions: IProduction[] = [
             Symbols.Asof,
             Symbols.DateTime
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList,
-            Symbols.Asof,
-            Symbols.DateTime
-        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[5], inputs[7])
     },
     {
         result: Symbols.FlatSelect,
@@ -124,14 +77,6 @@ const productions: IProduction[] = [
             Symbols.OrderBy,
             Symbols.OrderByFieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList
-        ]) => new Symbols.FlatSelect(inputs[1], undefined, inputs[5])
     },
     {
         result: Symbols.FlatSelect,
@@ -143,14 +88,6 @@ const productions: IProduction[] = [
             Symbols.Asof,
             Symbols.DateTime
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Asof,
-            Symbols.DateTime
-        ]) => new Symbols.FlatSelect(inputs[1], undefined, undefined, inputs[5])
     },
     {
         result: Symbols.FlatSelect,
@@ -164,25 +101,12 @@ const productions: IProduction[] = [
             Symbols.Asof,
             Symbols.DateTime
         ],
-        fromInputs: (inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.Asof,
-            Symbols.DateTime
-        ]) => new Symbols.FlatSelect(inputs[1], inputs[5], undefined, inputs[7])
     },
     {
         result: Symbols.FieldList,
         inputs: [
             Symbols.Field
         ],
-        fromInputs: (inputs: [
-            Symbols.Field
-        ]) => new Symbols.FieldList(inputs[0])
     },
     {
         result: Symbols.FieldList,
@@ -191,20 +115,12 @@ const productions: IProduction[] = [
             Symbols.Comma,
             Symbols.FieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Comma,
-            Symbols.FieldList
-        ]) => new Symbols.FieldList(inputs[0], inputs[2])
     },
     {
         result: Symbols.Field,
         inputs: [
             Symbols.Identifier
         ],
-        fromInputs: (inputs: [
-            Symbols.Identifier
-        ]) => new Symbols.Field(inputs[0])
     },
     {
         result: Symbols.Field,
@@ -213,11 +129,6 @@ const productions: IProduction[] = [
             Symbols.Identifier,
             Symbols.RSqBracket
         ],
-        fromInputs: (inputs: [
-            Symbols.LSqBracket,
-            Symbols.Identifier,
-            Symbols.RSqBracket
-        ]) => new Symbols.Field(inputs[1])
     },
     {
         result: Symbols.LogicalExpression,
@@ -227,12 +138,6 @@ const productions: IProduction[] = [
             Symbols.Or,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0], inputs[2], inputs[3])
     },
     {
         result: Symbols.LogicalExpression,
@@ -242,12 +147,6 @@ const productions: IProduction[] = [
             Symbols.And,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0], inputs[2], inputs[3])
     },
     {
         result: Symbols.LogicalExpression,
@@ -255,10 +154,6 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.ConditionalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0])
     },
     {
         result: Symbols.LogicalExpression,
@@ -268,12 +163,6 @@ const productions: IProduction[] = [
             Symbols.Or,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0], inputs[2], inputs[3])
     },
     {
         result: Symbols.LogicalExpression,
@@ -283,12 +172,6 @@ const productions: IProduction[] = [
             Symbols.And,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0], inputs[2], inputs[3])
     },
     {
         result: Symbols.LogicalExpression,
@@ -296,10 +179,6 @@ const productions: IProduction[] = [
             Symbols.Ever,
             Symbols.ConditionalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression
-        ]) => new Symbols.LogicalExpression(inputs[1], inputs[0])
     },
     {
         result: Symbols.LogicalExpression,
@@ -308,11 +187,6 @@ const productions: IProduction[] = [
             Symbols.Or,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[0], undefined, inputs[1], inputs[2])
     },
     {
         result: Symbols.LogicalExpression,
@@ -321,20 +195,12 @@ const productions: IProduction[] = [
             Symbols.And,
             Symbols.LogicalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ]) => new Symbols.LogicalExpression(inputs[0], undefined, inputs[1], inputs[2])
     },
     {
         result: Symbols.LogicalExpression,
         inputs: [
             Symbols.ConditionalExpression
         ],
-        fromInputs: (inputs: [
-            Symbols.ConditionalExpression
-        ]) => new Symbols.LogicalExpression(inputs[0])
     },
     {
         result: Symbols.ConditionalExpression,
@@ -343,11 +209,6 @@ const productions: IProduction[] = [
             Symbols.LogicalExpression,
             Symbols.RParen
         ],
-        fromInputs: (inputs: [
-            Symbols.LParen,
-            Symbols.LogicalExpression,
-            Symbols.RParen
-        ]) => new Symbols.ConditionalExpression(inputs[1])
     },
     {
         result: Symbols.ConditionalExpression,
@@ -356,11 +217,6 @@ const productions: IProduction[] = [
             Symbols.ConditionalOperator,
             Symbols.Value
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.ConditionalOperator,
-            Symbols.Value
-        ]) => new Symbols.ConditionalExpression(inputs[0], inputs[1], inputs[2])
     },
     {
         result: Symbols.ConditionalExpression,
@@ -371,13 +227,6 @@ const productions: IProduction[] = [
             Symbols.ValueList,
             Symbols.RParen
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.In,
-            Symbols.LParen,
-            Symbols.ValueList,
-            Symbols.RParen
-        ]) => new Symbols.ConditionalExpression(inputs[0], undefined, inputs[3])
     },
     {
         result: Symbols.ConditionalExpression,
@@ -389,23 +238,12 @@ const productions: IProduction[] = [
             Symbols.ValueList,
             Symbols.RParen
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Not,
-            Symbols.In,
-            Symbols.LParen,
-            Symbols.ValueList,
-            Symbols.RParen
-        ]) => new Symbols.ConditionalExpression(inputs[0], inputs[1], inputs[4])
     },
     {
         result: Symbols.Number,
         inputs: [
             Symbols.Digits
         ],
-        fromInputs: (inputs: [
-            Symbols.Digits
-        ]) => new Symbols.Number(inputs[0])
     },
     {
         result: Symbols.Number,
@@ -413,46 +251,30 @@ const productions: IProduction[] = [
             Symbols.Minus,
             Symbols.Digits
         ],
-        fromInputs: (inputs: [
-            Symbols.Minus,
-            Symbols.Digits
-        ]) => new Symbols.Number(inputs[1], inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.Number
         ],
-        fromInputs: (inputs: [
-            Symbols.Number
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.String
         ],
-        fromInputs: (inputs: [
-            Symbols.String
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.DateTime
         ],
-        fromInputs: (inputs: [
-            Symbols.DateTime
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.Variable
         ],
-        fromInputs: (inputs: [
-            Symbols.Variable
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
@@ -461,11 +283,6 @@ const productions: IProduction[] = [
             Symbols.Minus,
             Symbols.Number
         ],
-        fromInputs: (inputs: [
-            Symbols.Variable,
-            Symbols.Minus,
-            Symbols.Number
-        ]) => new Symbols.Value(inputs[0], inputs[1], inputs[2])
     },
     {
         result: Symbols.Value,
@@ -474,47 +291,30 @@ const productions: IProduction[] = [
             Symbols.Plus,
             Symbols.Number
         ],
-        fromInputs: (inputs: [
-            Symbols.Variable,
-            Symbols.Plus,
-            Symbols.Number
-        ]) => new Symbols.Value(inputs[0], inputs[1], inputs[2])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.True
         ],
-        fromInputs: (inputs: [
-            Symbols.True
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.False
         ],
-        fromInputs: (inputs: [
-            Symbols.False
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.Value,
         inputs: [
             Symbols.Field
         ],
-        fromInputs: (inputs: [
-            Symbols.Field
-        ]) => new Symbols.Value(inputs[0])
     },
     {
         result: Symbols.DateTime,
         inputs: [
             Symbols.String
         ],
-        fromInputs: (inputs: [
-            Symbols.String
-        ]) => new Symbols.DateTime(inputs[0])
     },
     {
         result: Symbols.ValueList,
@@ -523,83 +323,54 @@ const productions: IProduction[] = [
             Symbols.Comma,
             Symbols.ValueList
         ],
-        fromInputs: (inputs: [
-            Symbols.Value,
-            Symbols.Comma,
-            Symbols.ValueList
-        ]) => new Symbols.ValueList(inputs[0], inputs[2])
     },
     {
         result: Symbols.ValueList,
         inputs: [
             Symbols.Value
         ],
-        fromInputs: (inputs: [
-            Symbols.Value
-        ]) => new Symbols.ValueList(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.Equals
         ],
-        fromInputs: (inputs: [
-            Symbols.Equals
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.NotEquals
         ],
-        fromInputs: (inputs: [
-            Symbols.NotEquals
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.LessThan
         ],
-        fromInputs: (inputs: [
-            Symbols.LessThan
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.LessOrEq
         ],
-        fromInputs: (inputs: [
-            Symbols.LessOrEq
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.GreaterThan
         ],
-        fromInputs: (inputs: [
-            Symbols.GreaterThan
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.GreaterOrEq
         ],
-        fromInputs: (inputs: [
-            Symbols.GreaterOrEq
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.Like
         ],
-        fromInputs: (inputs: [
-            Symbols.Like
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -607,10 +378,6 @@ const productions: IProduction[] = [
             Symbols.Ever,
             Symbols.Like
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.Like
-        ]) => new Symbols.ConditionalOperator(inputs[1], inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -619,11 +386,6 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.Like
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.Not,
-            Symbols.Like
-        ]) => new Symbols.ConditionalOperator(inputs[2], inputs[0], inputs[1])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -631,19 +393,12 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.Like
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.Like
-        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.Under
         ],
-        fromInputs: (inputs: [
-            Symbols.Under
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -651,10 +406,6 @@ const productions: IProduction[] = [
             Symbols.Ever,
             Symbols.Under
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.Under
-        ]) => new Symbols.ConditionalOperator(inputs[1], inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -663,11 +414,6 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.Under
         ],
-        fromInputs: (inputs: [
-            Symbols.Ever,
-            Symbols.Not,
-            Symbols.Under
-        ]) => new Symbols.ConditionalOperator(inputs[2], inputs[0], inputs[1])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -675,28 +421,18 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.Under
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.Under
-        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.Contains
         ],
-        fromInputs: (inputs: [
-            Symbols.Contains
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.ContainsWords
         ],
-        fromInputs: (inputs: [
-            Symbols.ContainsWords
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -704,10 +440,6 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.Contains
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.Contains
-        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -715,19 +447,12 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.ContainsWords
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.ContainsWords
-        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
         inputs: [
             Symbols.InGroup
         ],
-        fromInputs: (inputs: [
-            Symbols.InGroup
-        ]) => new Symbols.ConditionalOperator(inputs[0])
     },
     {
         result: Symbols.ConditionalOperator,
@@ -735,10 +460,6 @@ const productions: IProduction[] = [
             Symbols.Not,
             Symbols.InGroup
         ],
-        fromInputs: (inputs: [
-            Symbols.Not,
-            Symbols.InGroup
-        ]) => new Symbols.ConditionalOperator(inputs[1], undefined, inputs[0])
     },
     {
         result: Symbols.ContainsWords,
@@ -746,10 +467,6 @@ const productions: IProduction[] = [
             Symbols.Contains,
             Symbols.Words
         ],
-        fromInputs: (inputs: [
-            Symbols.Contains,
-            Symbols.Words
-        ]) => new Symbols.ContainsWords(inputs[0], inputs[1])
     },
     {
         result: Symbols.InGroup,
@@ -757,19 +474,12 @@ const productions: IProduction[] = [
             Symbols.In,
             Symbols.Group
         ],
-        fromInputs: (inputs: [
-            Symbols.In,
-            Symbols.Group
-        ]) => new Symbols.InGroup(inputs[0], inputs[1])
     },
     {
         result: Symbols.OrderByFieldList,
         inputs: [
             Symbols.Field
         ],
-        fromInputs: (inputs: [
-            Symbols.Field
-        ]) => new Symbols.OrderByFieldList(inputs[0])
     },
     {
         result: Symbols.OrderByFieldList,
@@ -777,10 +487,6 @@ const productions: IProduction[] = [
             Symbols.Field,
             Symbols.Asc
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Asc
-        ]) => new Symbols.OrderByFieldList(inputs[0], inputs[1])
     },
     {
         result: Symbols.OrderByFieldList,
@@ -788,10 +494,6 @@ const productions: IProduction[] = [
             Symbols.Field,
             Symbols.Desc
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Desc
-        ]) => new Symbols.OrderByFieldList(inputs[0], inputs[1])
     },
     {
         result: Symbols.OrderByFieldList,
@@ -800,11 +502,6 @@ const productions: IProduction[] = [
             Symbols.Comma,
             Symbols.OrderByFieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ]) => new Symbols.OrderByFieldList(inputs[0], undefined, inputs[2])
     },
     {
         result: Symbols.OrderByFieldList,
@@ -814,12 +511,6 @@ const productions: IProduction[] = [
             Symbols.Comma,
             Symbols.OrderByFieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Asc,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ]) => new Symbols.OrderByFieldList(inputs[0], inputs[1], inputs[3])
     },
     {
         result: Symbols.OrderByFieldList,
@@ -829,12 +520,6 @@ const productions: IProduction[] = [
             Symbols.Comma,
             Symbols.OrderByFieldList
         ],
-        fromInputs: (inputs: [
-            Symbols.Field,
-            Symbols.Desc,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ]) => new Symbols.OrderByFieldList(inputs[0], inputs[1], inputs[3])
     }
 ];
 export function getProductionsFor(symbolClass: Function): IProduction[] {

@@ -57,98 +57,133 @@ export class EOF extends Token {
     }
 }
 
-export class Number extends Symbol {
-    constructor(readonly digits: Digits, readonly minus?: Minus) {
-        super();
+export abstract class SymbolTree {
+    constructor(readonly inputs: Symbol[]) {
+    }
+    /**
+     * Error checkers work better if each tree symbol has its component types as properties
+     * so we want to create properties with the relevant data for each SymbolTree 
+     * and autowire it by tye type of type of the property
+     * 
+     * However typescript does not type reflection that can handle union types during refelction
+     * so we have to manually wire the properties of each symbol tree in each constructor.
+     */
+    protected getInput(types: Function | Function[], occurance = 1): any {
+        let count = 0;
+        if (types instanceof Function) {
+            types = [types];
+        }
+        for (let input of this.inputs) {
+            for (let type of types) {
+                if (input instanceof type && ++count === occurance) {
+                    return input;
+                }
+            }
+        }
+        return null;
     }
 }
-export class Field extends Symbol {
-    constructor(readonly identifier: Identifier) {
-        super();
+
+export class Number extends SymbolTree {
+    public readonly digits: Digits;
+    public readonly minus?: Minus;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.digits = this.getInput(Digits);
+        this.minus = this.getInput(Minus);
+    }
+
+}
+export class Field extends SymbolTree {
+    public readonly identifier: Identifier;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.identifier = this.getInput(Identifier);
     }
 }
-export class ContainsWords extends Symbol {
-    constructor(readonly contains: Contains, readonly words: Words) {
-        super();
+export class ContainsWords extends SymbolTree {
+    public readonly contains: Contains;
+    public readonly words: Words;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.contains = this.getInput(Contains);
+        this.words = this.getInput(Words);
     }
 }
-export class InGroup extends Symbol {
-    constructor(readonly inToken: In, readonly group: Group) {
-        super();
-    }
- }
-export class DateTime extends Symbol {
-    constructor(readonly dateString: String) {
-        super();
+export class InGroup extends SymbolTree { }
+export class DateTime extends SymbolTree {
+    public readonly dateString: String;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.dateString = this.getInput(String);
     }
 }
-export class OrderByFieldList extends Symbol {
-    constructor(readonly field: Field,
-                readonly ascDesc?: Asc | Desc,
-                readonly restOfList?: OrderByFieldList) {
-        super();
+export class OrderByFieldList extends SymbolTree {
+    public readonly field: Field;
+    public readonly ascDesc?: Asc | Desc;
+    public readonly restOfList?: OrderByFieldList;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.field = this.getInput(Field);
+        this.ascDesc = this.getInput([Asc, Desc]);
+        this.restOfList = this.getInput(OrderByFieldList);
     }
 }
-export class FieldList extends Symbol {
-    constructor(readonly field: Field, readonly restOfList?: FieldList) {
-        super();
+export class FieldList extends SymbolTree {
+    public readonly field: Field;
+    public readonly restOfList?: FieldList;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.field = this.getInput(Field);
+        this.restOfList = this.getInput(FieldList);
     }
 }
-export class ConditionalOperator extends Symbol {
-    constructor(conditionToken: Equals);
-    constructor(conditionToken: NotEquals);
-    constructor(conditionToken: GreaterThan);
-    constructor(conditionToken: GreaterOrEq);
-    constructor(conditionToken: LessThan);
-    constructor(conditionToken: LessOrEq);
-    constructor(conditionToken: Contains, empty?: undefined, not?: Not);
-    constructor(conditionToken: ContainsWords, empty?: undefined, not?: Not);
-    constructor(conditionToken: InGroup, empty?: undefined, not?: Not);
-    constructor(conditionToken: Like | Under, ever?: Ever, not?: Not);
-    constructor(readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords | Like | Under | InGroup,
-                readonly ever?: Ever, readonly not?: Not) {
-        super();
+export class ConditionalOperator extends SymbolTree {
+    public readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords | Like | Under | InGroup;
+    public readonly ever?: Ever;
+    public readonly not?: Not;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.conditionToken = this.getInput([Equals, NotEquals, GreaterThan, GreaterOrEq, LessThan, LessOrEq, Contains, ContainsWords, Like, Under, InGroup]);
+        this.ever = this.getInput([Ever]);
+        this.not = this.getInput([Not]);
     }
 }
-export class Value extends Symbol {
-    constructor(value: Number);
-    constructor(value: String);
-    constructor(value: DateTime);
-    constructor(value: Variable);
-    constructor(value: Variable, operator: Plus | Minus, num: Number);
-    constructor(value: True);
-    constructor(value: False);
-    constructor(value: Field);
-    constructor(readonly value: Number | String | DateTime | Variable | True | False | Field,
-                readonly operator?: Plus | Minus,
-                readonly num?: Number) {
-        super();
+export class Value extends SymbolTree {
+    public readonly value: Number | String | DateTime | Variable | True | False | Field;
+    public readonly operator?: Plus | Minus;
+    public readonly num?: Number;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.value = this.getInput([Number, String, DateTime, Variable, True, False, Field]);
+        this.operator = this.getInput([Plus, Minus]);
+        this.num = this.getInput(Number);
     }
 }
-export class ValueList extends Symbol {
-    constructor(readonly value: Value, readonly restOfList?: ValueList) {
-        super();
+export class ValueList extends SymbolTree {
+    public readonly value: Value;
+    public readonly restOfList?: ValueList;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.value = this.getInput(Value);
+        this.restOfList = this.getInput(ValueList);
     }
 }
 /** Combines the expression[1 - 4] from ebnf into one */
-export class LogicalExpression extends Symbol {
-    constructor(condition: ConditionalExpression);
-    constructor(condition: ConditionalExpression, blank: undefined, or: Or, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, blank: undefined, and: And, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, not: Not);
-    constructor(condition: ConditionalExpression, not: Not, or: Or, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, not: Not, and: And, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, ever: Ever);
-    constructor(condition: ConditionalExpression, ever: Ever, or: Or, expression: LogicalExpression);
-    constructor(condition: ConditionalExpression, ever: Ever, and: And, expression: LogicalExpression);
-    constructor(readonly condition: ConditionalExpression,
-                readonly everNot?: Ever | Not,
-                readonly orAnd?: Or | And,
-                readonly expression?: LogicalExpression) {
-        super();
+export class LogicalExpression extends SymbolTree {
+    public readonly condition: ConditionalExpression;
+    public readonly everNot?: Ever | Not;
+    public readonly orAnd?: And | Or;
+    public readonly expression?: LogicalExpression;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.condition = this.getInput(ConditionalExpression);
+        this.everNot = this.getInput([Ever, Not]);
+        this.orAnd = this.getInput([And, Or]);
+        this.expression = this.getInput(LogicalExpression);
     }
 }
-export class ConditionalExpression extends Symbol {
+export class ConditionalExpression extends SymbolTree {
     public readonly expression?: LogicalExpression;
 
     public readonly field?: Field;
@@ -158,33 +193,27 @@ export class ConditionalExpression extends Symbol {
 
     public readonly not?: Not;
     public readonly valueList?: ValueList;
-    constructor(expression: LogicalExpression);
-    constructor(field: Field, cond: ConditionalOperator, value: Value);
-    constructor(field: Field, not: Not | undefined, value: ValueList);
-    constructor(arg1: Field | LogicalExpression, arg2?: ConditionalOperator | Not, arg3?: Value | ValueList) {
-        super();
-        if (arg1 instanceof LogicalExpression) {
-            this.expression = arg1;
-        } else if (arg2 instanceof ConditionalOperator && arg3 instanceof Value) {
-            this.field = arg1;
-            this.conditionalOperator = arg2;
-            this.value = arg3;
-            let a: number;
-        } else if ((arg2 instanceof Not || arg2 === undefined) && arg3 instanceof ValueList) {
-            this.field = arg1;
-            this.not = <Not | undefined>arg2;
-            this.valueList = arg3;
-        } else {
-            throw new Error('Improper ConditionalExpression arguments');
-        }
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.expression = this.getInput(LogicalExpression);
+        this.field = this.getInput(Field);
+        this.conditionalOperator = this.getInput(ConditionalOperator);
+        this.value = this.getInput(Value);
+        this.not = this.getInput(Not);
+        this.valueList = this.getInput(ValueList);
     }
 }
-export class FlatSelect extends Symbol {
-    constructor(readonly fieldList: FieldList,
-                readonly whereExp?: LogicalExpression,
-                readonly orderBy?: OrderByFieldList,
-                readonly asOf?: DateTime) {
-        super();
+export class FlatSelect extends SymbolTree {
+    public readonly fieldList: FieldList;
+    public readonly whereExp?: LogicalExpression;
+    public readonly orderBy?: OrderByFieldList;
+    public readonly asOf?: DateTime;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.fieldList = this.getInput(FieldList);
+        this.whereExp = this.getInput(LogicalExpression);
+        this.orderBy = this.getInput(OrderByFieldList);
+        this.asOf = this.getInput(DateTime);
     }
 }
 // Link symbols not copied as workItemLink queries are not supported yet

@@ -82,7 +82,7 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
                 args.push((<stackState>stack.pop()).symbol);
             }
             args.reverse();
-            const sym = action.production.fromInputs(args);
+            const sym: Symbols.Symbol = new (action.production.result(args));
             const symName = symbolName(sym);
             const nextState = table[currState()].symbols[symName];
             if (nextState === undefined) {
