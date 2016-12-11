@@ -1,5 +1,5 @@
-import { IParseResults, ParseError, parse } from '../wiqlParser';
-import * as Symbols from '../wiqlSymbols';
+import { IParseResults, ParseError, parse } from '../compiler/wiqlParser';
+import * as Symbols from '../compiler/wiqlSymbols';
 import { toDecoration } from './errorCheckUtils';
 
 enum ComparisonType {

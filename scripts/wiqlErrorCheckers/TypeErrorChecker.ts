@@ -1,8 +1,8 @@
 import { IErrorChecker } from './IErrorChecker';
-import { IParseResults, parse } from '../wiqlParser';
+import { IParseResults, parse } from '../compiler/wiqlParser';
 import { WorkItemField, FieldType } from 'TFS/WorkItemTracking/Contracts';
 import { symbolsOfType, toDecoration } from './errorCheckUtils';
-import * as Symbols from '../wiqlSymbols';
+import * as Symbols from '../compiler/wiqlSymbols';
 import { definedVariables } from '../wiqlDefinition';
 
 const operationLookup: {

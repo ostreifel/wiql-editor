@@ -1,5 +1,5 @@
-import { parse } from './wiqlParser';
-import * as Symbols from './wiqlSymbols';
+import { parse } from './compiler/wiqlParser';
+import * as Symbols from './compiler/wiqlSymbols';
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
 
 type FieldMap = { [name: string]: WorkItemField };

@@ -1,7 +1,7 @@
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
-import { wiqlPatterns } from './wiqlTokenPatterns';
-import * as Symbols from './wiqlSymbols';
-import { parse, ParseError } from './wiqlParser';
+import { wiqlPatterns } from './compiler/wiqlTokenPatterns';
+import * as Symbols from './compiler/wiqlSymbols';
+import { parse, ParseError } from './compiler/wiqlParser';
 import { definedVariables } from './wiqlDefinition';
 
 // These symbols are buggy when suggested

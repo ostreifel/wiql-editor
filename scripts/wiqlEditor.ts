@@ -1,9 +1,11 @@
 import { getClient as getWitClient } from 'TFS/WorkItemTracking/RestClient';
 import { getCompletionProvider } from './wiqlCompletion';
-import { parse } from './wiqlParser';
+import { parse } from './compiler/wiqlParser';
 import { format } from './wiqlFormatter';
 import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
 import * as Wiql from './wiqlDefinition';
+
+import { parse as parseEbnf } from './compiler/ebnfParser';
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
@@ -47,6 +49,9 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             }
         });
     });
+
+    parseEbnf('./compiler/wiql.ebnf').then(rules => console.log(rules), error => console.log(error));
+
 
     return editor;
 }
