@@ -1,5 +1,5 @@
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
-import { tokenPatterns } from './wiqlTokenizer';
+import { wiqlPatterns } from './wiqlTokenPatterns';
 import * as Symbols from './wiqlSymbols';
 import { parse, ParseError } from './wiqlParser';
 import { definedVariables } from './wiqlDefinition';
@@ -9,7 +9,7 @@ import { definedVariables } from './wiqlDefinition';
 const doNotSuggest = ['(', ')', ',', '[', ']'];
 
 const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
-for (let pattern of tokenPatterns) {
+for (let pattern of wiqlPatterns) {
     if (typeof pattern.match === 'string' && doNotSuggest.indexOf(pattern.match) < 0) {
         const symName = Symbols.getSymbolName(pattern.token);
         symbolSuggestionMap[symName] = {

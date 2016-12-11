@@ -1,7 +1,8 @@
 import {states, transitions, resolutions} from './wiqlDfa';
 import * as Symbols from './wiqlSymbols';
 import {IProduction} from './wiqlProductions';
-import {tokenize} from './wiqlTokenizer';
+import {tokenize} from './tokenizer';
+import { wiqlPatterns } from './wiqlTokenPatterns';
 
 enum Action  {
     Shift,
@@ -54,8 +55,8 @@ export type IParseResults = Symbols.Symbol | ParseError;
 
 const EOF = Symbols.getSymbolName(Symbols.EOF);
 export function parse(lines: string[], forceSuggest = false): IParseResults {
-    const tokens = tokenize(lines).reverse();
-    tokens.unshift(new Symbols.EOF(lines.length, lines[lines.length -1].length, tokens[0]));
+    const tokens = tokenize(lines, wiqlPatterns).reverse();
+    tokens.unshift(new Symbols.EOF(lines.length, lines[lines.length - 1].length, tokens[0]));
 
     type stackState = {state: number, symbol: Symbols.Symbol};
     const stack: stackState[] = [];

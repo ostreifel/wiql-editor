@@ -34,7 +34,7 @@
 			"parameters",
 			"statements"			
 		],
-		"cyclomatic-complexity": [ true, 20 ],
+		"cyclomatic-complexity": [ true, 30 ],
         "max-file-line-count": [
             true, 400
         ],

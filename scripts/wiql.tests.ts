@@ -1,32 +1,24 @@
 import { expect, assert } from 'chai';
-import { tokenize } from './wiqlTokenizer';
+import { tokenize } from './tokenizer';
+import { wiqlPatterns } from './wiqlTokenPatterns';
 import * as Symbols from './wiqlSymbols';
 import { parse } from './wiqlParser';
 
 
-// describe('Parser', () => {
-//     it('Basic test', () => {
-//         const {wiqlTree} = parse(['Select id from workitems']);
-//         expect(wiqlTree instanceof Symbols.FlatSelect, 'root is flatselect').to.be.true;
-//     });
-// });
-
-
-
 describe('Tokenizer', () => {
     it('keyword', () => {
-        const tokens = tokenize(['and']);
+        const tokens = tokenize(['and'], wiqlPatterns);
         expect(tokens[0] instanceof Symbols.And, 'and parsed').to.be.true;
     });
     it('boolean', () => {
-        const tokens = tokenize(['true']);
+        const tokens = tokenize(['true'], wiqlPatterns);
         expect(tokens[0] instanceof Symbols.True, 'true parsed').to.be.true;
     });
     it('select id', () => {
-        const tokens = tokenize(['select Id']);
+        const tokens = tokenize(['select Id'], wiqlPatterns);
         expect(tokens[0] instanceof Symbols.Select, 'expecting select').to.be.true;
         expect(tokens[1] instanceof Symbols.Identifier, 'expecting Identifier').to.be.true;
-        expect(tokens.length).to.be.eq(3);
+        expect(tokens.length).to.be.eq(2);
     });
 });
 
