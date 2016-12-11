@@ -11,36 +11,42 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
         monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
     });
+    const defaultVal =
+        `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems where [Team Project] = @project`;
+    const editor = monaco.editor.create(target, {
+        language: Wiql.def.id,
+        value: intialValue || defaultVal,
+        automaticLayout: true
+    });
+
     getWitClient().getFields().then((fields) => {
         monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
         const model = editor.getModel();
         const errorChecker = new ErrorChecker(fields);
         let oldDecorations: string[] = [];
-        intialValue = intialValue ||
-            `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems where [Team Project] = @project`;
-        editor.setValue(intialValue);
-        format(editor.getModel(), fields);
+        format(editor, fields);
         $(window).keydown((event) => {
             if ((event.altKey && event.shiftKey && event.which === 70) ||
                 (event.ctrlKey && event.shiftKey && event.which === 70)) {
                 event.preventDefault();
-                format(editor.getModel(), fields);
+                format(editor, fields);
             }
         });
-        editor.onDidChangeModelContent((event) => {
+        function checkErrors(): number {
             const lines = model.getLinesContent();
             const parseResult = parse(lines);
             const errors = errorChecker.check(parseResult);
             oldDecorations = model.deltaDecorations(oldDecorations, errors);
+            return errors.length;
+        }
+        checkErrors();
+        editor.onDidChangeModelContent(() => {
+            const errorCount = checkErrors();
             if (onChange) {
-                onChange(errors.length);
+                onChange(errorCount);
             }
         });
     });
 
-    const editor = monaco.editor.create(target, {
-        language: Wiql.def.id,
-        automaticLayout: true
-    });
     return editor;
 }

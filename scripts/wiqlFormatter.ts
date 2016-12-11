@@ -155,19 +155,27 @@ function formatFlatSelect(flatSelect: Symbols.FlatSelect, tab: string, fields: F
     return lines;
 }
 
-export function format(model: monaco.editor.IModel, fields: WorkItemField[]): void {
-    const text = model.toRawText();
-    const tab = text.options.insertSpaces ? Array(text.options.tabSize + 1).join(' ') : '\t';
+export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: WorkItemField[]): void {
+    const model = editor.getModel();
+    const tab = model.getOneIndent();
     const fieldMap: FieldMap = {};
     for (let field of fields) {
         fieldMap[field.name.toLocaleLowerCase()] =
             fieldMap[field.referenceName.toLocaleLowerCase()] = field;
     }
 
-    const parseTree = parse(text.lines);
+    const parseTree = parse(model.getLinesContent());
     if (parseTree instanceof Symbols.FlatSelect) {
-        text.lines = formatFlatSelect(parseTree, tab, fieldMap);
-        model.setValueFromRawText(text);
+        const lines = formatFlatSelect(parseTree, tab, fieldMap);
+        const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+            text: lines.join('\r\n'),
+            range: model.getFullModelRange(),
+            forceMoveMarkers: true,
+        };
+        model.pushEditOperations(editor.getSelections(),[edit],
+        // TODO actually calculate the new position 
+        (edits) => [new monaco.Selection(1, 1, 1, 1)]);
+        // model.pushStackElement();
     } else {
         // syntax error, not going to format
     }
