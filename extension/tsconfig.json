@@ -13,12 +13,15 @@
         "./typings/index.d.ts"
     ],
     "files": [
-        "scripts/compiler/ebnfParser.ts",
+        "scripts/compiler/buildTable/buildTable.ts",
+        "scripts/compiler/buildTable/ebnfParser.ts",
+        "scripts/compiler/buildTable/wiqlDfa.ts",
         "scripts/compiler/tokenizer.ts",
-        "scripts/compiler/wiqlDfa.ts",
         "scripts/compiler/wiqlParser.ts",
         "scripts/compiler/wiqlProductions.ts",
         "scripts/compiler/wiqlSymbols.ts",
+        "scripts/compiler/wiqlTable.d.ts",
+        "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/contextContracts.ts",
         "scripts/playground.ts",

@@ -1,8 +1,12 @@
-import {states, transitions, resolutions} from './wiqlDfa';
+import {states, transitions, resolutions} from './buildTable/wiqlDfa';
 import * as Symbols from './wiqlSymbols';
 import {IProduction} from './wiqlProductions';
 import {tokenize} from './tokenizer';
 import { wiqlPatterns } from './wiqlTokenPatterns';
+
+import { table as precomputedTable } from './wiqlTable';
+
+console.log(precomputedTable);
 
 enum Action  {
     Shift,

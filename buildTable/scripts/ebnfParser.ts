@@ -1,4 +1,5 @@
-import { TokenPattern, tokenize } from './tokenizer';
+// borrow the tokenizer from wiql
+import { TokenPattern, tokenize } from '../tokenizer';
 import * as Q from 'q';
 
 abstract class Token {
@@ -143,17 +144,17 @@ function parseRules(tokens: Token[]) {
 
 export function parse(fileName: string): IPromise<Rule[]> {
     const deferred = Q.defer<Rule[]>();
-    const reader = new FileReader();
-    reader.onload = file => {
-        const tokens = tokenize(file.target['result'], ebnfPatterns);
+    jQuery.get(fileName, (data) => {
+        const tokens = tokenize(data, ebnfPatterns);
         try {
             const rules = parseRules(tokens);
             deferred.resolve(rules);
         } catch (e) {
             deferred.reject(e);
         }
-    }
-    reader.onerror = e => deferred.reject(e);
+    }, (error) => {
+        deferred.reject(error);
+    });
 
     return deferred.promise;
 }

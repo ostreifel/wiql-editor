@@ -1,5 +1,5 @@
-import * as Symbols from './wiqlSymbols';
-import { IProduction, getProductionsFor, follows } from './wiqlProductions';
+import * as Symbols from '../wiqlSymbols';
+import { IProduction, getProductionsFor, follows } from '../wiqlProductions';
 
 export class ProductionPosition {
     constructor(readonly production: IProduction, readonly pos: number) {

@@ -58,7 +58,8 @@
                     ],
                     dest: "build",
                     filter: "isFile"
-                }]
+                }
+                ]
             }
         },
 
