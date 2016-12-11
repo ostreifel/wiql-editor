@@ -2,6 +2,7 @@ import * as Symbols from './wiqlSymbols';
 
 interface TokenPattern {
     match: string | RegExp;
+    /** (i,j,text) => void */
     token?;
     pushState?: TokenPattern[];
     popState?: boolean;
@@ -57,6 +58,7 @@ export const tokenPatterns: TokenPattern[] = [
     { match: /'(?:[^']|'')*/, token: Symbols.NonterminatingString },
     { match: /"(?:[^"]|"")*"/, token: Symbols.String },
     { match: /"(?:[^"]|"")*/, token: Symbols.NonterminatingString },
+    { match: /./, token: Symbols.UnexpectedToken}
 ];
 
 function makeRegexesAtStart(patterns: TokenPattern[]) {
@@ -90,8 +92,8 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     // Make sure string matches are on word boundries
                     && (j + tokenPattern.match.length === line.length - 1
                         || tokenPattern.match[tokenPattern.match.length - 1].match(/\W/)
-                        || substr[j + tokenPattern.match.length] === undefined
-                        || substr[j + tokenPattern.match.length].match(/\W/)
+                        || substr[tokenPattern.match.length] === undefined
+                        || substr[tokenPattern.match.length].match(/\W/)
                     )
                 ) {
                     tokenText = tokenPattern.match;
@@ -110,12 +112,7 @@ export function tokenize(lines: string[]): Symbols.Token[] {
                     continue nextToken;
                 }
             }
-            tokens.push(new Symbols.UnexpectedToken(i, j, line[j]));
-            j++;
         }
     }
-    const eofLine = lines.length - 1;
-    const eofCol = lines[0] ? lines[0].length : 0;
-    tokens.push(new Symbols.EOF(eofLine, eofCol, tokens[tokens.length - 1]));
     return tokens;
 }

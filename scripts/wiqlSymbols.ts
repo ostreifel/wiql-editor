@@ -89,8 +89,8 @@ export class Number extends SymbolTree {
     public readonly minus?: Minus;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.digits = this.getInput(Digits);
-        this.minus = this.getInput(Minus);
+        this.digits = super.getInput(Digits);
+        this.minus = super.getInput(Minus);
     }
 
 }
@@ -98,7 +98,7 @@ export class Field extends SymbolTree {
     public readonly identifier: Identifier;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.identifier = this.getInput(Identifier);
+        this.identifier = super.getInput(Identifier);
     }
 }
 export class ContainsWords extends SymbolTree {
@@ -106,8 +106,8 @@ export class ContainsWords extends SymbolTree {
     public readonly words: Words;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.contains = this.getInput(Contains);
-        this.words = this.getInput(Words);
+        this.contains = super.getInput(Contains);
+        this.words = super.getInput(Words);
     }
 }
 export class InGroup extends SymbolTree { }
@@ -115,7 +115,7 @@ export class DateTime extends SymbolTree {
     public readonly dateString: String;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.dateString = this.getInput(String);
+        this.dateString = super.getInput(String);
     }
 }
 export class OrderByFieldList extends SymbolTree {
@@ -124,9 +124,9 @@ export class OrderByFieldList extends SymbolTree {
     public readonly restOfList?: OrderByFieldList;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.field = this.getInput(Field);
-        this.ascDesc = this.getInput([Asc, Desc]);
-        this.restOfList = this.getInput(OrderByFieldList);
+        this.field = super.getInput(Field);
+        this.ascDesc = super.getInput([Asc, Desc]);
+        this.restOfList = super.getInput(OrderByFieldList);
     }
 }
 export class FieldList extends SymbolTree {
@@ -134,8 +134,8 @@ export class FieldList extends SymbolTree {
     public readonly restOfList?: FieldList;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.field = this.getInput(Field);
-        this.restOfList = this.getInput(FieldList);
+        this.field = super.getInput(Field);
+        this.restOfList = super.getInput(FieldList);
     }
 }
 export class ConditionalOperator extends SymbolTree {
@@ -144,9 +144,9 @@ export class ConditionalOperator extends SymbolTree {
     public readonly not?: Not;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.conditionToken = this.getInput([Equals, NotEquals, GreaterThan, GreaterOrEq, LessThan, LessOrEq, Contains, ContainsWords, Like, Under, InGroup]);
-        this.ever = this.getInput([Ever]);
-        this.not = this.getInput([Not]);
+        this.conditionToken = super.getInput([Equals, NotEquals, GreaterThan, GreaterOrEq, LessThan, LessOrEq, Contains, ContainsWords, Like, Under, InGroup]);
+        this.ever = super.getInput([Ever]);
+        this.not = super.getInput([Not]);
     }
 }
 export class Value extends SymbolTree {
@@ -155,9 +155,9 @@ export class Value extends SymbolTree {
     public readonly num?: Number;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.value = this.getInput([Number, String, DateTime, Variable, True, False, Field]);
-        this.operator = this.getInput([Plus, Minus]);
-        this.num = this.getInput(Number);
+        this.value = super.getInput([Number, String, DateTime, Variable, True, False, Field]);
+        this.operator = super.getInput([Plus, Minus]);
+        this.num = super.getInput(Number);
     }
 }
 export class ValueList extends SymbolTree {
@@ -165,8 +165,8 @@ export class ValueList extends SymbolTree {
     public readonly restOfList?: ValueList;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.value = this.getInput(Value);
-        this.restOfList = this.getInput(ValueList);
+        this.value = super.getInput(Value);
+        this.restOfList = super.getInput(ValueList);
     }
 }
 /** Combines the expression[1 - 4] from ebnf into one */
@@ -177,10 +177,10 @@ export class LogicalExpression extends SymbolTree {
     public readonly expression?: LogicalExpression;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.condition = this.getInput(ConditionalExpression);
-        this.everNot = this.getInput([Ever, Not]);
-        this.orAnd = this.getInput([And, Or]);
-        this.expression = this.getInput(LogicalExpression);
+        this.condition = super.getInput(ConditionalExpression);
+        this.everNot = super.getInput([Ever, Not]);
+        this.orAnd = super.getInput([And, Or]);
+        this.expression = super.getInput(LogicalExpression);
     }
 }
 export class ConditionalExpression extends SymbolTree {
@@ -195,12 +195,12 @@ export class ConditionalExpression extends SymbolTree {
     public readonly valueList?: ValueList;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.expression = this.getInput(LogicalExpression);
-        this.field = this.getInput(Field);
-        this.conditionalOperator = this.getInput(ConditionalOperator);
-        this.value = this.getInput(Value);
-        this.not = this.getInput(Not);
-        this.valueList = this.getInput(ValueList);
+        this.expression = super.getInput(LogicalExpression);
+        this.field = super.getInput(Field);
+        this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.value = super.getInput(Value);
+        this.not = super.getInput(Not);
+        this.valueList = super.getInput(ValueList);
     }
 }
 export class FlatSelect extends SymbolTree {
@@ -210,10 +210,10 @@ export class FlatSelect extends SymbolTree {
     public readonly asOf?: DateTime;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.fieldList = this.getInput(FieldList);
-        this.whereExp = this.getInput(LogicalExpression);
-        this.orderBy = this.getInput(OrderByFieldList);
-        this.asOf = this.getInput(DateTime);
+        this.fieldList = super.getInput(FieldList);
+        this.whereExp = super.getInput(LogicalExpression);
+        this.orderBy = super.getInput(OrderByFieldList);
+        this.asOf = super.getInput(DateTime);
     }
 }
 // Link symbols not copied as workItemLink queries are not supported yet

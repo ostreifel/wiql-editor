@@ -1,7 +1,7 @@
 import * as Symbols from './wiqlSymbols';
 export interface IProduction {
     /** ? extends typeof Symbols.Symbol */
-    result: Function;
+    result;
     /** (? extends typeof Symbols.Symbol)[] */
     inputs: Function[];
 }

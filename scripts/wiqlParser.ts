@@ -55,6 +55,8 @@ export type IParseResults = Symbols.Symbol | ParseError;
 const EOF = Symbols.getSymbolName(Symbols.EOF);
 export function parse(lines: string[], forceSuggest = false): IParseResults {
     const tokens = tokenize(lines).reverse();
+    tokens.unshift(new Symbols.EOF(lines.length, lines[lines.length -1].length, tokens[0]));
+
     type stackState = {state: number, symbol: Symbols.Symbol};
     const stack: stackState[] = [];
     const peekToken = () => tokens[tokens.length - 1];
@@ -82,7 +84,7 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
                 args.push((<stackState>stack.pop()).symbol);
             }
             args.reverse();
-            const sym: Symbols.Symbol = new (action.production.result(args));
+            const sym: Symbols.Symbol = new action.production.result(args);
             const symName = symbolName(sym);
             const nextState = table[currState()].symbols[symName];
             if (nextState === undefined) {

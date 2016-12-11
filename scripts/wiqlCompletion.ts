@@ -1,5 +1,5 @@
 import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
-import { tokenize, tokenPatterns } from './wiqlTokenizer';
+import { tokenPatterns } from './wiqlTokenizer';
 import * as Symbols from './wiqlSymbols';
 import { parse, ParseError } from './wiqlParser';
 import { definedVariables } from './wiqlDefinition';
