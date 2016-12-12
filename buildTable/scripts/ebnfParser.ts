@@ -32,7 +32,6 @@ const ebnfPatterns: TokenPattern[] = [
     // Define tokens
     { match: /\w+/, token: Identity },
     { match: '=', token: Equals },
-    { match: ',', token: Comma },
     { match: ';', token: Semicolon },
     { match: '|', token: VerticalBar },
     { match: '[', token: LSqBracket },
@@ -117,13 +116,10 @@ function parseInputs(tokens: Token[]): InputType[][] {
             const optionals = parseOptionals(tokens);
             inputs.push(optionals);
         }
-        const nextToken = peek(tokens, [Comma, VerticalBar], false);
-        if (nextToken === Comma) {
-            next(tokens, Comma);
-        } else {
+        if (!peek(tokens, [Identity, LParen, LSqBracket], false)) {
             inputsArr.push(inputs);
             inputs = [];
-            if (nextToken !== VerticalBar) {
+            if (!peek(tokens, VerticalBar, false)) {
                 return inputsArr;
             }
             next(tokens, VerticalBar);
@@ -144,7 +140,7 @@ function parseRules(tokens: Token[]) {
 }
 
 export function parse(fileName: string): Rule[] {
-    const fileContents = fs.readFileSync(fileName, {encoding: 'utf-8'});
+    const fileContents = fs.readFileSync(fileName, { encoding: 'utf-8' });
     const tokens = tokenize([fileContents], ebnfPatterns);
     return parseRules(tokens);
 }
