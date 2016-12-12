@@ -13,13 +13,18 @@
             buildTable: {
                 tsconfig: "../buildTable/tsconfig.json",
                 outDir: "../buildTable/build",
-                src: ["../buildTable/scripts"]
+                src: ["../buildTable/scripts/**/*"]
             },
             options: {
                 fast: 'never'
             }
         },
         exec: {
+            generateParseTable: {
+                command: "node ../buildTable/build/scripts/buildTable.js ./wiql.ebnf ./scripts/compiler/wiqlTable.ts",
+                stdout: true,
+                stderr: true
+            },
             package_dev: {
                 command: "tfx extension create --rev-version --manifests vss-extension.json --overrides-file configs/dev.json",
                 stdout: true,
@@ -96,6 +101,8 @@
     grunt.registerTask("package-release", ["build", "exec:package_release"]);
     grunt.registerTask("publish-dev", ["package-dev", "exec:publish_dev"]);
     grunt.registerTask("publish-release", ["package-release", "exec:publish_release"]);
+
+    grunt.registerTask("generate-table", ["ts:buildTable", "exec:generateParseTable"]);
 
     grunt.registerTask("default", ["package-dev"]);
 };

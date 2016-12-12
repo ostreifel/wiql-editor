@@ -1,5 +1,7 @@
 // import * as Symbols from './wiqlSymbols';
 import { Rule as EbnfRule, InputType, Grouping, Optionals } from './ebnfParser';
+export const startSymbols = ["FLATSELECT"];
+
 export interface IProduction {
     /** nameof ? extends typeof Symbols.Symbol */
     result: string;

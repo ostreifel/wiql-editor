@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { State, Transition, Resolution, calcDfa } from './wiqlDfa';
-import { IProduction, Productions } from './wiqlProductions';
+import { IProduction, Productions, startSymbols } from './wiqlProductions';
 import { parse } from './ebnfParser';
-import { IParseTable } from './tableContracts';
+import { IParseTable } from './wiqlTableContracts';
 
 
 function computeTable(productions: Productions, states: State[], transitions: Transition[], resolutions: Resolution[]): IParseTable {
@@ -28,13 +28,12 @@ function computeTable(productions: Productions, states: State[], transitions: Tr
             } 
         };
     }
-    for (let acceptSymbol of ['FLATSELECT']) {
+    for (let acceptSymbol of startSymbols) {
         table[0].symbols[acceptSymbol] = -1;
     }
     return table;
 }
 
-console.log(process.argv);
 const ebnfFile = process.argv[2];
 const outFile = process.argv[3];
 if (process.argv.length !== 4) {
@@ -49,8 +48,8 @@ const table = computeTable(productions, states, transitions, resolutions);
 
 const tableFile = `
 // Generated file: Do not edit
-
-export const table = ${JSON.stringify(table)}
+import { IParseTable } from './wiqlTableContracts';
+export const table: IParseTable = ${JSON.stringify(table)}
 `;
 fs.writeFileSync(outFile, tableFile, { encoding: 'utf-8' });
 process.exit(0);
