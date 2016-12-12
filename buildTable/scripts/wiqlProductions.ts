@@ -1,546 +1,78 @@
 // import * as Symbols from './wiqlSymbols';
-import { Rule as EbnfRule } from './ebnfParser';
+import { Rule as EbnfRule, InputType, Grouping, Optionals } from './ebnfParser';
 export interface IProduction {
     /** nameof ? extends typeof Symbols.Symbol */
     result: string;
     /** nameof (? extends typeof Symbols.Symbol)[] */
     inputs: string[];
 }
-/*
-const productions: IProduction[] = [
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems
-        ]
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression
-        ]
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList
-        ],
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList,
-            Symbols.Asof,
-            Symbols.DateTime
-        ],
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList,
-            Symbols.Asof,
-            Symbols.DateTime
-        ],
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.OrderBy,
-            Symbols.OrderByFieldList
-        ],
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Asof,
-            Symbols.DateTime
-        ],
-    },
-    {
-        result: Symbols.FlatSelect,
-        inputs: [
-            Symbols.Select,
-            Symbols.FieldList,
-            Symbols.From,
-            Symbols.WorkItems,
-            Symbols.Where,
-            Symbols.LogicalExpression,
-            Symbols.Asof,
-            Symbols.DateTime
-        ],
-    },
-    {
-        result: Symbols.FieldList,
-        inputs: [
-            Symbols.Field
-        ],
-    },
-    {
-        result: Symbols.FieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Comma,
-            Symbols.FieldList
-        ],
-    },
-    {
-        result: Symbols.Field,
-        inputs: [
-            Symbols.Identifier
-        ],
-    },
-    {
-        result: Symbols.Field,
-        inputs: [
-            Symbols.LSqBracket,
-            Symbols.Identifier,
-            Symbols.RSqBracket
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Not,
-            Symbols.ConditionalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.Ever,
-            Symbols.ConditionalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.ConditionalExpression,
-            Symbols.Or,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.ConditionalExpression,
-            Symbols.And,
-            Symbols.LogicalExpression
-        ],
-    },
-    {
-        result: Symbols.LogicalExpression,
-        inputs: [
-            Symbols.ConditionalExpression
-        ],
-    },
-    {
-        result: Symbols.ConditionalExpression,
-        inputs: [
-            Symbols.LParen,
-            Symbols.LogicalExpression,
-            Symbols.RParen
-        ],
-    },
-    {
-        result: Symbols.ConditionalExpression,
-        inputs: [
-            Symbols.Field,
-            Symbols.ConditionalOperator,
-            Symbols.Value
-        ],
-    },
-    {
-        result: Symbols.ConditionalExpression,
-        inputs: [
-            Symbols.Field,
-            Symbols.In,
-            Symbols.LParen,
-            Symbols.ValueList,
-            Symbols.RParen
-        ],
-    },
-    {
-        result: Symbols.ConditionalExpression,
-        inputs: [
-            Symbols.Field,
-            Symbols.Not,
-            Symbols.In,
-            Symbols.LParen,
-            Symbols.ValueList,
-            Symbols.RParen
-        ],
-    },
-    {
-        result: Symbols.Number,
-        inputs: [
-            Symbols.Digits
-        ],
-    },
-    {
-        result: Symbols.Number,
-        inputs: [
-            Symbols.Minus,
-            Symbols.Digits
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.Number
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.String
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.DateTime
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.Variable
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.Variable,
-            Symbols.Minus,
-            Symbols.Number
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.Variable,
-            Symbols.Plus,
-            Symbols.Number
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.True
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.False
-        ],
-    },
-    {
-        result: Symbols.Value,
-        inputs: [
-            Symbols.Field
-        ],
-    },
-    {
-        result: Symbols.DateTime,
-        inputs: [
-            Symbols.String
-        ],
-    },
-    {
-        result: Symbols.ValueList,
-        inputs: [
-            Symbols.Value,
-            Symbols.Comma,
-            Symbols.ValueList
-        ],
-    },
-    {
-        result: Symbols.ValueList,
-        inputs: [
-            Symbols.Value
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Equals
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.NotEquals
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.LessThan
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.LessOrEq
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.GreaterThan
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.GreaterOrEq
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Like
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Ever,
-            Symbols.Like
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Ever,
-            Symbols.Not,
-            Symbols.Like
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Not,
-            Symbols.Like
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Under
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Ever,
-            Symbols.Under
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Ever,
-            Symbols.Not,
-            Symbols.Under
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Not,
-            Symbols.Under
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Contains
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.ContainsWords
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Not,
-            Symbols.Contains
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Not,
-            Symbols.ContainsWords
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.InGroup
-        ],
-    },
-    {
-        result: Symbols.ConditionalOperator,
-        inputs: [
-            Symbols.Not,
-            Symbols.InGroup
-        ],
-    },
-    {
-        result: Symbols.ContainsWords,
-        inputs: [
-            Symbols.Contains,
-            Symbols.Words
-        ],
-    },
-    {
-        result: Symbols.InGroup,
-        inputs: [
-            Symbols.In,
-            Symbols.Group
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Asc
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Desc
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Asc,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ],
-    },
-    {
-        result: Symbols.OrderByFieldList,
-        inputs: [
-            Symbols.Field,
-            Symbols.Desc,
-            Symbols.Comma,
-            Symbols.OrderByFieldList
-        ],
+function toProductionInputs(inputs: InputType[], prodInputs: string[][] = [[]]): string[][] {
+    for (let input of inputs) {
+        let nextInput: string[][] = [];
+        if (typeof input === 'string') {
+            nextInput = [[input]];
+        } else if (input instanceof Grouping) {
+            for (let groupingProd of input.inputs) {
+                nextInput.push(...toProductionInputs(groupingProd));
+            }
+        } else if (input instanceof Optionals) {
+            for (let optionProd of input.inputs) {
+                nextInput.push(...toProductionInputs(optionProd));
+            }
+            nextInput.push([]);
+        }
+
+        // prodInputs and nextInput -- this is the core logic that allows the ebnf to be so compact even the the productions are not
+        const newProdInputs: string[][] = [];
+        for( let prevInputs of prodInputs) {
+            for (let nextInputs of nextInput) {
+                const inputs = [...prevInputs, ...nextInputs];
+                newProdInputs.push(inputs);
+            }
+        }
+        prodInputs = newProdInputs;
     }
-];
-*/
+    return prodInputs;
+}
+
+function toProductions(rule: EbnfRule): IProduction[] {
+    const productions: IProduction[] = [];
+    for (let ruleInputs of rule.inputs) {
+        const prodInputs: string[] = [];
+        for (let prodInputs of toProductionInputs(ruleInputs)) {
+            productions.push({
+                result: rule.result,
+                inputs: prodInputs
+            })
+        }
+    }
+    return productions;
+}
 export class Productions {
-    private readonly productions: IProduction[];
-    private readonly tokens: string[];
+    private readonly rules: {[name: string]: IProduction[]};
     constructor(rules: EbnfRule[]) {
-        //TODO generate productions
+        this.rules = {};
+        for (let rule of rules) {
+            this.rules[rule.result] = toProductions(rule);
+        }
     }
     public isTokenClass(symbol: string) {
-        return this.tokens.indexOf(symbol) >= 0;
+        return !(symbol in this.rules);
     }
     public getProductionsFor(symbolClass: string): IProduction[] {
-        return this.productions.filter((r) => r.result === symbolClass);
+        return this.rules[symbolClass] || [];
     }
     private getProductionsUsing(symbolClass: string): IProduction[] {
-        return this.productions.filter((p) =>
-            p.inputs.filter((input) => input === symbolClass).length > 0
-        );
+        const productionsUsing: IProduction[] = [];
+        for (let result in this.rules) {
+            const prods = this.rules[result];
+            for (let prod of prods) {
+                if (prod.inputs.indexOf(symbolClass) >= 0) {
+                    productionsUsing.push(prod);
+                }
+            }
+        }
+        return productionsUsing;
     }
     private firstImpl(result: string, visited: string[]): string[] {
         if (this.isTokenClass(result)) {
