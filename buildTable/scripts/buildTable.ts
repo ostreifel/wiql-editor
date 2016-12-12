@@ -48,7 +48,7 @@ const table = computeTable(productions, states, transitions, resolutions);
 
 const tableFile = `
 // Generated file: Do not edit
-import { IParseTable } from './wiqlTableContracts';
+import { IParseTable } from "./wiqlTableContracts";
 export const table: IParseTable = ${JSON.stringify(table)}
 `;
 fs.writeFileSync(outFile, tableFile, { encoding: 'utf-8' });

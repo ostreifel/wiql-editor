@@ -1,9 +1,9 @@
-import { getClient as getWitClient } from 'TFS/WorkItemTracking/RestClient';
-import { getCompletionProvider } from './wiqlCompletion';
-import { parse } from './compiler/wiqlParser';
-import { format } from './wiqlFormatter';
-import { ErrorChecker } from './wiqlErrorCheckers/ErrorChecker';
-import * as Wiql from './wiqlDefinition';
+import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
+import { getCompletionProvider } from "./wiqlCompletion";
+import { parse } from "./compiler/wiqlParser";
+import { format } from "./wiqlFormatter";
+import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
+import * as Wiql from "./wiqlDefinition";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);

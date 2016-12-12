@@ -1,6 +1,6 @@
-import { IParseResults, ParseError, parse } from '../compiler/wiqlParser';
-import * as Symbols from '../compiler/wiqlSymbols';
-import { toDecoration } from './errorCheckUtils';
+import { IParseResults, ParseError, parse } from "../compiler/wiqlParser";
+import * as Symbols from "../compiler/wiqlSymbols";
+import { toDecoration } from "./errorCheckUtils";
 
 enum ComparisonType {
     Literal,
@@ -20,12 +20,12 @@ export class SyntaxErrorChecker {
             errorToken = parseResult.errorToken.prev;
             hoverMessage = parseResult.expectedTokens.length === 1 ?
                 `Should be followed by ${parseResult.expectedTokens[0]}` :
-                `Should be followed by one of {${parseResult.expectedTokens.join(', ')}}`;
+                `Should be followed by one of {${parseResult.expectedTokens.join(", ")}}`;
         } else {
             errorToken = parseResult.errorToken;
             hoverMessage = parseResult.expectedTokens.length === 1 ?
                 `Expected ${parseResult.expectedTokens[0]}` :
-                `Expected one of {${parseResult.expectedTokens.join(', ')}}`;
+                `Expected one of {${parseResult.expectedTokens.join(", ")}}`;
         }
         const decoration = toDecoration(errorToken, hoverMessage);
         decoration.range = decoration.range.setEndPosition(Infinity, Infinity);

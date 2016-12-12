@@ -1,16 +1,16 @@
-import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
-import { wiqlPatterns } from './compiler/wiqlTokenPatterns';
-import * as Symbols from './compiler/wiqlSymbols';
-import { parse, ParseError } from './compiler/wiqlParser';
-import { definedVariables } from './wiqlDefinition';
+import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { wiqlPatterns } from "./compiler/wiqlTokenPatterns";
+import * as Symbols from "./compiler/wiqlSymbols";
+import { parse, ParseError } from "./compiler/wiqlParser";
+import { definedVariables } from "./wiqlDefinition";
 
 // These symbols are buggy when suggested
 // brackets are not paired, rbrackets and commas suggested when its a syntax error to do so 
-const doNotSuggest = ['(', ')', ',', '[', ']'];
+const doNotSuggest = ["(", ")", ",", "[", "]"];
 
 const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
 for (let pattern of wiqlPatterns) {
-    if (typeof pattern.match === 'string' && doNotSuggest.indexOf(pattern.match) < 0) {
+    if (typeof pattern.match === "string" && doNotSuggest.indexOf(pattern.match) < 0) {
         const symName = Symbols.getSymbolName(pattern.token);
         symbolSuggestionMap[symName] = {
             label: pattern.match,
@@ -40,14 +40,14 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
         };
     });
     return {
-        triggerCharacters: [' ', '[', '.', '@'],
+        triggerCharacters: [" ", "[", ".", "@"],
         provideCompletionItems: (model, position, token) => {
             const lines = model.getLinesContent().slice(0, position.lineNumber);
             if (lines.length > 0) {
                 lines[lines.length - 1] = lines[lines.length - 1].substr(0, position.column - 1);
             }
             const parseResult = parse(lines);
-            // if asof has value don't suggest, otherwise suggest thinks its in an expression
+            // if asof has value don"t suggest, otherwise suggest thinks its in an expression
             if (parseResult instanceof Symbols.FlatSelect && parseResult.asOf) {
                 return [];
             }
@@ -55,10 +55,10 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             const parseNext = parse(lines, true);
             console.log(parseNext);
             if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
-                // valid query, can't suggest
+                // valid query, can"t suggest
                 return [];
             }
-            // Don't complete strings
+            // Don"t complete strings
             if (parseNext.errorToken instanceof Symbols.NonterminatingString) {
                 return [];
             }
@@ -67,16 +67,16 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             if (prevToken instanceof Symbols.Identifier
                 && position.column - 1 === prevToken.endColumn) {
                 // In process of typing field name
-                // (parser just consumes this becuase it doesn't know which fields are valid)
+                // (parser just consumes this becuase it doesn"t know which fields are valid)
                 const beforeIdent = parseNext.parsedTokens[parsedCount - 2];
                 let suggestions: monaco.languages.CompletionItem[];
                 if (beforeIdent instanceof Symbols.LSqBracket) {
                     suggestions = fieldSuggestions;
                 } else {
-                    suggestions = fieldSuggestions.filter((s) => s.label.indexOf(' ') < 0);
+                    suggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);
                 }
-                const spaceIdx = prevToken.text.lastIndexOf(' ');
-                const dotIdx = prevToken.text.lastIndexOf('.');
+                const spaceIdx = prevToken.text.lastIndexOf(" ");
+                const dotIdx = prevToken.text.lastIndexOf(".");
                 const charIdx = Math.max(spaceIdx, dotIdx);
                 if (charIdx >= 0) {
                     const prefix = prevToken.text.substr(0, charIdx + 1);
@@ -97,7 +97,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     return {
                         label: v,
                         kind: monaco.languages.CompletionItemKind.Value,
-                        insertText: v.replace('@', '')
+                        insertText: v.replace("@", "")
                     };
                 });
             } else {
@@ -108,7 +108,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     }
                 }
                 if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
-                    suggestions.push(...fieldSuggestions.filter((s) => s.label.indexOf(' ') < 0));
+                    suggestions.push(...fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0));
                 }
                 if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
                     suggestions.push(...variableSuggestions);

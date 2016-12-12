@@ -53,7 +53,7 @@ export class Digits extends Token { }
 export class Variable extends Token { }
 export class EOF extends Token {
     constructor(line: number, startColumn: number, readonly prev: Token) {
-        super(line, startColumn, '');
+        super(line, startColumn, "");
     }
 }
 
@@ -224,7 +224,7 @@ export function getSymbolName(symbolClass: Function): string {
     if (match) {
         return match[1].toUpperCase();
     }
-    throw new Error('type is not a function');
+    throw new Error("type is not a function");
 }
 export function isTokenClass(symbolClass: Function): boolean {
     return symbolClass.prototype.__proto__.constructor === Token;

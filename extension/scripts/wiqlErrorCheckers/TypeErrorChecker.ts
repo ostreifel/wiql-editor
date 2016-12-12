@@ -1,33 +1,33 @@
-import { IErrorChecker } from './IErrorChecker';
-import { IParseResults, parse } from '../compiler/wiqlParser';
-import { WorkItemField, FieldType } from 'TFS/WorkItemTracking/Contracts';
-import { symbolsOfType, toDecoration } from './errorCheckUtils';
-import * as Symbols from '../compiler/wiqlSymbols';
-import { definedVariables } from '../wiqlDefinition';
+import { IErrorChecker } from "./IErrorChecker";
+import { IParseResults, parse } from "../compiler/wiqlParser";
+import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
+import { symbolsOfType, toDecoration } from "./errorCheckUtils";
+import * as Symbols from "../compiler/wiqlSymbols";
+import { definedVariables } from "../wiqlDefinition";
 
 const operationLookup: {
     [opName: string]: {
-        target: 'literal' | 'field' | 'group',
+        target: "literal" | "field" | "group",
         class: Function
     }
 } = {
-        '=': { target: 'literal', class: Symbols.Equals },
-        '<>': { target: 'literal', class: Symbols.NotEquals },
-        '>': { target: 'literal', class: Symbols.GreaterThan },
-        '<': { target: 'literal', class: Symbols.LessThan },
-        '>=': { target: 'literal', class: Symbols.GreaterOrEq },
-        '<=': { target: 'literal', class: Symbols.LessOrEq },
-        'In Group': { target: 'literal', class: Symbols.InGroup },
-        'Contains': { target: 'literal', class: Symbols.Contains },
-        'Contains Words': { target: 'literal', class: Symbols.ContainsWords },
-        'Under': { target: 'literal', class: Symbols.Under },
-        'in': { target: 'group', class: Symbols.In },
-        '= [Field]': { target: 'field', class: Symbols.Equals },
-        '<> [Field]': { target: 'field', class: Symbols.NotEquals },
-        '> [Field]': { target: 'field', class: Symbols.GreaterThan },
-        '< [Field]': { target: 'field', class: Symbols.LessThan },
-        '>= [Field]': { target: 'field', class: Symbols.GreaterOrEq },
-        '<= [Field]': { target: 'field', class: Symbols.LessOrEq },
+        "=": { target: "literal", class: Symbols.Equals },
+        "<>": { target: "literal", class: Symbols.NotEquals },
+        ">": { target: "literal", class: Symbols.GreaterThan },
+        "<": { target: "literal", class: Symbols.LessThan },
+        ">=": { target: "literal", class: Symbols.GreaterOrEq },
+        "<=": { target: "literal", class: Symbols.LessOrEq },
+        "In Group": { target: "literal", class: Symbols.InGroup },
+        "Contains": { target: "literal", class: Symbols.Contains },
+        "Contains Words": { target: "literal", class: Symbols.ContainsWords },
+        "Under": { target: "literal", class: Symbols.Under },
+        "in": { target: "group", class: Symbols.In },
+        "= [Field]": { target: "field", class: Symbols.Equals },
+        "<> [Field]": { target: "field", class: Symbols.NotEquals },
+        "> [Field]": { target: "field", class: Symbols.GreaterThan },
+        "< [Field]": { target: "field", class: Symbols.LessThan },
+        ">= [Field]": { target: "field", class: Symbols.GreaterOrEq },
+        "<= [Field]": { target: "field", class: Symbols.LessOrEq },
     };
 
 interface IComparisonType {
@@ -61,14 +61,14 @@ export class TypeErrorChecker {
             }
         }
     }
-    private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: 'literal' | 'field'): monaco.editor.IModelDeltaDecoration[] {
+    private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;
         const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
             return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier} and ${rhsType}`)];
         }
         if (validOps.filter((op) => operatorToken instanceof op).length === 0) {
-            const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(', ')}`;
+            const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(", ")}`;
             return [toDecoration(operatorToken, message)];
         }
         return [];
@@ -121,7 +121,7 @@ export class TypeErrorChecker {
         let currList: Symbols.ValueList | undefined = valueList;
         while (currList) {
             if (currList.value.value instanceof Symbols.Field) {
-                errors.push(toDecoration(currList.value.value, 'Values in list must be literals'));
+                errors.push(toDecoration(currList.value.value, "Values in list must be literals"));
             } else {
                 errors.push(...this.checkRhsValue(currList.value, expectedType));
             }
@@ -136,11 +136,11 @@ export class TypeErrorChecker {
         }
         return [];
     }
-    private getRhsType(value: Symbols.Value): 'field' | 'literal' {
+    private getRhsType(value: Symbols.Value): "field" | "literal" {
         if (value && value.value instanceof Symbols.Field) {
-            return 'field';
+            return "field";
         }
-        return 'literal';
+        return "literal";
     }
     public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];

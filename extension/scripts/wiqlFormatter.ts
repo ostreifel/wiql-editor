@@ -1,6 +1,6 @@
-import { parse } from './compiler/wiqlParser';
-import * as Symbols from './compiler/wiqlSymbols';
-import { WorkItemField } from 'TFS/WorkItemTracking/Contracts';
+import { parse } from "./compiler/wiqlParser";
+import * as Symbols from "./compiler/wiqlSymbols";
+import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 
 type FieldMap = { [name: string]: WorkItemField };
 
@@ -24,10 +24,10 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string
         fieldStrs.push(formatField(currFieldList.field, fields));
         currFieldList = currFieldList.restOfList;
     }
-    return fieldStrs.join(', ');
+    return fieldStrs.join(", ");
 }
 function formatNumber(num: Symbols.Number) {
-    return (num.minus ? '-' : '') + num.digits.text;
+    return (num.minus ? "-" : "") + num.digits.text;
 }
 function formatValue(value: Symbols.Value, fields: FieldMap): string {
     if (value.value instanceof Symbols.Number) {
@@ -38,19 +38,19 @@ function formatValue(value: Symbols.Value, fields: FieldMap): string {
         return value.value.dateString.text;
     } else if (value.value instanceof Symbols.Variable) {
         if (value.operator && value.num) {
-            const opStr = value.operator instanceof Symbols.Minus ? ' - ' : ' + ';
+            const opStr = value.operator instanceof Symbols.Minus ? " - " : " + ";
             return value.value.text + opStr + formatNumber(value.num);
         } else {
             return value.value.text;
         }
     } else if (value.value instanceof Symbols.True) {
-        return 'true';
+        return "true";
     } else if (value.value instanceof Symbols.False) {
-        return 'false';
+        return "false";
     } else if (value.value instanceof Symbols.Field) {
         return formatField(value.value, fields);
     }
-    throw new Error('Unkown value');
+    throw new Error("Unkown value");
 }
 function formatValueList(valueList: Symbols.ValueList, fields: FieldMap): string {
     const valueStrs: string[] = [];
@@ -59,45 +59,45 @@ function formatValueList(valueList: Symbols.ValueList, fields: FieldMap): string
         valueStrs.push(formatValue(currValueList.value, fields));
         currValueList = currValueList.restOfList;
     }
-    return valueStrs.join(', ');
+    return valueStrs.join(", ");
 }
 function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
     if (cond.conditionToken instanceof Symbols.Equals) {
-        return '=';
+        return "=";
     } else if (cond.conditionToken instanceof Symbols.NotEquals) {
-        return '<>';
+        return "<>";
     } else if (cond.conditionToken instanceof Symbols.GreaterThan) {
-        return '>';
+        return ">";
     } else if (cond.conditionToken instanceof Symbols.GreaterOrEq) {
-        return '>=';
+        return ">=";
     } else if (cond.conditionToken instanceof Symbols.LessThan) {
-        return '<';
+        return "<";
     } else if (cond.conditionToken instanceof Symbols.LessOrEq) {
-        return '<=';
+        return "<=";
     } else if (cond.conditionToken instanceof Symbols.Contains) {
-        return (cond.not ? 'NOT ' : '') + 'CONTAINS';
+        return (cond.not ? "NOT " : "") + "CONTAINS";
     } else if (cond.conditionToken instanceof Symbols.ContainsWords) {
-        return (cond.not ? 'NOT ' : '') + 'CONTAINS WORDS';
+        return (cond.not ? "NOT " : "") + "CONTAINS WORDS";
     } else if (cond.conditionToken instanceof Symbols.InGroup) {
-        return (cond.not ? 'NOT ' : '') + 'IN GROUP';
+        return (cond.not ? "NOT " : "") + "IN GROUP";
     } else if (cond.conditionToken instanceof Symbols.Like) {
-        return (cond.ever ? 'EVER ' : '') + (cond.not ? 'NOT ' : '') + 'LIKE';
+        return (cond.ever ? "EVER " : "") + (cond.not ? "NOT " : "") + "LIKE";
     } else if (cond.conditionToken instanceof Symbols.Under) {
-        return (cond.ever ? 'EVER ' : '') + (cond.not ? 'NOT ' : '') + 'UNDER';
+        return (cond.ever ? "EVER " : "") + (cond.not ? "NOT " : "") + "UNDER";
     }
-    throw new Error('Unexpected condtional operator');
+    throw new Error("Unexpected condtional operator");
 }
 function formatConditionalExpression(conditionalExpression: Symbols.ConditionalExpression, tab: string, indent: number, fields: FieldMap): string[] {
     if (conditionalExpression.expression) {
         return [
-            tabs(tab, indent) + '(',
+            tabs(tab, indent) + "(",
             ...formatLogicalExpression(conditionalExpression.expression, tab, indent + 1, fields),
-            tabs(tab, indent) + ')',
+            tabs(tab, indent) + ")",
         ];
     }
     if (conditionalExpression.field && conditionalExpression.valueList) {
-        const op = conditionalExpression.not ? ' NOT IN ' : ' IN ';
-        return [tabs(tab, indent) + formatField(conditionalExpression.field, fields) + op + '(' + formatValueList(conditionalExpression.valueList, fields) + ')'];
+        const op = conditionalExpression.not ? " NOT IN " : " IN ";
+        return [tabs(tab, indent) + formatField(conditionalExpression.field, fields) + op + "(" + formatValueList(conditionalExpression.valueList, fields) + ")"];
     }
     if (conditionalExpression.field && conditionalExpression.conditionalOperator && conditionalExpression.value) {
         return [`${tabs(tab, indent)}${formatField(conditionalExpression.field, fields)} ${formatConditionalOperator(conditionalExpression.conditionalOperator)} ${formatValue(conditionalExpression.value, fields)}`];
@@ -107,12 +107,12 @@ function formatConditionalExpression(conditionalExpression: Symbols.ConditionalE
 function formatLogicalExpression(logicalExpression: Symbols.LogicalExpression, tab: string, indent: number, fields: FieldMap): string[] {
     const lines: string[] = formatConditionalExpression(logicalExpression.condition, tab, indent, fields);
     if (logicalExpression.everNot instanceof Symbols.Ever) {
-        lines[0] = insert(lines[0], 'EVER ');
+        lines[0] = insert(lines[0], "EVER ");
     } else if (<Symbols.Not | undefined>logicalExpression.everNot instanceof Symbols.Not) {
-        lines[0] = insert(lines[0], 'NOT ');
+        lines[0] = insert(lines[0], "NOT ");
     }
     if (logicalExpression.orAnd && logicalExpression.expression) {
-        const orAndStr = logicalExpression.orAnd instanceof Symbols.Or ? 'OR ' : 'AND ';
+        const orAndStr = logicalExpression.orAnd instanceof Symbols.Or ? "OR " : "AND ";
         const secondExpLines = formatLogicalExpression(logicalExpression.expression, tab, indent, fields);
         secondExpLines[0] = insert(secondExpLines[0], orAndStr);
         lines.push(...secondExpLines);
@@ -120,38 +120,38 @@ function formatLogicalExpression(logicalExpression: Symbols.LogicalExpression, t
     return lines;
 }
 function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList, fields: FieldMap): string {
-    let line = 'ORDER BY ';
+    let line = "ORDER BY ";
     let orders: string[] = [];
     let currOrderBy: Symbols.OrderByFieldList | undefined = orderBy;
     while (currOrderBy) {
         const field = formatField(currOrderBy.field, fields);
         if (currOrderBy.ascDesc instanceof Symbols.Asc) {
-            orders.push(field + ' ASC');
+            orders.push(field + " ASC");
         } else if (<Symbols.Desc | undefined>currOrderBy.ascDesc instanceof Symbols.Desc) {
-            orders.push(field + ' DESC');
+            orders.push(field + " DESC");
         } else {
             orders.push(field);
         }
         currOrderBy = currOrderBy.restOfList;
     }
-    return `ORDER BY ${orders.join(', ')}`;
+    return `ORDER BY ${orders.join(", ")}`;
 }
 function formatFlatSelect(flatSelect: Symbols.FlatSelect, tab: string, fields: FieldMap): string[] {
     const lines: string[] = [];
-    lines.push('SELECT');
+    lines.push("SELECT");
     lines.push(tab + formatFieldList(flatSelect.fieldList, fields));
-    lines.push('FROM workitems');
+    lines.push("FROM workitems");
     if (flatSelect.whereExp) {
-        lines.push('WHERE');
+        lines.push("WHERE");
         lines.push(...formatLogicalExpression(flatSelect.whereExp, tab, 1, fields));
     }
     if (flatSelect.orderBy) {
         lines.push(formatOrderByFieldList(flatSelect.orderBy, fields));
     }
     if (flatSelect.asOf) {
-        lines.push('ASOF ' + flatSelect.asOf.dateString.text);
+        lines.push("ASOF " + flatSelect.asOf.dateString.text);
     }
-    lines.push('');
+    lines.push("");
     return lines;
 }
 
@@ -168,7 +168,7 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: Work
     if (parseTree instanceof Symbols.FlatSelect) {
         const lines = formatFlatSelect(parseTree, tab, fieldMap);
         const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
-            text: lines.join('\r\n'),
+            text: lines.join("\r\n"),
             range: model.getFullModelRange(),
             forceMoveMarkers: true,
         };

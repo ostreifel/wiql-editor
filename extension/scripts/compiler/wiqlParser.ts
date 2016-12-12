@@ -1,8 +1,8 @@
-import * as Symbols from './wiqlSymbols';
-import {tokenize} from './tokenizer';
-import { wiqlPatterns } from './wiqlTokenPatterns';
+import * as Symbols from "./wiqlSymbols";
+import {tokenize} from "./tokenizer";
+import { wiqlPatterns } from "./wiqlTokenPatterns";
 
-import { table } from './wiqlTable';
+import { table } from "./wiqlTable";
 
 
 const symbolContructors: {[name: string]: any} = {};
@@ -45,9 +45,9 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
                 stack.map((i) => i.symbol)
             );
         }
-        if (action.action === 'shift') {
+        if (action.action === "shift") {
             stack.push({state: action.state, symbol: <Symbols.Token>tokens.pop()});
-        } else if (action.action === 'reduce') {
+        } else if (action.action === "reduce") {
             const args: Symbols.Symbol[] = [];
             for (let i = 0; i < action.production.inputCount; i++) {
                 args.push((<stackState>stack.pop()).symbol);

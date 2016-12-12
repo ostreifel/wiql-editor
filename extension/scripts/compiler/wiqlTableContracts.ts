@@ -6,8 +6,8 @@ export interface IParseTable {
     [state: number]: {
         tokens: {
             [symbolName: string]:
-            { action: 'shift', state: number } |
-            { action: 'reduce', production: IProduction } |
+            { action: "shift", state: number } |
+            { action: "reduce", production: IProduction } |
             undefined
         },
         symbols: {

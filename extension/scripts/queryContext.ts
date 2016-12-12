@@ -1,4 +1,4 @@
-import { isSupportedQueryId, showDialog } from './wiqlDialog';
+import { isSupportedQueryId, showDialog } from "./wiqlDialog";
 
 const menuAction = <IContributedMenuSource>{
     getMenuItems: (context): IContributedMenuItem | null => {
@@ -6,8 +6,8 @@ const menuAction = <IContributedMenuSource>{
             return null;
         }
         return [<IContributedMenuItem>{
-            text: 'Edit query wiql',
-            icon: 'img/smallLogo.png',
+            text: "Edit query wiql",
+            icon: "img/smallLogo.png",
             action: function (actionContext) {
                 showDialog(actionContext.query);
             }

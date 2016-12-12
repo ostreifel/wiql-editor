@@ -1,5 +1,5 @@
-import * as Symbols from '../compiler/wiqlSymbols';
-import { IParseResults, ParseError } from '../compiler/wiqlParser';
+import * as Symbols from "../compiler/wiqlSymbols";
+import { IParseResults, ParseError } from "../compiler/wiqlParser";
 
 export function toPosition(symbol: Symbols.Symbol) {
     let startToken: Symbols.Token | null = null;
@@ -26,7 +26,7 @@ export function toPosition(symbol: Symbols.Symbol) {
         } while (symbols.length > 0);
     }
     if (!startToken || !endToken) {
-        throw new Error('Could not find token in symbol');
+        throw new Error("Could not find token in symbol");
     }
     return new monaco.Range(
         startToken.line + 1,
@@ -40,8 +40,8 @@ export function toDecoration(symbol: Symbols.Symbol, message: string) {
         range: toPosition(symbol),
         options: {
             hoverMessage: message,
-            className: 'wiql-error',
-            linesDecorationsClassName: 'wiql-error-margin',
+            className: "wiql-error",
+            linesDecorationsClassName: "wiql-error-margin",
         }
     };
 }

@@ -16,7 +16,7 @@
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
         "scripts/compiler/wiqlSymbols.ts",
-        "scripts/compiler/wiqlTable.d.ts",
+        "scripts/compiler/wiqlTable.ts",
         "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/contextContracts.ts",

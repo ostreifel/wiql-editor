@@ -1,19 +1,19 @@
-import { setupEditor } from './wiqlEditor';
-import { QueryHierarchyItem } from 'TFS/WorkItemTracking/Contracts';
-import { getClient as getWITClient } from 'TFS/WorkItemTracking/RestClient';
-import { IQuery, IContextOptions, ICallbacks } from './contextContracts';
+import { setupEditor } from "./wiqlEditor";
+import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
+import { getClient as getWITClient } from "TFS/WorkItemTracking/RestClient";
+import { IQuery, IContextOptions, ICallbacks } from "./contextContracts";
 
 const configuration: IContextOptions = VSS.getConfiguration();
-const target = document.getElementById('wiql-box');
+const target = document.getElementById("wiql-box");
 if (!target) {
-    throw new Error('Could not find wiql editor div');
+    throw new Error("Could not find wiql editor div");
 }
 let updateSaveButton = (enabled: boolean) => {
-    console.log('update button not set');
+    console.log("update button not set");
 }
 const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql);
 function saveQuery(): IPromise<any> {
-    console.log('saving query');
+    console.log("saving query");
     const context = VSS.getWebContext();
     const queryItem = <QueryHierarchyItem>{
         wiql: editor.getValue(),
@@ -30,5 +30,5 @@ const callbacks: ICallbacks = {
     okCallback: saveQuery,
     setUpdateSaveButton: (callback) => updateSaveButton = callback
 };
-VSS.register(VSS.getContribution().id + '.callbacks', callbacks);
+VSS.register(VSS.getContribution().id + ".callbacks", callbacks);
 

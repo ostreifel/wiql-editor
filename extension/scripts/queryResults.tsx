@@ -1,9 +1,9 @@
-import * as ReactDom from 'react-dom';
-import * as React from 'react';
+import * as ReactDom from "react-dom";
+import * as React from "react";
 import {
     WorkItemQueryResult, QueryResultType, WorkItemReference,
     WorkItemRelation, WorkItem, WorkItemFieldReference
-} from 'TFS/WorkItemTracking/Contracts';
+} from "TFS/WorkItemTracking/Contracts";
 
 class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemFieldReference[] }, void> {
     render() {
@@ -16,7 +16,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
             tds.push(<td title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</td>);
         }
         return (
-            <tr onClick={() => window.open(wiUrl, '_blank')}>
+            <tr onClick={() => window.open(wiUrl, "_blank")}>
                 {tds}
             </tr>
         );
@@ -35,20 +35,20 @@ export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkI
     if (result.queryResultType = QueryResultType.WorkItem) {
         resultsView = <WiQueryResults workItems={workItems} columns={result.columns} />;
     } else {
-        resultsView = <div>{'TODO render work item relations'}</div>;
+        resultsView = <div>{"TODO render work item relations"}</div>;
     }
-    ReactDom.render(resultsView, document.getElementById('query-results') as HTMLElement);
+    ReactDom.render(resultsView, document.getElementById("query-results") as HTMLElement);
 }
 
 export function setError(error: TfsError | string) {
-    const message = typeof error === 'string' ? error : (error.serverError || error)['message'];
-    ReactDom.render(<div className={'error-message'}>{message}</div>, document.getElementById('query-results') as HTMLElement);
+    const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+    ReactDom.render(<div className={"error-message"}>{message}</div>, document.getElementById("query-results") as HTMLElement);
 }
 
 export function setMessage(message: string | string[]) {
-    if (typeof message === 'string') {
+    if (typeof message === "string") {
         message = [message];
     }
     const messageElems = message.map((m) => <div>{m}</div>);
-    ReactDom.render(<div>{messageElems}</div>, document.getElementById('query-results') as HTMLElement);
+    ReactDom.render(<div>{messageElems}</div>, document.getElementById("query-results") as HTMLElement);
 }
