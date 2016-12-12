@@ -10,6 +10,11 @@
                 "outDir": "./test/",
                 src: ["./scripts/**/*.tests.ts"]
             },
+            buildTable: {
+                tsconfig: "../buildTable/tsconfig.json",
+                outDir: "../buildTable/build",
+                src: ["../buildTable/scripts"]
+            },
             options: {
                 fast: 'never'
             }
@@ -63,7 +68,10 @@
             }
         },
 
-        clean: ["scripts/**/*.js", "*.vsix", "build", "test"],
+        clean: {
+            options: { force: true },
+            build: ["scripts/**/*.js", "*.vsix", "build", "test", "../buildTable/build"]
+        },
 
         karma: {
             unit: {

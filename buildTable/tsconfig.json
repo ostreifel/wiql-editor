@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "umd",
+        "sourceMap": false,
+        "target": "es5",
+        "strictNullChecks": true
+    }
+}

@@ -1,5 +1,4 @@
-import * as Symbols from '../wiqlSymbols';
-import { IProduction, getProductionsFor, follows } from '../wiqlProductions';
+import { IProduction, Productions } from './wiqlProductions';
 
 export class ProductionPosition {
     constructor(readonly production: IProduction, readonly pos: number) {
@@ -72,7 +71,7 @@ export class State {
     }
 }
 export class Transition {
-    constructor(readonly from: number, readonly to: number, readonly symbolClass: Function) {
+    constructor(readonly from: number, readonly to: number, readonly symbolClass: string) {
     }
     public equals(other: Transition) {
         return (
@@ -83,7 +82,7 @@ export class Transition {
     }
 }
 export class Resolution {
-    constructor(readonly stateIdx: number, readonly symbolClass: Function, readonly production: IProduction) {
+    constructor(readonly stateIdx: number, readonly symbolClass: string, readonly production: IProduction) {
     }
     equals(other: Resolution) {
         return (
@@ -94,12 +93,12 @@ export class Resolution {
     }
 }
 
-function closure(state: State) {
+function closure(productions: Productions, state: State) {
     let change: boolean;
     do {
         change = false;
         for (let pos of state.productionPositions) {
-            for (let prod of getProductionsFor(pos.nextInput())) {
+            for (let prod of productions.getProductionsFor(pos.nextInput())) {
                 const newProdPos = new ProductionPosition(prod, 0);
                 if (state.addProductionPosition(newProdPos)) {
                     change = true;
@@ -109,14 +108,14 @@ function closure(state: State) {
     } while (change);
     return state.sort();
 }
-function goto(state: State, symbolClass: Function) {
-    const productions: ProductionPosition[] = [];
+function goto(productions: Productions, state: State, symbolClass: string) {
+    const nextProductions: ProductionPosition[] = [];
     for (let pos of state.productionPositions) {
         if (pos.nextInput() === symbolClass) {
-            productions.push(pos.advance());
+            nextProductions.push(pos.advance());
         }
     }
-    return closure(new State(productions));
+    return closure(productions, new State(nextProductions));
 }
 
 function addIfNotPresent(arr: { equals: (other) => boolean }[], obj: { equals: (other) => boolean }): [boolean, number] {
@@ -128,48 +127,48 @@ function addIfNotPresent(arr: { equals: (other) => boolean }[], obj: { equals: (
     const idx = arr.push(obj) - 1;
     return [true, idx];
 }
-function calcStatesAndEdges(): [State[], Transition[]] {
+export function calcDfa(productions: Productions): [State[], Transition[], Resolution[]] {
     const states: State[] = [];
     const transitions: Transition[] = [];
 
-    const selectProductions = getProductionsFor(Symbols.FlatSelect);
-    const selectZeros = selectProductions.map((p) => new ProductionPosition(p, 0));
-    states.push(closure(new State(selectZeros)));
-    let change: boolean;
-    do {
-        change = false;
+    { //States and transitions
+        const selectProductions = productions.getProductionsFor("FLATSELECT");
+        const selectZeros = selectProductions.map((p) => new ProductionPosition(p, 0));
+        states.push(closure(productions, new State(selectZeros)));
+        let change: boolean;
+        do {
+            change = false;
+            for (let stateIdx in states) {
+                const state = states[stateIdx];
+                for (let prodPos of state.productionPositions.filter((pos) => !pos.isAtEnd())) {
+                    const symbolClass = prodPos.nextInput();
+                    const nextState = goto(productions, state, symbolClass);
+                    const [stateAdded, nextStateIdx] = addIfNotPresent(states, nextState);
+                    const transition = new Transition(Number(stateIdx), nextStateIdx, symbolClass);
+                    const transitionAdded = addIfNotPresent(transitions, transition)[0];
+                    if (stateAdded || transitionAdded) {
+                        change = true;
+                    }
+                }
+            }
+        } while (change);
+    }
+
+    const resolutions: Resolution[] = [];
+    { //Resolutions
         for (let stateIdx in states) {
             const state = states[stateIdx];
-            for (let prodPos of state.productionPositions.filter((pos) => !pos.isAtEnd())) {
-                const symbolClass = prodPos.nextInput();
-                const nextState = goto(state, symbolClass);
-                const [stateAdded, nextStateIdx] = addIfNotPresent(states, nextState);
-                const transition = new Transition(Number(stateIdx), nextStateIdx, symbolClass);
-                const transitionAdded = addIfNotPresent(transitions, transition)[0];
-                if (stateAdded || transitionAdded) {
-                    change = true;
+            const endPositions = state.productionPositions.filter((p) => p.isAtEnd());
+            for (let pos of endPositions) {
+                for (let symbolClass of productions.follows(pos.production.result)) {
+                    const resolution = new Resolution(Number(stateIdx), symbolClass, pos.production);
+                    addIfNotPresent(resolutions, resolution);
                 }
             }
         }
-    } while (change);
-    return [states, transitions];
-}
-function calcResolutions(states: State[]) {
-    const resolutions: Resolution[] = [];
-    for (let stateIdx in states) {
-        const state = states[stateIdx];
-        const endPositions = state.productionPositions.filter((p) => p.isAtEnd());
-        for (let pos of endPositions) {
-            for (let symbolClass of follows(pos.production.result)) {
-                const resolution = new Resolution(Number(stateIdx), symbolClass, pos.production);
-                addIfNotPresent(resolutions, resolution);
-            }
-        }
     }
-    return resolutions;
+    return [states, transitions, resolutions];
 }
-export const [states, transitions] = calcStatesAndEdges();
-export const resolutions = calcResolutions(states);
 
 // //Debug info
 // function replacer(k, v) {

@@ -1,5 +1,6 @@
 // borrow the tokenizer from wiql
-import { TokenPattern, tokenize } from '../tokenizer';
+import { TokenPattern, tokenize } from './tokenizer';
+import * as fs from 'fs';
 import * as Q from 'q';
 
 abstract class Token {
@@ -62,9 +63,9 @@ export class Rule {
 }
 function throwError(message: string, token?: Token): never {
     if (token) {
-        throw new Error(`${message}, (${token.line}, ${token.column})`);
+        throw new Error(`${message}: (${token.line}, ${token.column})`);
     } else {
-        throw new Error(`${message}, EOF`);
+        throw new Error(`${message}: EOF`);
     }
 }
 function peek(tokens: Token[], validTypes: Function | Function[], throwIfNot = true): Function {
@@ -78,8 +79,8 @@ function peek(tokens: Token[], validTypes: Function | Function[], throwIfNot = t
             match = type;
         }
     }
-    if (!match) {
-        throwError(`Expected one of ${validTypes.map(t => getTokenName(t)).join(',')}`);
+    if (!match && throwIfNot) {
+        throwError(`Expected one of ${validTypes.map(t => getTokenName(t)).join(',')}`, token);
     }
     return match as Function;
 }
@@ -96,36 +97,36 @@ function parseGrouping(tokens: Token[]): Grouping {
 }
 
 function parseOptionals(tokens: Token[]): Optionals {
-    next(tokens, LParen);
+    next(tokens, LSqBracket);
     const inputs = parseInputs(tokens);
-    next(tokens, RParen);
+    next(tokens, RSqBracket);
     return new Optionals(inputs);
 }
 
 function parseInputs(tokens: Token[]): InputType[][] {
     const inputsArr: InputType[][] = [];
+    let inputs: InputType[] = [];
     while (true) {
-
-        const inputs: InputType[] = [];
-        const type = peek(tokens, [Identity, RParen, RSqBracket]);
+        const type = peek(tokens, [Identity, LParen, LSqBracket]);
         if (type === Identity) {
             inputs.push((tokens.shift() as Identity).text);
         } else if (type === LParen) {
             const grouping = parseGrouping(tokens);
             inputs.push(grouping);
-        } else if (type === RSqBracket) {
+        } else if (type === LSqBracket) {
             const optionals = parseOptionals(tokens);
             inputs.push(optionals);
         }
-        const next = peek(tokens, [Comma, VerticalBar], false);
-        if (next === Comma) {
-            next(Comma);
+        const nextToken = peek(tokens, [Comma, VerticalBar], false);
+        if (nextToken === Comma) {
+            next(tokens, Comma);
         } else {
             inputsArr.push(inputs);
-            if (next !== VerticalBar) {
+            inputs = [];
+            if (nextToken !== VerticalBar) {
                 return inputsArr;
             }
-            next(VerticalBar);
+            next(tokens, VerticalBar);
         }
     }
 }
@@ -142,19 +143,8 @@ function parseRules(tokens: Token[]) {
     return rules;
 }
 
-export function parse(fileName: string): IPromise<Rule[]> {
-    const deferred = Q.defer<Rule[]>();
-    jQuery.get(fileName, (data) => {
-        const tokens = tokenize(data, ebnfPatterns);
-        try {
-            const rules = parseRules(tokens);
-            deferred.resolve(rules);
-        } catch (e) {
-            deferred.reject(e);
-        }
-    }, (error) => {
-        deferred.reject(error);
-    });
-
-    return deferred.promise;
+export function parse(fileName: string): Rule[] {
+    const fileContents = fs.readFileSync(fileName, {encoding: 'utf-8'});
+    const tokens = tokenize([fileContents], ebnfPatterns);
+    return parseRules(tokens);
 }

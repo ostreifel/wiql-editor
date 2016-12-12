@@ -1,52 +1,16 @@
-import {states, transitions, resolutions} from './buildTable/wiqlDfa';
 import * as Symbols from './wiqlSymbols';
-import {IProduction} from './wiqlProductions';
 import {tokenize} from './tokenizer';
 import { wiqlPatterns } from './wiqlTokenPatterns';
 
-import { table as precomputedTable } from './wiqlTable';
+import { table } from './wiqlTable';
 
-console.log(precomputedTable);
 
-enum Action  {
-    Shift,
-    Reduce,
-    Goto,
+const symbolContructors: {[name: string]: any} = {};
+for (let idx in Symbols) {
+    const symbol = Symbols[idx];
+    const symbolName = Symbols.getSymbolName(symbol);
+    symbolContructors[symbolName] = symbol;
 }
-function computeTable() {
-    const table: {
-        tokens: {
-            [symbolName: string]:
-            {action: Action.Shift, state: number} |
-            {action: Action.Reduce, production: IProduction} |
-            undefined
-        }
-        symbols: {
-            [symbolName: string]: number | undefined
-        }
-    }[] = [];
-    for (let i = 0; i < states.length; i++) {
-        table[i] = {tokens: {}, symbols: {}};
-    }
-    for (let transition of transitions) {
-        const symbolName = Symbols.getSymbolName(transition.symbolClass);
-        if (Symbols.isTokenClass(transition.symbolClass)) {
-            table[transition.from].tokens[symbolName] = {action: Action.Shift, state: transition.to};
-        } else {
-            table[transition.from].symbols[symbolName] = transition.to;
-        }
-    }
-    for (let resolution of resolutions) {
-        const symbolName = Symbols.getSymbolName(resolution.symbolClass);
-        table[resolution.stateIdx].tokens[symbolName] = {action: Action.Reduce, production: resolution.production};
-    }
-    for (let acceptSymbol of [Symbols.FlatSelect]) {
-        table[0].symbols[Symbols.getSymbolName(acceptSymbol)] = -1;
-    }
-    return table;
-}
-
-const table = computeTable();
 
 export class ParseError {
     constructor(readonly expectedTokens: string[],
@@ -81,15 +45,15 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
                 stack.map((i) => i.symbol)
             );
         }
-        if (action.action === Action.Shift) {
+        if (action.action === 'shift') {
             stack.push({state: action.state, symbol: <Symbols.Token>tokens.pop()});
-        } else if (action.action === Action.Reduce) {
+        } else if (action.action === 'reduce') {
             const args: Symbols.Symbol[] = [];
-            for (let input of action.production.inputs) {
+            for (let i = 0; i < action.production.inputCount; i++) {
                 args.push((<stackState>stack.pop()).symbol);
             }
             args.reverse();
-            const sym: Symbols.Symbol = new action.production.result(args);
+            const sym: Symbols.Symbol = new symbolContructors[action.production.result](args);
             const symName = symbolName(sym);
             const nextState = table[currState()].symbols[symName];
             if (nextState === undefined) {

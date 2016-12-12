@@ -1,10 +1,12 @@
-import * as Symbols from './wiqlSymbols';
+// import * as Symbols from './wiqlSymbols';
+import { Rule as EbnfRule } from './ebnfParser';
 export interface IProduction {
-    /** ? extends typeof Symbols.Symbol */
-    result;
-    /** (? extends typeof Symbols.Symbol)[] */
-    inputs: Function[];
+    /** nameof ? extends typeof Symbols.Symbol */
+    result: string;
+    /** nameof (? extends typeof Symbols.Symbol)[] */
+    inputs: string[];
 }
+/*
 const productions: IProduction[] = [
     {
         result: Symbols.FlatSelect,
@@ -522,63 +524,74 @@ const productions: IProduction[] = [
         ],
     }
 ];
-export function getProductionsFor(symbolClass: Function): IProduction[] {
-    return productions.filter((r) => r.result === symbolClass);
-}
-function getProductionsUsing(symbolClass: Function): IProduction[] {
-    return productions.filter((p) =>
-        p.inputs.filter((input) => input === symbolClass).length > 0
-    );
-}
-function firstImpl(result: Function, visited: Function[]): Function[] {
-    if (Symbols.isTokenClass(result)) {
-        return [result];
+*/
+export class Productions {
+    private readonly productions: IProduction[];
+    private readonly tokens: string[];
+    constructor(rules: EbnfRule[]) {
+        //TODO generate productions
     }
-    const firsts: Function[] = [];
-    visited.push(result);
-    for (let prod of getProductionsFor(result)) {
-        const first = prod.inputs[0];
-        if (Symbols.isTokenClass(first)) {
-            if (firsts.indexOf(first) < 0) {
-                firsts.push(first);
-            }
-        } else if (visited.indexOf(first) < 0) {
-            for (let symbol of firstImpl(first, visited)) {
-                if (firsts.indexOf(symbol) < 0) {
-                    firsts.push(symbol);
+    public isTokenClass(symbol: string) {
+        return this.tokens.indexOf(symbol) >= 0;
+    }
+    public getProductionsFor(symbolClass: string): IProduction[] {
+        return this.productions.filter((r) => r.result === symbolClass);
+    }
+    private getProductionsUsing(symbolClass: string): IProduction[] {
+        return this.productions.filter((p) =>
+            p.inputs.filter((input) => input === symbolClass).length > 0
+        );
+    }
+    private firstImpl(result: string, visited: string[]): string[] {
+        if (this.isTokenClass(result)) {
+            return [result];
+        }
+        const firsts: string[] = [];
+        visited.push(result);
+        for (let prod of this.getProductionsFor(result)) {
+            const first = prod.inputs[0];
+            if (this.isTokenClass(first)) {
+                if (firsts.indexOf(first) < 0) {
+                    firsts.push(first);
+                }
+            } else if (visited.indexOf(first) < 0) {
+                for (let symbol of this.firstImpl(first, visited)) {
+                    if (firsts.indexOf(symbol) < 0) {
+                        firsts.push(symbol);
+                    }
                 }
             }
         }
-    }
-    return firsts;
-}
-
-export function first(result: Function): Function[] {
-    return firstImpl(result, []);
-}
-
-function followsImpl(resultSymbol: Function, visited: Function[]): Function[] {
-    const follows: Function[] = [Symbols.EOF];
-    visited.push(resultSymbol);
-    for (let prod of getProductionsUsing(resultSymbol)) {
-        const idx = prod.inputs.indexOf(resultSymbol);
-        let recFollows: Function[] = [];
-        if (idx === prod.inputs.length - 1) {
-            if (visited.indexOf(prod.result) < 0) {
-                recFollows = followsImpl(prod.result, visited);
-            }
-        } else {
-            recFollows = first(prod.inputs[idx + 1]);
-        }
-        for (let sym of recFollows) {
-            if (follows.indexOf(sym) < 0) {
-                follows.push(sym);
-            }
-        }
+        return firsts;
     }
 
-    return follows;
-}
-export function follows(resultSymbol: Function): Function[] {
-    return followsImpl(resultSymbol, []);
+    public first(result: string): string[] {
+        return this.firstImpl(result, []);
+    }
+
+    private followsImpl(resultSymbol: string, visited: string[]): string[] {
+        const follows: string[] = ["EOF"];
+        visited.push(resultSymbol);
+        for (let prod of this.getProductionsUsing(resultSymbol)) {
+            const idx = prod.inputs.indexOf(resultSymbol);
+            let recFollows: string[] = [];
+            if (idx === prod.inputs.length - 1) {
+                if (visited.indexOf(prod.result) < 0) {
+                    recFollows = this.followsImpl(prod.result, visited);
+                }
+            } else {
+                recFollows = this.first(prod.inputs[idx + 1]);
+            }
+            for (let sym of recFollows) {
+                if (follows.indexOf(sym) < 0) {
+                    follows.push(sym);
+                }
+            }
+        }
+
+        return follows;
+    }
+    public follows(resultSymbol: string): string[] {
+        return this.followsImpl(resultSymbol, []);
+    }
 }
