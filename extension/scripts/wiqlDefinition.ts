@@ -16,7 +16,8 @@ export const def: monaco.languages.ILanguageExtensionPoint = {
 export const conf: monaco.languages.LanguageConfiguration = {
     brackets: [["[", "]"], ["(", ")"]],
     autoClosingPairs: [
-        { open: """, close: """, notIn: ["string"] },
+        { open: `"`, close: `"`, notIn: ["string"] },
+        { open: "'", close: "'", notIn: ["string"] },
         { open: "\"", close: "\"", notIn: ["string"] },
         { open: "[", close: "]", notIn: ["string"] },
         { open: "(", close: ")", notIn: ["string"] },

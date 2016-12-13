@@ -12,6 +12,9 @@
         "!**/*.tests.ts",
         "./typings/index.d.ts"
     ],
+    "types": [
+        "typings/index.d.ts"
+    ],
     "files": [
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
