@@ -3,7 +3,6 @@
         ts: {
             build: {
                 tsconfig: true,
-                exclude: ["node_modules**/*"],
                 "outDir": "./build"
             },
             buildTest: {

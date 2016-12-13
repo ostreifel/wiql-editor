@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "amd",
+        "module": "umd",
         "sourceMap": false,
         "rootDir": "./scripts",
         "target": "es5",
