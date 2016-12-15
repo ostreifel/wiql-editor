@@ -13,7 +13,11 @@ Save changes to the query when finished.
 
  Currently only flat queries are supported.
 
+Be sure to [send feedback](wiqleditor@microsoft.com)
+
 # Change Log
+#### v1.0.78
+Patches on prem bug saving queries
 #### v1.0.5
 Changes syntax highlighting.
 
