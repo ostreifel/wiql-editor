@@ -1,6 +1,6 @@
 import { setupEditor } from "./wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
-import { getClient as getWITClient } from "TFS/WorkItemTracking/RestClient";
+import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { IQuery, IContextOptions, ICallbacks } from "./contextContracts";
 
 const configuration: IContextOptions = VSS.getConfiguration();
@@ -21,14 +21,14 @@ function saveQuery(): IPromise<any> {
         name: configuration.query.name,
     };
     if (configuration.query.id) {
-        return getWITClient().updateQuery(queryItem, context.project.name, configuration.query.id);
+        return getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
     } else {
-        return getWITClient().createQuery(queryItem, context.project.name, configuration.query.id);
+        return getWitClient().createQuery(queryItem, context.project.name, configuration.query.id);
     }
 }
 const callbacks: ICallbacks = {
     okCallback: saveQuery,
     setUpdateSaveButton: (callback) => updateSaveButton = callback
 };
-VSS.register(VSS.getContribution().id + ".callbacks", callbacks);
+VSS.register("contextForm", callbacks);
 

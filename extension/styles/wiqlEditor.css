@@ -12,7 +12,7 @@
     color: red;
 }
 #query-results tr:hover {
-    font-style: italic;
+    text-decoration: underline;
     background: azure;
 }
 #query-results tr {

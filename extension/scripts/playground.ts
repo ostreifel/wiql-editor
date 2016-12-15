@@ -3,19 +3,11 @@ import { renderQueryResults, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "./wiqlEditor";
 
-
-function onChange(errorCount: number): void {
-    if (errorCount > 0) {
-        setError("Resolve errors to search");
-    } else {
-        search();
-    }
-}
 const target = document.getElementById("wiql-box");
 if (!target) {
     throw new Error("Could not find wiql editor div");
 }
-const editor = setupEditor(target, onChange);
+const editor = setupEditor(target);
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");

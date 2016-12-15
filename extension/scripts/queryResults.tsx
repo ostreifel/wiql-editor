@@ -23,7 +23,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
     }
 }
 
-class WiQueryResults extends React.Component<{ workItems: WorkItem[], columns: WorkItemFieldReference[]}, void> {
+class WiQueryResults extends React.Component<{ workItems: WorkItem[], columns: WorkItemFieldReference[] }, void> {
     render() {
         const rows = this.props.workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.columns} />);
         return <table><tbody>{rows}</tbody></table>;
@@ -37,7 +37,11 @@ export function renderQueryResults(result: WorkItemQueryResult, workItems: WorkI
     } else {
         resultsView = <div>{"TODO render work item relations"}</div>;
     }
-    ReactDom.render(resultsView, document.getElementById("query-results") as HTMLElement);
+    const count = (result.workItems || result.workItemRelations).length;
+    const message = count < 50 ? `Found ${count} results` : `Showing first 50 results`;
+    ReactDom.render(<div>{resultsView}
+        <div>{message}</div>
+    </div>, document.getElementById("query-results") as HTMLElement);
 }
 
 export function setError(error: TfsError | string) {

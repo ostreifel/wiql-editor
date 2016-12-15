@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-editor",
-    "version": "1.0.68",
+    "version": "1.0.76",
     "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -100,7 +100,8 @@
             "description": "Editor for the given query",
             "targets": [ ],
             "properties": {
-                "uri": "queryEditor.html"
+                "uri": "queryEditor.html",
+                "registeredObjectId": "dialogCallbacks"
             }
         }
     ]

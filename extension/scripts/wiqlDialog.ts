@@ -41,7 +41,7 @@ export function showDialog(query: IQuery) {
         const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
         dialogService.openDialog(contentContribution, dialogOptions, context).then((dialog) => {
             closeDialog = () => dialog.close();
-            dialog.getContributionInstance(contentContribution + ".callbacks").then((callbacks: ICallbacks) => {
+            dialog.getContributionInstance("contextForm").then((callbacks: ICallbacks) => {
                 okCallback = callbacks.okCallback;
                 callbacks.setUpdateSaveButton((enabled) => {
                     dialog.updateOkButton(enabled);
