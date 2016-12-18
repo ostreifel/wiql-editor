@@ -16,11 +16,7 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
-#### v1.0.78
-Patches on prem bug saving queries
-#### v1.0.5
-Changes syntax highlighting.
-
-Disclaimer about query types that are supported.
-#### v1.0.1
-Initial Release
+1.0.81 Patches bug type checking
+1.0.78 Patches on prem bug saving queries  
+1.0.5 Changes syntax highlighting. Disclaimer about query types that are supported.  
+1.0.1 Initial Release

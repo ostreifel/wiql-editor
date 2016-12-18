@@ -57,8 +57,9 @@ export class EOF extends Token {
     }
 }
 
-export abstract class SymbolTree {
+export abstract class SymbolTree extends Symbol {
     constructor(readonly inputs: Symbol[]) {
+        super();
     }
     /**
      * Error checkers work better if each tree symbol has its component types as properties

@@ -1,9 +1,9 @@
 import { isSupportedQueryId, showDialog } from "./wiqlDialog";
 
-const menuAction = <IContributedMenuSource>{
-    getMenuItems: (context): IContributedMenuItem | null => {
+const menuAction: Partial<IContributedMenuSource> = {
+    getMenuItems: (context): IContributedMenuItem[] => {
         if (!context || !context.query || !isSupportedQueryId(context.query.id)) {
-            return null;
+            return [];
         }
         return [<IContributedMenuItem>{
             text: "Edit query wiql",
