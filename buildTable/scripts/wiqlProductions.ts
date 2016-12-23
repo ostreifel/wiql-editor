@@ -1,6 +1,5 @@
 // import * as Symbols from './wiqlSymbols';
 import { Rule as EbnfRule, InputType, Grouping, Optionals } from './ebnfParser';
-export const startSymbols = ["FLATSELECT"];
 
 export interface IProduction {
     /** nameof ? extends typeof Symbols.Symbol */
@@ -52,10 +51,17 @@ function toProductions(rule: EbnfRule): IProduction[] {
 }
 export class Productions {
     private readonly rules: {[name: string]: IProduction[]};
+    public readonly startSymbols: string[];
     constructor(rules: EbnfRule[]) {
         this.rules = {};
         for (let rule of rules) {
             this.rules[rule.result] = toProductions(rule);
+        }
+        this.startSymbols = [];
+        for (let rule of rules) {
+            if (this.startSymbols.indexOf(rule.result) < 0 && this.getProductionsUsing(rule.result).length === 0) {
+                this.startSymbols.push(rule.result);
+            }
         }
     }
     public isTokenClass(symbol: string) {

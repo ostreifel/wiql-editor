@@ -21,7 +21,7 @@ export function getTokenName(symbolClass: Function): string {
     const str: string = symbolClass.toString();
     const match = str.match(/function (\S+)(?=\()/);
     if (match) {
-        return match[1].toUpperCase();
+        return match[1];
     }
     throw new Error('type is not a function');
 }
@@ -36,15 +36,15 @@ const ebnfPatterns: TokenPattern[] = [
     { match: '|', token: VerticalBar },
     { match: '[', token: LSqBracket },
     { match: ']', token: RSqBracket },
-    { match: '(', token: LParen },
-    { match: ')', token: RParen },
     { // Comments
         match: '(*',
         pushState: [
             { match: '*)', popState: true },
-            { match: '/./' },
+            { match: /.|\s/ },
         ]
     },
+    { match: '(', token: LParen },
+    { match: ')', token: RParen },
     // Define error tokens
     { match: /./, token: Unexpected },
 ];

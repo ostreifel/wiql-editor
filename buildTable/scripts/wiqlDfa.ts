@@ -1,4 +1,4 @@
-import { IProduction, Productions, startSymbols } from './wiqlProductions';
+import { IProduction, Productions } from './wiqlProductions';
 
 export class ProductionPosition {
     constructor(readonly production: IProduction, readonly pos: number) {
@@ -133,7 +133,7 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
 
     { //States and transitions
         const startProductions: IProduction[] = [];
-        for (let startProd of startSymbols) {
+        for (let startProd of productions.startSymbols) {
             startProductions.push(...productions.getProductionsFor(startProd));
         }
         const selectZeros = startProductions.map((p) => new ProductionPosition(p, 0));

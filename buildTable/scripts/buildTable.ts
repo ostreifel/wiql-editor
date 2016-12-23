@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { State, Transition, Resolution, calcDfa } from './wiqlDfa';
-import { IProduction, Productions, startSymbols } from './wiqlProductions';
+import { IProduction, Productions } from './wiqlProductions';
 import { parse } from './ebnfParser';
 import { IParseTable } from './wiqlTableContracts';
 
@@ -28,7 +28,7 @@ function computeTable(productions: Productions, states: State[], transitions: Tr
             } 
         };
     }
-    for (let acceptSymbol of startSymbols) {
+    for (let acceptSymbol of productions.startSymbols) {
         table[0].symbols[acceptSymbol] = -1;
     }
     return table;
@@ -49,7 +49,7 @@ const table = computeTable(productions, states, transitions, resolutions);
 const tableFile = `
 // Generated file: Do not edit
 import { IParseTable } from "./wiqlTableContracts";
-export const table: IParseTable = ${JSON.stringify(table)}
+export const table: IParseTable = ${JSON.stringify(table)};
 `;
 fs.writeFileSync(outFile, tableFile, { encoding: 'utf-8' });
 process.exit(0);
