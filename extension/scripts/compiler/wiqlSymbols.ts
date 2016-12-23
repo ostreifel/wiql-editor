@@ -51,6 +51,14 @@ export class NonterminatingString extends Token { }
 export class Identifier extends Token { }
 export class Digits extends Token { }
 export class Variable extends Token { }
+
+export class Mode extends Token { }
+export class MustContain extends Token { }
+export class MayContain extends Token { }
+export class DoesNotContain extends Token { }
+export class Source extends Token { }
+export class Target extends Token { }
+export class Dot extends Token { }
 export class EOF extends Token {
     constructor(line: number, startColumn: number, readonly prev: Token) {
         super(line, startColumn, "");
@@ -217,13 +225,90 @@ export class FlatSelect extends SymbolTree {
         this.asOf = super.getInput(DateTime);
     }
 }
+export class SourcePrefix extends SymbolTree {
+    public readonly source: Source;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.source = super.getInput(Source);
+    }
+}
+export class TargetPrefix extends SymbolTree {
+    public readonly target: Target;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.target = super.getInput(Target);
+    }
+}
+export class LinkCondition extends SymbolTree {
+    public readonly expression?: LogicalExpression;
+
+    public readonly prefix?: SourcePrefix | TargetPrefix;
+    public readonly field?: Field;
+
+    public readonly conditionalOperator?: ConditionalOperator;
+    public readonly value?: Value;
+
+    public readonly not?: Not;
+    public readonly valueList?: ValueList;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.expression = super.getInput(LogicalExpression);
+        this.field = super.getInput([SourcePrefix, TargetPrefix]);
+        this.field = super.getInput(Field);
+        this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.value = super.getInput(Value);
+        this.not = super.getInput(Not);
+        this.valueList = super.getInput(ValueList);
+    }
+}
+export class LinkExpression extends SymbolTree {
+    public readonly condition: LinkExpression;
+    public readonly everNot?: Ever | Not;
+    public readonly orAnd?: And | Or;
+    public readonly expression?: LogicalExpression;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.condition = super.getInput(LinkExpression);
+        this.everNot = super.getInput([Ever, Not]);
+        this.orAnd = super.getInput([And, Or]);
+        this.expression = super.getInput(LinkExpression);
+    }
+}
+export class LinkOrderByFieldList extends SymbolTree {
+    public readonly prefix?: SourcePrefix | TargetPrefix;
+    public readonly field: Field;
+    public readonly ascDesc: Asc | Desc;
+    public readonly restOfList?: LinkOrderByFieldList;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.prefix = super.getInput([SourcePrefix, TargetPrefix]);
+        this.field = super.getInput(Field);
+        this.ascDesc = super.getInput([Asc, Desc]);
+        this.restOfList = super.getInput([LinkOrderByFieldList]);
+    }
+}
+export class OneHopSelect extends SymbolTree {
+    public readonly fieldList: FieldList;
+    public readonly whereExp?: LinkExpression;
+    public readonly orderBy?: LinkOrderByFieldList;
+    public readonly asOf?: DateTime;
+    public readonly mode?: MustContain | MayContain | DoesNotContain;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.fieldList = super.getInput(FieldList);
+        this.whereExp = super.getInput(LinkExpression);
+        this.orderBy = super.getInput(LinkOrderByFieldList);
+        this.asOf = super.getInput(DateTime);
+        this.mode = super.getInput([MustContain, MayContain, DoesNotContain]);
+    }
+}
 // Link symbols not copied as workItemLink queries are not supported yet
 
 export function getSymbolName(symbolClass: Function): string {
     const str: string = symbolClass.toString();
     const match = str.match(/function (\S+)(?=\()/);
     if (match) {
-        return match[1].toUpperCase();
+        return match[1];
     }
     throw new Error("type is not a function");
 }

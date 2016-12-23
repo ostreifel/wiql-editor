@@ -26,10 +26,10 @@ function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
 export function tokenize(lines: string[], patterns: TokenPattern[]) {
     patterns = makeRegexesAtStart(patterns);
     const tokens: any[] = [];
+    const states = [patterns];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLocaleLowerCase();
         let j = 0;
-        const states = [patterns];
         nextToken: while (j < line.length) {
             const substr = line.substr(j);
             for (let tokenPattern of states[states.length - 1]) {

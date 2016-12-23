@@ -24,6 +24,13 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: "GROUP", token: Symbols.Group },
     { match: "true", token: Symbols.True },
     { match: "false", token: Symbols.False },
+    { match: "MODE", token: Symbols.Mode },
+    { match: "MustContain", token: Symbols.MustContain },
+    { match: "MayContain", token: Symbols.MayContain },
+    { match: "DoesNotContain", token: Symbols.DoesNotContain },
+    { match: "source", token: Symbols.Source },
+    { match: "target", token: Symbols.Target },
+    { match: ".", token: Symbols.Dot },
     { match: "(", token: Symbols.LParen },
     { match: ")", token: Symbols.RParen },
     { match: "[any]", token: Symbols.Variable },
@@ -32,6 +39,8 @@ export const wiqlPatterns: TokenPattern[] = [
         match: "[",
         token: Symbols.LSqBracket,
         pushState: [
+            { match: /source(?=])/, token: Symbols.Source},
+            { match: /target(?=])/, token: Symbols.Target},
             { match: /[^\]]+/, token: Symbols.Identifier },
             { match: /]/, token: Symbols.RSqBracket, popState: true }
         ]

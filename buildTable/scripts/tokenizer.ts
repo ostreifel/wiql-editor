@@ -10,7 +10,7 @@ function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
     return patterns.map((p) => {
         let match;
         if (p.match instanceof RegExp) {
-            match = new RegExp('^(?:' + p.match.source + ')', 'i');
+            match = new RegExp("^(?:" + p.match.source + ")", "i");
         } else {
             match = p.match;
         }
@@ -26,10 +26,10 @@ function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
 export function tokenize(lines: string[], patterns: TokenPattern[]) {
     patterns = makeRegexesAtStart(patterns);
     const tokens: any[] = [];
+    const states = [patterns];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLocaleLowerCase();
         let j = 0;
-        const states = [patterns];
         nextToken: while (j < line.length) {
             const substr = line.substr(j);
             for (let tokenPattern of states[states.length - 1]) {
@@ -38,7 +38,7 @@ export function tokenize(lines: string[], patterns: TokenPattern[]) {
                 if (tokenPattern.match instanceof RegExp && (match = substr.match(tokenPattern.match))) {
                     // Preserve case of matching chars
                     tokenText = lines[i].substring(j, j + match[0].length);
-                } else if (typeof tokenPattern.match === 'string'
+                } else if (typeof tokenPattern.match === "string"
                     && substr.indexOf(tokenPattern.match.toLocaleLowerCase()) === 0
                     // Make sure string matches are on word boundries
                     && (j + tokenPattern.match.length === line.length - 1

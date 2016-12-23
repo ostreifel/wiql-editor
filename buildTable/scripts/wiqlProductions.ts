@@ -23,7 +23,7 @@ function toProductionInputs(inputs: InputType[], prodInputs: string[][] = [[]]):
             nextInput.push([]);
         }
 
-        // prodInputs and nextInput -- this is the core logic that allows the ebnf to be so compact even the the productions are not
+        // prodInputs and nextInput -- this is the core logic that allows the ebnf to be so compact even when the productions are not
         const newProdInputs: string[][] = [];
         for( let prevInputs of prodInputs) {
             for (let nextInputs of nextInput) {

@@ -140,7 +140,7 @@ function parseRules(tokens: Token[]) {
 }
 
 export function parse(fileName: string): Rule[] {
-    const fileContents = fs.readFileSync(fileName, { encoding: 'utf-8' });
-    const tokens = tokenize([fileContents], ebnfPatterns);
+    const fileContents = fs.readFileSync(fileName, { encoding: 'utf-8' }).split('\r\n');
+    const tokens = tokenize(fileContents, ebnfPatterns);
     return parseRules(tokens);
 }

@@ -1,8 +1,8 @@
 import { expect, assert } from "chai";
-import { tokenize } from "./tokenizer";
-import { wiqlPatterns } from "./wiqlTokenPatterns";
-import * as Symbols from "./wiqlSymbols";
-import { parse } from "./wiqlParser";
+import { tokenize } from "../compiler/tokenizer";
+import { wiqlPatterns } from "../compiler/wiqlTokenPatterns";
+import * as Symbols from "../compiler/wiqlSymbols";
+import { parse } from "../compiler/wiqlParser";
 
 
 describe("Tokenizer", () => {
@@ -19,6 +19,11 @@ describe("Tokenizer", () => {
         expect(tokens[0] instanceof Symbols.Select, "expecting select").to.be.true;
         expect(tokens[1] instanceof Symbols.Identifier, "expecting Identifier").to.be.true;
         expect(tokens.length).to.be.eq(2);
+    });
+    it("[source].", () => {
+        const tokens = tokenize(["[source]."], wiqlPatterns);
+        expect(tokens[1] instanceof Symbols.Source, "expecting source").to.be.true;
+        expect(tokens.length).to.be.eq(4);
     });
 });
 

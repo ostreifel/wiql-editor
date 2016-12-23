@@ -1,21 +1,38 @@
-FLATSELECT = SELECT FIELDLIST 
-FROM WORKITEMS
-[WHERE LOGICALEXPRESSION]
-[ORDERBY ORDERBYFIELDLIST]
-[ASOF DATETIME];
-FIELDLIST = FIELD [COMMA FIELDLIST];
-FIELD = IDENTIFIER | LSQBRACKET IDENTIFIER RSQBRACKET;
-LOGICALEXPRESSION = [NOT| EVER] CONDITIONALEXPRESSION [(AND | OR) LOGICALEXPRESSION];
-CONDITIONALEXPRESSION = LPAREN LOGICALEXPRESSION RPAREN 
-| FIELD CONDITIONALOPERATOR VALUE
-| FIELD [NOT] IN LPAREN VALUELIST RPAREN;
-NUMBER = [MINUS] DIGITS;
-VALUE = NUMBER | STRING | DATETIME | VARIABLE [(PLUS | MINUS) NUMBER] | TRUE | FALSE;
-DATETIME = STRING;
-VALUELIST = VALUE [COMMA VALUELIST];
-CONDITIONALOPERATOR = EQUALS | NOTEQUALS | LESSTHAN | LESSOREQ | GREATERTHAN 
-| GREATEROREQ | [EVER] [NOT] (LIKE | UNDER) | [NOT] CONTAINS | [NOT] CONTAINSWORDS
-| [NOT] INGROUP;
-CONTAINSWORDS = CONTAINS WORDS;
-INGROUP = IN GROUP;
-ORDERBYFIELDLIST = FIELD [ASC | DESC] [COMMA ORDERBYFIELDLIST];
+(* FLATSELECT productions*)
+FlatSelect = Select FieldList 
+From WorkItems
+[Where LogicalExpression]
+[OrderBy OrderByFieldList]
+[Asof DateTime];
+FieldList = Field [Comma FieldList];
+Field = Identifier | LSqBracket Identifier RSqBracket;
+LogicalExpression = [Not| Ever] ConditionalExpression [(And | Or) LogicalExpression];
+ConditionalExpression = LParen LogicalExpression RParen 
+| Field ConditionalOperator Value
+| Field [Not] In LParen ValueList RParen;
+Number = [Minus] Digits;
+Value = Number | String | DateTime | Field | Variable [(Plus | Minus) Number] | True | False;
+DateTime = String;
+ValueList = Value [Comma ValueList];
+ConditionalOperator = Equals | Equals | LessThan | LessOrEq | GreaterThan 
+| GreaterOrEq | [Ever] [Not] (Like | Under) | [Not] Contains | [Not] ContainsWords
+| [Not] InGroup;
+ContainsWords = Contains Words;
+InGroup = In Group;
+OrderByFieldList = Field [Asc | Desc] [Comma OrderByFieldList];
+(* one hop query *)
+OneHopSelect = Select FieldList
+From WorkItemLinks
+[Where LinkExpression]
+[OrderBy LinkOrderByFieldList]
+[Asof DateTime]
+[Mode LParen (MustContain | MayContain | DoesNotContain) RParen];
+LinkOrderByFieldList = [SourcePrefix | TargetPrefix]
+    Field [Asc | Desc] 
+    [Comma LinkOrderByFieldList];
+LinkExpression = [Not | Ever] LinkCondition [(And | Or) LinkExpression];
+SourcePrefix = Source Dot | LSqBracket Source RSqBracket Dot;
+TargetPrefix = Target Dot | LSqBracket Target RSqBracket Dot;
+LinkCondition = LParen LinkExpression RParen 
+| [SourcePrefix | TargetPrefix] Field ConditionalOperator Value
+| (SourcePrefix | TargetPrefix) Field [Not] In LParen ValueList RParen;
