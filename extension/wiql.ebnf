@@ -14,7 +14,7 @@ Number = [Minus] Digits;
 Value = Number | String | DateTime | Field | Variable [(Plus | Minus) Number] | True | False;
 DateTime = String;
 ValueList = Value [Comma ValueList];
-ConditionalOperator = Equals | Equals | LessThan | LessOrEq | GreaterThan 
+ConditionalOperator = Equals | NotEquals | LessThan | LessOrEq | GreaterThan 
 | GreaterOrEq | [Ever] [Not] (Like | Under) | [Not] Contains | [Not] ContainsWords
 | [Not] InGroup;
 ContainsWords = Contains Words;
