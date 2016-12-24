@@ -1,5 +1,12 @@
 {
   "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/jquery": "^2.0.34",
+    "@types/knockout": "^3.4.38",
+    "@types/mocha": "^2.2.34",
+    "@types/react": "^0.14.55",
+    "@types/react-dom": "^0.14.19",
+    "@types/requirejs": "^2.1.28",
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",

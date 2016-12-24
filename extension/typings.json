@@ -1,12 +1,8 @@
 {
   "globalDependencies": {
-    "chai": "registry:dt/chai#3.4.0+20160601211834",
-    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "monaco-editor": "github:Microsoft/monaco-editor/monaco.d.ts#25e381f6f912f9a94171263a7792d897458f0d07",
     "tfs": "npm:vss-web-extension-sdk/typings/tfs.d.ts",
     "vss": "npm:vss-web-extension-sdk/typings/vss.d.ts"
   },
-  "dependencies": {
-    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104"
-  }
+  "dependencies": {}
 }
