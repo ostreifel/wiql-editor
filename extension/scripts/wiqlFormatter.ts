@@ -16,16 +16,17 @@ function tabs(tab: string, indent: number) {
 }
 function formatField(field: Symbols.Field, fields: FieldMap): string {
     const foundField = fields[field.identifier.text.toLocaleLowerCase()];
-    return `[${foundField ? foundField.name : field.identifier.text}]`;
+    return `[${foundField ? foundField.referenceName : field.identifier.text}]`;
 }
-function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string {
-    const fieldStrs: string[] = [];
+function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap, tab: string): string[] {
+    const lines: string[] = [];
     let currFieldList: Symbols.FieldList | undefined = fieldList;
     while (currFieldList) {
-        fieldStrs.push(formatField(currFieldList.field, fields));
+        let comma = currFieldList.restOfList ? "," : "";
+        lines.push(tab + formatField(currFieldList.field, fields) + comma);
         currFieldList = currFieldList.restOfList;
     }
-    return fieldStrs.join(", ");
+    return lines;
 }
 function formatNumber(num: Symbols.Number) {
     return (num.minus ? "-" : "") + num.digits.text;
@@ -131,9 +132,8 @@ function formatExpression(logicalExpression: Symbols.LogicalExpression | Symbols
     return lines;
 }
 function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList,
-                                fields: FieldMap): string {
-    let line = "ORDER BY ";
-    let orders: string[] = [];
+                                fields: FieldMap, tab: string): string[] {
+    let lines: string[] = [];
     let currOrderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList | undefined = orderBy;
     while (currOrderBy) {
         const field = formatField(currOrderBy.field, fields);
@@ -151,17 +151,26 @@ function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.Link
                 prefix = "[Target].";
             }
         }
-        orders.push(prefix + field + order);
+        let line = prefix + field + order;
+        if (currOrderBy === orderBy) {
+            line = "ORDER BY " + line;
+        } else {
+            line = tab + line;
+        }
+        if (currOrderBy.restOfList) {
+            line += ",";
+        }
+        lines.push(line);
         currOrderBy = currOrderBy.restOfList;
     }
-    return `ORDER BY ${orders.join(", ")}`;
+    return lines;
 }
 function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbols.RecursiveSelect,
                       tab: string,
                       fields: FieldMap): string[] {
     const lines: string[] = [];
     lines.push("SELECT");
-    lines.push(tab + formatFieldList(select.fieldList, fields));
+    lines.push(...formatFieldList(select.fieldList, fields, tab));
     if (select instanceof Symbols.FlatSelect) {
         lines.push("FROM workitems");
     } else {
@@ -172,7 +181,7 @@ function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbol
         lines.push(...formatExpression(select.whereExp, tab, 1, fields));
     }
     if (select.orderBy) {
-        lines.push(formatOrderByFieldList(select.orderBy, fields));
+        lines.push(...formatOrderByFieldList(select.orderBy, fields, tab));
     }
     if (select.asOf) {
         lines.push("ASOF " + select.asOf.dateString.text);

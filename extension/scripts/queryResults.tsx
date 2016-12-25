@@ -13,7 +13,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
 
         const tds: JSX.Element[] = [];
         if (this.props.rel) {
-            tds.push(<td title={"Link Type"}>{this.props.rel}</td>)
+            tds.push(<td title={"Link Type"}>{this.props.rel}</td>);
         }
         for (const fieldRef of this.props.columns) {
             tds.push(<td title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</td>);
@@ -33,7 +33,7 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
             wiMap[wi.id] = wi;
         }
         const workItems = this.props.result.workItems.map((wi) => wiMap[wi.id]);
-        const rows = this.props.workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} />);
+        const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} />);
         return <table><tbody>{rows}</tbody></table>;
     }
 }

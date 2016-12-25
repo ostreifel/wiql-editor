@@ -25,6 +25,7 @@ function loadWorkItems(result: WorkItemQueryResult) {
 function loadWorkItemRelations(result: WorkItemQueryResult) {
     if (result.workItemRelations.length === 0) {
         setMessage("No work item relations found");
+        return;
     }
     setMessage("Loading workitem relations...");
     const ids: number[] = [];
