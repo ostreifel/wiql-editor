@@ -60,6 +60,14 @@ export class TypeErrorChecker {
                 }
             }
         }
+        // link type wrong as returned by the server -- correct it
+        if ("link type" in this.fieldLookup) {
+            const field = this.fieldLookup["link type"];
+            field.fieldType = FieldType.String;
+            field.group = [];
+            field.literal = [Symbols.Equals, Symbols.NotEquals];
+            field.field = [];
+        }
     }
     private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;
@@ -144,7 +152,10 @@ export class TypeErrorChecker {
     }
     public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
-        const allConditions = symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression);
+        const allConditions = [
+            ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
+            ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
+        ];
         const fieldConditions = allConditions.filter((c) => c.field !== undefined && c.conditionalOperator !== undefined);
         for (let condition of allConditions) {
             if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in this.fieldLookup)) {
