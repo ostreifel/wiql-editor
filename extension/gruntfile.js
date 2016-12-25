@@ -10,18 +10,16 @@
                 "outDir": "./test/",
                 src: ["./scripts/**/*.tests.ts"]
             },
-            buildTable: {
-                tsconfig: "../buildTable/tsconfig.json",
-                outDir: "../buildTable/build",
-                src: ["../buildTable/scripts/**/*"]
-            },
             options: {
                 fast: 'never'
             }
         },
         exec: {
+            buildTable: {
+                command: "tsc --p ../buildTable/tsconfig.json"
+            },
             generateParseTable: {
-                command: "node ../buildTable/build/scripts/buildTable.js ./wiql.ebnf ./scripts/compiler/wiqlTable.ts",
+                command: "node ../buildTable/build/buildTable.js ./wiql.ebnf ./scripts/compiler/wiqlTable.ts",
                 stdout: true,
                 stderr: true
             },
@@ -102,7 +100,7 @@
     grunt.registerTask("publish-dev", ["package-dev", "exec:publish_dev"]);
     grunt.registerTask("publish-release", ["package-release", "exec:publish_release"]);
 
-    grunt.registerTask("generate-table", ["ts:buildTable", "exec:generateParseTable"]);
+    grunt.registerTask("generate-table", ["exec:buildTable", "exec:generateParseTable"]);
 
     grunt.registerTask("default", ["package-dev"]);
 };

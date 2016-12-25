@@ -1,0 +1,16 @@
+{
+  "name": "build-table",
+  "version": "1.0.0",
+  "description": "Build the parse table for the compiler",
+  "main": "scripts/buildTable.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^6.0.53",
+    "@types/q": "0.0.32"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

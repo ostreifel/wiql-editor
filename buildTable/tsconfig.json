@@ -3,6 +3,8 @@
         "module": "umd",
         "sourceMap": false,
         "target": "es5",
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "rootDir": "./scripts",
+        "outDir": "./build"
     }
 }
