@@ -59,6 +59,8 @@ export class DoesNotContain extends Token { }
 export class Source extends Token { }
 export class Target extends Token { }
 export class Dot extends Token { }
+export class Recursive extends Token { }
+export class ReturnMatchingChildren extends Token { }
 export class EOF extends Token {
     constructor(line: number, startColumn: number, readonly prev: Token) {
         super(line, startColumn, "");
@@ -240,7 +242,7 @@ export class TargetPrefix extends SymbolTree {
     }
 }
 export class LinkCondition extends SymbolTree {
-    public readonly expression?: LogicalExpression;
+    public readonly expression?: LinkExpression;
 
     public readonly prefix?: SourcePrefix | TargetPrefix;
     public readonly field?: Field;
@@ -252,7 +254,7 @@ export class LinkCondition extends SymbolTree {
     public readonly valueList?: ValueList;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.expression = super.getInput(LogicalExpression);
+        this.expression = super.getInput(LinkExpression);
         this.field = super.getInput([SourcePrefix, TargetPrefix]);
         this.field = super.getInput(Field);
         this.conditionalOperator = super.getInput(ConditionalOperator);
@@ -262,13 +264,13 @@ export class LinkCondition extends SymbolTree {
     }
 }
 export class LinkExpression extends SymbolTree {
-    public readonly condition: LinkExpression;
+    public readonly condition: LinkCondition;
     public readonly everNot?: Ever | Not;
     public readonly orAnd?: And | Or;
-    public readonly expression?: LogicalExpression;
+    public readonly expression?: LinkExpression;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.condition = super.getInput(LinkExpression);
+        this.condition = super.getInput(LinkCondition);
         this.everNot = super.getInput([Ever, Not]);
         this.orAnd = super.getInput([And, Or]);
         this.expression = super.getInput(LinkExpression);
@@ -300,6 +302,23 @@ export class OneHopSelect extends SymbolTree {
         this.orderBy = super.getInput(LinkOrderByFieldList);
         this.asOf = super.getInput(DateTime);
         this.mode = super.getInput([MustContain, MayContain, DoesNotContain]);
+    }
+}
+export class RecursiveSelect extends SymbolTree {
+    public readonly fieldList: FieldList;
+    public readonly whereExp?: LinkExpression;
+    public readonly orderBy?: LinkOrderByFieldList;
+    public readonly asOf?: DateTime;
+    public readonly recursive?: Recursive;
+    public readonly matchingChildren?: ReturnMatchingChildren;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.fieldList = super.getInput(FieldList);
+        this.whereExp = super.getInput(LinkExpression);
+        this.orderBy = super.getInput(LinkOrderByFieldList);
+        this.asOf = super.getInput(DateTime);
+        this.recursive = super.getInput(Recursive);
+        this.matchingChildren = super.getInput(ReturnMatchingChildren);
     }
 }
 // Link symbols not copied as workItemLink queries are not supported yet

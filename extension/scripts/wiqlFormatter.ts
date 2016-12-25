@@ -15,7 +15,8 @@ function tabs(tab: string, indent: number) {
     return Array(indent + 1).join(tab);
 }
 function formatField(field: Symbols.Field, fields: FieldMap): string {
-    return `[${fields[field.identifier.text.toLocaleLowerCase()].name}]`;
+    const foundField = fields[field.identifier.text.toLocaleLowerCase()];
+    return `[${foundField ? foundField.name : field.identifier.text}]`;
 }
 function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap): string {
     const fieldStrs: string[] = [];
@@ -87,25 +88,35 @@ function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
     }
     throw new Error("Unexpected condtional operator");
 }
-function formatConditionalExpression(conditionalExpression: Symbols.ConditionalExpression, tab: string, indent: number, fields: FieldMap): string[] {
-    if (conditionalExpression.expression) {
+function formatCondition(condition: Symbols.ConditionalExpression | Symbols.LinkCondition,
+                         tab: string, indent: number, fields: FieldMap): string[] {
+    if (condition.expression) {
         return [
             tabs(tab, indent) + "(",
-            ...formatLogicalExpression(conditionalExpression.expression, tab, indent + 1, fields),
+            ...formatExpression(condition.expression, tab, indent + 1, fields),
             tabs(tab, indent) + ")",
         ];
     }
-    if (conditionalExpression.field && conditionalExpression.valueList) {
-        const op = conditionalExpression.not ? " NOT IN " : " IN ";
-        return [tabs(tab, indent) + formatField(conditionalExpression.field, fields) + op + "(" + formatValueList(conditionalExpression.valueList, fields) + ")"];
+    let prefix = "";
+    if (condition instanceof Symbols.LinkCondition) {
+        if (condition.prefix instanceof Symbols.Target) {
+            prefix = "[target].";
+        } else if (condition.prefix instanceof Symbols.Source) {
+            prefix = "[source].";
+        }
     }
-    if (conditionalExpression.field && conditionalExpression.conditionalOperator && conditionalExpression.value) {
-        return [`${tabs(tab, indent)}${formatField(conditionalExpression.field, fields)} ${formatConditionalOperator(conditionalExpression.conditionalOperator)} ${formatValue(conditionalExpression.value, fields)}`];
+    if (condition.field && condition.valueList) {
+        const op = condition.not ? " NOT IN " : " IN ";
+        return [tabs(tab, indent) + prefix + formatField(condition.field, fields) + op + "(" + formatValueList(condition.valueList, fields) + ")"];
+    }
+    if (condition.field && condition.conditionalOperator && condition.value) {
+        return [`${tabs(tab, indent)}${prefix}${formatField(condition.field, fields)} ${formatConditionalOperator(condition.conditionalOperator)} ${formatValue(condition.value, fields)}`];
     }
     return [];
 }
-function formatLogicalExpression(logicalExpression: Symbols.LogicalExpression, tab: string, indent: number, fields: FieldMap): string[] {
-    const lines: string[] = formatConditionalExpression(logicalExpression.condition, tab, indent, fields);
+function formatExpression(logicalExpression: Symbols.LogicalExpression | Symbols.LinkExpression,
+                          tab: string, indent: number, fields: FieldMap): string[] {
+    const lines: string[] = formatCondition(logicalExpression.condition, tab, indent, fields);
     if (logicalExpression.everNot instanceof Symbols.Ever) {
         lines[0] = insert(lines[0], "EVER ");
     } else if (<Symbols.Not | undefined>logicalExpression.everNot instanceof Symbols.Not) {
@@ -113,43 +124,83 @@ function formatLogicalExpression(logicalExpression: Symbols.LogicalExpression, t
     }
     if (logicalExpression.orAnd && logicalExpression.expression) {
         const orAndStr = logicalExpression.orAnd instanceof Symbols.Or ? "OR " : "AND ";
-        const secondExpLines = formatLogicalExpression(logicalExpression.expression, tab, indent, fields);
+        const secondExpLines = formatExpression(logicalExpression.expression, tab, indent, fields);
         secondExpLines[0] = insert(secondExpLines[0], orAndStr);
         lines.push(...secondExpLines);
     }
     return lines;
 }
-function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList, fields: FieldMap): string {
+function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList,
+                                fields: FieldMap): string {
     let line = "ORDER BY ";
     let orders: string[] = [];
-    let currOrderBy: Symbols.OrderByFieldList | undefined = orderBy;
+    let currOrderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList | undefined = orderBy;
     while (currOrderBy) {
         const field = formatField(currOrderBy.field, fields);
+        let order: string = "";
         if (currOrderBy.ascDesc instanceof Symbols.Asc) {
-            orders.push(field + " ASC");
+            order = " ASC";
         } else if (<Symbols.Desc | undefined>currOrderBy.ascDesc instanceof Symbols.Desc) {
-            orders.push(field + " DESC");
-        } else {
-            orders.push(field);
+            order = " DESC";
         }
+        let prefix: string = "";
+        if (currOrderBy instanceof Symbols.LinkOrderByFieldList) {
+            if (currOrderBy.prefix instanceof Symbols.Source) {
+                prefix = "[source].";
+            } else if (currOrderBy.prefix instanceof Symbols.Target) {
+                prefix = "[target].";
+            }
+        }
+        orders.push(prefix + field + order);
         currOrderBy = currOrderBy.restOfList;
     }
     return `ORDER BY ${orders.join(", ")}`;
 }
-function formatFlatSelect(flatSelect: Symbols.FlatSelect, tab: string, fields: FieldMap): string[] {
+function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbols.RecursiveSelect,
+                      tab: string,
+                      fields: FieldMap): string[] {
     const lines: string[] = [];
     lines.push("SELECT");
-    lines.push(tab + formatFieldList(flatSelect.fieldList, fields));
-    lines.push("FROM workitems");
-    if (flatSelect.whereExp) {
+    lines.push(tab + formatFieldList(select.fieldList, fields));
+    if (select instanceof Symbols.FlatSelect) {
+        lines.push("FROM workitems");
+    } else {
+        lines.push("FROM workitemLinks");
+    }
+    if (select.whereExp) {
         lines.push("WHERE");
-        lines.push(...formatLogicalExpression(flatSelect.whereExp, tab, 1, fields));
+        lines.push(...formatExpression(select.whereExp, tab, 1, fields));
     }
-    if (flatSelect.orderBy) {
-        lines.push(formatOrderByFieldList(flatSelect.orderBy, fields));
+    if (select.orderBy) {
+        lines.push(formatOrderByFieldList(select.orderBy, fields));
     }
-    if (flatSelect.asOf) {
-        lines.push("ASOF " + flatSelect.asOf.dateString.text);
+    if (select.asOf) {
+        lines.push("ASOF " + select.asOf.dateString.text);
+    }
+    if (select instanceof Symbols.OneHopSelect && select.mode) {
+        let modeStr: string;
+        if (select.mode instanceof Symbols.MustContain) {
+            modeStr = "MustContain";
+        } else if (select.mode instanceof Symbols.MayContain) {
+            modeStr = "MayContain";
+        } else if (select.mode instanceof Symbols.DoesNotContain) {
+            modeStr = "DoesNotContain";
+        } else {
+            throw new Error("Unknown mode");
+        }
+        lines.push(`MODE (${modeStr})`);
+    }
+    if (select instanceof Symbols.RecursiveSelect) {
+        const modes: string[] = [];
+        if (select.recursive) {
+            modes.push("Recursive");
+        }
+        if (select.matchingChildren) {
+            modes.push("ReturnMatchingChildren");
+        }
+        if (modes.length > 0) {
+            lines.push(`MODE (${modes.join(", ")})`);
+        }
     }
     lines.push("");
     return lines;
@@ -165,18 +216,22 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: Work
     }
 
     const parseTree = parse(model.getLinesContent());
-    if (parseTree instanceof Symbols.FlatSelect) {
-        const lines = formatFlatSelect(parseTree, tab, fieldMap);
-        const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
-            text: lines.join("\r\n"),
-            range: model.getFullModelRange(),
-            forceMoveMarkers: true,
-        };
-        model.pushEditOperations(editor.getSelections(),[edit],
-        // TODO actually calculate the new position 
-        (edits) => [new monaco.Selection(1, 1, 1, 1)]);
-        // model.pushStackElement();
+    let lines: string[];
+    if (parseTree instanceof Symbols.FlatSelect ||
+        parseTree instanceof Symbols.OneHopSelect ||
+        parseTree instanceof Symbols.RecursiveSelect) {
+        lines = formatSelect(parseTree, tab, fieldMap);
     } else {
         // syntax error, not going to format
+        return;
     }
+    const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+        text: lines.join("\r\n"),
+        range: model.getFullModelRange(),
+        forceMoveMarkers: true,
+    };
+    model.pushEditOperations(editor.getSelections(), [edit],
+        // TODO actually calculate the new position 
+        (edits) => [new monaco.Selection(1, 1, 1, 1)]);
+
 }

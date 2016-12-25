@@ -20,6 +20,7 @@ ConditionalOperator = Equals | NotEquals | LessThan | LessOrEq | GreaterThan
 ContainsWords = Contains Words;
 InGroup = In Group;
 OrderByFieldList = Field [Asc | Desc] [Comma OrderByFieldList];
+
 (* one hop query *)
 OneHopSelect = Select FieldList
 From WorkItemLinks
@@ -36,3 +37,18 @@ TargetPrefix = Target Dot | LSqBracket Target RSqBracket Dot;
 LinkCondition = LParen LinkExpression RParen 
 | [SourcePrefix | TargetPrefix] Field ConditionalOperator Value
 | (SourcePrefix | TargetPrefix) Field [Not] In LParen ValueList RParen;
+
+RecursiveSelect = Select FieldList
+From WorkItemLinks
+(* Don't check single link type at parse time *)
+[Where LinkExpression]
+[OrderBy LinkOrderByFieldList]
+[Asof DateTime]
+[Mode LParen 
+    (
+        Recursive |
+        MatchingChildren |
+        Recursive Comma ReturnMatchingChildren |
+        MatchingChildren Comma Recursive  
+    )
+RParen];

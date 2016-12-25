@@ -28,6 +28,8 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: "MustContain", token: Symbols.MustContain },
     { match: "MayContain", token: Symbols.MayContain },
     { match: "DoesNotContain", token: Symbols.DoesNotContain },
+    { match: "Recursive", token: Symbols.Recursive },
+    { match: "ReturnMatchingChildren", token: Symbols.ReturnMatchingChildren },
     { match: "source", token: Symbols.Source },
     { match: "target", token: Symbols.Target },
     { match: ".", token: Symbols.Dot },

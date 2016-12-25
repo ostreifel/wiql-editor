@@ -59,14 +59,11 @@ export function symbolsOfType<T extends Symbols.Symbol>(parseResult: IParseResul
     const matchingSymbols: T[] = [];
     while (stack.length) {
         const symbol = <Symbols.Symbol>stack.pop();
-        for (let key in symbol) {
-            const prop = symbol[key];
-            if (prop instanceof type) {
-                matchingSymbols.push(prop);
-            }
-            if (prop instanceof Symbols.Symbol) {
-                stack.push(prop);
-            }
+        if (symbol instanceof type) {
+            matchingSymbols.push(symbol as T);
+        }
+        if (symbol instanceof Symbols.SymbolTree) {
+            stack.push(...symbol.inputs);
         }
     }
     return matchingSymbols;
