@@ -255,7 +255,7 @@ export class LinkCondition extends SymbolTree {
     constructor(inputs: Symbol[]) {
         super(inputs);
         this.expression = super.getInput(LinkExpression);
-        this.field = super.getInput([SourcePrefix, TargetPrefix]);
+        this.prefix = super.getInput([SourcePrefix, TargetPrefix]);
         this.field = super.getInput(Field);
         this.conditionalOperator = super.getInput(ConditionalOperator);
         this.value = super.getInput(Value);

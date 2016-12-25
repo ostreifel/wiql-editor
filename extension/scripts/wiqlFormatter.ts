@@ -99,10 +99,10 @@ function formatCondition(condition: Symbols.ConditionalExpression | Symbols.Link
     }
     let prefix = "";
     if (condition instanceof Symbols.LinkCondition) {
-        if (condition.prefix instanceof Symbols.Target) {
-            prefix = "[target].";
-        } else if (condition.prefix instanceof Symbols.Source) {
-            prefix = "[source].";
+        if (condition.prefix instanceof Symbols.TargetPrefix) {
+            prefix = "[Target].";
+        } else if (condition.prefix instanceof Symbols.SourcePrefix) {
+            prefix = "[Source].";
         }
     }
     if (condition.field && condition.valueList) {
@@ -146,9 +146,9 @@ function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.Link
         let prefix: string = "";
         if (currOrderBy instanceof Symbols.LinkOrderByFieldList) {
             if (currOrderBy.prefix instanceof Symbols.Source) {
-                prefix = "[source].";
+                prefix = "[Source].";
             } else if (currOrderBy.prefix instanceof Symbols.Target) {
-                prefix = "[target].";
+                prefix = "[Target].";
             }
         }
         orders.push(prefix + field + order);
