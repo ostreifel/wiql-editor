@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-editor",
-    "version": "1.0.109",
+    "version": "1.1.1",
     "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -25,16 +25,9 @@
             "path": "details.md"
         }
     },
-    "links": {
-        "support": {
-            "uri": "https://github.com/ostreifel/wiql-editor/issues"
-        },
-        "learn": {
-            "uri": "https://github.com/ostreifel/wiql-editor"
-        },
-        "issues": {
-            "uri": "https://github.com/ostreifel/wiql-editor/issues"
-        }
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/ostreifel/wiql-editor"
     },
     "branding": {
         "color": "rgb(220, 235, 252)",

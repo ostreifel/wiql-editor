@@ -30,10 +30,6 @@ Three basic `grunt` tasks are defined:
 
 Note: To avoid `tfx` prompting for your token when publishing, login in beforehand using `tfx login` and the service uri of ` https://marketplace.visualstudio.com`.
 
-#### Including framework modules ####
-
-The VSTS framework is setup to initalize the requirejs AMD loader, so just use `import Foo = require("foo")` to include framework modules.
-
 #### VS Code ####
 
 The included `.vscode` config allows you to open and build the project using [VS Code](https://code.visualstudio.com/).
