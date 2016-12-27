@@ -21,3 +21,8 @@
 #query-results td {
     padding-right: 20px;
 }
+/*Need to override icon height width attributes from parent frame icon class*/
+.action-label.icon {
+    height: initial;
+    width: initial;
+}

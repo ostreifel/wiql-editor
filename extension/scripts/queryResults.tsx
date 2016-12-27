@@ -19,7 +19,16 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
             tds.push(<td title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</td>);
         }
         return (
-            <tr onClick={() => window.open(wiUrl, "_blank")}>
+            <tr
+                tabIndex={0}
+                onClick={() => window.open(wiUrl, "_blank")}
+                onKeyPress={e => {
+                    if (e.key === "Enter") {
+                        window.open(wiUrl, "_blank")
+                    }
+                }
+                }
+                >
                 {tds}
             </tr>
         );

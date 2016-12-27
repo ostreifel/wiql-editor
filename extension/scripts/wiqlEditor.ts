@@ -25,13 +25,17 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         const errorChecker = new ErrorChecker(fields);
         let oldDecorations: string[] = [];
         format(editor, fields);
-        $(window).keydown((event) => {
-            if ((event.altKey && event.shiftKey && event.which === 70) ||
-                (event.ctrlKey && event.shiftKey && event.which === 70)) {
-                event.preventDefault();
-                format(editor, fields);
-            }
+        editor.addAction({
+            id: "format",
+            contextMenuGroupId: "1_modification",
+            label: "Format",
+            keybindings: [
+                monaco.KeyMod.Alt | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
+                monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F
+            ],
+            run: e => { format(editor, fields); return null as any; }
         });
+
         function checkErrors(): number {
             const lines = model.getLinesContent();
             const parseResult = parse(lines);
@@ -48,5 +52,6 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         });
     });
 
+    editor.focus();
     return editor;
 }

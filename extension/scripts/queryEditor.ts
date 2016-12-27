@@ -12,6 +12,16 @@ let updateSaveButton = (enabled: boolean) => {
     console.log("update button not set");
 }
 const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql);
+editor.addAction({
+    id: "save",
+    contextMenuGroupId: "modification",
+    label: "Save",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+    run: e => {
+        configuration.save();
+        return null as any;
+    }
+});
 function saveQuery(): IPromise<any> {
     console.log("saving query");
     const context = VSS.getWebContext();

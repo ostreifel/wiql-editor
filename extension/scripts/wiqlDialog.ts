@@ -4,9 +4,6 @@ import * as Q from "q";
 export function showDialog(query: IQuery) {
 
     VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
-        const context: IContextOptions = {
-            query: query,
-        };
         console.log(query);
         let okCallback: () => IPromise<any> = () => {
             console.log("ok callback not set");
@@ -14,13 +11,8 @@ export function showDialog(query: IQuery) {
         };
         let closeDialog = () => {
             console.log("could not find close dialog function");
-        }
-        let updateSaveButton = (enabled: boolean) => { };
-        const dialogOptions: IHostDialogOptions = {
-            title: query.name,
-            width: 900,
-            height: 800,
-            getDialogResult: function () {
+        };
+        function save() {
                 console.log(this);
                 okCallback().then(() => {
                     VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
@@ -32,7 +24,17 @@ export function showDialog(query: IQuery) {
                     dialogService.openMessageDialog(message);
                 });
                 return "";
-            },
+        }
+        const context: IContextOptions = {
+            query: query,
+            save
+        };
+        let updateSaveButton = (enabled: boolean) => { };
+        const dialogOptions: IHostDialogOptions = {
+            title: query.name,
+            width: 900,
+            height: 800,
+            getDialogResult: save,
             okText: "Save Query",
             resizable: true,
         };

@@ -2,12 +2,6 @@ import { WorkItem, WorkItemReference, WorkItemQueryResult } from "TFS/WorkItemTr
 import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "./wiqlEditor";
-
-const target = document.getElementById("wiql-box");
-if (!target) {
-    throw new Error("Could not find wiql editor div");
-}
-const editor = setupEditor(target);
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");
@@ -44,7 +38,6 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
     getWitClient().getWorkItems(ids, fieldRefNames, result.asOf).then(
         workitems => renderResult(result, workitems), setError);
 }
-
 function search() {
     const wiqlText = editor.getValue();
     setMessage("Running query...");
@@ -53,17 +46,46 @@ function search() {
         result => result.workItems ? loadWorkItems(result) : loadWorkItemRelations(result), setError);
 }
 
+
+const target = document.getElementById("wiql-box");
+if (!target) {
+    throw new Error("Could not find wiql editor div");
+}
+const editor = setupEditor(target);
+editor.addAction({
+    id: "run",
+    contextMenuGroupId: "results",
+    label: "Run",
+    keybindings: [monaco.KeyMod.Shift | monaco.KeyCode.Enter],
+    keybindingContext: undefined,
+    contextMenuOrder: 1,
+    run: e => { search(); return <any>null; }
+});
+editor.addAction({
+    id: "focus-results",
+    label: "Focus Results",
+    contextMenuGroupId: "results",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R],
+    run: e => {
+        const trs = $("tr");
+        if (trs.length > 0) {
+            trs.first().focus();
+        }
+        return null as any;
+    }
+})
+function getAction(id: string) {
+    return () => editor.getActions().filter(a => a.id === id)[0].run();
+}
+$(".run-button").click(getAction("run"));
+$(".format-button").click(getAction("format"));
+
 setMessage([
     "Key bindings:",
-    "Shift + Enter : search",
-    "Alt + Shift + F or Ctr + Shift + F : format",
+    "Shift + Enter : Run",
+    "Alt + Shift + F or Ctr + Shift + F : Format",
+    "Ctr + R : Apply focus to first result",
 ]);
-$(window).keydown((event) => {
-    if (event.shiftKey && event.which === 13) {
-        event.preventDefault();
-        search();
-    }
-});
 
 // Register context menu action provider
 VSS.register(VSS.getContribution().id, {});
