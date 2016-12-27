@@ -24,7 +24,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
                 onClick={() => window.open(wiUrl, "_blank")}
                 onKeyPress={e => {
                     if (e.key === "Enter") {
-                        window.open(wiUrl, "_blank")
+                        window.open(wiUrl, "_blank");
                     }
                 }
                 }
@@ -98,4 +98,18 @@ export function setMessage(message: string | string[]) {
     }
     const messageElems = message.map((m) => <div>{m}</div>);
     ReactDom.render(<div>{messageElems}</div>, document.getElementById("query-results") as HTMLElement);
+}
+
+export function setVersion() {
+    const elem = document.getElementById("version-info");
+    if (!elem) {
+        return;
+    }
+    const context = VSS.getExtensionContext();
+    ReactDom.render(
+            <div>
+                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" "}
+                <a href={"mailto:wiqleditor@microsoft.com"} target={"_blank"}>Feedback and questions</a>
+            </div>
+        , elem);
 }

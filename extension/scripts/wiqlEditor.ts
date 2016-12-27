@@ -4,6 +4,7 @@ import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
 import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
 import * as Wiql from "./wiqlDefinition";
+import {setVersion} from "./queryResults";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
@@ -53,5 +54,6 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
     });
 
     editor.focus();
+    setVersion();
     return editor;
 }
