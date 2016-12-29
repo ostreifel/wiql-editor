@@ -1,4 +1,4 @@
-import { FieldType } from "TFS/WorkItemTracking/Contracts";
+import { FieldType } from "./vssContracts";
 export const definedVariables = {
     "@me": FieldType.String,
     "@currentiteration": FieldType.TreePath,

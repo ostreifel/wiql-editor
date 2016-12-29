@@ -1,7 +1,9 @@
-import { expect, assert } from "chai";
+ import { expect, assert } from "chai";
 import { parse } from "../compiler/wiqlParser";
-import { ErrorChecker } from "../wiqlErrorCheckers/ErrorChecker";
-import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
+import { NameErrorChecker } from "../wiqlErrorCheckers/NameErrorChecker";
+import { FieldType } from "../vssContracts";
+import { mock as mockMonaco } from "./mockMonaco";
+import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 
 function mockField(name: string): WorkItemField {
     return {
@@ -12,20 +14,33 @@ function mockField(name: string): WorkItemField {
         type: FieldType.String,
         supportedOperations: [],
         url: ""
-    }
+    };
 }
+mockMonaco();
 
 describe("Namechecker", () => {
-    it("Namechecker", () => {
+    it("missing fields", () => {
         const wiqlStr = `
 SELECT
     [a], b
 FROM workitemlinks
 WHERE c = 1`;
-        const result = parse(wiqlStr.split("\n"));
+        const lines = parse(wiqlStr.split("\n"));
         const fields: WorkItemField[] = [mockField("a")];
-        const checker = new ErrorChecker(fields);
-        const errors = checker.check(result);
+        const checker = new NameErrorChecker(fields);
+        const errors = checker.check(lines);
         expect(errors.length).to.be.eq(2, "Expected b and c to error");
+    });
+    it("missing var", () => {
+        const wiqlStr = `
+SELECT
+    a
+FROM workitemlinks
+WHERE c = @me or c = @project or d = @invalid`;
+        const lines = parse(wiqlStr.split("\n"));
+        const fields: WorkItemField[] = [mockField("a")];
+        const checker = new NameErrorChecker(fields);
+        const errors = checker.check(lines);
+        expect(errors.length).to.be.eq(1, "Expected @invalid to error");
     });
 });
