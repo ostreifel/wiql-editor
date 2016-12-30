@@ -108,7 +108,7 @@ export function setVersion() {
     const context = VSS.getExtensionContext();
     ReactDom.render(
             <div>
-                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" "}
+                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" or "}
                 <a href={"mailto:wiqleditor@microsoft.com"} target={"_blank"}>Feedback and questions</a>
             </div>
         , elem);

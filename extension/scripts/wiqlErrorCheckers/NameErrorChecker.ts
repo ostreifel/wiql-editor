@@ -1,6 +1,6 @@
 import { IErrorChecker } from "./IErrorChecker";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { IParseResults, parse } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/wiqlParser";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
 import { toDecoration, symbolsOfType } from "./errorCheckUtils";

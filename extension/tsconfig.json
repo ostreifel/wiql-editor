@@ -33,6 +33,7 @@
         "scripts/wiqlErrorCheckers/errorCheckUtils.ts",
         "scripts/wiqlErrorCheckers/IErrorChecker.ts",
         "scripts/wiqlErrorCheckers/NameErrorChecker.ts",
+        "scripts/wiqlErrorCheckers/PrefixChecker.ts",
         "scripts/wiqlErrorCheckers/SyntaxErrorChecker.ts",
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
         "scripts/wiqlFormatter.ts",

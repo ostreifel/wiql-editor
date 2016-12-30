@@ -1,11 +1,11 @@
- import { expect, assert } from "chai";
+import { expect, assert } from "chai";
 import { parse } from "../compiler/wiqlParser";
 import { NameErrorChecker } from "../wiqlErrorCheckers/NameErrorChecker";
+import { PrefixChecker } from "../wiqlErrorCheckers/PrefixChecker";
 import { FieldType } from "../vssContracts";
 import { mock as mockMonaco } from "./mockMonaco";
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 
-function mockField(name: string): WorkItemField {
+function mockField(name: string) {
     return {
         name,
         readOnly: false,
@@ -25,10 +25,10 @@ SELECT
     [a], b
 FROM workitemlinks
 WHERE c = 1`;
-        const lines = parse(wiqlStr.split("\n"));
-        const fields: WorkItemField[] = [mockField("a")];
+        const results = parse(wiqlStr.split("\n"));
+        const fields = [mockField("a")];
         const checker = new NameErrorChecker(fields);
-        const errors = checker.check(lines);
+        const errors = checker.check(results);
         expect(errors.length).to.be.eq(2, "Expected b and c to error");
     });
     it("missing var", () => {
@@ -36,11 +36,48 @@ WHERE c = 1`;
 SELECT
     a
 FROM workitemlinks
-WHERE c = @me or c = @project or d = @invalid`;
-        const lines = parse(wiqlStr.split("\n"));
-        const fields: WorkItemField[] = [mockField("a")];
+WHERE a = @me or a = @project or a = @invalid`;
+        const results = parse(wiqlStr.split("\n"));
+        const fields = [mockField("a")];
         const checker = new NameErrorChecker(fields);
-        const errors = checker.check(lines);
+        const errors = checker.check(results);
         expect(errors.length).to.be.eq(1, "Expected @invalid to error");
+    });
+    describe("PrefixChecker", () => {
+        it("missing prefix", () => {
+            const wiqlStr = `select a
+            from workitemlinks
+            where a = 2`;
+            const results = parse(wiqlStr.split("\n"));
+            const checker = new PrefixChecker();
+            const errors = checker.check(results);
+            expect(errors.length).to.be.eq(1, "Expected prefix");
+        });
+
+        it("mixed prefix", () => {
+            const wiqlStr = `select a
+            from workitemlinks
+            where (
+                source.a = 2
+                and target.a = 2
+            )
+            and source.a = 2`;
+            const results = parse(wiqlStr.split("\n"));
+            const checker = new PrefixChecker();
+            const errors = checker.check(results);
+            expect(errors.length).to.be.eq(1, "Cannot mix prefixes");
+        });
+
+        it("two clauses", () => {
+            const wiqlStr = `select a
+            from workitemlinks
+            where
+                source.a = 2
+                and target.a = 2`;
+            const results = parse(wiqlStr.split("\n"));
+            const checker = new PrefixChecker();
+            const errors = checker.check(results);
+            expect(errors.length).to.be.eq(0, "No errors expected");
+        });
     });
 });
