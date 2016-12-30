@@ -1,5 +1,5 @@
 import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults, parse } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/wiqlParser";
 import { toDecoration, symbolsOfType } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
 

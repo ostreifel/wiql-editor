@@ -1,7 +1,7 @@
 import * as Symbols from "../compiler/wiqlSymbols";
 import { IParseResults, ParseError } from "../compiler/wiqlParser";
 
-export function toPosition(symbol: Symbols.Symbol) {
+export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;
     let endToken: Symbols.Token | null = null;
     if (symbol instanceof Symbols.Token) {
@@ -35,7 +35,7 @@ export function toPosition(symbol: Symbols.Symbol) {
         endToken.endColumn + 1,
     );
 }
-export function toDecoration(symbol: Symbols.Symbol, message: string) {
+export function toDecoration(symbol: Symbols.Symbol | Symbols.Symbol[], message: string) {
     return {
         range: toPosition(symbol),
         options: {

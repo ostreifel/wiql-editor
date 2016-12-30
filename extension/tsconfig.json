@@ -32,6 +32,7 @@
         "scripts/wiqlErrorCheckers/ErrorChecker.ts",
         "scripts/wiqlErrorCheckers/errorCheckUtils.ts",
         "scripts/wiqlErrorCheckers/IErrorChecker.ts",
+        "scripts/wiqlErrorCheckers/LinkTypeCountChecker.ts",
         "scripts/wiqlErrorCheckers/NameErrorChecker.ts",
         "scripts/wiqlErrorCheckers/PrefixChecker.ts",
         "scripts/wiqlErrorCheckers/SyntaxErrorChecker.ts",

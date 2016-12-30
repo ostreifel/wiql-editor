@@ -14,6 +14,7 @@
         "quotemark": [true, "double"],
         "semicolon": ["always"],
         "triple-equals": [true, "allow-null-check"],
+        "no-unused-variable": [ true ],
         "typedef-whitespace": [true, {
             "call-signature": "nospace",
             "index-signature": "nospace",

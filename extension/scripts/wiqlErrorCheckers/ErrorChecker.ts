@@ -2,10 +2,10 @@ import { IErrorChecker } from "./IErrorChecker";
 import { SyntaxErrorChecker } from "./SyntaxErrorChecker";
 import { NameErrorChecker } from "./NameErrorChecker";
 import { TypeErrorChecker } from "./TypeErrorChecker";
+import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
 import { PrefixChecker } from "./PrefixChecker";
-import { IParseResults, ParseError, parse } from "../compiler/wiqlParser";
+import { IParseResults} from "../compiler/wiqlParser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import * as Symbols from "../compiler/wiqlSymbols";
 
 
 export class ErrorChecker implements IErrorChecker {
@@ -15,7 +15,8 @@ export class ErrorChecker implements IErrorChecker {
             new SyntaxErrorChecker(),
             new NameErrorChecker(fields),
             new TypeErrorChecker(fields),
-            new PrefixChecker()
+            new PrefixChecker(),
+            new LinkTypeCountChecker()
         ];
     }
     public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
