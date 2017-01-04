@@ -13,7 +13,7 @@ describe("Parser", () => {
         ASOF 'asdf'
         `;
         const select = parse(wiqlStr.split("\n"));
-        expect(select instanceof Symbols.FlatSelect, "Flat Select did not get parsed").to.be.true;
+        expect(select).to.be.instanceof(Symbols.FlatSelect, "FlatSelect did not get parsed");
     });
     it("OneHopSelect", () => {
         const wiqlStr = `
@@ -24,6 +24,6 @@ describe("Parser", () => {
         mode (MustContain)
         `;
         const select = parse(wiqlStr.split("\n"));
-        expect(select instanceof Symbols.OneHopSelect, "OneHopSelect did not get parsed").to.be.true;
+        expect(select).to.be.instanceof(Symbols.OneHopSelect, "OneHopSelect did not get parsed");
     });
 });

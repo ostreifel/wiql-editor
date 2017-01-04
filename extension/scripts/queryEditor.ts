@@ -1,7 +1,7 @@
 import { setupEditor } from "./wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { IQuery, IContextOptions, ICallbacks } from "./contextContracts";
+import { IContextOptions, ICallbacks } from "./contextContracts";
 
 const configuration: IContextOptions = VSS.getConfiguration();
 const target = document.getElementById("wiql-box");
@@ -10,7 +10,8 @@ if (!target) {
 }
 let updateSaveButton = (enabled: boolean) => {
     console.log("update button not set");
-}
+};
+
 const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql);
 editor.addAction({
     id: "save",

@@ -1,4 +1,4 @@
-import { IParseResults, ParseError, parse } from "../compiler/wiqlParser";
+import { IParseResults, ParseError } from "../compiler/wiqlParser";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { toDecoration } from "./errorCheckUtils";
 

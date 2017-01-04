@@ -1,5 +1,5 @@
 import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults, parse } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/wiqlParser";
 import { FieldType } from "../vssContracts";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { symbolsOfType, toDecoration } from "./errorCheckUtils";
@@ -37,7 +37,7 @@ interface IComparisonType {
     field: Function[];
     group: Function[];
 }
-export class TypeErrorChecker {
+export class TypeErrorChecker implements IErrorChecker {
     private readonly fieldLookup: {
         [fieldName: string]: IComparisonType
     };
@@ -157,14 +157,12 @@ export class TypeErrorChecker {
             ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
             ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
         ];
-        const fieldConditions = allConditions.filter((c) => c.field !== undefined && c.conditionalOperator !== undefined);
         for (let condition of allConditions) {
             if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in this.fieldLookup)) {
                 continue;
             }
             const type = this.fieldLookup[condition.field.identifier.text.toLocaleLowerCase()].fieldType;
             if (condition.conditionalOperator && condition.value) {
-                const field = condition.field;
                 const rhsType = this.getRhsType(condition.value);
 
                 const compErrors = this.checkComparisonOperator(condition.conditionalOperator, condition.field, rhsType);

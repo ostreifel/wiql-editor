@@ -1,8 +1,7 @@
 import * as ReactDom from "react-dom";
 import * as React from "react";
 import {
-    WorkItemQueryResult, QueryResultType, WorkItemReference,
-    WorkItemRelation, WorkItem, WorkItemFieldReference, WorkItemLink
+    WorkItemQueryResult, WorkItem, WorkItemFieldReference
 } from "TFS/WorkItemTracking/Contracts";
 
 class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemFieldReference[], rel?: string }, void> {
@@ -41,7 +40,9 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
         for (let wi of this.props.workItems) {
             wiMap[wi.id] = wi;
         }
-        const workItems = this.props.result.workItems.map((wi) => wiMap[wi.id]);
+        const workItems = this.props.result.workItems
+            .filter(wi => wi.id in wiMap)
+            .map((wi) => wiMap[wi.id]);
         const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} />);
         return <table><tbody>{rows}</tbody></table>;
     }
@@ -61,7 +62,9 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
         for (let workitem of this.props.workItems) {
             wiMap[workitem.id] = workitem;
         }
-        const rows = this.props.result.workItemRelations.map(rel =>
+        const rows = this.props.result.workItemRelations
+            .filter(wi => wi.target.id in wiMap)
+            .map(rel =>
             <WorkItemRow
                 rel={rel.rel || "Source"}
                 columns={this.props.result.columns}
@@ -105,10 +108,9 @@ export function setVersion() {
     if (!elem) {
         return;
     }
-    const context = VSS.getExtensionContext();
     ReactDom.render(
             <div>
-                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" or "}
+                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" | "}
                 <a href={"mailto:wiqleditor@microsoft.com"} target={"_blank"}>Feedback and questions</a>
             </div>
         , elem);

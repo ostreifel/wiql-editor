@@ -92,7 +92,6 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 return suggestions;
             } else if (prevToken instanceof Symbols.Variable
                 && position.column - 1 === prevToken.endColumn) {
-                const beforeIdentifier = parseNext.parsedTokens[parsedCount - 2];
                 return Object.keys(definedVariables).map((v) => {
                     return {
                         label: v,

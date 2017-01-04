@@ -29,7 +29,6 @@ export function showDialog(query: IQuery) {
             query: query,
             save
         };
-        let updateSaveButton = (enabled: boolean) => { };
         const dialogOptions: IHostDialogOptions = {
             title: query.name,
             width: 900,

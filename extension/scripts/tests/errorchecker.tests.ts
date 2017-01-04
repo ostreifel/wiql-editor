@@ -1,21 +1,9 @@
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import { parse } from "../compiler/wiqlParser";
 import { NameErrorChecker } from "../wiqlErrorCheckers/NameErrorChecker";
 import { PrefixChecker } from "../wiqlErrorCheckers/PrefixChecker";
-import { FieldType } from "../vssContracts";
-import { mock as mockMonaco } from "./mockMonaco";
+import { mockMonaco, mockField } from "./mocks";
 
-function mockField(name: string) {
-    return {
-        name,
-        readOnly: false,
-        _links: [],
-        referenceName: `ref.${name.replace(/ /g, "")}`,
-        type: FieldType.String,
-        supportedOperations: [],
-        url: ""
-    };
-}
 mockMonaco();
 
 describe("Namechecker", () => {
@@ -43,41 +31,41 @@ WHERE a = @me or a = @project or a = @invalid`;
         const errors = checker.check(results);
         expect(errors.length).to.be.eq(1, "Expected @invalid to error");
     });
-    describe("PrefixChecker", () => {
-        it("missing prefix", () => {
-            const wiqlStr = `select a
+});
+describe("PrefixChecker", () => {
+    it("missing prefix", () => {
+        const wiqlStr = `select a
             from workitemlinks
             where a = 2`;
-            const results = parse(wiqlStr.split("\n"));
-            const checker = new PrefixChecker();
-            const errors = checker.check(results);
-            expect(errors.length).to.be.eq(1, "Expected prefix");
-        });
+        const results = parse(wiqlStr.split("\n"));
+        const checker = new PrefixChecker();
+        const errors = checker.check(results);
+        expect(errors.length).to.be.eq(1, "Expected prefix");
+    });
 
-        it("mixed prefix", () => {
-            const wiqlStr = `select a
+    it("mixed prefix", () => {
+        const wiqlStr = `select a
             from workitemlinks
             where (
                 source.a = 2
                 and target.a = 2
             )
             and source.a = 2`;
-            const results = parse(wiqlStr.split("\n"));
-            const checker = new PrefixChecker();
-            const errors = checker.check(results);
-            expect(errors.length).to.be.eq(1, "Cannot mix prefixes");
-        });
+        const results = parse(wiqlStr.split("\n"));
+        const checker = new PrefixChecker();
+        const errors = checker.check(results);
+        expect(errors.length).to.be.eq(1, "Cannot mix prefixes");
+    });
 
-        it("two clauses", () => {
-            const wiqlStr = `select a
+    it("two clauses", () => {
+        const wiqlStr = `select a
             from workitemlinks
             where
                 source.a = 2
                 and target.a = 2`;
-            const results = parse(wiqlStr.split("\n"));
-            const checker = new PrefixChecker();
-            const errors = checker.check(results);
-            expect(errors.length).to.be.eq(0, "No errors expected");
-        });
+        const results = parse(wiqlStr.split("\n"));
+        const checker = new PrefixChecker();
+        const errors = checker.check(results);
+        expect(errors.length).to.be.eq(0, "No errors expected");
     });
 });

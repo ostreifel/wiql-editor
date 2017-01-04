@@ -1,4 +1,4 @@
-import { WorkItem, WorkItemReference, WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
+import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "./wiqlEditor";
@@ -73,7 +73,7 @@ editor.addAction({
         }
         return null as any;
     }
-})
+});
 function getAction(id: string) {
     return () => editor.getActions().filter(a => a.id === id)[0].run();
 }

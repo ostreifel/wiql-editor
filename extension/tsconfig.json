@@ -23,7 +23,7 @@
         "scripts/playground.ts",
         "scripts/queryContext.ts",
         "scripts/queryEditor.ts",
-        "scripts/tests/mockMonaco.ts",
+        "scripts/tests/mocks.ts",
         "scripts/vssContracts.ts",
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
