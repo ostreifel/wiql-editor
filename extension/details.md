@@ -1,6 +1,6 @@
 Search work items with a the expressiveness of the work item query language.
 
-Explore the wiql syntax on the wiql playground
+Explore the wiql syntax on the wiql playground  
 ![Image of query playground](img/playground.png)
 
 Use the wiql editor to modify existing queries
@@ -14,6 +14,9 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+1.2.1 Adds playground buttons  
+Feedback links  
+More syntax checking in link queries  
 1.1.1 Adds support for one hop and recursive query types  
 1.0.81 Patches bug type checking  
 1.0.78 Patches on prem bug saving queries  
