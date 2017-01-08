@@ -1,4 +1,4 @@
-import { isSupportedQueryId, showDialog } from "./wiqlDialog";
+import { isSupportedQueryId, showDialog } from "./queryDialog";
 
 const menuAction: Partial<IContributedMenuSource> = {
     getMenuItems: (context): IContributedMenuItem[] => {

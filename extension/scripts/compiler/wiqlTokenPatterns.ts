@@ -11,7 +11,7 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: "DESC", token: Symbols.Desc },
     { match: "ASOF", token: Symbols.Asof },
     { match: "NOT", token: Symbols.Not },
-    { match: "EVER", token: Symbols.Not },
+    { match: "EVER", token: Symbols.Ever },
     { match: "IN", token: Symbols.In },
     { match: "LIKE", token: Symbols.Like },
     { match: "UNDER", token: Symbols.Under },
