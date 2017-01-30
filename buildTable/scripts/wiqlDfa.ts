@@ -43,6 +43,14 @@ function compareProdPos(a: ProductionPosition, b: ProductionPosition): number {
             return a.production.inputs[i] < b.production.inputs[i] ? -1 : 1;
         }
     }
+    if (a.followSymbols.length !== b.followSymbols.length) {
+        return a.followSymbols.length - b.followSymbols.length;
+    }
+    for (let i = 0; i < a.followSymbols.length; i++) {
+        if (a.followSymbols[i] !== b.followSymbols[i]) {
+            return a.followSymbols[i].localeCompare(b.followSymbols[i]);
+        }
+    }
     return 0;
 }
 export class State {
