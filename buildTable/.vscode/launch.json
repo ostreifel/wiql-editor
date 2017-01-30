@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}\\build\\scripts\\buildTable.js",
+            "program": "${workspaceRoot}\\build\\buildTable.js",
             "args": [
                 "..\\extension\\wiql.ebnf",
                 "table.ts"

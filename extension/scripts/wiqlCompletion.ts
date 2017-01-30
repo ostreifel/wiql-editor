@@ -4,13 +4,9 @@ import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
 
-// These symbols are buggy when suggested
-// brackets are not paired, rbrackets and commas suggested when its a syntax error to do so 
-const doNotSuggest = ["(", ")", ",", "[", "]"];
-
 const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
 for (let pattern of wiqlPatterns) {
-    if (typeof pattern.match === "string" && doNotSuggest.indexOf(pattern.match) < 0) {
+    if (typeof pattern.match === "string") {
         const symName = Symbols.getSymbolName(pattern.token);
         symbolSuggestionMap[symName] = {
             label: pattern.match,

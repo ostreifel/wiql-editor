@@ -1,7 +1,7 @@
 import { IProduction, Productions } from './wiqlProductions';
 
 export class ProductionPosition {
-    constructor(readonly production: IProduction, readonly pos: number) {
+    constructor(readonly production: IProduction, readonly pos: number, readonly followSymbols: string[]) {
     }
     public nextInput() {
         return this.production.inputs[this.pos];
@@ -10,11 +10,22 @@ export class ProductionPosition {
         return this.production.inputs.length === this.pos;
     }
     public advance() {
-        return new ProductionPosition(this.production, this.pos + 1);
+        return new ProductionPosition(this.production, this.pos + 1, this.followSymbols);
     }
     public equals(prodPos: ProductionPosition) {
         //                                instance equality is fine for productions
-        return prodPos.pos === this.pos && prodPos.production === this.production;
+        if ( prodPos.pos !== this.pos || prodPos.production !== this.production) {
+            return false;
+        }
+        if (this.followSymbols.length !== prodPos.followSymbols.length) {
+            return false;
+        }
+        for (let i = 0; i < this.followSymbols.length; i++) {
+            if (this.followSymbols[i] !== prodPos.followSymbols[i])  {
+                return false;
+            }
+        }
+        return true;
     }
 }
 function compareProdPos(a: ProductionPosition, b: ProductionPosition): number {
@@ -99,7 +110,9 @@ function closure(productions: Productions, state: State) {
         change = false;
         for (let pos of state.productionPositions) {
             for (let prod of productions.getProductionsFor(pos.nextInput())) {
-                const newProdPos = new ProductionPosition(prod, 0);
+                const nextSymbol = pos.advance().nextInput();
+                const followSymbols = nextSymbol ? productions.first(nextSymbol) : pos.followSymbols;
+                const newProdPos = new ProductionPosition(prod, 0, followSymbols);
                 if (state.addProductionPosition(newProdPos)) {
                     change = true;
                 }
@@ -136,7 +149,7 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
         for (let startProd of productions.startSymbols) {
             startProductions.push(...productions.getProductionsFor(startProd));
         }
-        const selectZeros = startProductions.map((p) => new ProductionPosition(p, 0));
+        const selectZeros = startProductions.map((p) => new ProductionPosition(p, 0, ["EOF"]));
         states.push(closure(productions, new State(selectZeros)));
         let change: boolean;
         do {
@@ -163,7 +176,7 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
             const state = states[stateIdx];
             const endPositions = state.productionPositions.filter((p) => p.isAtEnd());
             for (let pos of endPositions) {
-                for (let symbolClass of productions.follows(pos.production.result)) {
+                for (let symbolClass of pos.followSymbols) {
                     const resolution = new Resolution(Number(stateIdx), symbolClass, pos.production);
                     addIfNotPresent(resolutions, resolution);
                 }
