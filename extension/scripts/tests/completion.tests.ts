@@ -1,10 +1,9 @@
 import { expect } from "chai";
 import { mockMonaco, mockField } from "./mocks";
-mockMonaco();
 import { getCompletionProvider } from "../wiqlCompletion";
+mockMonaco();
 
 describe("Completion", () => {
-    // The completion suggests way too many symbols. May need to switch from slr to lr
     const provider = getCompletionProvider([mockField("Sample Field")]);
     const mockModel = (content: string) => {
         return {
@@ -26,9 +25,16 @@ asof 'date'
         expect(items.length).to.be.eq(1);
         expect(items[0].label).to.be.eq("SELECT");
     });
-    it("field", () => {
+    it("before field", () => {
         const items = provider.provideCompletionItems(selectmodel, new monaco.Position(2, 1), mockCancel) as monaco.languages.CompletionItem[];
-        expect(items.length).to.be.eq(1);
-        expect(items[0].label).to.be.eq("ref.SampleField");
+        expect(items.length).to.be.eq(2);
+        expect(items[0].label).to.be.eq("[");
+        expect(items[1].label).to.be.eq("ref.SampleField");
+    });
+    it("after field", () => {
+        const items = provider.provideCompletionItems(selectmodel, new monaco.Position(3, 1), mockCancel) as monaco.languages.CompletionItem[];
+        expect(items.length).to.be.eq(2);
+        expect(items[0].label).to.be.eq(",");
+        expect(items[1].label).to.be.eq("FROM");
     });
 });

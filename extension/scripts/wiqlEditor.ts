@@ -4,7 +4,8 @@ import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
 import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
 import * as Wiql from "./wiqlDefinition";
-import {setVersion} from "./queryResults";
+import { setVersion } from "./queryResults";
+import { getHoverProvider } from "./wiqlHoverProvider";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
@@ -22,6 +23,7 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
 
     getWitClient().getFields().then((fields) => {
         monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
+        monaco.languages.registerHoverProvider(Wiql.def.id, getHoverProvider(fields));
         const model = editor.getModel();
         const errorChecker = new ErrorChecker(fields);
         let oldDecorations: string[] = [];

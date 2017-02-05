@@ -38,6 +38,7 @@
         "scripts/wiqlErrorCheckers/SyntaxErrorChecker.ts",
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
         "scripts/wiqlFormatter.ts",
+        "scripts/wiqlHoverProvider.ts",
         "typings/index.d.ts"
     ]
 }
