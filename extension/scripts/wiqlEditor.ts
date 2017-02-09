@@ -14,7 +14,10 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
     });
     const defaultVal =
-        `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] FROM workitems where [Team Project] = @project`;
+        `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] 
+        FROM workitems
+        where [Team Project] = @project
+        ORDER BY [System.ChangedDate] DESC`;
     const editor = monaco.editor.create(target, {
         language: Wiql.def.id,
         value: intialValue || defaultVal,

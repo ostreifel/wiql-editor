@@ -11,14 +11,20 @@
 #query-results .error-message {
     color: red;
 }
-#query-results tr:hover {
+#query-result .table {
+    display: table;
+}
+#query-results .row:hover {
     text-decoration: underline;
     background: azure;
 }
-#query-results tr {
+#query-results .row {
+    display: table-row;
     cursor: pointer;
+    color: initial;
 }
-#query-results td {
+#query-results .cell {
+    display: table-cell;
     padding-right: 20px;
 }
 /*Need to override icon height width attributes from parent frame icon class*/

@@ -8,28 +8,35 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
     render() {
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
-        const wiUrl = `${uri}${project}/_workitems?id=${this.props.wi.id}&fullScreen=true`;
+        const wiUrl = `${uri}${project}/_workitems?id=${this.props.wi.id}&_a=edit&fullScreen=true`;
 
         const tds: JSX.Element[] = [];
         if (this.props.rel) {
-            tds.push(<td title={"Link Type"}>{this.props.rel}</td>);
+            tds.push(<div className={"cell"} title={"Link Type"}>{this.props.rel}</div>);
         }
         for (const fieldRef of this.props.columns) {
-            tds.push(<td title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</td>);
+            tds.push(<div className={"cell"} title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</div>);
         }
         return (
-            <tr
+            <a
+                className={"row"}
                 tabIndex={0}
-                onClick={() => window.open(wiUrl, "_blank")}
-                onKeyPress={e => {
-                    if (e.key === "Enter") {
-                        window.open(wiUrl, "_blank");
+                href={wiUrl}
+                target={"_blank"}
+                rel={"noreferrer"}
+                onKeyDown={e => {
+                    if (e.keyCode === 40) {
+                        $(":focus").next().focus();
+
                     }
-                }
+                    if (e.keyCode === 38) {
+                        $(":focus").prev().focus();
+
+                    }}
                 }
                 >
                 {tds}
-            </tr>
+            </a>
         );
     }
 }
@@ -44,7 +51,7 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
             .filter(wi => wi.id in wiMap)
             .map((wi) => wiMap[wi.id]);
         const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} />);
-        return <table><tbody>{rows}</tbody></table>;
+        return <div className={"table"}>{rows}</div>;
     }
 }
 

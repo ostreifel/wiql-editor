@@ -65,9 +65,9 @@ editor.addAction({
     id: "focus-results",
     label: "Focus Results",
     contextMenuGroupId: "results",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_R],
+    keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KEY_R],
     run: e => {
-        const trs = $("tr");
+        const trs = $(".row");
         if (trs.length > 0) {
             trs.first().focus();
         }
@@ -84,7 +84,7 @@ setMessage([
     "Key bindings:",
     "Shift + Enter : Run",
     "Alt + Shift + F or Ctr + Shift + F : Format",
-    "Ctr + R : Apply focus to first result",
+    "Alt + R : Apply focus to first result",
 ]);
 
 // Register context menu action provider
