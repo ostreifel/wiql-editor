@@ -150,12 +150,12 @@ export class FieldList extends SymbolTree {
     }
 }
 export class ConditionalOperator extends SymbolTree {
-    public readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords | Like | Under | InGroup;
+    public readonly conditionToken: Equals | NotEquals | GreaterThan | GreaterOrEq | LessThan | LessOrEq | Contains | ContainsWords | Like | Under | InGroup | Ever;
     public readonly ever?: Ever;
     public readonly not?: Not;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.conditionToken = super.getInput([Equals, NotEquals, GreaterThan, GreaterOrEq, LessThan, LessOrEq, Contains, ContainsWords, Like, Under, InGroup]);
+        this.conditionToken = super.getInput([Equals, NotEquals, GreaterThan, GreaterOrEq, LessThan, LessOrEq, Contains, ContainsWords, Like, Under, InGroup, Ever]);
         this.ever = super.getInput([Ever]);
         this.not = super.getInput([Not]);
     }

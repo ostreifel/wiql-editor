@@ -19,6 +19,7 @@ const operationLookup: {
         ">=": { target: "literal", class: Symbols.GreaterOrEq },
         "<=": { target: "literal", class: Symbols.LessOrEq },
         "In Group": { target: "literal", class: Symbols.InGroup },
+        "Was Ever": { target: "literal", class: Symbols.Ever },
         "Contains": { target: "literal", class: Symbols.Contains },
         "Contains Words": { target: "literal", class: Symbols.ContainsWords },
         "Under": { target: "literal", class: Symbols.Under },

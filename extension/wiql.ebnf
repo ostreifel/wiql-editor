@@ -16,7 +16,7 @@ DateTime = String;
 ValueList = Value [Comma ValueList];
 ConditionalOperator = Equals | NotEquals | LessThan | LessOrEq | GreaterThan 
 | GreaterOrEq | [Ever] [Not] (Like | Under) | [Not] Contains | [Not] ContainsWords
-| [Not] InGroup;
+| [Not] InGroup | Ever;
 ContainsWords = Contains Words;
 InGroup = In Group;
 OrderByFieldList = Field [Asc | Desc] [Comma OrderByFieldList];

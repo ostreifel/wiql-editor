@@ -14,6 +14,7 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(02/10/16) 1.4.14 Adds missing 'Ever' field operator  
 (02/09/16) 1.4.8 Fixes link bug in older tfs installations  
 Updates keybindings on results pane  
 (02/08/16) 1.4.1 Show type of variables and fields on hover  

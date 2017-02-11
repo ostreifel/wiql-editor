@@ -86,8 +86,10 @@ function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
         return (cond.ever ? "EVER " : "") + (cond.not ? "NOT " : "") + "LIKE";
     } else if (cond.conditionToken instanceof Symbols.Under) {
         return (cond.ever ? "EVER " : "") + (cond.not ? "NOT " : "") + "UNDER";
+    } else if (cond.conditionToken instanceof Symbols.Ever) {
+        return "EVER";
     }
-    throw new Error("Unexpected condtional operator");
+    throw new Error("Unexpected conditional operator");
 }
 function formatCondition(condition: Symbols.ConditionalExpression | Symbols.LinkCondition,
                          tab: string, indent: number, fields: FieldMap): string[] {
