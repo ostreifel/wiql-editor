@@ -4,6 +4,7 @@
     "@types/jquery": "^2.0.34",
     "@types/knockout": "^3.4.38",
     "@types/mocha": "^2.2.34",
+    "@types/q": "0.0.32",
     "@types/react": "^0.14.55",
     "@types/react-dom": "^0.14.19",
     "@types/requirejs": "^2.1.28",

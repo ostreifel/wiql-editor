@@ -14,13 +14,13 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
-(02/10/16) 1.4.14 Adds missing 'Ever' field operator  
-(02/09/16) 1.4.8 Fixes link bug in older tfs installations  
+(02/10/17) 1.4.14 Adds missing 'Ever' field operator  
+(02/09/17) 1.4.8 Fixes link bug in older tfs installations  
 Updates keybindings on results pane  
-(02/08/16) 1.4.1 Show type of variables and fields on hover  
+(02/08/17) 1.4.1 Show type of variables and fields on hover  
 Changes url generation  
-(01/30/16) 1.3.1 Removing noise from autocomplete  
-(01/08/16) 1.2.1 Adds playground buttons  
+(01/30/17) 1.3.1 Removing noise from autocomplete  
+(01/08/17) 1.2.1 Adds playground buttons  
 Feedback links  
 More syntax checking in link queries  
 (12/25/16) 1.1.1 Adds support for one hop and recursive query types  
