@@ -91,7 +91,7 @@
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-karma');
 
-    grunt.registerTask("build", ["ts:build", "copy:scripts"]);
+    grunt.registerTask("build", ["clean", "ts:build", "copy:scripts"]);
 
     grunt.registerTask("test", ["ts:buildTest", "karma:unit"]);
 

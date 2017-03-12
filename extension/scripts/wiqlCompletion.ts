@@ -3,6 +3,7 @@ import { wiqlPatterns } from "./compiler/wiqlTokenPatterns";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
+import { isIdentityField, getIdentities} from "./identities";
 
 function getSymbolSuggestionMap() {
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
@@ -58,10 +59,6 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 // valid query, can't suggest
                 return [];
             }
-            // Don't complete strings
-            if (parseNext.errorToken instanceof Symbols.NonterminatingString) {
-                return [];
-            }
             const parsedCount = parseNext.parsedTokens.length;
             const prevToken = parseNext.parsedTokens[parsedCount - 1];
             if (prevToken instanceof Symbols.Identifier
@@ -101,17 +98,39 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 });
             } else {
                 const suggestions: monaco.languages.CompletionItem[] = [];
-                for (let token of parseNext.expectedTokens) {
-                    if (symbolSuggestionMap[token]) {
-                        suggestions.push(symbolSuggestionMap[token]);
+                // Don't complete inside strings
+                if (!(parseNext.errorToken instanceof Symbols.NonterminatingString)) {
+                    // Include keywords
+                    for (let token of parseNext.expectedTokens) {
+                        if (symbolSuggestionMap[token]) {
+                            suggestions.push(symbolSuggestionMap[token]);
+                        }
+                    }
+                    // Include field and variables
+                    if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
+                        suggestions.push(...fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0));
+                    }
+                    if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
+                        suggestions.push(...variableSuggestions);
                     }
                 }
-                if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
-                    suggestions.push(...fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0));
+                // Identities
+                const prev2 = parseNext.parsedTokens[parsedCount - 2];
+                const prev3 = parseNext.parsedTokens[parsedCount - 3];
+                const field = prev2 instanceof Symbols.Field ? prev2 : prev3;
+                if (field instanceof Symbols.Field &&
+                    isIdentityField(fields, field.identifier.text) &&
+                    parseNext.expectedTokens.indexOf("String") >= 0) {
+                    const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
+                    return getIdentities().then(identities => {
+                        suggestions.push(...identities.map(name => {return {
+                            label: inString ? name : `"${name}"`,
+                            kind: monaco.languages.CompletionItemKind.Text
+                        } as monaco.languages.CompletionItem; }));
+                        return suggestions;
+                    });
                 }
-                if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
-                    suggestions.push(...variableSuggestions);
-                }
+
                 return suggestions;
             }
         }
