@@ -4,7 +4,7 @@ import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { CachedValue } from "./CachedValue";
 
-const identities: CachedValue<string[]> = new CachedValue(getAllIdentitiesInAllProjects);
+export const identities: CachedValue<string[]> = new CachedValue(getAllIdentitiesInAllProjects);
 
 function getTeamIdentities(project: { id: string, name: string }, team: WebApiTeam): IPromise<string[]> {
     return getClient().getTeamMembers(project.id, team.id).then(members => {
@@ -46,10 +46,6 @@ function getAllIdentitiesInAllProjects(): IPromise<string[]> {
             }
         )
     );
-}
-
-export function getIdentities(): Q.IPromise<String[]> {
-    return identities.getValue();
 }
 
 /** No way to know if identity field from extension api, just hardcode the system ones */

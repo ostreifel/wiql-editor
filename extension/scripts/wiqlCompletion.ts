@@ -3,7 +3,7 @@ import { wiqlPatterns } from "./compiler/wiqlTokenPatterns";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
-import { isIdentityField, getIdentities} from "./identities";
+import { isIdentityField, identities } from "./identities";
 
 function getSymbolSuggestionMap() {
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
@@ -122,7 +122,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     isIdentityField(fields, field.identifier.text) &&
                     parseNext.expectedTokens.indexOf("String") >= 0) {
                     const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
-                    return getIdentities().then(identities => {
+                    return identities.getValue().then(identities => {
                         suggestions.push(...identities.map(name => {return {
                             label: inString ? name : `"${name}"`,
                             kind: monaco.languages.CompletionItemKind.Text

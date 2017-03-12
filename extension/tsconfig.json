@@ -23,6 +23,7 @@
         "scripts/contextContracts.ts",
         "scripts/identities.ts",
         "scripts/playground.ts",
+        "scripts/projects.ts",
         "scripts/queryContext.ts",
         "scripts/queryDialog.ts",
         "scripts/queryEditor.ts",
@@ -41,6 +42,7 @@
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
         "scripts/wiqlFormatter.ts",
         "scripts/wiqlHoverProvider.ts",
+        "scripts/workItemTypes.ts",
         "typings/index.d.ts"
     ]
 }
