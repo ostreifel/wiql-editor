@@ -2,51 +2,54 @@ import * as Q from "q";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
+import { CachedValue } from "./CachedValue";
 
-const identityMap: {[displayName: string]: void} = {};
-const identities: string[] = [];
+const identities: CachedValue<string[]> = new CachedValue(getAllIdentitiesInAllProjects);
 
-function cacheAllIdentitiesInTeam(project: { id: string, name: string }, team: WebApiTeam): IPromise<boolean> {
-    identityMap[team.name] = void 0;
+function getTeamIdentities(project: { id: string, name: string }, team: WebApiTeam): IPromise<string[]> {
     return getClient().getTeamMembers(project.id, team.id).then(members => {
-        for (let m of members) {
-            const displayName =  m.isContainer ? m.displayName : `${m.displayName} <${m.uniqueName}>`;
-            identityMap[displayName] = void 0;
-        }
-        return true;
+        return [team.name, ...members.map(m => m.isContainer ? m.displayName : `${m.displayName} <${m.uniqueName}>`)];
     });
 }
 
-function cacheAllIdentitiesInProject(project: { id: string, name: string }): IPromise<boolean> {
-    return cacheAllIdentitiesInProjectImpl(project, 0);
+function getAllIdentitiesInAllProjectsImpl(project: { id: string, name: string }): IPromise<string[]> {
+    return getAllIdentitiesInProjectImpl(project, 0);
 }
-function cacheAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number) {
+function getAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number): IPromise<string[]> {
     return getClient().getTeams(project.id, 100, skip).then(teams => {
-        const promises = teams.map(t => cacheAllIdentitiesInTeam(project, t));
+        const promises = teams.map(t => getTeamIdentities(project, t));
         if (teams.length === 100) {
-            promises.push(cacheAllIdentitiesInProjectImpl(project, skip + 100));
+            promises.push(getAllIdentitiesInProjectImpl(project, skip + 100));
         }
-        return Q.all(promises).then(() => true);
+        return Q.all(promises).then(identitiesArr => {
+            const projectIdentities = {};
+            for (let teamIdentities of identitiesArr) {
+                for (let identity of teamIdentities) {
+                    projectIdentities[identity] = void 0;
+                }
+            }
+            return Object.keys(projectIdentities).sort();
+        });
     });
 }
-function cacheAllIdentitiesInAllProjects(): IPromise<boolean> {
+function getAllIdentitiesInAllProjects(): IPromise<string[]> {
     return getClient().getProjects().then(projects =>
-        Q.all(projects.map(p => cacheAllIdentitiesInProject(p))).then(
-            () => {
-                identities.length = 0;
-                identities.push(...Object.keys(identityMap).sort());
-                return true;
+        Q.all(projects.map(p => getAllIdentitiesInAllProjectsImpl(p))).then(
+            allProjectIdentities => {
+                const allIdentities = {};
+                for (let projectIdentities of allProjectIdentities) {
+                    for (let identity of projectIdentities) {
+                        allIdentities[identity] = void 0;
+                    }
+                }
+                return Object.keys(allIdentities).sort();
             }
         )
     );
 }
 
 export function getIdentities(): Q.IPromise<String[]> {
-    if (identities.length > 0) {
-        return Q(identities);
-    } else {
-        return cacheAllIdentitiesInAllProjects().then(() => identities)
-    }
+    return identities.getValue();
 }
 
 /** No way to know if identity field from extension api, just hardcode the system ones */

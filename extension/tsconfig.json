@@ -13,6 +13,7 @@
         "./typings/index.d.ts"
     ],
     "files": [
+        "scripts/CachedValue.ts",
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
         "scripts/compiler/wiqlSymbols.ts",
