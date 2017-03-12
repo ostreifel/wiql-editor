@@ -3,6 +3,7 @@ import { symbolsOfType } from "./wiqlErrorCheckers/errorCheckUtils";
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { definedVariables } from "./wiqlDefinition";
+import { workItemTypesByProject } from "./workItemTypes";
 
 function filterByPosition(tokens: Symbols.Token[], position: monaco.Position) {
     return tokens.filter(token =>
@@ -24,13 +25,35 @@ export function getHoverProvider(fields: WorkItemField[]): monaco.languages.Hove
             const hovers: monaco.MarkedString[] = [];
             let range: monaco.IRange = null as any;
             if (id) {
-                const matchedFields = fields.filter(f =>
+                const [matchedField] = fields.filter(f =>
                     f.name.toLocaleLowerCase() === id.text.toLocaleLowerCase() ||
                     f.referenceName.toLocaleLowerCase() === id.text.toLocaleLowerCase()
                 );
-                if (matchedFields.length > 0) {
-                    hovers.push(FieldType[matchedFields[0].type]);
+                if (matchedField) {
+                    hovers.push(FieldType[matchedField.type]);
                     range = new monaco.Range(id.line + 1, id.startColumn + 1, id.line + 1, id.endColumn + 1);
+                    // Also include description -- extensions can only get this from the work item types
+                    return workItemTypesByProject.getValue().then(witsByProjs => {
+                        const descriptionSet: {[description: string]: void} = {};
+                        const descriptions: {[witName: string]: string} = {};
+                        for (let { workItemTypes } of witsByProjs) {
+                            for (let wit of workItemTypes) {
+                                for (let field of wit.fieldInstances) {
+                                    if (field.referenceName === matchedField.referenceName && field.helpText) {
+                                        descriptions[wit.name] = field.helpText;
+                                        descriptionSet[field.helpText] = void 0;
+                                    }
+                                }
+                            }
+                        }
+                        // TODO detect if filtering by wit then use the wit specific description
+                        const descriptionArr = Object.keys(descriptionSet);
+                        // Don't show the description if it differs by wit
+                        if (descriptionArr.length === 1) {
+                            hovers.push(descriptionArr[0]);
+                        }
+                        return { contents: hovers, range };
+                    });
                 }
             } else {
                 const vars = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Variable);
@@ -41,10 +64,11 @@ export function getHoverProvider(fields: WorkItemField[]): monaco.languages.Hove
                         hovers.push(FieldType[definedVariables[variable.text.toLocaleLowerCase()]]);
                         range = new monaco.Range(variable.line + 1, variable.startColumn + 1, variable.line + 1, variable.endColumn + 1);
                     }
+                    return { contents: hovers, range };
                 }
             }
 
-            return { contents: hovers, range };
+            return { contents: [], range: null as any };
         }
     };
 }
