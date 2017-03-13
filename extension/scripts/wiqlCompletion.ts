@@ -5,10 +5,14 @@ import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
 import { isIdentityField, identities } from "./identities";
 
-function getSymbolSuggestionMap() {
+function getSymbolSuggestionMap(type: FieldType | null) {
+    /** These symbols have their own suggestion logic */
+    const excludedSymbols = [Symbols.Variable, Symbols.Field];
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
     for (let pattern of wiqlPatterns) {
-        if (typeof pattern.match === "string") {
+        if (typeof pattern.match === "string" &&
+            excludedSymbols.indexOf(pattern.token) < 0 &&
+            (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0)) {
             const symName = Symbols.getSymbolName(pattern.token);
             symbolSuggestionMap[symName] = {
                 label: pattern.match,
@@ -60,7 +64,6 @@ function isConditionToken(symbol: Symbols.Symbol) {
         symbol instanceof Symbols.Ever;
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
-    const symbolSuggestionMap = getSymbolSuggestionMap();
     return {
         triggerCharacters: [" ", "[", ".", "@"],
         provideCompletionItems: (model, position, token) => {
@@ -126,6 +129,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 const suggestions: monaco.languages.CompletionItem[] = [];
                 // Don't complete inside strings
                 if (!(parseNext.errorToken instanceof Symbols.NonterminatingString)) {
+                    const symbolSuggestionMap = getSymbolSuggestionMap(inCondition ? type : null);
                     // Include keywords
                     for (let token of parseNext.expectedTokens) {
                         if (symbolSuggestionMap[token]) {

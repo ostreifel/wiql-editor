@@ -1,5 +1,6 @@
 import { TokenPattern } from "./tokenizer";
 import * as Symbols from "./wiqlSymbols";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
 
 export const wiqlPatterns: TokenPattern[] = [
     { match: /[ \r\t\n]+/ },
@@ -22,8 +23,8 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: "CONTAINS", token: Symbols.Contains },
     { match: "WORDS", token: Symbols.Words },
     { match: "GROUP", token: Symbols.Group },
-    { match: "true", token: Symbols.True },
-    { match: "false", token: Symbols.False },
+    { match: "true", token: Symbols.True, valueTypes: [FieldType.Boolean] },
+    { match: "false", token: Symbols.False, valueTypes: [FieldType.Boolean] },
     { match: "MODE", token: Symbols.Mode },
     { match: "MustContain", token: Symbols.MustContain },
     { match: "MayContain", token: Symbols.MayContain },
@@ -56,8 +57,8 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: "<=", token: Symbols.LessOrEq },
     { match: ">", token: Symbols.GreaterThan },
     { match: "<", token: Symbols.LessThan },
-    { match: "+", token: Symbols.Plus },
-    { match: "-", token: Symbols.Minus },
+    { match: "+", token: Symbols.Plus, valueTypes: [FieldType.Double, FieldType.Integer] },
+    { match: "-", token: Symbols.Minus, valueTypes: [FieldType.Double, FieldType.Integer] },
     { match: /\d+(?:\.\d*)?(?:e-?\d+)?/, token: Symbols.Digits },
     { match: /'(?:[^']|'')*'/, token: Symbols.String },
     { match: /'(?:[^']|'')*/, token: Symbols.NonterminatingString },

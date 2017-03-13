@@ -1,9 +1,14 @@
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 export interface TokenPattern {
     match: string | RegExp;
     /** (i,j,text) => void */
     token?;
     pushState?: TokenPattern[];
     popState?: boolean;
+
+    /** For completion logic */
+    valueTypes?: FieldType[];
 }
 
 function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
