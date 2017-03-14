@@ -1,7 +1,8 @@
 import { isSupportedQueryId, showDialog } from "./queryDialog";
+import { IQuery } from "./contextContracts";
 
 const menuAction: Partial<IContributedMenuSource> = {
-    getMenuItems: (context): IContributedMenuItem[] => {
+    getMenuItems: (context: {query: IQuery}): IContributedMenuItem[] => {
         if (!context || !context.query || !isSupportedQueryId(context.query.id)) {
             return [];
         }

@@ -71,5 +71,5 @@ const queryExclusionList = [
     WellKnownQueries.RecycleBin];
 
 export function isSupportedQueryId(id: string) {
-    return id !== "" && queryExclusionList.indexOf(id.toUpperCase()) === -1;
+    return queryExclusionList.indexOf(id.toUpperCase()) === -1;
 }

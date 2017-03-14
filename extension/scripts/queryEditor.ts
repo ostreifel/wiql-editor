@@ -34,7 +34,8 @@ function saveQuery(): IPromise<any> {
     if (configuration.query.id) {
         return getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
     } else {
-        return getWitClient().createQuery(queryItem, context.project.name, configuration.query.id);
+        const path = configuration.query.isPublic ? "Shared Queries" : "My Queries";
+        return getWitClient().createQuery(queryItem, context.project.name, path);
     }
 }
 const callbacks: ICallbacks = {
