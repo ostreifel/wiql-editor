@@ -3,7 +3,7 @@ import { symbolsOfType } from "./wiqlErrorCheckers/errorCheckUtils";
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { definedVariables } from "./wiqlDefinition";
-import { workItemTypesByProject } from "./workItemTypes";
+import { workItemTypesByProject } from "./cachedData/workItemTypes";
 
 function filterByPosition(tokens: Symbols.Token[], position: monaco.Position) {
     return tokens.filter(token =>

@@ -13,7 +13,10 @@
         "./typings/index.d.ts"
     ],
     "files": [
-        "scripts/CachedValue.ts",
+        "scripts/cachedData/CachedValue.ts",
+        "scripts/cachedData/identities.ts",
+        "scripts/cachedData/projects.ts",
+        "scripts/cachedData/workItemTypes.ts",
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
         "scripts/compiler/wiqlSymbols.ts",
@@ -21,9 +24,7 @@
         "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/contextContracts.ts",
-        "scripts/identities.ts",
         "scripts/playground.ts",
-        "scripts/projects.ts",
         "scripts/queryContext.ts",
         "scripts/queryDialog.ts",
         "scripts/queryEditor.ts",
@@ -42,7 +43,6 @@
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
         "scripts/wiqlFormatter.ts",
         "scripts/wiqlHoverProvider.ts",
-        "scripts/workItemTypes.ts",
         "typings/index.d.ts"
     ]
 }

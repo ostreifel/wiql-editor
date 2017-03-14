@@ -3,7 +3,7 @@ import { wiqlPatterns } from "./compiler/wiqlTokenPatterns";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
-import { isIdentityField, identities } from "./identities";
+import { isIdentityField, identities } from "./cachedData/identities";
 
 function getSymbolSuggestionMap(type: FieldType | null) {
     /** These symbols have their own suggestion logic */
