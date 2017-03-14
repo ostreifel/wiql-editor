@@ -14,7 +14,7 @@ export function showDialog(query: IQuery) {
         };
         function save() {
                 console.log(this);
-                okCallback().then(() => {
+                return okCallback().then(() => {
                     VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
                         navigationService.reload();
                     });
@@ -23,7 +23,6 @@ export function showDialog(query: IQuery) {
                     const message = exception["message"] || exception["value"]["Message"];
                     dialogService.openMessageDialog(message);
                 });
-                return "";
         }
         const context: IContextOptions = {
             query: query,
