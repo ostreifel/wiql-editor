@@ -51,13 +51,15 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             run: e => {
                 return new monaco.Promise<void>(callback => {
                     const fileInput = document.createElement("input");
-                    $(fileInput).attr("type", "file").attr("accept", ".wiq")
-                    .change(() => {
+                    fileInput.setAttribute("type", "file");
+                    fileInput.setAttribute("accept", ".wiq");
+                    fileInput.onchange = (ev) => {
+                        ev.preventDefault();
                         const files = fileInput.files;
                         if (!files || files.length === 0) {
                             console.log("No file selected");
                             callback(undefined);
-                            return;
+                            return false;
                         }
                         const reader = new FileReader();
                         reader.onload = () => {
@@ -71,8 +73,9 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
                             callback(undefined);
                         };
                         reader.readAsText(files[0]);
-                    })
-                    .trigger("click");
+                        return false;
+                    };
+                    fileInput.click();
                 });
              }
         });
