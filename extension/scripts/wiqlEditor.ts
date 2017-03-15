@@ -49,28 +49,31 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
                 monaco.KeyMod.Alt | monaco.KeyCode.KEY_O
             ],
             run: e => {
-                const fileInput = document.createElement("input");
-                $(fileInput).attr("type", "file").attr("accept", ".wiq")
-                .change(() => {
-                    const files = fileInput.files;
-                    if (!files || files.length === 0) {
-                        console.log("No file selected");
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        const text: string = reader.result;
-                        const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
-                            text,
-                            range: model.getFullModelRange(),
-                            forceMoveMarkers: true,
+                return new monaco.Promise<void>(callback => {
+                    const fileInput = document.createElement("input");
+                    $(fileInput).attr("type", "file").attr("accept", ".wiq")
+                    .change(() => {
+                        const files = fileInput.files;
+                        if (!files || files.length === 0) {
+                            console.log("No file selected");
+                            callback(undefined);
+                            return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const text: string = reader.result;
+                            const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+                                text,
+                                range: model.getFullModelRange(),
+                                forceMoveMarkers: true,
+                            };
+                            model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
+                            callback(undefined);
                         };
-                        model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
-                    };
-                    reader.readAsText(files[0]);
-                })
-                .trigger("click");
-                return null as any;
+                        reader.readAsText(files[0]);
+                    })
+                    .trigger("click");
+                });
              }
         });
 
