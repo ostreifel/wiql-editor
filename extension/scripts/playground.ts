@@ -85,6 +85,7 @@ setMessage([
     "Shift + Enter : Run",
     "Alt + Shift + F or Ctr + Shift + F : Format",
     "Alt + R : Apply focus to first result",
+    "Alt + O : Import from wiq file"
 ]);
 
 // Register context menu action provider

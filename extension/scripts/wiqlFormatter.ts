@@ -242,7 +242,7 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: Work
         forceMoveMarkers: true,
     };
     model.pushEditOperations(editor.getSelections(), [edit],
-        // TODO actually calculate the new position 
+        // TODO actually calculate the new position
         (edits) => [new monaco.Selection(1, 1, 1, 1)]);
 
 }

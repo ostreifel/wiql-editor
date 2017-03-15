@@ -41,6 +41,38 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             ],
             run: e => { format(editor, fields); return null as any; }
         });
+        editor.addAction({
+            id: "import",
+            contextMenuGroupId: "1_modification",
+            label: "Import from wiq file",
+            keybindings: [
+                monaco.KeyMod.Alt | monaco.KeyCode.KEY_O
+            ],
+            run: e => {
+                const fileInput = document.createElement("input");
+                $(fileInput).attr("type", "file").attr("accept", ".wiq")
+                .change(() => {
+                    const files = fileInput.files;
+                    if (!files || files.length === 0) {
+                        console.log("No file selected");
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const text: string = reader.result;
+                        const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+                            text,
+                            range: model.getFullModelRange(),
+                            forceMoveMarkers: true,
+                        };
+                        model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
+                    };
+                    reader.readAsText(files[0]);
+                })
+                .trigger("click");
+                return null as any;
+             }
+        });
 
         function checkErrors(): number {
             const lines = model.getLinesContent();
