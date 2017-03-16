@@ -57,6 +57,7 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
                 model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
             };
             reader.readAsText(files[0]);
+            $(".wiq-input").val("");
         })
 
         function checkErrors(): number {
