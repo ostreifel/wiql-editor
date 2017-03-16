@@ -12,7 +12,7 @@ let updateSaveButton = (enabled: boolean) => {
     console.log("update button not set");
 };
 
-const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql);
+const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql, configuration.query.name);
 editor.addAction({
     id: "save",
     contextMenuGroupId: "modification",

@@ -7,7 +7,7 @@ import * as Wiql from "./wiqlDefinition";
 import { setVersion } from "./queryResults";
 import { getHoverProvider } from "./wiqlHoverProvider";
 
-export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string): monaco.editor.IStandaloneCodeEditor {
+export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
     monaco.languages.onLanguage(Wiql.def.id, () => {
         monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
@@ -58,7 +58,20 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             };
             reader.readAsText(files[0]);
             $(".wiq-input").val("");
-        })
+        });
+        $(".wiq-export").click(() => {
+            const a = document.createElement("a");
+            const blob = new Blob([editor.getModel().getValue()], {type: "text/plain;charset=utf-8;"});
+            a.href = window.URL.createObjectURL(blob);
+            let name = queryName || prompt("Enter file name") || "query";
+            if (name.toLocaleLowerCase().indexOf(".wiq", name.length - 4) < 0) {
+                name += ".wiq";
+            }
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
 
         function checkErrors(): number {
             const lines = model.getLinesContent();

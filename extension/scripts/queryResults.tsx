@@ -119,7 +119,8 @@ export function setVersion() {
             <div className="header">
                 <span className="bowtie">
                     <input className="wiq-input" accept=".wiq" type="file"/>
-                    <button onClick={() => $(".wiq-input").click()}>Import from wiq</button>
+                    <button onClick={() => $(".wiq-input").click()}>Import</button>
+                    <button className="wiq-export">Export</button>
                 </span>
                 <span className="links">
                     <a href="https://marketplace.visualstudio.com/items?itemName=ottostreifel.wiql-editor" target="_blank">Review</a>{" | "}
