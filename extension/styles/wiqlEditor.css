@@ -32,3 +32,11 @@
     height: initial;
     width: initial;
 }
+
+#header-bar .header .wiq-input {
+  display: none;
+}
+
+#header-bar .header .links {
+  float: right;
+}

@@ -111,14 +111,21 @@ export function setMessage(message: string | string[]) {
 }
 
 export function setVersion() {
-    const elem = document.getElementById("version-info");
+    const elem = document.getElementById("header-bar");
     if (!elem) {
         return;
     }
     ReactDom.render(
-            <div>
-                <a href={"https://github.com/ostreifel/wiql-editor/issues"} target={"_blank"}>Report an issue</a>{" | "}
-                <a href={"mailto:wiqleditor@microsoft.com"} target={"_blank"}>Feedback and questions</a>
+            <div className="header">
+                <span className="bowtie">
+                    <input className="wiq-input" accept=".wiq" type="file"/>
+                    <button onClick={() => $(".wiq-input").click()}>Import from wiq</button>
+                </span>
+                <span className="links">
+                    <a href="https://marketplace.visualstudio.com/items?itemName=ottostreifel.wiql-editor" target="_blank">Review</a>{" | "}
+                    <a href="https://github.com/ostreifel/wiql-editor/issues" target="_blank">Report an issue</a>{" | "}
+                    <a href="mailto:wiqleditor@microsoft.com" target="_blank">Feedback and questions</a>
+                </span>
             </div>
         , elem);
 }

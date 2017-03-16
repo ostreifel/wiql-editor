@@ -41,44 +41,23 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             ],
             run: e => { format(editor, fields); return null as any; }
         });
-        editor.addAction({
-            id: "import",
-            contextMenuGroupId: "1_modification",
-            label: "Import from wiq file",
-            keybindings: [
-                monaco.KeyMod.Alt | monaco.KeyCode.KEY_O
-            ],
-            run: e => {
-                return new monaco.Promise<void>(callback => {
-                    const fileInput = document.createElement("input");
-                    fileInput.setAttribute("type", "file");
-                    fileInput.setAttribute("accept", ".wiq");
-                    fileInput.onchange = (ev) => {
-                        ev.preventDefault();
-                        const files = fileInput.files;
-                        if (!files || files.length === 0) {
-                            console.log("No file selected");
-                            callback(undefined);
-                            return false;
-                        }
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                            const text: string = reader.result;
-                            const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
-                                text,
-                                range: model.getFullModelRange(),
-                                forceMoveMarkers: true,
-                            };
-                            model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
-                            callback(undefined);
-                        };
-                        reader.readAsText(files[0]);
-                        return false;
-                    };
-                    fileInput.click();
-                });
-             }
-        });
+        $(".wiq-input").change(() => {
+            const files = $(".wiq-input")[0]["files"];
+            if (!files || files.length === 0) {
+                console.log("No file selected");
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const text: string = reader.result;
+                const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+                    text,
+                    range: model.getFullModelRange(),
+                    forceMoveMarkers: true,
+                };
+                model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
+            };
+            reader.readAsText(files[0]);
+        })
 
         function checkErrors(): number {
             const lines = model.getLinesContent();
