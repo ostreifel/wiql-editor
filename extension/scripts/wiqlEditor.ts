@@ -6,6 +6,7 @@ import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
 import * as Wiql from "./wiqlDefinition";
 import { setVersion } from "./queryResults";
 import { getHoverProvider } from "./wiqlHoverProvider";
+import { importWiq, exportWiq } from "./wiqImportExport";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
     monaco.languages.register(Wiql.def);
@@ -41,37 +42,8 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
             ],
             run: e => { format(editor, fields); return null as any; }
         });
-        $(".wiq-input").change(() => {
-            const files = $(".wiq-input")[0]["files"];
-            if (!files || files.length === 0) {
-                console.log("No file selected");
-            }
-            const reader = new FileReader();
-            reader.onload = () => {
-                const text: string = reader.result;
-                const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
-                    text,
-                    range: model.getFullModelRange(),
-                    forceMoveMarkers: true,
-                };
-                model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
-            };
-            reader.readAsText(files[0]);
-            $(".wiq-input").val("");
-        });
-        $(".wiq-export").click(() => {
-            const a = document.createElement("a");
-            const blob = new Blob([editor.getModel().getValue()], {type: "text/plain;charset=utf-8;"});
-            a.href = window.URL.createObjectURL(blob);
-            let name = queryName || prompt("Enter file name") || "query";
-            if (name.toLocaleLowerCase().indexOf(".wiq", name.length - 4) < 0) {
-                name += ".wiq";
-            }
-            a.download = name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
+        $(".wiq-input").change(() => importWiq(editor));
+        $(".wiq-export").click(() => exportWiq(editor, queryName));
 
         function checkErrors(): number {
             const lines = model.getLinesContent();

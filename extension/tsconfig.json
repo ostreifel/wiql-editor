@@ -30,6 +30,7 @@
         "scripts/queryEditor.ts",
         "scripts/tests/mocks.ts",
         "scripts/vssContracts.ts",
+        "scripts/wiqImportExport.ts",
         "scripts/wiqlCompletion.ts",
         "scripts/wiqlDefinition.ts",
         "scripts/wiqlEditor.ts",
