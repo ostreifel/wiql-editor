@@ -14,6 +14,10 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(03/15/17) 1.5.1 Adds import and export buttons to editor  
+Value completion of system identity fields  
+Only show valid field types for field to field comparisons  
+Allow saving of new queries  
 (02/10/17) 1.4.14 Adds missing 'Ever' field operator  
 (02/09/17) 1.4.8 Fixes link bug in older tfs installations  
 Updates keybindings on results pane  
