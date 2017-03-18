@@ -6,6 +6,7 @@ import { definedVariables } from "./wiqlDefinition";
 import { isIdentityField, identities } from "./cachedData/identities";
 import { equalFields, getField } from "./fields";
 import { states, witNames } from "./cachedData/workItemTypes";
+import { iterationStrings, areaStrings } from "./cachedData/nodes";
 
 function getSymbolSuggestionMap(type: FieldType | null) {
     /** These symbols have their own suggestion logic */
@@ -180,6 +181,28 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                                     label:  inString ? witName : `"${witName}"`,
                                     kind: monaco.languages.CompletionItemKind.Text
                                 } as monaco.languages.CompletionItem);
+                            }
+                            return suggestions;
+                        });
+                    } else if (equalFields("System.AreaPath", fieldSymbol.identifier.text, fields) && expectingString) {
+                        return areaStrings.getValue().then(areaStrings => {
+                            for (let areaPath of areaStrings) {
+                                // TODO handle chars that the monaco editor breaks over when completing - ". -\\"
+                                suggestions.push({
+                                    label: inString ? areaPath : `"${areaPath}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                });
+                            }
+                            return suggestions;
+                        });
+                    } else if (equalFields("System.IterationPath", fieldSymbol.identifier.text, fields) && expectingString) {
+                        return iterationStrings.getValue().then(iterationStrings => {
+                            for (let iterationPath of iterationStrings) {
+                                // TODO handle chars that the monaco editor breaks over when completing - ". -\\"
+                                suggestions.push({
+                                    label: inString ? iterationPath : `"${iterationPath}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                });
                             }
                             return suggestions;
                         });

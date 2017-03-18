@@ -15,6 +15,7 @@
     "files": [
         "scripts/cachedData/CachedValue.ts",
         "scripts/cachedData/identities.ts",
+        "scripts/cachedData/nodes.ts",
         "scripts/cachedData/projects.ts",
         "scripts/cachedData/workItemTypes.ts",
         "scripts/compiler/tokenizer.ts",
