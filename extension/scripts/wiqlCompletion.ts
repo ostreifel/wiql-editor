@@ -5,7 +5,7 @@ import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
 import { isIdentityField, identities } from "./cachedData/identities";
 import { equalFields, getField } from "./fields";
-import { workItemTypesByProject, states } from "./cachedData/workItemTypes";
+import { states, witNames } from "./cachedData/workItemTypes";
 
 function getSymbolSuggestionMap(type: FieldType | null) {
     /** These symbols have their own suggestion logic */
@@ -155,19 +155,34 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
                     if (isIdentityField(fields, fieldSymbol.identifier.text) && expectingString) {
                         return identities.getValue().then(identities => {
-                            suggestions.push(...identities.map(name => {return {
-                                label: inString ? name : `"${name}"`,
-                                kind: monaco.languages.CompletionItemKind.Text
-                            } as monaco.languages.CompletionItem; }));
+                            for (let idName of identities) {
+                                suggestions.push({
+                                    label: inString ? idName : `"${idName}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                } as monaco.languages.CompletionItem);
+                            }
                             return suggestions;
                         });
                     } else if (equalFields("System.State", fieldSymbol.identifier.text, fields) && expectingString) {
-                        return states.getValue().then(states =>
-                            states.map(s => {return {
-                                label: inString ? s : `"${s}"`,
-                                kind: monaco.languages.CompletionItemKind.Text
-                            } as monaco.languages.CompletionItem; })
-                        );
+                        return states.getValue().then(states => {
+                            for (let state of states) {
+                                suggestions.push({
+                                    label: inString ? state : `"${state}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                } as monaco.languages.CompletionItem);
+                            }
+                            return suggestions;
+                        });
+                    } else if (equalFields("System.WorkItemType", fieldSymbol.identifier.text, fields) && expectingString) {
+                        return witNames.getValue().then(witNames => {
+                            for (let witName of witNames) {
+                                suggestions.push({
+                                    label:  inString ? witName : `"${witName}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                } as monaco.languages.CompletionItem);
+                            }
+                            return suggestions;
+                        });
                     }
                 }
 
