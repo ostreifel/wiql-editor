@@ -65,7 +65,7 @@ function isConditionToken(symbol: Symbols.Symbol) {
 }
 export const getCompletionProvider: (fields: WorkItemField[]) => monaco.languages.CompletionItemProvider = (fields) => {
     return {
-        triggerCharacters: [" ", "[", ".", "@"],
+        triggerCharacters: [" ", "[", ".", "@", "\"" , "'"],
         provideCompletionItems: (model, position, token) => {
             const lines = model.getLinesContent().slice(0, position.lineNumber);
             if (lines.length > 0) {
@@ -107,7 +107,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 const dotIdx = prevToken.text.lastIndexOf(".");
                 const charIdx = Math.max(spaceIdx, dotIdx);
                 if (charIdx >= 0) {
-                    const prefix = prevToken.text.substr(0, charIdx + 1);
+                    const prefix = prevToken.text.substr(0, charIdx + 1).toLocaleLowerCase();
                     suggestions = suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0)
                         .map((s) => {
                             return {
