@@ -21,3 +21,26 @@ function getWits() {
         return Q.all(witPromises);
     });
 }
+
+export const states: CachedValue<string[]> = new CachedValue(getStates);
+
+function getStates() {
+    return workItemTypesByProject.getValue().then(witsByProj => {
+        const states: {[state: string]: void} = {};
+        for (let {workItemTypes} of witsByProj) {
+            for (let {transitions} of workItemTypes) {
+                for (let startState in transitions) {
+                    if (startState) {
+                        states[startState] = undefined;
+                    }
+                    for (let {to: targetState} of transitions[startState]) {
+                        if (targetState) {
+                            states[targetState] = undefined;
+                        }
+                    }
+                }
+            }
+        }
+        return Object.keys(states);
+    });
+}

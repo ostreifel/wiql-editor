@@ -24,6 +24,7 @@
         "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/contextContracts.ts",
+        "scripts/fields.ts",
         "scripts/playground.ts",
         "scripts/queryContext.ts",
         "scripts/queryDialog.ts",

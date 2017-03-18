@@ -4,6 +4,8 @@ import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
 import { isIdentityField, identities } from "./cachedData/identities";
+import { equalFields, getField } from "./fields";
+import { workItemTypesByProject, states } from "./cachedData/workItemTypes";
 
 function getSymbolSuggestionMap(type: FieldType | null) {
     /** These symbols have their own suggestion logic */
@@ -89,10 +91,8 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             const prev2 = parseNext.parsedTokens[parsedCount - 2];
             const prev3 = parseNext.parsedTokens[parsedCount - 3];
             const fieldSymbol = prev2 instanceof Symbols.Field ? prev2 : prev3 instanceof Symbols.Field ? prev3 : null;
-            const refOrName = fieldSymbol && fieldSymbol.identifier.text.toLocaleLowerCase();
-            const [fieldInstance] = fields.filter(f =>
-                f.name.toLocaleLowerCase() === refOrName ||
-                f.referenceName.toLocaleLowerCase() === refOrName);
+            const refOrName = fieldSymbol && fieldSymbol.identifier.text.toLocaleLowerCase() || "";
+            const fieldInstance = getField(refOrName, fields) || null;
             const type = fieldInstance && fieldInstance.type;
             const inCondition = isConditionToken(prevToken);
             if (prevToken instanceof Symbols.Identifier
@@ -149,18 +149,26 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                         suggestions.push(...getVariables(inCondition ? type : null));
                     }
                 }
-                // Identities
-                if (fieldSymbol instanceof Symbols.Field &&
-                    isIdentityField(fields, fieldSymbol.identifier.text) &&
-                    parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0) {
+                // Field Values
+                if (fieldSymbol instanceof Symbols.Field) {
+                    const expectingString = parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
                     const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
-                    return identities.getValue().then(identities => {
-                        suggestions.push(...identities.map(name => {return {
-                            label: inString ? name : `"${name}"`,
-                            kind: monaco.languages.CompletionItemKind.Text
-                        } as monaco.languages.CompletionItem; }));
-                        return suggestions;
-                    });
+                    if (isIdentityField(fields, fieldSymbol.identifier.text) && expectingString) {
+                        return identities.getValue().then(identities => {
+                            suggestions.push(...identities.map(name => {return {
+                                label: inString ? name : `"${name}"`,
+                                kind: monaco.languages.CompletionItemKind.Text
+                            } as monaco.languages.CompletionItem; }));
+                            return suggestions;
+                        });
+                    } else if (equalFields("System.State", fieldSymbol.identifier.text, fields) && expectingString) {
+                        return states.getValue().then(states =>
+                            states.map(s => {return {
+                                label: inString ? s : `"${s}"`,
+                                kind: monaco.languages.CompletionItemKind.Text
+                            } as monaco.languages.CompletionItem; })
+                        );
+                    }
                 }
 
                 return suggestions;
