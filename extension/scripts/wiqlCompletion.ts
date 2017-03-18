@@ -154,58 +154,44 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 if (fieldSymbol instanceof Symbols.Field) {
                     const expectingString = parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
                     const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
+                    const pushStringSuggestions = (strings: IPromise<string[]>) => {
+                        return strings.then(strings => {
+                            for (let str of strings) {
+                                suggestions.push({
+                                    label: inString ? str : `"${str}"`,
+                                    kind: monaco.languages.CompletionItemKind.Text
+                                } as monaco.languages.CompletionItem);
+                            }
+                            if (parseNext.errorToken instanceof Symbols.NonterminatingString) {
+                                const currentStr = parseNext.errorToken.text.substr(1);
+                                let charIdx = -1;
+                                for (let char of ". \\-:<>") {
+                                    charIdx = Math.max(charIdx, currentStr.lastIndexOf(char));
+                                }
+                                if (charIdx >= 0) {
+                                    const prefix = currentStr.substr(0, charIdx).toLocaleLowerCase();
+                                    return suggestions.filter(s => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map(s => {
+                                        return {
+                                            label: s.label,
+                                            kind: monaco.languages.CompletionItemKind.Text,
+                                            insertText: s.label.substr(charIdx + 1)
+                                        } as monaco.languages.CompletionItem;
+                                    });
+                                }
+                            }
+                            return suggestions;
+                        });
+                    };
                     if (isIdentityField(fields, fieldSymbol.identifier.text) && expectingString) {
-                        return identities.getValue().then(identities => {
-                            for (let idName of identities) {
-                                suggestions.push({
-                                    label: inString ? idName : `"${idName}"`,
-                                    kind: monaco.languages.CompletionItemKind.Text
-                                } as monaco.languages.CompletionItem);
-                            }
-                            return suggestions;
-                        });
+                        return pushStringSuggestions(identities.getValue());
                     } else if (equalFields("System.State", fieldSymbol.identifier.text, fields) && expectingString) {
-                        return states.getValue().then(states => {
-                            for (let state of states) {
-                                suggestions.push({
-                                    label: inString ? state : `"${state}"`,
-                                    kind: monaco.languages.CompletionItemKind.Text
-                                } as monaco.languages.CompletionItem);
-                            }
-                            return suggestions;
-                        });
+                        return pushStringSuggestions(states.getValue());
                     } else if (equalFields("System.WorkItemType", fieldSymbol.identifier.text, fields) && expectingString) {
-                        return witNames.getValue().then(witNames => {
-                            for (let witName of witNames) {
-                                suggestions.push({
-                                    label:  inString ? witName : `"${witName}"`,
-                                    kind: monaco.languages.CompletionItemKind.Text
-                                } as monaco.languages.CompletionItem);
-                            }
-                            return suggestions;
-                        });
+                        return pushStringSuggestions(witNames.getValue());
                     } else if (equalFields("System.AreaPath", fieldSymbol.identifier.text, fields) && expectingString) {
-                        return areaStrings.getValue().then(areaStrings => {
-                            for (let areaPath of areaStrings) {
-                                // TODO handle chars that the monaco editor breaks over when completing - ". -\\"
-                                suggestions.push({
-                                    label: inString ? areaPath : `"${areaPath}"`,
-                                    kind: monaco.languages.CompletionItemKind.Text
-                                });
-                            }
-                            return suggestions;
-                        });
+                        return pushStringSuggestions(areaStrings.getValue());
                     } else if (equalFields("System.IterationPath", fieldSymbol.identifier.text, fields) && expectingString) {
-                        return iterationStrings.getValue().then(iterationStrings => {
-                            for (let iterationPath of iterationStrings) {
-                                // TODO handle chars that the monaco editor breaks over when completing - ". -\\"
-                                suggestions.push({
-                                    label: inString ? iterationPath : `"${iterationPath}"`,
-                                    kind: monaco.languages.CompletionItemKind.Text
-                                });
-                            }
-                            return suggestions;
-                        });
+                        return pushStringSuggestions(iterationStrings.getValue());
                     }
                 }
 
