@@ -14,6 +14,7 @@
     ],
     "files": [
         "scripts/cachedData/CachedValue.ts",
+        "scripts/cachedData/fields.ts",
         "scripts/cachedData/identities.ts",
         "scripts/cachedData/nodes.ts",
         "scripts/cachedData/projects.ts",
@@ -25,7 +26,6 @@
         "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/contextContracts.ts",
-        "scripts/fields.ts",
         "scripts/playground.ts",
         "scripts/queryContext.ts",
         "scripts/queryDialog.ts",
@@ -43,6 +43,7 @@
         "scripts/wiqlErrorCheckers/NameErrorChecker.ts",
         "scripts/wiqlErrorCheckers/PrefixChecker.ts",
         "scripts/wiqlErrorCheckers/SyntaxErrorChecker.ts",
+        "scripts/wiqlErrorCheckers/TreePathChecker.ts",
         "scripts/wiqlErrorCheckers/TypeErrorChecker.ts",
         "scripts/wiqlFormatter.ts",
         "scripts/wiqlHoverProvider.ts",

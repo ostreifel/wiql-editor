@@ -2,9 +2,10 @@ import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/wiqlParser";
 import { toDecoration, symbolsOfType } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
+import * as Q from "q";
 
 export class LinkTypeCountChecker implements IErrorChecker {
-    public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
+    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         if (parseResult instanceof Symbols.RecursiveSelect) {
             const linkConditions = (<Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)).filter(c =>
@@ -37,6 +38,6 @@ export class LinkTypeCountChecker implements IErrorChecker {
                 }
             }
         }
-        return errors;
+        return Q(errors);
     }
 }

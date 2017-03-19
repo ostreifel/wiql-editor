@@ -2,6 +2,7 @@ import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/wiqlParser";
 import { toDecoration, symbolsOfType } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
+import * as Q from "q";
 
 type Prefix = null | "Source" | "Target";
 export class PrefixChecker implements IErrorChecker {
@@ -41,10 +42,10 @@ export class PrefixChecker implements IErrorChecker {
         }
         return expectedPrefix;
     }
-    public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
+    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
         const linksKeyword = symbolsOfType(parseResult, Symbols.WorkItemLinks);
         if (linksKeyword.length === 0) {
-            return [];
+            return Q([]);
         }
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         for (let cond of <Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)) {
@@ -64,6 +65,6 @@ export class PrefixChecker implements IErrorChecker {
             && parseResult.whereExp) {
             this.checkExpression(parseResult.whereExp, errors);
         }
-        return errors;
+        return Q(errors);
     }
 }

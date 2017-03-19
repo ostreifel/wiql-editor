@@ -5,6 +5,7 @@ import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { symbolsOfType, toDecoration } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
+import * as Q from "q";
 
 const operationLookup: {
     [opName: string]: {
@@ -152,7 +153,7 @@ export class TypeErrorChecker implements IErrorChecker {
         }
         return "literal";
     }
-    public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
+    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         const allConditions = [
             ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
@@ -181,6 +182,6 @@ export class TypeErrorChecker implements IErrorChecker {
                 errors.push(...this.checkRhsGroup(condition.valueList, type));
             }
         }
-        return errors;
+        return Q(errors);
     }
 }

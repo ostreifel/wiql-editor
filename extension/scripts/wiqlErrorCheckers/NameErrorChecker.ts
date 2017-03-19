@@ -4,6 +4,7 @@ import { IParseResults } from "../compiler/wiqlParser";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
 import { toDecoration, symbolsOfType } from "./errorCheckUtils";
+import * as Q from "q";
 
 export class NameErrorChecker implements IErrorChecker {
     private readonly validFieldIdentifiers: string[];
@@ -14,7 +15,7 @@ export class NameErrorChecker implements IErrorChecker {
             this.validFieldIdentifiers.push(field.referenceName.toLocaleLowerCase());
         }
     }
-    public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
+    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         // variable name errors
         const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
@@ -30,6 +31,6 @@ export class NameErrorChecker implements IErrorChecker {
                 errors.push(toDecoration(identifier, "Field does not exist"));
             }
         }
-        return errors;
+        return Q(errors);
     }
 }

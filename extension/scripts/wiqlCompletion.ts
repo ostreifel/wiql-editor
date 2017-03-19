@@ -4,7 +4,7 @@ import * as Symbols from "./compiler/wiqlSymbols";
 import { parse, ParseError } from "./compiler/wiqlParser";
 import { definedVariables } from "./wiqlDefinition";
 import { isIdentityField, identities } from "./cachedData/identities";
-import { equalFields, getField } from "./fields";
+import { equalFields, getField } from "./cachedData/fields";
 import { states, witNames } from "./cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "./cachedData/nodes";
 

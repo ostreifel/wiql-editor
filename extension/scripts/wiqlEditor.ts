@@ -45,19 +45,21 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         $(".wiq-input").change(() => importWiq(editor));
         $(".wiq-export").click(() => exportWiq(editor, queryName));
 
-        function checkErrors(): number {
+        function checkErrors(): Q.IPromise<number> {
             const lines = model.getLinesContent();
             const parseResult = parse(lines);
-            const errors = errorChecker.check(parseResult);
-            oldDecorations = model.deltaDecorations(oldDecorations, errors);
-            return errors.length;
+            return errorChecker.check(parseResult).then(errors => {
+                oldDecorations = model.deltaDecorations(oldDecorations, errors);
+                return errors.length;
+            });
         }
         checkErrors();
         editor.onDidChangeModelContent(() => {
-            const errorCount = checkErrors();
-            if (onChange) {
-                onChange(errorCount);
-            }
+            checkErrors().then(errorCount => {
+                if (onChange) {
+                    onChange(errorCount);
+                }
+            });
         });
     });
 

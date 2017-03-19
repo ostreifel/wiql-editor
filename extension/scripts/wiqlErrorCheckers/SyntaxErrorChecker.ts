@@ -1,6 +1,8 @@
 import { IParseResults, ParseError } from "../compiler/wiqlParser";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { toDecoration } from "./errorCheckUtils";
+import { IErrorChecker } from "./IErrorChecker";
+import * as Q from "q";
 
 enum ComparisonType {
     Literal,
@@ -9,10 +11,10 @@ enum ComparisonType {
     Invalid
 }
 
-export class SyntaxErrorChecker {
-    public check(parseResult: IParseResults): monaco.editor.IModelDeltaDecoration[] {
+export class SyntaxErrorChecker implements IErrorChecker {
+    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
         if (!(parseResult instanceof ParseError)) {
-            return [];
+            return Q([]);
         }
         let errorToken: Symbols.Token;
         let hoverMessage: string;
@@ -29,6 +31,6 @@ export class SyntaxErrorChecker {
         }
         const decoration = toDecoration(errorToken, hoverMessage);
         decoration.range = decoration.range.setEndPosition(Infinity, Infinity);
-        return [decoration];
+        return Q([decoration]);
     }
 }
