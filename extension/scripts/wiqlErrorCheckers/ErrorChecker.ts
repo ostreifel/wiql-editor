@@ -3,11 +3,13 @@ import { SyntaxErrorChecker } from "./SyntaxErrorChecker";
 import { NameErrorChecker } from "./NameErrorChecker";
 import { TypeErrorChecker } from "./TypeErrorChecker";
 import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
-import { TreePathChecker } from "./TreePathChecker";
+import { AllowedValuesChecker } from "./AllowedValuesChecker";
 import { PrefixChecker } from "./PrefixChecker";
 import { IParseResults} from "../compiler/wiqlParser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import * as Q from "q";
+import { iterationStrings, areaStrings } from "../cachedData/nodes";
+import { tags } from "../cachedData/tags";
 
 export class ErrorChecker implements IErrorChecker {
     private readonly errorCheckers: IErrorChecker[];
@@ -18,7 +20,9 @@ export class ErrorChecker implements IErrorChecker {
             new TypeErrorChecker(fields),
             new PrefixChecker(),
             new LinkTypeCountChecker(),
-            new TreePathChecker()
+            new AllowedValuesChecker("System.IterationPath", "Iteration Path", iterationStrings),
+            new AllowedValuesChecker("System.AreaPath", "Area Path", areaStrings),
+            new AllowedValuesChecker("System.Tags", "Tags", tags),
         ];
     }
     public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
