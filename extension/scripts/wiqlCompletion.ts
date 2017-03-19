@@ -7,6 +7,7 @@ import { isIdentityField, identities } from "./cachedData/identities";
 import { equalFields, getField } from "./cachedData/fields";
 import { states, witNames } from "./cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "./cachedData/nodes";
+import { tags } from "./cachedData/tags";
 
 function getSymbolSuggestionMap(type: FieldType | null) {
     /** These symbols have their own suggestion logic */
@@ -192,6 +193,8 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                         return pushStringSuggestions(areaStrings.getValue());
                     } else if (equalFields("System.IterationPath", fieldSymbol.identifier.text, fields) && expectingString) {
                         return pushStringSuggestions(iterationStrings.getValue());
+                    } else if (equalFields("System.Tags", fieldSymbol.identifier.text, fields) && expectingString) {
+                        return pushStringSuggestions(tags.getValue());
                     }
                 }
 
