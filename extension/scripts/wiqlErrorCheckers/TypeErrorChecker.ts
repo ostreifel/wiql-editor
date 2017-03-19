@@ -33,11 +33,41 @@ const operationLookup: {
         "<= [Field]": { target: "field", class: Symbols.LessOrEq },
     };
 
-interface IComparisonType {
+export interface IComparisonType {
     fieldType: FieldType;
     literal: Function[];
     field: Function[];
     group: Function[];
+}
+
+export function getFieldComparisonLookup(fields: WorkItemField[]) {
+    const fieldLookup: {[fieldName: string]: IComparisonType} = {};
+    for (let field of fields) {
+        const compType: IComparisonType = {
+            fieldType: field.type,
+            literal: [],
+            field: [],
+            group: []
+        };
+        fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compType;
+        for (let op of field.supportedOperations) {
+            const opLookup = operationLookup[op.name];
+            // Some ops are not mapped: negative ops (not contains, not in), was ever
+            if (opLookup) {
+                const classArr: Function[] = compType[opLookup.target];
+                classArr.push(opLookup.class);
+            }
+        }
+    }
+    // link type wrong as returned by the server -- correct it
+    if ("link type" in fieldLookup) {
+        const field = fieldLookup["link type"];
+        field.fieldType = FieldType.String;
+        field.group = [];
+        field.literal = [Symbols.Equals, Symbols.NotEquals];
+        field.field = [];
+    }
+    return fieldLookup;
 }
 export class TypeErrorChecker implements IErrorChecker {
     private readonly fieldLookup: {
@@ -45,32 +75,7 @@ export class TypeErrorChecker implements IErrorChecker {
     };
     constructor(fields: WorkItemField[]) {
         // Build field lookup
-        this.fieldLookup = {};
-        for (let field of fields) {
-            const compType: IComparisonType = {
-                fieldType: field.type,
-                literal: [],
-                field: [],
-                group: []
-            };
-            this.fieldLookup[field.name.toLocaleLowerCase()] = this.fieldLookup[field.referenceName.toLocaleLowerCase()] = compType;
-            for (let op of field.supportedOperations) {
-                const opLookup = operationLookup[op.name];
-                // Some ops are not mapped: negative ops (not contains, not in), was ever
-                if (opLookup) {
-                    const classArr: Function[] = compType[opLookup.target];
-                    classArr.push(opLookup.class);
-                }
-            }
-        }
-        // link type wrong as returned by the server -- correct it
-        if ("link type" in this.fieldLookup) {
-            const field = this.fieldLookup["link type"];
-            field.fieldType = FieldType.String;
-            field.group = [];
-            field.literal = [Symbols.Equals, Symbols.NotEquals];
-            field.field = [];
-        }
+        this.fieldLookup = getFieldComparisonLookup(fields);
     }
     private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;

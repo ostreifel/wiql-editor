@@ -8,15 +8,23 @@ import { equalFields, getField } from "./cachedData/fields";
 import { states, witNames } from "./cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "./cachedData/nodes";
 import { tags } from "./cachedData/tags";
+import { getFieldComparisonLookup } from "./wiqlErrorCheckers/TypeErrorChecker";
 
-function getSymbolSuggestionMap(type: FieldType | null) {
+function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[]) {
+    refName = refName.toLocaleLowerCase();
     /** These symbols have their own suggestion logic */
     const excludedSymbols = [Symbols.Variable, Symbols.Field];
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
+    const fieldLookup = getFieldComparisonLookup(fields);
     for (let pattern of wiqlPatterns) {
         if (typeof pattern.match === "string" &&
             excludedSymbols.indexOf(pattern.token) < 0 &&
-            (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0)) {
+            (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0) &&
+            (conditionSymbols.indexOf(pattern.token) < 0 || !refName || !(refName in fieldLookup) ||
+                (fieldLookup[refName].field.indexOf(pattern.token) >= 0 ||
+                fieldLookup[refName].literal.indexOf(pattern.token) >= 0 ||
+                fieldLookup[refName].group.indexOf(pattern.token) >= 0))
+         ) {
             const symName = Symbols.getSymbolName(pattern.token);
             symbolSuggestionMap[symName] = {
                 label: pattern.match,
@@ -48,27 +56,31 @@ function getVariableSuggestions(type: FieldType | null) {
     }
     return suggestions;
 }
+
+const conditionSymbols = [
+    Symbols.Equals,
+    Symbols.NotEquals,
+    Symbols.LessThan,
+    Symbols.LessOrEq,
+    Symbols.GreaterThan,
+    Symbols.GreaterOrEq,
+    Symbols.Like,
+    Symbols.Under,
+    Symbols.Contains,
+    Symbols.Ever,
+    Symbols.In
+];
 /**
  * Whether the given parseState is parsing a conditional token.
  * Ideally the compilier would be able to tell us which productions it was currently parsing - this is just a workaround.
  * @param symbol
  */
-function isConditionToken(parseNext: ParseError) {
+function isInConditionParse(parseNext: ParseError) {
     for (let symbol of parseNext.parsedTokens) {
-        if (symbol instanceof Symbols.Equals ||
-            symbol instanceof Symbols.NotEquals ||
-            symbol instanceof Symbols.LessThan ||
-            symbol instanceof Symbols.LessOrEq ||
-            symbol instanceof Symbols.GreaterThan ||
-            symbol instanceof Symbols.GreaterOrEq ||
-            symbol instanceof Symbols.Like ||
-            symbol instanceof Symbols.Under ||
-            symbol instanceof Symbols.Contains ||
-            symbol instanceof Symbols.Words ||
-            symbol instanceof Symbols.Group ||
-            symbol instanceof Symbols.Ever ||
-            symbol instanceof Symbols.In) {
-            return true;
+        for (let conditionSym of conditionSymbols) {
+            if (symbol instanceof conditionSym) {
+                return true;
+            }
         }
     }
     return false;
@@ -108,7 +120,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
             const fieldRefName = getFieldSymbolRefName(parseNext);
             const fieldInstance = getField(fieldRefName, fields) || null;
             const fieldType = fieldInstance && fieldInstance.type;
-            const inCondition = isConditionToken(parseNext);
+            const inCondition = isInConditionParse(parseNext);
             if (prevToken instanceof Symbols.Identifier
                 && position.column - 1 === prevToken.endColumn) {
                 // In process of typing field name
@@ -143,7 +155,10 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 const suggestions: monaco.languages.CompletionItem[] = [];
                 // Don't complete inside strings
                 if (!(parseNext.errorToken instanceof Symbols.NonterminatingString)) {
-                    const symbolSuggestionMap = getSymbolSuggestionMap(inCondition ? fieldType : null);
+                    // if right after identifier it will not have been reduced to a field yet.
+                    const field = prevToken instanceof Symbols.Identifier ? getField(prevToken.text, fields) : null;
+                    const refName = fieldRefName || (field ? field.referenceName : "");
+                    const symbolSuggestionMap = getSymbolSuggestionMap(refName, inCondition ? fieldType : null, fields);
                     // Include keywords
                     for (let token of parseNext.expectedTokens) {
                         if (symbolSuggestionMap[token]) {
