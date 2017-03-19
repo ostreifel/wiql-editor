@@ -76,11 +76,22 @@ export class TypeErrorChecker implements IErrorChecker {
         const operatorToken = comp.conditionToken;
         const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
-            return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier} and ${rhsType}`)];
+            return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier.text} and ${rhsType}`)];
         }
         if (validOps.filter((op) => operatorToken instanceof op).length === 0) {
             const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(", ")}`;
             return [toDecoration(operatorToken, message)];
+        }
+        return [];
+    }
+    private checkAllowsGroup(comp: Symbols.In, field: Symbols.Field): monaco.editor.IModelDeltaDecoration[] {
+        const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()]["group"];
+        if (validOps.length === 0) {
+            return [toDecoration(comp, `${field.identifier.text} does not support group comparisons`)];
+        }
+        if (validOps.filter((op) => comp instanceof op).length === 0) {
+            const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(", ")}`;
+            return [toDecoration(comp, message)];
         }
         return [];
     }
@@ -178,8 +189,10 @@ export class TypeErrorChecker implements IErrorChecker {
                 } else {
                     errors.push(...this.checkRhsValue(condition.value, type));
                 }
-            } else if (condition.valueList) {
+            } else if (condition.valueList && condition.inOperator) {
                 errors.push(...this.checkRhsGroup(condition.valueList, type));
+                errors.push(...this.checkAllowsGroup(condition.inOperator, condition.field));
+                
             }
         }
         return Q(errors);

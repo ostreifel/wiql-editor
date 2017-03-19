@@ -200,6 +200,7 @@ export class ConditionalExpression extends SymbolTree {
     public readonly field?: Field;
 
     public readonly conditionalOperator?: ConditionalOperator;
+    public readonly inOperator?: In;
     public readonly value?: Value;
 
     public readonly not?: Not;
@@ -209,6 +210,7 @@ export class ConditionalExpression extends SymbolTree {
         this.expression = super.getInput(LogicalExpression);
         this.field = super.getInput(Field);
         this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.inOperator = super.getInput(In);
         this.value = super.getInput(Value);
         this.not = super.getInput(Not);
         this.valueList = super.getInput(ValueList);
@@ -248,6 +250,7 @@ export class LinkCondition extends SymbolTree {
     public readonly field?: Field;
 
     public readonly conditionalOperator?: ConditionalOperator;
+    public readonly inOperator?: In;
     public readonly value?: Value;
 
     public readonly not?: Not;
@@ -258,6 +261,7 @@ export class LinkCondition extends SymbolTree {
         this.prefix = super.getInput([SourcePrefix, TargetPrefix]);
         this.field = super.getInput(Field);
         this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.inOperator = super.getInput(In);
         this.value = super.getInput(Value);
         this.not = super.getInput(Not);
         this.valueList = super.getInput(ValueList);
