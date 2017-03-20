@@ -9,6 +9,7 @@ import { states, witNames } from "./cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "./cachedData/nodes";
 import { tags } from "./cachedData/tags";
 import { getFieldComparisonLookup } from "./wiqlErrorCheckers/TypeErrorChecker";
+import { getAllowedValues } from "./cachedData/allowedValues";
 
 function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[]) {
     refName = refName.toLocaleLowerCase();
@@ -153,7 +154,7 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                 } as monaco.languages.CompletionItem; });
             } else {
                 const suggestions: monaco.languages.CompletionItem[] = [];
-                // Don't complete inside strings
+                // Don't complete symbols inside strings
                 if (!(parseNext.errorToken instanceof Symbols.NonterminatingString)) {
                     // if right after identifier it will not have been reduced to a field yet.
                     const field = prevToken instanceof Symbols.Identifier ? getField(prevToken.text, fields) : null;
@@ -162,7 +163,6 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     // Include keywords
                     for (let token of parseNext.expectedTokens) {
                         if (symbolSuggestionMap[token]) {
-                            // TODO filter by value type symbols by type
                             suggestions.push(symbolSuggestionMap[token]);
                         }
                     }
@@ -222,6 +222,8 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                         return pushStringSuggestions(iterationStrings.getValue());
                     } else if (equalFields("System.Tags", fieldRefName, fields) && expectingString) {
                         return pushStringSuggestions(tags.getValue());
+                    } else if (expectingString) {
+                        return pushStringSuggestions(getAllowedValues(fieldRefName));
                     }
                 }
 

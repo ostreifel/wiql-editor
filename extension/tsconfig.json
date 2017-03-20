@@ -13,12 +13,15 @@
         "./typings/index.d.ts"
     ],
     "files": [
+        "scripts/cachedData/allowedValues.ts",
         "scripts/cachedData/CachedValue.ts",
         "scripts/cachedData/fields.ts",
         "scripts/cachedData/identities.ts",
         "scripts/cachedData/nodes.ts",
         "scripts/cachedData/projects.ts",
         "scripts/cachedData/tags.ts",
+        "scripts/cachedData/teamProjects.ts",
+        "scripts/cachedData/teamProjectsContracts.ts",
         "scripts/cachedData/workItemTypes.ts",
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
