@@ -7,11 +7,13 @@ export const tags: CachedValue<string[]> = new CachedValue(getTags);
 function getTags() {
     return projects.getValue().then(projects => {
         return Q.all(projects.map(p => getTagsForProject(p.id))).then(tagsArr => {
-            const allTags: string[] = [];
+            const allTags: {[tag: string]: void} = {};
             for (let tags of tagsArr) {
-                allTags.push(...tags);
+                for (let tag of tags) {
+                    allTags[tag] = undefined;
+                }
             }
-            return allTags;
+            return Object.keys(allTags);
         });
     });
 }
