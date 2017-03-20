@@ -20,7 +20,7 @@ export class AllowedValuesChecker implements IErrorChecker {
             return Q([]);
         }
         return this.allowedValues.getValue().then(allowedValues => {
-            allowedValues = allowedValues.map(v => `"${v.toLocaleLowerCase()}"`);
+            allowedValues = [...allowedValues.map(v => `"${v.toLocaleLowerCase()}"`), ...allowedValues.map(v => `'${v.toLocaleLowerCase()}'`)];
             const errors: monaco.editor.IModelDeltaDecoration[] = [];
             for (let condition of fieldConditions) {
                 if (condition.value && condition.value.value instanceof Symbols.String &&
