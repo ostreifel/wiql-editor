@@ -9,6 +9,7 @@ import { states, witNames } from "./cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "./cachedData/nodes";
 import { tags } from "./cachedData/tags";
 import { getFieldComparisonLookup } from "./wiqlErrorCheckers/TypeErrorChecker";
+import {projects} from "./cachedData/projects";
 
 function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[]) {
     refName = refName.toLocaleLowerCase();
@@ -212,6 +213,8 @@ export const getCompletionProvider: (fields: WorkItemField[]) => monaco.language
                     };
                     if (isIdentityField(fields, fieldRefName) && expectingString) {
                         return pushStringSuggestions(identities.getValue());
+                    } else if (equalFields("System.TeamProject", fieldRefName, fields) && expectingString) {
+                        return pushStringSuggestions(projects.getValue().then(projs => projs.map(p => p.name)));
                     } else if (equalFields("System.State", fieldRefName, fields) && expectingString) {
                         return pushStringSuggestions(states.getValue());
                     } else if (equalFields("System.WorkItemType", fieldRefName, fields) && expectingString) {

@@ -24,7 +24,7 @@ const operationLookup: {
         "Contains": { target: "literal", class: Symbols.Contains },
         "Contains Words": { target: "literal", class: Symbols.ContainsWords },
         "Under": { target: "literal", class: Symbols.Under },
-        "in": { target: "group", class: Symbols.In },
+        "In": { target: "group", class: Symbols.In },
         "= [Field]": { target: "field", class: Symbols.Equals },
         "<> [Field]": { target: "field", class: Symbols.NotEquals },
         "> [Field]": { target: "field", class: Symbols.GreaterThan },
