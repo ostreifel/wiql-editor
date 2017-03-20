@@ -14,6 +14,8 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(03/19/17) 1.6.1 Completion for: workitemtypes, states, iteration paths, area paths, tags  
+Typechecking comparison operator completion  
 (03/16/17) 1.5.6 Updating wiq formatting  
 (03/15/17) 1.5.1 Adds import and export buttons to editor  
 Value completion of system identity fields  
