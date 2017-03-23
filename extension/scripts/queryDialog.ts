@@ -24,6 +24,10 @@ export function showDialog(query: IQuery) {
                     dialogService.openMessageDialog(message, {
                         title: "Error saving query"
                     });
+                    if (window["appInsights"]) {
+                        window["appInsights"].trackEvent("SaveQueryFailure", {message});
+                        window["appInsights"].flush();
+                    }
                 });
                 throw Error("Exception to block dialog close");
         }
