@@ -2,6 +2,9 @@ import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "./wiqlEditor";
+import {AppInsights} from "applicationinsights-js";
+
+
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");
@@ -36,14 +39,28 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
         result.columns.map((col) => col.referenceName)
         : undefined;
     getWitClient().getWorkItems(ids, fieldRefNames, result.asOf).then(
-        workitems => renderResult(result, workitems), setError);
+        workitems => renderResult(result, workitems), error => {
+            const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+            if (window["appInsights"]) {
+                window["appInsights"].trackEvent("GetWorkItemFailure", {message});
+                window["appInsights"].flush();
+            }
+            setError(error);
+        });
 }
 function search() {
     const wiqlText = editor.getValue();
     setMessage("Running query...");
     const context = VSS.getWebContext();
     getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(
-        result => result.workItems ? loadWorkItems(result) : loadWorkItemRelations(result), setError);
+        result => result.workItems ? loadWorkItems(result) : loadWorkItemRelations(result), error => {
+            const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+            if (window["appInsights"]) {
+                window["appInsights"].trackEvent("RunQueryFailure", {message});
+                window["appInsights"].flush();
+            }
+            setError(error);
+        });
 }
 
 
