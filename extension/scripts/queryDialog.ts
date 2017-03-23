@@ -14,15 +14,18 @@ export function showDialog(query: IQuery) {
         };
         function save() {
                 console.log(this);
-                return okCallback().then(() => {
+                okCallback().then(() => {
                     VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
                         navigationService.reload();
                     });
                 }, (error: TfsError) => {
                     const exception = (error.serverError || error);
                     const message = exception["message"] || exception["value"]["Message"];
-                    dialogService.openMessageDialog(message);
+                    dialogService.openMessageDialog(message, {
+                        title: "Error saving query"
+                    });
                 });
+                throw Error("Exception to block dialog close");
         }
         const context: IContextOptions = {
             query: query,
