@@ -8,6 +8,7 @@ import { getHoverProvider } from "./wiqlHoverProvider";
 import { importWiq, exportWiq } from "./wiqImportExport";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
+    setVersion();
     monaco.languages.register(Wiql.def);
     monaco.languages.onLanguage(Wiql.def.id, () => {
         monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
@@ -70,6 +71,5 @@ ORDER BY [System.ChangedDate] DESC
     });
 
     editor.focus();
-    setVersion();
     return editor;
 }
