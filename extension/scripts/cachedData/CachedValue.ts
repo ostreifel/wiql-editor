@@ -22,4 +22,7 @@ export class CachedValue<T> {
         this.deferred.push(defer);
         return defer.promise;
     }
+    public isLoaded() {
+        return this.isValueSet;
+    }
 }

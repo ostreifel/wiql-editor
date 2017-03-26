@@ -15,35 +15,43 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         monaco.languages.setLanguageConfiguration(Wiql.def.id, Wiql.conf);
     });
     const defaultVal =
-        `SELECT [ID], [Work Item Type], [Title], [State], [Area Path], [Iteration Path] 
-        FROM workitems
-        where [Team Project] = @project
-        ORDER BY [System.ChangedDate] DESC`;
+        `SELECT
+        [System.Id],
+        [System.WorkItemType],
+        [System.Title],
+        [System.State],
+        [System.AreaPath],
+        [System.IterationPath]
+FROM workitems
+WHERE
+        [System.TeamProject] = @project
+ORDER BY [System.ChangedDate] DESC
+`;
     const editor = monaco.editor.create(target, {
         language: Wiql.def.id,
         value: intialValue || defaultVal,
         automaticLayout: true
     });
 
+    format(editor);
+    editor.addAction({
+        id: "format",
+        contextMenuGroupId: "1_modification",
+        label: "Format",
+        keybindings: [
+            monaco.KeyMod.Alt | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
+            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F
+        ],
+        run: e => { format(editor); return null as any; }
+    });
+    $(".wiq-input").change(() => importWiq(editor));
+    $(".wiq-export").click(() => exportWiq(editor, queryName));
     getWitClient().getFields().then((fields) => {
         monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
         monaco.languages.registerHoverProvider(Wiql.def.id, getHoverProvider(fields));
         const model = editor.getModel();
         const errorChecker = new ErrorChecker(fields);
         let oldDecorations: string[] = [];
-        format(editor, fields);
-        editor.addAction({
-            id: "format",
-            contextMenuGroupId: "1_modification",
-            label: "Format",
-            keybindings: [
-                monaco.KeyMod.Alt | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
-                monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F
-            ],
-            run: e => { format(editor, fields); return null as any; }
-        });
-        $(".wiq-input").change(() => importWiq(editor));
-        $(".wiq-export").click(() => exportWiq(editor, queryName));
 
         function checkErrors(): Q.IPromise<number> {
             const lines = model.getLinesContent();

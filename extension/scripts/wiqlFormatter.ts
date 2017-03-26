@@ -1,6 +1,7 @@
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { fields } from "./cachedData/fields";
 
 type FieldMap = { [name: string]: WorkItemField };
 
@@ -217,14 +218,9 @@ function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbol
     return lines;
 }
 
-export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: WorkItemField[]): void {
+function formatSync(editor: monaco.editor.IStandaloneCodeEditor, fieldMap: FieldMap) {
     const model = editor.getModel();
     const tab = model.getOneIndent();
-    const fieldMap: FieldMap = {};
-    for (let field of fields) {
-        fieldMap[field.name.toLocaleLowerCase()] =
-            fieldMap[field.referenceName.toLocaleLowerCase()] = field;
-    }
 
     const parseTree = parse(model.getLinesContent());
     let lines: string[];
@@ -244,5 +240,23 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor, fields: Work
     model.pushEditOperations(editor.getSelections(), [edit],
         // TODO actually calculate the new position
         (edits) => [new monaco.Selection(1, 1, 1, 1)]);
+}
+
+export function format(editor: monaco.editor.IStandaloneCodeEditor): void {
+    // Don't wait for fields but use if available
+    if (fields.isLoaded()) {
+        fields.getValue().then(fields => {
+            const fieldMap: FieldMap = {};
+            for (let field of fields) {
+                fieldMap[field.name.toLocaleLowerCase()] =
+                    fieldMap[field.referenceName.toLocaleLowerCase()] = field;
+            }
+            formatSync(editor, fieldMap);
+        });
+    } else {
+        formatSync(editor, {});
+        // Queue fields get now;
+        fields.getValue();
+    }
 
 }
