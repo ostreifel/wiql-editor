@@ -5,6 +5,8 @@ import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { symbolsOfType, toDecoration } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
+import { fields } from "../cachedData/fields";
+import { CachedValue } from "../cachedData/CachedValue";
 import * as Q from "q";
 
 const operationLookup: {
@@ -39,6 +41,9 @@ export interface IComparisonType {
     field: Function[];
     group: Function[];
 }
+interface IFieldLookup {
+    [fieldName: string]: IComparisonType;
+}
 
 export function getFieldComparisonLookup(fields: WorkItemField[]) {
     const fieldLookup: {[fieldName: string]: IComparisonType} = {};
@@ -70,16 +75,14 @@ export function getFieldComparisonLookup(fields: WorkItemField[]) {
     return fieldLookup;
 }
 export class TypeErrorChecker implements IErrorChecker {
-    private readonly fieldLookup: {
-        [fieldName: string]: IComparisonType
-    };
-    constructor(fields: WorkItemField[]) {
-        // Build field lookup
-        this.fieldLookup = getFieldComparisonLookup(fields);
-    }
-    private checkComparisonOperator(comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
+    private readonly fieldLookup: CachedValue<IFieldLookup> = new CachedValue(() =>
+        fields.getValue().then(fields =>
+            getFieldComparisonLookup(fields)
+        )
+    );
+    private checkComparisonOperator(fieldLookup: IFieldLookup, comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;
-        const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
+        const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
             return [toDecoration(operatorToken, `There is no valid operation for ${field.identifier.text} and ${rhsType}`)];
         }
@@ -89,8 +92,8 @@ export class TypeErrorChecker implements IErrorChecker {
         }
         return [];
     }
-    private checkAllowsGroup(comp: Symbols.In, field: Symbols.Field): monaco.editor.IModelDeltaDecoration[] {
-        const validOps: Function[] = this.fieldLookup[field.identifier.text.toLocaleLowerCase()]["group"];
+    private checkAllowsGroup(fieldLookup: IFieldLookup, comp: Symbols.In, field: Symbols.Field): monaco.editor.IModelDeltaDecoration[] {
+        const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()]["group"];
         if (validOps.length === 0) {
             return [toDecoration(comp, `${field.identifier.text} does not support group comparisons`)];
         }
@@ -156,9 +159,9 @@ export class TypeErrorChecker implements IErrorChecker {
         }
         return errors;
     }
-    private checkRhsField(targetField: Symbols.Field, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
-        if (targetField.identifier.text.toLocaleLowerCase() in this.fieldLookup
-            && this.fieldLookup[targetField.identifier.text.toLocaleLowerCase()].fieldType !== expectedType) {
+    private checkRhsField(fieldLookup: IFieldLookup, targetField: Symbols.Field, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
+        if (targetField.identifier.text.toLocaleLowerCase() in fieldLookup
+            && fieldLookup[targetField.identifier.text.toLocaleLowerCase()].fieldType !== expectedType) {
             return [toDecoration(targetField.identifier, `Expected field of type ${FieldType[expectedType]}`)];
         }
         return [];
@@ -170,36 +173,37 @@ export class TypeErrorChecker implements IErrorChecker {
         return "literal";
     }
     public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
-        const errors: monaco.editor.IModelDeltaDecoration[] = [];
-        const allConditions = [
-            ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
-            ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
-        ];
-        for (let condition of allConditions) {
-            if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in this.fieldLookup)) {
-                continue;
-            }
-            const type = this.fieldLookup[condition.field.identifier.text.toLocaleLowerCase()].fieldType;
-            if (condition.conditionalOperator && condition.value) {
-                const rhsType = this.getRhsType(condition.value);
-
-                const compErrors = this.checkComparisonOperator(condition.conditionalOperator, condition.field, rhsType);
-                if (compErrors.length > 0) {
-                    errors.push(...compErrors);
+        return this.fieldLookup.getValue().then(fieldLookup => {
+            const errors: monaco.editor.IModelDeltaDecoration[] = [];
+            const allConditions = [
+                ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
+                ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
+            ];
+            for (let condition of allConditions) {
+                if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in fieldLookup)) {
                     continue;
                 }
-                if (condition.value.value instanceof Symbols.Field) {
-                    const targetField: Symbols.Field = condition.value.value;
-                    errors.push(...this.checkRhsField(targetField, type));
-                } else {
-                    errors.push(...this.checkRhsValue(condition.value, type));
+                const type = fieldLookup[condition.field.identifier.text.toLocaleLowerCase()].fieldType;
+                if (condition.conditionalOperator && condition.value) {
+                    const rhsType = this.getRhsType(condition.value);
+
+                    const compErrors = this.checkComparisonOperator(fieldLookup, condition.conditionalOperator, condition.field, rhsType);
+                    if (compErrors.length > 0) {
+                        errors.push(...compErrors);
+                        continue;
+                    }
+                    if (condition.value.value instanceof Symbols.Field) {
+                        const targetField: Symbols.Field = condition.value.value;
+                        errors.push(...this.checkRhsField(fieldLookup, targetField, type));
+                    } else {
+                        errors.push(...this.checkRhsValue(condition.value, type));
+                    }
+                } else if (condition.valueList && condition.inOperator) {
+                    errors.push(...this.checkRhsGroup(condition.valueList, type));
+                    errors.push(...this.checkAllowsGroup(fieldLookup, condition.inOperator, condition.field));
                 }
-            } else if (condition.valueList && condition.inOperator) {
-                errors.push(...this.checkRhsGroup(condition.valueList, type));
-                errors.push(...this.checkAllowsGroup(condition.inOperator, condition.field));
-                
             }
-        }
-        return Q(errors);
+            return errors;
+        });
     }
 }

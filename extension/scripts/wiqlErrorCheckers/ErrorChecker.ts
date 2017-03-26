@@ -13,11 +13,11 @@ import { tags } from "../cachedData/tags";
 
 export class ErrorChecker implements IErrorChecker {
     private readonly errorCheckers: IErrorChecker[];
-    constructor(fields: WorkItemField[]) {
+    constructor() {
         this.errorCheckers = [
             new SyntaxErrorChecker(),
-            new NameErrorChecker(fields),
-            new TypeErrorChecker(fields),
+            new NameErrorChecker(),
+            new TypeErrorChecker(),
             new PrefixChecker(),
             new LinkTypeCountChecker(),
             new AllowedValuesChecker("System.IterationPath", "Iteration Path", iterationStrings),

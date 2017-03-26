@@ -1,4 +1,3 @@
-import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { getCompletionProvider } from "./wiqlCompletion";
 import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
@@ -46,28 +45,27 @@ ORDER BY [System.ChangedDate] DESC
     });
     $(".wiq-input").change(() => importWiq(editor));
     $(".wiq-export").click(() => exportWiq(editor, queryName));
-    getWitClient().getFields().then((fields) => {
-        monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider(fields));
-        monaco.languages.registerHoverProvider(Wiql.def.id, getHoverProvider(fields));
-        const model = editor.getModel();
-        const errorChecker = new ErrorChecker(fields);
-        let oldDecorations: string[] = [];
+    monaco.languages.registerHoverProvider(Wiql.def.id, getHoverProvider());
+    monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider());
 
-        function checkErrors(): Q.IPromise<number> {
-            const lines = model.getLinesContent();
-            const parseResult = parse(lines);
-            return errorChecker.check(parseResult).then(errors => {
-                oldDecorations = model.deltaDecorations(oldDecorations, errors);
-                return errors.length;
-            });
-        }
-        checkErrors();
-        editor.onDidChangeModelContent(() => {
-            checkErrors().then(errorCount => {
-                if (onChange) {
-                    onChange(errorCount);
-                }
-            });
+    const model = editor.getModel();
+    const errorChecker = new ErrorChecker();
+    let oldDecorations: string[] = [];
+
+    function checkErrors(): Q.IPromise<number> {
+        const lines = model.getLinesContent();
+        const parseResult = parse(lines);
+        return errorChecker.check(parseResult).then(errors => {
+            oldDecorations = model.deltaDecorations(oldDecorations, errors);
+            return errors.length;
+        });
+    }
+    checkErrors();
+    editor.onDidChangeModelContent(() => {
+        checkErrors().then(errorCount => {
+            if (onChange) {
+                onChange(errorCount);
+            }
         });
     });
 
