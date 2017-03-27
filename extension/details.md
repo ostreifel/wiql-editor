@@ -14,6 +14,7 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(03/26/17) 1.6.16 Decrease loading times  
 (03/19/17) 1.6.1 Completion for: workitemtypes, states, iteration paths, area paths, tags  
 Typechecking comparison operator completion  
 (03/16/17) 1.5.6 Updating wiq formatting  
