@@ -37,8 +37,8 @@ export function showDialog(query: IQuery) {
         };
         const dialogOptions: IHostDialogOptions = {
             title: query.name,
-            width: 900,
-            height: 800,
+            width: Number.MAX_VALUE,
+            height: Number.MAX_VALUE,
             getDialogResult: save,
             okText: "Save Query",
             resizable: true,

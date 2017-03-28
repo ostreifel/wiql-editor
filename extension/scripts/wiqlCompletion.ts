@@ -12,10 +12,13 @@ import { getFieldComparisonLookup } from "./wiqlErrorCheckers/TypeErrorChecker";
 import { projects } from "./cachedData/projects";
 import { fields } from "./cachedData/fields";
 
-function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[]) {
+function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[], fieldAllowed) {
     refName = refName.toLocaleLowerCase();
     /** These symbols have their own suggestion logic */
     const excludedSymbols = [Symbols.Variable, Symbols.Field];
+    if (!fieldAllowed) {
+        excludedSymbols.push(Symbols.LSqBracket);
+    }
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
     const fieldLookup = getFieldComparisonLookup(fields);
     for (let pattern of wiqlPatterns) {
@@ -128,7 +131,8 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                 const fieldInstance = getField(fieldRefName, fields) || null;
                 const fieldType = fieldInstance && fieldInstance.type;
                 const inCondition = isInConditionParse(parseNext);
-                if (prevToken instanceof Symbols.Identifier
+                const fieldAllowed = !fieldInstance || !inCondition || getFieldComparisonLookup(fields)[fieldRefName].field.length > 0;
+                if (fieldAllowed && prevToken instanceof Symbols.Identifier
                     && position.column - 1 === prevToken.endColumn) {
                     // In process of typing field name
                     // (parser just consumes this becuase it doesn't know which fields are valid)
@@ -167,7 +171,7 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                         // if right after identifier it will not have been reduced to a field yet.
                         const field = prevToken instanceof Symbols.Identifier ? getField(prevToken.text, fields) : null;
                         const refName = fieldRefName || (field ? field.referenceName : "");
-                        const symbolSuggestionMap = getSymbolSuggestionMap(refName, inCondition ? fieldType : null, fields);
+                        const symbolSuggestionMap = getSymbolSuggestionMap(refName, inCondition ? fieldType : null, fields, fieldAllowed);
                         // Include keywords
                         for (let token of parseNext.expectedTokens) {
                             if (symbolSuggestionMap[token]) {
@@ -176,7 +180,7 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                             }
                         }
                         // Include field and variables
-                        if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0) {
+                        if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && fieldAllowed) {
                             let fieldSuggestions = getFieldSuggestions(fields, inCondition ? fieldType : null);
                             if (!(prevToken instanceof Symbols.LSqBracket)) {
                                 fieldSuggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);

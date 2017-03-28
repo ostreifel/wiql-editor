@@ -45,32 +45,51 @@ interface IFieldLookup {
     [fieldName: string]: IComparisonType;
 }
 
+const compTypes: {[FieldType: number]: IComparisonType} = {};
+/** Map of field type to the valid comparisons for it, this works for most fields.
+ * For use specifically by getFieldComparisonLookup
+ */
+function addCompTypes(types: FieldType[], literal: Function[], group: Function[], field: Function[]) {
+    for (let fieldType of types) {
+        compTypes[fieldType] = {
+            fieldType,
+            field,
+            group,
+            literal
+        };
+    }
+}
+addCompTypes([FieldType.Html, FieldType.PlainText, FieldType.History],
+             [Symbols.Contains, Symbols.ContainsWords], [], []);
+addCompTypes([FieldType.Double, FieldType.Integer, FieldType.DateTime, FieldType.Guid],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever],
+             [Symbols.In],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
+addCompTypes([FieldType.String],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever, Symbols.Contains],
+             [Symbols.In],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
+addCompTypes([FieldType.Boolean],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.Ever],
+             [],
+             [Symbols.Equals, Symbols.NotEquals]);
+addCompTypes([FieldType.TreePath],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.Under],
+             [Symbols.In],
+             []);
+
 export function getFieldComparisonLookup(fields: WorkItemField[]) {
     const fieldLookup: {[fieldName: string]: IComparisonType} = {};
     for (let field of fields) {
-        const compType: IComparisonType = {
-            fieldType: field.type,
-            literal: [],
-            field: [],
-            group: []
-        };
-        fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compType;
-        for (let op of field.supportedOperations) {
-            const opLookup = operationLookup[op.name];
-            // Some ops are not mapped: negative ops (not contains, not in), was ever
-            if (opLookup) {
-                const classArr: Function[] = compType[opLookup.target];
-                classArr.push(opLookup.class);
-            }
+        if ("System.Links.LinkType" === field.referenceName) {
+            fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = {
+                fieldType: FieldType.String,
+                group: [],
+                literal: [Symbols.Equals, Symbols.NotEquals],
+                field: []
+            };
         }
-    }
-    // link type wrong as returned by the server -- correct it
-    if ("link type" in fieldLookup) {
-        const field = fieldLookup["link type"];
-        field.fieldType = FieldType.String;
-        field.group = [];
-        field.literal = [Symbols.Equals, Symbols.NotEquals];
-        field.field = [];
+        fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
     }
     return fieldLookup;
 }
