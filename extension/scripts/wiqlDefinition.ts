@@ -50,7 +50,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
         ],
         strings: [
             [/"/, { token: "string.quote", bracket: "@open", next: "@string1" }],
-            [/"/, { token: "string.quote", bracket: "@open", next: "@string2" }]
+            [/'/, { token: "string.quote", bracket: "@open", next: "@string2" }]
         ],
         string1: [
             [/[^"]+/, "string"],
@@ -58,9 +58,9 @@ export const language = <monaco.languages.IMonarchLanguage>{
             [/"/, { token: "string.quote", bracket: "@close", next: "@pop" }]
         ],
         string2: [
-            [/[^"]+/, "string"],
-            [/""/, "string"],
-            [/"/, { token: "string.quote", bracket: "@close", next: "@pop" }]
+            [/[^']+/, "string"],
+            [/''/, "string"],
+            [/'/, { token: "string.quote", bracket: "@close", next: "@pop" }]
         ],
         number: [
             [/-?\d+(?:\.\d*)(?:e-?\d+)?/, "number.float"],

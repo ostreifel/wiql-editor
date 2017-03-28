@@ -4,26 +4,19 @@ import { IParseResults, ParseError } from "../compiler/wiqlParser";
 export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;
     let endToken: Symbols.Token | null = null;
-    if (symbol instanceof Symbols.Token) {
-        startToken = endToken = symbol;
-    } else {
-        const symbols = [symbol];
-        do {
-            const sym = <Symbols.Symbol>symbols.pop();
-            for (let key in sym) {
-                const prop = sym[key];
-                if (prop instanceof Symbols.Token) {
-                    if (!startToken || prop.line < startToken.line || prop.startColumn < startToken.startColumn) {
-                        startToken = prop;
-                    }
-                    if (!endToken || prop.line > endToken.line || prop.endColumn > endToken.endColumn) {
-                        endToken = prop;
-                    }
-                } else if (prop instanceof Symbols.Symbol) {
-                    symbols.push(prop);
-                }
+    const symbols = [symbol];
+    while (symbols.length > 0) {
+        const sym = symbols.pop();
+        if (sym instanceof Symbols.Token) {
+            if (!startToken || sym.line < startToken.line || sym.startColumn < startToken.startColumn) {
+                startToken = sym;
             }
-        } while (symbols.length > 0);
+            if (!endToken || sym.line > endToken.line || sym.endColumn > endToken.endColumn) {
+                endToken = sym;
+            }
+        } else if (symbol instanceof Symbols.SymbolTree) {
+            symbols.push(...symbol.inputs);
+        }
     }
     if (!startToken || !endToken) {
         throw new Error("Could not find token in symbol");

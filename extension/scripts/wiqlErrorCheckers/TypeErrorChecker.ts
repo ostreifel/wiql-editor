@@ -66,7 +66,7 @@ addCompTypes([FieldType.Double, FieldType.Integer, FieldType.DateTime, FieldType
              [Symbols.In],
              [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
 addCompTypes([FieldType.String],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever, Symbols.Contains],
+             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever, Symbols.Contains, Symbols.InGroup],
              [Symbols.In],
              [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
 addCompTypes([FieldType.Boolean],
@@ -88,8 +88,9 @@ export function getFieldComparisonLookup(fields: WorkItemField[]) {
                 literal: [Symbols.Equals, Symbols.NotEquals],
                 field: []
             };
+        } else {
+            fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
         }
-        fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
     }
     return fieldLookup;
 }
