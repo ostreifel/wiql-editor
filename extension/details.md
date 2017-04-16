@@ -1,20 +1,21 @@
 Search work items with a the expressiveness of the work item query language.
 
 Explore the wiql syntax on the wiql playground  
-![Image of query playground](img/playground.png)
+![query playground](img/playground.png)
 
 Use the wiql editor to modify existing queries
 
-![Image of context menu](img/contextMenu.png)
+![context menu](img/contextMenu.png) ![Results menu bar](img/resultsBar.png)
 
 Save changes to the query when finished.
 
- ![Image of wiql dialog](img/dialog.png)
+ ![wiql dialog](img/dialog.png)
 
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
-(03/26/17) 1.6.22 Allowed operator issue, block field suggestions when not allowed, dialog sizing  
+(04/16/17) 1.6.22 Button on results menu bar    
+(03/27/17) 1.6.22 Allowed operator issue, block field suggestions when not allowed, dialog sizing  
 (03/26/17) 1.6.16 Decrease loading times  
 (03/19/17) 1.6.1 Completion for: workitemtypes, states, iteration paths, area paths, tags  
 Typechecking comparison operator completion  

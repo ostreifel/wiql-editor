@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-editor",
-    "version": "1.6.25",
+    "version": "1.6.29",
     "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",
@@ -81,6 +81,18 @@
             "description": "Edit query in menu",
             "targets": [
                 "ms.vss-work-web.work-item-query-menu"
+            ],
+            "properties": {
+                "group": "contributed",
+                "uri": "queryContext.html"
+            }
+        },
+        {
+            "id": "query-results-menu",
+            "type": "ms.vss-web.action-provider",
+            "description": "Edit query in menu",
+            "targets": [
+                "ms.vss-work-web.work-item-query-results-toolbar-menu"
             ],
             "properties": {
                 "group": "contributed",
