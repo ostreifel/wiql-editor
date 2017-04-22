@@ -1,8 +1,15 @@
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { WorkItemField, GetFieldsExpand } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { CachedValue } from "./CachedValue";
 
-export const fields: CachedValue<WorkItemField[]> = new CachedValue(() => getWitClient().getFields());
+export const fields: CachedValue<WorkItemField[]> = new CachedValue(getFields);
+
+function getFields(): IPromise<WorkItemField[]> {
+    const client = getWitClient();
+    /** The type definition for fields in the sdk is wrong, this is the actual type */
+    const getFields: (projectId?: string, expand?: GetFieldsExpand) => IPromise<WorkItemField[]> = <any>client.getFields.bind(client);
+    return getFields(undefined, GetFieldsExpand.ExtensionFields);
+}
 
 export function getField(refOrName: string, fields: WorkItemField[]): WorkItemField | undefined {
     refOrName = refOrName.toLocaleLowerCase();

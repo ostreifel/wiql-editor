@@ -14,6 +14,7 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(04/22/17) 1.6.34 Include wef fields
 (04/16/17) 1.6.22 Button on results menu bar    
 (03/27/17) 1.6.22 Allowed operator issue, block field suggestions when not allowed, dialog sizing  
 (03/26/17) 1.6.16 Decrease loading times  
