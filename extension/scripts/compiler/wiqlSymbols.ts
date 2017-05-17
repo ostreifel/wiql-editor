@@ -73,9 +73,9 @@ export abstract class SymbolTree extends Symbol {
     }
     /**
      * Error checkers work better if each tree symbol has its component types as properties
-     * so we want to create properties with the relevant data for each SymbolTree 
+     * so we want to create properties with the relevant data for each SymbolTree
      * and autowire it by tye type of type of the property
-     * 
+     *
      * However typescript does not type reflection that can handle union types during refelction
      * so we have to manually wire the properties of each symbol tree in each constructor.
      */

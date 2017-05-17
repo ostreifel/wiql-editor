@@ -6,7 +6,6 @@ import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
 import { AllowedValuesChecker } from "./AllowedValuesChecker";
 import { PrefixChecker } from "./PrefixChecker";
 import { IParseResults} from "../compiler/wiqlParser";
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import * as Q from "q";
 import { iterationStrings, areaStrings } from "../cachedData/nodes";
 import { tags } from "../cachedData/tags";

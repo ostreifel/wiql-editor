@@ -41,6 +41,9 @@
 		"array-type": [
 			"array"
 		],
-		"eofline": true
+		"eofline": true,
+        "no-invalid-this": [
+            true
+        ]
     }
 }

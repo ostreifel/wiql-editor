@@ -12,7 +12,7 @@ function getFields(): IPromise<WorkItemField[]> {
         return getFields(undefined, GetFieldsExpand.ExtensionFields);
     }
     // Older server -- fallback
-    return this.getWitClient().getFields(GetFieldsExpand.ExtensionFields)
+    return getWitClient().getFields(GetFieldsExpand.ExtensionFields)
 }
 
 export function getField(refOrName: string, fields: WorkItemField[]): WorkItemField | undefined {
