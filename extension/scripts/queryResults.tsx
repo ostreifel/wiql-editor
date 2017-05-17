@@ -78,7 +78,7 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
                 wi={wiMap[rel.target.id]}
                 />
         );
-        return <table><tbody>{rows}</tbody></table>;
+        return <div className={"table"}>{rows}</div>;
     }
 }
 
