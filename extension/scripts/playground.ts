@@ -2,7 +2,7 @@ import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "./wiqlEditor";
-import {AppInsights} from "applicationinsights-js";
+import { AppInsights } from "applicationinsights-js";
 
 
 function loadWorkItems(result: WorkItemQueryResult) {
@@ -42,7 +42,7 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
         workitems => renderResult(result, workitems), error => {
             const message = typeof error === "string" ? error : (error.serverError || error)["message"];
             if (window["appInsights"]) {
-                window["appInsights"].trackEvent("GetWorkItemFailure", {message});
+                window["appInsights"].trackEvent("GetWorkItemFailure", { message });
                 window["appInsights"].flush();
             }
             setError(error);
@@ -53,10 +53,19 @@ function search() {
     setMessage("Running query...");
     const context = VSS.getWebContext();
     getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(
-        result => result.workItems ? loadWorkItems(result) : loadWorkItemRelations(result), error => {
+        result => {
+            result.workItems = result.workItems && result.workItems.splice(0, 50);
+            result.workItemRelations = result.workItemRelations && result.workItemRelations.splice(0, 50);
+            if (result.workItems) {
+                loadWorkItems(result);
+            }
+            else {
+                loadWorkItemRelations(result);
+            }
+        }, error => {
             const message = typeof error === "string" ? error : (error.serverError || error)["message"];
             if (window["appInsights"]) {
-                window["appInsights"].trackEvent("RunQueryFailure", {message});
+                window["appInsights"].trackEvent("RunQueryFailure", { message });
                 window["appInsights"].flush();
             }
             setError(error);
