@@ -46,16 +46,22 @@ export function importWiq(editor: monaco.editor.IStandaloneCodeEditor) {
         $(".wiq-input").val("");
 }
 export function exportWiq(editor: monaco.editor.IStandaloneCodeEditor, queryName?: string) {
-    const a = document.createElement("a");
     const documentStr = toDocument(editor.getModel().getValue());
     const blob = new Blob([documentStr], {type: "text/plain;charset=utf-8;"});
-    a.href = window.URL.createObjectURL(blob);
     let name = queryName || prompt("Enter file name") || "query";
     if (name.toLocaleLowerCase().indexOf(".wiq", name.length - 4) < 0) {
         name += ".wiq";
     }
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    // IE workaround
+    if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, name);
+    } else {
+        const a = document.createElement("a");
+        a.href = window.URL.createObjectURL(blob);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 }
