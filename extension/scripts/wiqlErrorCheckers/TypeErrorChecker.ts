@@ -138,7 +138,7 @@ export class TypeErrorChecker implements IErrorChecker {
         const error = toDecoration(value.value, `Expected value of type ${Symbols.getSymbolName(symbolType)}`);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
         if (value.value instanceof Symbols.Variable) {
-            const varType = this.mapType(definedVariables[value.value.text]);
+            const varType = this.mapType(definedVariables[value.value.text.toLocaleLowerCase()]);
             return varType === symbolType ? [] : [error];
         }
         switch (expectedType) {

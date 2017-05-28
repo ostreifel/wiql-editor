@@ -1,6 +1,15 @@
 import { IQuery, IContextOptions, ICallbacks } from "./contextContracts";
 import * as Q from "q";
 
+function saveErrorMessage(error: TfsError, query: IQuery) {
+    if (!isSupportedQueryId(query.id)) {
+        return "Only queries in saved in My Queries or Shared Queries can be updated with this extension";
+    }
+    const exception = (error.serverError || error);
+    const message = exception["message"] || exception["value"]["Message"];
+    return message;
+}
+
 export function showDialog(query: IQuery) {
 
     VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
@@ -19,8 +28,7 @@ export function showDialog(query: IQuery) {
                         navigationService.reload();
                     });
                 }, (error: TfsError) => {
-                    const exception = (error.serverError || error);
-                    const message = exception["message"] || exception["value"]["Message"];
+                    const message = saveErrorMessage(error, query);
                     dialogService.openMessageDialog(message, {
                         title: "Error saving query"
                     });

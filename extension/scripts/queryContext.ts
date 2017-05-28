@@ -3,7 +3,7 @@ import { IQuery } from "./contextContracts";
 
 const menuAction: Partial<IContributedMenuSource> = {
     getMenuItems: (context: {query: IQuery}): IContributedMenuItem[] => {
-        if (!context || !context.query || !isSupportedQueryId(context.query.id)) {
+        if (!context || !context.query) {
             return [];
         }
         return [<IContributedMenuItem>{
