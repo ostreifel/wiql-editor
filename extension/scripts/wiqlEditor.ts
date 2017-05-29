@@ -6,6 +6,7 @@ import * as Wiql from "./wiqlDefinition";
 import { setVersion } from "./queryResults";
 import { getHoverProvider } from "./wiqlHoverProvider";
 import { importWiq, exportWiq } from "./wiqImportExport";
+import { DelayedFunction } from "VSS/Utils/Core";
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
     setVersion();
@@ -62,12 +63,16 @@ ORDER BY [System.ChangedDate] DESC
         });
     }
     checkErrors();
-    editor.onDidChangeModelContent(() => {
+
+    const updateErrors = new DelayedFunction(null, 200, "CheckErrors", () => {
         checkErrors().then(errorCount => {
             if (onChange) {
                 onChange(errorCount);
             }
         });
+    });
+    editor.onDidChangeModelContent(() => {
+        updateErrors.reset();
     });
 
     editor.focus();
