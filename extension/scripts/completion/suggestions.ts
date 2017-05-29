@@ -1,17 +1,12 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { wiqlPatterns } from "../compiler/wiqlTokenPatterns";
-import { isIdentityField, identities } from "../cachedData/identities";
-import { equalFields, getField } from "../cachedData/fields";
-import { states, witNames } from "../cachedData/workItemTypes";
-import { iterationStrings, areaStrings } from "../cachedData/nodes";
-import { tags } from "../cachedData/tags";
+import { getField } from "../cachedData/fields";
 import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
-import { projects } from "../cachedData/projects";
 import { ICompletionContext, conditionSymbols } from "./completionContext";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
 import * as Q from "q";
-
+import { getStringValueSuggestions } from "./valueSuggestions";
 
 function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[], fieldAllowed) {
     refName = refName.toLocaleLowerCase();
@@ -72,10 +67,47 @@ function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
+function pushStringSuggestions(
+    ctx: ICompletionContext,
+    strings: Q.IPromise<string[]>,
+    suggestions: monaco.languages.CompletionItem[]
+): Q.IPromise<monaco.languages.CompletionItem[]> {
+    const inString = isInsideString(ctx);
+    return strings.then(strings => {
+        for (let str of strings) {
+            suggestions.push({
+                label: inString ? str : `"${str}"`,
+                kind: monaco.languages.CompletionItemKind.Text
+            } as monaco.languages.CompletionItem);
+        }
+        if (ctx.parseNext.errorToken instanceof Symbols.NonterminatingString) {
+            const currentStr = ctx.parseNext.errorToken.text.substr(1);
+            let charIdx = -1;
+            for (let char of ". \\-:<>") {
+                charIdx = Math.max(charIdx, currentStr.lastIndexOf(char));
+            }
+            if (charIdx >= 0) {
+                const prefix = currentStr.substr(0, charIdx).toLocaleLowerCase();
+                return suggestions.filter(s => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map(s => {
+                    return {
+                        label: s.label,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: s.label.substr(charIdx + 1)
+                    } as monaco.languages.CompletionItem;
+                });
+            }
+        }
+        return suggestions;
+    });
+}
+
 /**
  * Suggestions not related to completing the currentIdentifier
  */
-export function getSuggestions(ctx: ICompletionContext, position: monaco.Position): Q.IPromise<monaco.languages.CompletionItem[]> {
+export function getSuggestions(
+    ctx: ICompletionContext,
+    position: monaco.Position
+): Q.IPromise<monaco.languages.CompletionItem[]> {
     const suggestions: monaco.languages.CompletionItem[] = [];
     // Don't symbols complete inside strings
     if (!isInsideString(ctx)) {
@@ -85,51 +117,8 @@ export function getSuggestions(ctx: ICompletionContext, position: monaco.Positio
     }
     // Field Values
     if (ctx.fieldRefName && ctx.isInCondition) {
-        const pushStringSuggestions = (strings: IPromise<string[]>) => {
-            const inString = isInsideString(ctx);
-            return strings.then(strings => {
-                for (let str of strings) {
-                    suggestions.push({
-                        label: inString ? str : `"${str}"`,
-                        kind: monaco.languages.CompletionItemKind.Text
-                    } as monaco.languages.CompletionItem);
-                }
-                if (ctx.parseNext.errorToken instanceof Symbols.NonterminatingString) {
-                    const currentStr = ctx.parseNext.errorToken.text.substr(1);
-                    let charIdx = -1;
-                    for (let char of ". \\-:<>") {
-                        charIdx = Math.max(charIdx, currentStr.lastIndexOf(char));
-                    }
-                    if (charIdx >= 0) {
-                        const prefix = currentStr.substr(0, charIdx).toLocaleLowerCase();
-                        return suggestions.filter(s => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map(s => {
-                            return {
-                                label: s.label,
-                                kind: monaco.languages.CompletionItemKind.Text,
-                                insertText: s.label.substr(charIdx + 1)
-                            } as monaco.languages.CompletionItem;
-                        });
-                    }
-                }
-                return suggestions;
-            });
-        };
-        const expectingString = ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
-        if (isIdentityField(ctx.fields, ctx.fieldRefName) && expectingString) {
-            return pushStringSuggestions(identities.getValue());
-        } else if (equalFields("System.TeamProject", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(projects.getValue().then(projs => projs.map(p => p.name)));
-        } else if (equalFields("System.State", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(states.getValue());
-        } else if (equalFields("System.WorkItemType", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(witNames.getValue());
-        } else if (equalFields("System.AreaPath", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(areaStrings.getValue());
-        } else if (equalFields("System.IterationPath", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(iterationStrings.getValue());
-        } else if (equalFields("System.Tags", ctx.fieldRefName, ctx.fields) && expectingString) {
-            return pushStringSuggestions(tags.getValue());
-        }
+        const values = getStringValueSuggestions(ctx);
+        return pushStringSuggestions(ctx, values, suggestions);
     }
 
     return Q(suggestions);
