@@ -26,6 +26,7 @@
         "scripts/compiler/wiqlTable.ts",
         "scripts/compiler/wiqlTableContracts.ts",
         "scripts/compiler/wiqlTokenPatterns.ts",
+        "scripts/completion/commonCompletions.ts",
         "scripts/completion/completionContext.ts",
         "scripts/completion/wiqlCompletion.ts",
         "scripts/contextContracts.ts",

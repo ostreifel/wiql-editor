@@ -1,4 +1,4 @@
-import { getCompletionProvider } from "./completion/wiqlCompletion";
+import { completionProvider } from "./completion/wiqlCompletion";
 import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
 import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
@@ -48,7 +48,7 @@ ORDER BY [System.ChangedDate] DESC
     $(".wiq-input").change(() => importWiq(editor));
     $(".wiq-export").click(() => exportWiq(editor, queryName));
     monaco.languages.registerHoverProvider(Wiql.def.id, getHoverProvider());
-    monaco.languages.registerCompletionItemProvider(Wiql.def.id, getCompletionProvider());
+    monaco.languages.registerCompletionItemProvider(Wiql.def.id, completionProvider);
 
     const model = editor.getModel();
     const errorChecker = new ErrorChecker();
