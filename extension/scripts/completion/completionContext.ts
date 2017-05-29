@@ -8,6 +8,8 @@ import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
  * Common values that would otherwise need to be repeatedly recalcualted while providing completion tokens
  */
 export interface ICompletionContext {
+    readonly parseNext: ParseError;
+    readonly fields: WorkItemField[];
     /** Token before cursor */
     readonly prevToken: Symbols.Symbol;
     /** 2 Tokens (inclusive) before cursor */
@@ -69,6 +71,8 @@ export function createContext(parseNext: ParseError, fields: WorkItemField[]): I
     const isFieldAllowed = !fieldInstance || !isInCondition || getFieldComparisonLookup(fields)[fieldRefName].field.length > 0;
 
     return {
+        parseNext,
+        fields,
         prevToken2,
         prevToken,
         fieldRefName,

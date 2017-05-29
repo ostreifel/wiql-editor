@@ -1,7 +1,7 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { definedVariables } from "../wiqlDefinition";
 
-export function getFieldSuggestions(fields: WorkItemField[], type: FieldType | null): monaco.languages.CompletionItem[] {
+export function getStandardFieldSuggestions(fields: WorkItemField[], type: FieldType | null): monaco.languages.CompletionItem[] {
     const matchingFields = fields.filter(f => type === null || type === f.type);
     return matchingFields.map(f => {
         return {
@@ -15,7 +15,7 @@ export function getFieldSuggestions(fields: WorkItemField[], type: FieldType | n
         } as monaco.languages.CompletionItem;
     }));
 }
-export function getVariableSuggestions(type: FieldType | null) {
+export function getStandardVariableSuggestions(type: FieldType | null) {
     const suggestions: monaco.languages.CompletionItem[] = [];
     for (let variable in definedVariables) {
         if (type === null || definedVariables[variable] === type) {
