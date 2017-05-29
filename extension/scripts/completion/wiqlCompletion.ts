@@ -1,16 +1,17 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { wiqlPatterns } from "./compiler/wiqlTokenPatterns";
-import * as Symbols from "./compiler/wiqlSymbols";
-import { parse, ParseError } from "./compiler/wiqlParser";
-import { definedVariables } from "./wiqlDefinition";
-import { isIdentityField, identities } from "./cachedData/identities";
-import { equalFields, getField } from "./cachedData/fields";
-import { states, witNames } from "./cachedData/workItemTypes";
-import { iterationStrings, areaStrings } from "./cachedData/nodes";
-import { tags } from "./cachedData/tags";
-import { getFieldComparisonLookup } from "./wiqlErrorCheckers/TypeErrorChecker";
-import { projects } from "./cachedData/projects";
-import { fields } from "./cachedData/fields";
+import { wiqlPatterns } from "../compiler/wiqlTokenPatterns";
+import * as Symbols from "../compiler/wiqlSymbols";
+import { parse, ParseError } from "../compiler/wiqlParser";
+import { definedVariables } from "../wiqlDefinition";
+import { isIdentityField, identities } from "../cachedData/identities";
+import { equalFields, getField } from "../cachedData/fields";
+import { states, witNames } from "../cachedData/workItemTypes";
+import { iterationStrings, areaStrings } from "../cachedData/nodes";
+import { tags } from "../cachedData/tags";
+import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
+import { projects } from "../cachedData/projects";
+import { fields } from "../cachedData/fields";
+import { createContext, conditionSymbols } from "./completionContext";
 
 function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[], fieldAllowed) {
     refName = refName.toLocaleLowerCase();
@@ -66,42 +67,6 @@ function getVariableSuggestions(type: FieldType | null) {
     return suggestions;
 }
 
-const conditionSymbols = [
-    Symbols.Equals,
-    Symbols.NotEquals,
-    Symbols.LessThan,
-    Symbols.LessOrEq,
-    Symbols.GreaterThan,
-    Symbols.GreaterOrEq,
-    Symbols.Like,
-    Symbols.Under,
-    Symbols.Contains,
-    Symbols.Ever,
-    Symbols.In
-];
-/**
- * Whether the given parseState is parsing a conditional token.
- * Ideally the compilier would be able to tell us which productions it was currently parsing - this is just a workaround.
- * @param symbol
- */
-function isInConditionParse(parseNext: ParseError) {
-    for (let symbol of parseNext.parsedTokens) {
-        for (let conditionSym of conditionSymbols) {
-            if (symbol instanceof conditionSym) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-function getFieldSymbolRefName(parseNext: ParseError): string {
-    for (let symbol of parseNext.parsedTokens) {
-        if (symbol instanceof Symbols.Field) {
-            return symbol.identifier.text.toLocaleLowerCase();
-        }
-    }
-    return "";
-}
 export const getCompletionProvider: () => monaco.languages.CompletionItemProvider = () => {
     return {
         triggerCharacters: [" ", "[", ".", "@", "\"", "'"],
@@ -123,28 +88,20 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                     // valid query, can't suggest
                     return [];
                 }
-                const parsedCount = parseNext.parsedTokens.length;
-                const prevToken = parseNext.parsedTokens[parsedCount - 1];
-
-                const prev2 = parseNext.parsedTokens[parsedCount - 2];
-                const fieldRefName = getFieldSymbolRefName(parseNext);
-                const fieldInstance = getField(fieldRefName, fields) || null;
-                const fieldType = fieldInstance && fieldInstance.type;
-                const inCondition = isInConditionParse(parseNext);
-                const fieldAllowed = !fieldInstance || !inCondition || getFieldComparisonLookup(fields)[fieldRefName].field.length > 0;
-                if (fieldAllowed && prevToken instanceof Symbols.Identifier
-                    && position.column - 1 === prevToken.endColumn) {
+                const ctx = createContext(parseNext, fields);
+                if (ctx.isFieldAllowed && ctx.prevToken instanceof Symbols.Identifier
+                    && position.column - 1 === ctx.prevToken.endColumn) {
                     // In process of typing field name
                     // (parser just consumes this becuase it doesn't know which fields are valid)
-                    let suggestions: monaco.languages.CompletionItem[] = getFieldSuggestions(fields, inCondition ? fieldType : null);
-                    if (!(prev2 instanceof Symbols.LSqBracket)) {
+                    let suggestions: monaco.languages.CompletionItem[] = getFieldSuggestions(fields, ctx.isInCondition ? ctx.fieldType : null);
+                    if (!(ctx.prevToken2 instanceof Symbols.LSqBracket)) {
                         suggestions = suggestions.filter((s) => s.label.indexOf(" ") < 0);
                     }
-                    const spaceIdx = prevToken.text.lastIndexOf(" ");
-                    const dotIdx = prevToken.text.lastIndexOf(".");
+                    const spaceIdx = ctx.prevToken.text.lastIndexOf(" ");
+                    const dotIdx = ctx.prevToken.text.lastIndexOf(".");
                     const charIdx = Math.max(spaceIdx, dotIdx);
                     if (charIdx >= 0) {
-                        const prefix = prevToken.text.substr(0, charIdx + 1).toLocaleLowerCase();
+                        const prefix = ctx.prevToken.text.substr(0, charIdx + 1).toLocaleLowerCase();
                         suggestions = suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0)
                             .map((s) => {
                                 return {
@@ -155,9 +112,9 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                             });
                     }
                     return suggestions;
-                } else if (prevToken instanceof Symbols.Variable
-                    && position.column - 1 === prevToken.endColumn) {
-                    return getVariableSuggestions(inCondition ? fieldType : null).map(s => {
+                } else if (ctx.prevToken instanceof Symbols.Variable
+                    && position.column - 1 === ctx.prevToken.endColumn) {
+                    return getVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map(s => {
                         return {
                             label: s.label,
                             kind: monaco.languages.CompletionItemKind.Variable,
@@ -169,9 +126,9 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                     // Don't complete inside strings
                     if (!(parseNext.errorToken instanceof Symbols.NonterminatingString)) {
                         // if right after identifier it will not have been reduced to a field yet.
-                        const field = prevToken instanceof Symbols.Identifier ? getField(prevToken.text, fields) : null;
-                        const refName = fieldRefName || (field ? field.referenceName : "");
-                        const symbolSuggestionMap = getSymbolSuggestionMap(refName, inCondition ? fieldType : null, fields, fieldAllowed);
+                        const field = ctx.prevToken instanceof Symbols.Identifier ? getField(ctx.prevToken.text, fields) : null;
+                        const refName = ctx.fieldRefName || (field ? field.referenceName : "");
+                        const symbolSuggestionMap = getSymbolSuggestionMap(refName, ctx.isInCondition ? ctx.fieldType : null, fields, ctx.isFieldAllowed);
                         // Include keywords
                         for (let token of parseNext.expectedTokens) {
                             if (symbolSuggestionMap[token]) {
@@ -180,19 +137,19 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                             }
                         }
                         // Include field and variables
-                        if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && fieldAllowed) {
-                            let fieldSuggestions = getFieldSuggestions(fields, inCondition ? fieldType : null);
-                            if (!(prevToken instanceof Symbols.LSqBracket)) {
+                        if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && ctx.isFieldAllowed) {
+                            let fieldSuggestions = getFieldSuggestions(fields, ctx.isInCondition ? ctx.fieldType : null);
+                            if (!(ctx.prevToken instanceof Symbols.LSqBracket)) {
                                 fieldSuggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);
                             }
                             suggestions.push(...fieldSuggestions);
                         }
                         if (parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
-                            suggestions.push(...getVariableSuggestions(inCondition ? fieldType : null));
+                            suggestions.push(...getVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null));
                         }
                     }
                     // Field Values
-                    if (fieldRefName && inCondition) {
+                    if (ctx.fieldRefName && ctx.isInCondition) {
                         const expectingString = parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
                         const inString = parseNext.errorToken instanceof Symbols.NonterminatingString;
                         const pushStringSuggestions = (strings: IPromise<string[]>) => {
@@ -223,19 +180,19 @@ export const getCompletionProvider: () => monaco.languages.CompletionItemProvide
                                 return suggestions;
                             });
                         };
-                        if (isIdentityField(fields, fieldRefName) && expectingString) {
+                        if (isIdentityField(fields, ctx.fieldRefName) && expectingString) {
                             return pushStringSuggestions(identities.getValue());
-                        } else if (equalFields("System.TeamProject", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.TeamProject", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(projects.getValue().then(projs => projs.map(p => p.name)));
-                        } else if (equalFields("System.State", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.State", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(states.getValue());
-                        } else if (equalFields("System.WorkItemType", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.WorkItemType", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(witNames.getValue());
-                        } else if (equalFields("System.AreaPath", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.AreaPath", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(areaStrings.getValue());
-                        } else if (equalFields("System.IterationPath", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.IterationPath", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(iterationStrings.getValue());
-                        } else if (equalFields("System.Tags", fieldRefName, fields) && expectingString) {
+                        } else if (equalFields("System.Tags", ctx.fieldRefName, fields) && expectingString) {
                             return pushStringSuggestions(tags.getValue());
                         }
                     }

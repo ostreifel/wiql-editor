@@ -1,4 +1,4 @@
-import { getCompletionProvider } from "./wiqlCompletion";
+import { getCompletionProvider } from "./completion/wiqlCompletion";
 import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
 import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { mockMonaco, mockField } from "./mocks";
-import { getCompletionProvider } from "../wiqlCompletion";
+import { getCompletionProvider } from "../completion/wiqlCompletion";
 mockMonaco();
 
 describe("Completion", () => {
