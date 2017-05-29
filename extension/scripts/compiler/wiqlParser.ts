@@ -1,11 +1,11 @@
 import * as Symbols from "./wiqlSymbols";
-import {tokenize} from "./tokenizer";
+import { tokenize } from "./tokenizer";
 import { wiqlPatterns } from "./wiqlTokenPatterns";
 
 import { table } from "./wiqlTable";
 
 
-const symbolContructors: {[name: string]: any} = {};
+const symbolContructors: { [name: string]: any } = {};
 for (let idx in Symbols) {
     const symbol = Symbols[idx];
     const symbolName = Symbols.getSymbolName(symbol);
@@ -13,30 +13,48 @@ for (let idx in Symbols) {
 }
 
 export class ParseError {
-    constructor(readonly expectedTokens: string[],
-                readonly errorToken: Symbols.Token,
-                readonly remainingTokens: Symbols.Token[],
-                readonly parsedTokens: Symbols.Symbol[]) {
-    }
+    constructor(
+        readonly expectedTokens: string[],
+        readonly errorToken: Symbols.Token,
+        readonly remainingTokens: Symbols.Token[],
+        readonly parsedTokens: Symbols.Symbol[]
+    ) { }
 }
 export type IParseResults = Symbols.Symbol | ParseError;
 
+export enum ParseMode {
+    Default,
+    Suggest,
+    AssumeString
+}
+
 const EOF = Symbols.getSymbolName(Symbols.EOF);
-export function parse(lines: string[], forceSuggest = false): IParseResults {
+export function parse(lines: string[], mode = ParseMode.Default): IParseResults {
     const tokens = tokenize(lines, wiqlPatterns).reverse();
     tokens.unshift(new Symbols.EOF(lines.length, lines[lines.length - 1].length, tokens[0]));
 
-    type stackState = {state: number, symbol: Symbols.Symbol};
+    type stackState = { state: number, symbol: Symbols.Symbol };
     const stack: stackState[] = [];
     const peekToken = () => tokens[tokens.length - 1];
     const currState = () => stack.length ? stack[stack.length - 1].state : 0;
     const symbolName = (symbol: Symbols.Symbol) => Symbols.getSymbolName(Object.getPrototypeOf(symbol).constructor);
     while (true) {
         const state = currState();
-        const nextToken = peekToken();
-        const nextTokenName = symbolName(nextToken);
+        let nextToken = peekToken();
+        let nextTokenName = symbolName(nextToken);
+        if (
+            mode === ParseMode.AssumeString &&
+            !(nextTokenName in table[state].tokens) &&
+            Symbols.getSymbolName(Symbols.String) in table[state].tokens
+        ) {
+            tokens.push(new Symbols.String(-1, -1, ""));
+            nextToken = peekToken();
+            nextTokenName = symbolName(nextToken);
+        }
+
+
         const action = table[state].tokens[nextTokenName];
-        if (action === undefined || (forceSuggest && nextTokenName === EOF)) {
+        if (action === undefined || (mode === ParseMode.Suggest && nextTokenName === EOF)) {
             const expectedTokens = Object.keys(table[state].tokens);
             return new ParseError(
                 expectedTokens,
@@ -46,7 +64,7 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
             );
         }
         if (action.action === "shift") {
-            stack.push({state: action.state, symbol: <Symbols.Token>tokens.pop()});
+            stack.push({ state: action.state, symbol: <Symbols.Token>tokens.pop() });
         } else if (action.action === "reduce") {
             const args: Symbols.Symbol[] = [];
             for (let i = 0; i < action.production.inputCount; i++) {
@@ -61,7 +79,7 @@ export function parse(lines: string[], forceSuggest = false): IParseResults {
             } else if (nextState === -1) {
                 return sym;
             } else {
-                stack.push({state: nextState, symbol: sym});
+                stack.push({ state: nextState, symbol: sym });
             }
         }
     }

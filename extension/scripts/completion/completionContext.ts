@@ -1,4 +1,4 @@
-import { ParseError } from "../compiler/wiqlParser";
+import { ParseError, IParseResults, parse, ParseMode } from "../compiler/wiqlParser";
 import { getField } from "../cachedData/fields";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
@@ -18,6 +18,7 @@ export interface ICompletionContext {
     readonly fieldType: FieldType | null;
     readonly isInCondition: boolean;
     readonly isFieldAllowed: boolean;
+    readonly getAssumedParse: () => IParseResults;
 }
 
 
@@ -59,7 +60,7 @@ function getFieldSymbolRefName(parseNext: ParseError): string {
     return "";
 }
 
-export function createContext(parseNext: ParseError, fields: WorkItemField[]): ICompletionContext {
+export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: ParseError, fields: WorkItemField[]): ICompletionContext {
     const parsedCount = parseNext.parsedTokens.length;
     const prevToken = parseNext.parsedTokens[parsedCount - 1];
 
@@ -70,6 +71,14 @@ export function createContext(parseNext: ParseError, fields: WorkItemField[]): I
     const isInCondition = isInConditionParse(parseNext);
     const isFieldAllowed = !fieldInstance || !isInCondition || getFieldComparisonLookup(fields)[fieldRefName].field.length > 0;
 
+    let assumedParse: IParseResults | null = null;
+    function getAssumedParse() {
+        if (!assumedParse) {
+            assumedParse = parse(model.getLinesContent(), ParseMode.AssumeString);
+        }
+        return assumedParse;
+    }
+
     return {
         parseNext,
         fields,
@@ -78,6 +87,7 @@ export function createContext(parseNext: ParseError, fields: WorkItemField[]): I
         fieldRefName,
         fieldType,
         isInCondition,
-        isFieldAllowed
+        isFieldAllowed,
+        getAssumedParse
     };
 }

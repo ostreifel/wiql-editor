@@ -28,6 +28,8 @@
         "scripts/compiler/wiqlTokenPatterns.ts",
         "scripts/completion/commonCompletions.ts",
         "scripts/completion/completionContext.ts",
+        "scripts/completion/suggestions.ts",
+        "scripts/completion/valueSuggestions.ts",
         "scripts/completion/wiqlCompletion.ts",
         "scripts/contextContracts.ts",
         "scripts/playground.ts",

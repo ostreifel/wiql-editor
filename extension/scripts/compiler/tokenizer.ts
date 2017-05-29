@@ -1,4 +1,5 @@
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
+import * as Symbols from "./wiqlSymbols";
 
 export interface TokenPattern {
     match: string | RegExp;
@@ -30,7 +31,7 @@ function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
 
 export function tokenize(lines: string[], patterns: TokenPattern[]) {
     patterns = makeRegexesAtStart(patterns);
-    const tokens: any[] = [];
+    const tokens: Symbols.Token[] = [];
     const states = [patterns];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLocaleLowerCase();

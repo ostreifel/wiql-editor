@@ -1,5 +1,5 @@
 import * as Symbols from "../compiler/wiqlSymbols";
-import { parse, IParseResults, ParseError } from "../compiler/wiqlParser";
+import { parse, IParseResults, ParseError, ParseMode } from "../compiler/wiqlParser";
 import { fields } from "../cachedData/fields";
 import { createContext, ICompletionContext } from "./completionContext";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
@@ -11,7 +11,7 @@ function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco
     if (lines.length > 0) {
         lines[lines.length - 1] = lines[lines.length - 1].substr(0, position.column - 1);
     }
-    return parse(lines, true);
+    return parse(lines, ParseMode.Suggest);
 }
 
 function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position: monaco.Position): Q.IPromise<monaco.languages.CompletionItem[]> | null {
@@ -69,7 +69,7 @@ function provideCompletionItems(
             // valid query, can't suggest
             return [];
         }
-        const ctx = createContext(parseNext, fields);
+        const ctx = createContext(model, parseNext, fields);
         return getCurrentIdentifierSuggestions(ctx, position) ||
             getCurrentVariableSuggestions(ctx, position) ||
             getSuggestions(ctx, position);

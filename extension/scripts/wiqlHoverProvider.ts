@@ -3,7 +3,7 @@ import { symbolsOfType } from "./wiqlErrorCheckers/errorCheckUtils";
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { definedVariables } from "./wiqlDefinition";
-import { workItemTypesByProject } from "./cachedData/workItemTypes";
+import { allProjectWits } from "./cachedData/workItemTypes";
 import { getField, fields } from "./cachedData/fields";
 
 function filterByPosition(tokens: Symbols.Token[], position: monaco.Position) {
@@ -32,7 +32,7 @@ export function getHoverProvider(): monaco.languages.HoverProvider {
                         hovers.push(FieldType[matchedField.type]);
                         range = new monaco.Range(id.line + 1, id.startColumn + 1, id.line + 1, id.endColumn + 1);
                         // Also include description -- extensions can only get this from the work item types
-                        return workItemTypesByProject.getValue().then(witsByProjs => {
+                        return allProjectWits.getValue().then(witsByProjs => {
                             const descriptionSet: {[description: string]: void} = {};
                             const descriptions: {[witName: string]: string} = {};
                             for (let { workItemTypes } of witsByProjs) {
