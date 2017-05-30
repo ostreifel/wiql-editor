@@ -12,7 +12,7 @@ Save changes to the query when finished.
  ![wiql dialog](img/dialog.png)
 
 
-Be sure to leave rating if you found this extension useful.
+Be sure to leave a rating if you found this extension to be useful.
 
 # Change Log
 (05/29/17) 1.7.1 Filter work item type, state and tag completions based on common filters  
