@@ -1,7 +1,7 @@
 import { ICompletionContext } from "./completionContext";
 import { isIdentityField, identities } from "../cachedData/identities";
 import { projects } from "../cachedData/projects";
-import { states, witNames, getWitsByProjects } from "../cachedData/workItemTypes";
+import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "../cachedData/nodes";
 import { tags } from "../cachedData/tags";
 import { equalFields } from "../cachedData/fields";
@@ -24,7 +24,7 @@ function getConditionalExpressions(logical: Symbols.LogicalExpression) {
                 */
                 return [];
             } else {
-                conditionals.push(logical.condition);
+                conditionals.push(curr.condition);
             }
         }
         curr = curr.expression;
@@ -51,13 +51,34 @@ function getProjects(ctx: ICompletionContext, conditionals: Symbols.ConditionalE
         } else if (c.value && c.value.value instanceof Symbols.Variable) {
             return VSS.getWebContext().project.name;
         }
-        throw new Error("Value is unexpected type when completing");
+        throw new Error("Value is unexpected type reading projects");
+    });
+}
+
+function getWits(ctx: ICompletionContext, conditionals: Symbols.ConditionalExpression[]): string[] {
+    const witConditions = conditionals.filter(c => c.field && equalFields("System.WorkItemType", c.field.identifier.text, ctx.fields));
+    if (witConditions.some(c =>
+        !c.conditionalOperator ||
+        // TODO also allow in group
+        !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
+        !(c.value && c.value.value instanceof Symbols.String)
+    )) {
+        return [];
+    }
+    return witConditions.map(c => {
+        if (c.value && c.value.value instanceof Symbols.String) {
+            const str = c.value.value.text;
+            // Remove the quotes on the string text
+            return str.substr(1, str.length - 2);
+        }
+        throw new Error("Value is unexpected type when reading wits");
     });
 }
 
 
 function getFilters(ctx: ICompletionContext, parse: IParseResults) {
     const projects: string[] = [];
+    const wits: string[] = [];
     if (
         (
             parse instanceof Symbols.FlatSelect ||
@@ -68,9 +89,27 @@ function getFilters(ctx: ICompletionContext, parse: IParseResults) {
     ) {
         const conditionalExpressions = getConditionalExpressions(parse.whereExp);
         projects.push(...getProjects(ctx, conditionalExpressions));
+        wits.push(...getWits(ctx, conditionalExpressions));
 
     }
-    return { projects };
+    return { projects, wits };
+}
+
+function toServerCasing(values: string[], serverValues: Q.IPromise<string[]>): Q.IPromise<string[]> {
+    return serverValues.then(serverValues => {
+        const serverValueMap: { [key: string]: string } = {};
+        for (const serverValue of serverValues) {
+            serverValueMap[serverValue.toLocaleLowerCase()] = serverValue;
+        }
+        const uniqueValues: { [name: string]: void } = {};
+        for (const value of values) {
+            const properValue = serverValueMap[value.toLocaleLowerCase()];
+            if (properValue && !(properValue in uniqueValues)) {
+                uniqueValues[properValue] = void 0;
+            }
+        }
+        return Object.keys(uniqueValues);
+    });
 }
 
 function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
@@ -78,23 +117,24 @@ function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
     if (projectStrings.length === 0) {
         return witNames.getValue();
     }
-    return projects.getValue().then(projects => {
-        // Correct for casing and existence of project names
-        const projectMap: {[key: string]: string} = {};
-        for (const { name } of projects) {
-            projectMap[name.toLocaleLowerCase()] = name;
-        }
-        const uniqueProjectsSet: {[name: string]: void} = {};
-        for (const project of projectStrings) {
-            const projectName = projectMap[project.toLocaleLowerCase()];
-            if (projectName && !(projectName in uniqueProjectsSet)) {
-                uniqueProjectsSet[projectName] = void 0;
-            }
-        }
+    return toServerCasing(projectStrings, projects.getValue()
+        .then(projects => projects.map(p => p.name)))
+        .then(projects => getWitNamesByProjects(projects));
+}
 
-        const uniqueProjects = Object.keys(uniqueProjectsSet);
-        return getWitsByProjects(uniqueProjects);
-    });
+function getStateSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
+    const {
+        projects: projectStrings,
+        wits: witStrings
+    } = getFilters(ctx, ctx.getAssumedParse());
+
+
+    return toServerCasing(projectStrings, projects.getValue()
+        .then(projects => projects.map(p => p.name)))
+        .then(projects => 
+            toServerCasing(witStrings, getWitNamesByProjects(projects))
+            .then(wits => getStatesByProjects(projects, wits))
+        );
 }
 
 export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
@@ -104,7 +144,7 @@ export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<s
     } else if (equalFields("System.TeamProject", ctx.fieldRefName, ctx.fields) && expectingString) {
         return projects.getValue().then(projs => projs.map(p => p.name));
     } else if (equalFields("System.State", ctx.fieldRefName, ctx.fields) && expectingString) {
-        return states.getValue();
+        return getStateSuggestions(ctx);
     } else if (equalFields("System.WorkItemType", ctx.fieldRefName, ctx.fields) && expectingString) {
         return getWitSuggestions(ctx);
     } else if (equalFields("System.AreaPath", ctx.fieldRefName, ctx.fields) && expectingString) {

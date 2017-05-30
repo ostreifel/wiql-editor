@@ -44,6 +44,7 @@
 		"eofline": true,
         "no-invalid-this": [
             true
-        ]
+        ],
+        "prefer-const": true
     }
 }
