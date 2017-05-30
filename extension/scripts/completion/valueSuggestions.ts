@@ -36,17 +36,19 @@ function getProjects(ctx: ICompletionContext, conditionals: Symbols.ConditionalE
     const projectConditions = conditionals.filter(c => c.field && equalFields("System.TeamProject", c.field.identifier.text, ctx.fields));
     if (projectConditions.some(c =>
         !c.conditionalOperator ||
-        !(c.conditionalOperator instanceof Symbols.Equals) ||
+        !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
         (
-            !(c.value instanceof Symbols.String) &&
-            !(c.value instanceof Symbols.Variable)
+            !(c.value && c.value.value instanceof Symbols.String) &&
+            !(c.value && c.value.value instanceof Symbols.Variable)
         ))) {
         return [];
     }
     return projectConditions.map(c => {
-        if (c.value instanceof Symbols.String) {
-            return c.value.text;
-        } else if (c.value instanceof Symbols.Variable) {
+        if (c.value && c.value.value instanceof Symbols.String) {
+            const str = c.value.value.text;
+            // Remove the quotes on the string text
+            return str.substr(1, str.length - 2);
+        } else if (c.value && c.value.value instanceof Symbols.Variable) {
             return VSS.getWebContext().project.name;
         }
         throw new Error("Value is unexpected type when completing");

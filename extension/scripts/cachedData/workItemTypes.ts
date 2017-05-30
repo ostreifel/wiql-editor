@@ -30,7 +30,7 @@ function getWitsByProject(project: string): Q.IPromise<WorkItemType[]> {
 
 }
 export function getWitsByProjects(projects: string[]): Q.IPromise<string[]> {
-    if (projects.length > 0) {
+    if (projects.length === 0) {
         getWitNames();
     }
     return Q.all(projects.map(p => getWitsByProject(p))).then(witsArr => {
