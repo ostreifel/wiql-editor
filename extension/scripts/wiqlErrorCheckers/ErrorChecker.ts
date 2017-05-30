@@ -8,7 +8,7 @@ import { PrefixChecker } from "./PrefixChecker";
 import { IParseResults} from "../compiler/wiqlParser";
 import * as Q from "q";
 import { iterationStrings, areaStrings } from "../cachedData/nodes";
-import { tags } from "../cachedData/tags";
+import { allTags } from "../cachedData/tags";
 
 export class ErrorChecker implements IErrorChecker {
     private readonly errorCheckers: IErrorChecker[];
@@ -21,7 +21,7 @@ export class ErrorChecker implements IErrorChecker {
             new LinkTypeCountChecker(),
             new AllowedValuesChecker("System.IterationPath", "Iteration Path", iterationStrings),
             new AllowedValuesChecker("System.AreaPath", "Area Path", areaStrings),
-            new AllowedValuesChecker("System.Tags", "Tags", tags),
+            new AllowedValuesChecker("System.Tags", "Tags", allTags),
         ];
     }
     public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {

@@ -3,7 +3,7 @@ import { isIdentityField, identities } from "../cachedData/identities";
 import { projects } from "../cachedData/projects";
 import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "../cachedData/nodes";
-import { tags } from "../cachedData/tags";
+import { getTagsForProjects } from "../cachedData/tags";
 import { equalFields } from "../cachedData/fields";
 import * as Q from "q";
 import * as Symbols from "../compiler/wiqlSymbols";
@@ -131,10 +131,23 @@ function getStateSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
 
     return toServerCasing(projectStrings, projects.getValue()
         .then(projects => projects.map(p => p.name)))
-        .then(projects => 
+        .then(projects =>
             toServerCasing(witStrings, getWitNamesByProjects(projects))
-            .then(wits => getStatesByProjects(projects, wits))
+                .then(wits => getStatesByProjects(projects, wits))
         );
+}
+
+function getTagSuggestions(ctx: ICompletionContext) {
+    const { projects: projectStrings } = getFilters(ctx, ctx.getAssumedParse());
+    return toServerCasing(projectStrings, projects.getValue()
+        .then(projects => projects.map(p => p.name)))
+        .then(projectNames => projects.getValue().then(projects => {
+            const projMap: { [name: string]: /* id: */ string } = {};
+            for (const project of projects) {
+                projMap[project.name] = project.id;
+            }
+            return getTagsForProjects(projectNames.map(name => projMap[name]));
+        }));
 }
 
 export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
@@ -152,7 +165,7 @@ export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<s
     } else if (equalFields("System.IterationPath", ctx.fieldRefName, ctx.fields) && expectingString) {
         return iterationStrings.getValue();
     } else if (equalFields("System.Tags", ctx.fieldRefName, ctx.fields) && expectingString) {
-        return tags.getValue();
+        return getTagSuggestions(ctx);
     }
     return Q([]);
 }

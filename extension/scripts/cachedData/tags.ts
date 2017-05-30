@@ -3,18 +3,31 @@ import { projects } from "./projects";
 import * as Q from "q";
 import { callApi } from "../RestCall";
 
-export const tags: CachedValue<string[]> = new CachedValue(getTags);
-function getTags() {
-    return projects.getValue().then(projects => {
-        return Q.all(projects.map(p => getTagsForProject(p.id))).then(tagsArr => {
-            const allTags: {[tag: string]: void} = {};
-            for (let tags of tagsArr) {
-                for (let tag of tags) {
-                    allTags[tag] = undefined;
-                }
+export const allTags: CachedValue<string[]> = new CachedValue(getAllTags);
+function getAllTags() {
+    return projects.getValue().then(projects =>
+        getTagsForProjects(projects.map(p => p.name)
+        ));
+}
+
+const tagsMap: { [projectId: string]: CachedValue<string[]> } = {};
+export function getTagsForProjects(projectIds: string[]) {
+    if (projectIds.length === 0) {
+        return allTags.getValue();
+    }
+    for (const projectId of projectIds) {
+        if (!(projectId in tagsMap)) {
+            tagsMap[projectId] = new CachedValue(() => getTagsForProject(projectId));
+        }
+    }
+    return Q.all(projectIds.map(p => getTagsForProject(p))).then(tagsArr => {
+        const allTags: { [tag: string]: void } = {};
+        for (const tags of tagsArr) {
+            for (const tag of tags) {
+                allTags[tag] = undefined;
             }
-            return Object.keys(allTags);
-        });
+        }
+        return Object.keys(allTags);
     });
 }
 
@@ -29,7 +42,7 @@ interface ITag {
     url: string;
 }
 
-function getTagsForProject(project: string) {
+function getTagsForProject(project: string): Q.IPromise<string[]> {
     const webContext = VSS.getWebContext();
     const tagsUrl = webContext.account.uri + "DefaultCollection/_apis/tagging/scopes/" + project + "/tags?api-version=1.0";
     const deferredTags = Q.defer<string[]>();

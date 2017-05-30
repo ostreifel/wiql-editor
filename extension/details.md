@@ -14,6 +14,7 @@ Save changes to the query when finished.
 Be sure to [send feedback](wiqleditor@microsoft.com)
 
 # Change Log
+(05/29/17) 1.7.1 Filter work item type, state and tag completions based on common filters  
 (05/28/17) 1.6.49 Update to accomodate changes in loading menu items  
 (04/22/17) 1.6.34 Include wef fields
 (04/16/17) 1.6.22 Button on results menu bar    
