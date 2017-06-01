@@ -3,6 +3,7 @@ import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { CachedValue } from "./CachedValue";
+import { getField } from "./fields";
 
 export const identities: CachedValue<string[]> = new CachedValue(getAllIdentitiesInAllProjects);
 
@@ -23,8 +24,8 @@ function getAllIdentitiesInProjectImpl(project: { id: string, name: string }, sk
         }
         return Q.all(promises).then(identitiesArr => {
             const projectIdentities = {};
-            for (let teamIdentities of identitiesArr) {
-                for (let identity of teamIdentities) {
+            for (const teamIdentities of identitiesArr) {
+                for (const identity of teamIdentities) {
                     projectIdentities[identity] = void 0;
                 }
             }
@@ -37,8 +38,8 @@ function getAllIdentitiesInAllProjects(): IPromise<string[]> {
         Q.all(projects.map(p => getAllIdentitiesInAllProjectsImpl(p))).then(
             allProjectIdentities => {
                 const allIdentities = {};
-                for (let projectIdentities of allProjectIdentities) {
-                    for (let identity of projectIdentities) {
+                for (const projectIdentities of allProjectIdentities) {
+                    for (const identity of projectIdentities) {
                         allIdentities[identity] = void 0;
                     }
                 }
@@ -89,11 +90,11 @@ const knownIdentities: string[] = [
     "Microsoft.VSTS.CMMI.ActualAttendee8",
 ];
 export function isIdentityField(fields: WorkItemField[], refNameOrName: string): boolean {
-    refNameOrName = refNameOrName.toLocaleLowerCase();
-    const [field] = fields.filter(f => f.name.toLocaleLowerCase() === refNameOrName ||
-                                  f.referenceName.toLocaleLowerCase() === refNameOrName);
+    const field = getField(refNameOrName, fields);
     if (!field) {
         return false;
     }
-    return knownIdentities.indexOf(field.referenceName) >= 0;
+    // Use the new field flag to detect if identity when available 
+    // this is the only way to detect if custom fields are identity fields
+    return field["isIdentity"] || knownIdentities.indexOf(field.referenceName) >= 0;
 }

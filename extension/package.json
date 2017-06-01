@@ -31,7 +31,7 @@
     "typings": "^1.5.0",
     "vss-web-extension-sdk": "^1.110.0"
   },
-  "name": "vsts-extension-ts-seed-simple",
+  "name": "wiql-editor",
   "private": true,
   "version": "0.6.0",
   "scripts": {

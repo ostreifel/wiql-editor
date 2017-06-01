@@ -15,6 +15,7 @@ Save changes to the query when finished.
 Be sure to leave a rating if you found this extension to be useful.
 
 # Change Log
+(06/01/17) 1.7.7 Detect custom identity fields as such.
 (05/30/17) 1.7.5 Use query clauses to give better hover field descriptions  
 (05/29/17) 1.7.1 Filter work item type, state and tag completions based on common filters  
 (05/28/17) 1.6.49 Update to accomodate changes in loading menu items  
