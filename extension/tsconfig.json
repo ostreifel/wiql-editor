@@ -20,6 +20,7 @@
         "scripts/cachedData/projects.ts",
         "scripts/cachedData/tags.ts",
         "scripts/cachedData/workItemTypes.ts",
+        "scripts/compiler/parseAnalysis.ts",
         "scripts/compiler/tokenizer.ts",
         "scripts/compiler/wiqlParser.ts",
         "scripts/compiler/wiqlSymbols.ts",

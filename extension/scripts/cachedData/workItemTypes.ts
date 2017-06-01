@@ -22,7 +22,7 @@ function getWits() {
 }
 
 const projectsToWit: { [project: string]: CachedValue<WorkItemType[]> } = {};
-function getWitsByProjects(projects: string[]): Q.IPromise<WorkItemType[]> {
+export function getWitsByProjects(projects: string[], searchWits?: string[]): Q.IPromise<WorkItemType[]> {
     for (const project of projects) {
         if (!(project in projectsToWit)) {
             projectsToWit[project] = new CachedValue(() => getWitClient().getWorkItemTypes(project));
@@ -33,7 +33,7 @@ function getWitsByProjects(projects: string[]): Q.IPromise<WorkItemType[]> {
         for (const arr of witsArr) {
             wits.push(...arr);
         }
-        return wits;
+        return searchWits ? wits.filter(w => searchWits.some(w2 => w2 === w.name)) : wits;
     });
 
 }
@@ -51,8 +51,7 @@ export function getWitNamesByProjects(projects: string[]): Q.IPromise<string[]> 
 }
 
 export function getStatesByProjects(projects: string[], searchWits: string[]): Q.IPromise<string[]> {
-    return getWitsByProjects(projects).then(wits => {
-        wits = wits.filter(w => searchWits.some(w2 => w2 === w.name));
+    return getWitsByProjects(projects, searchWits).then(wits => {
         const states: { [state: string]: void } = {};
         for (const { transitions } of wits) {
             for (const startState in transitions) {
