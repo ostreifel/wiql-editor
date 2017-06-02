@@ -28,7 +28,7 @@ export class ErrorChecker implements IErrorChecker {
         const promises = this.errorCheckers.map(checker => checker.check(parseResult));
         return Q.all(promises).then(allErrorArrs => {
             const allErrors: monaco.editor.IModelDeltaDecoration[] = [];
-            for (let errors of allErrorArrs) {
+            for (const errors of allErrorArrs) {
                 allErrors.push(...errors);
             }
             return allErrors;

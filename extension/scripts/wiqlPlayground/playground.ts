@@ -27,7 +27,7 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
     setMessage("Loading workitem relations...");
     const ids: number[] = [];
 
-    for (let relation of result.workItemRelations) {
+    for (const relation of result.workItemRelations) {
         if (relation.source && ids.indexOf(relation.source.id) < 0) {
             ids.push(relation.source.id);
         }

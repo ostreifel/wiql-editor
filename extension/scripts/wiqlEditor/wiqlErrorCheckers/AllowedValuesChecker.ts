@@ -22,7 +22,7 @@ export class AllowedValuesChecker implements IErrorChecker {
         return this.allowedValues.getValue().then(allowedValues => {
             allowedValues = [...allowedValues.map(v => `"${v.toLocaleLowerCase()}"`), ...allowedValues.map(v => `'${v.toLocaleLowerCase()}'`)];
             const errors: monaco.editor.IModelDeltaDecoration[] = [];
-            for (let condition of fieldConditions) {
+            for (const condition of fieldConditions) {
                 if (condition.value && condition.value.value instanceof Symbols.String &&
                     allowedValues.indexOf(condition.value.value.text.toLocaleLowerCase()) < 0) {
                     errors.push(toDecoration(condition.value, this.errorMessage || `Invalid ${this.fieldName} value`));

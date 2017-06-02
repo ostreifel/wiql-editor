@@ -42,8 +42,8 @@ export const conditionSymbols = [
  * @param symbol
  */
 function isInConditionParse(parseNext: ParseError) {
-    for (let symbol of parseNext.parsedTokens) {
-        for (let conditionSym of conditionSymbols) {
+    for (const symbol of parseNext.parsedTokens) {
+        for (const conditionSym of conditionSymbols) {
             if (symbol instanceof conditionSym) {
                 return true;
             }
@@ -52,7 +52,7 @@ function isInConditionParse(parseNext: ParseError) {
     return false;
 }
 function getFieldSymbolRefName(parseNext: ParseError): string {
-    for (let symbol of parseNext.parsedTokens) {
+    for (const symbol of parseNext.parsedTokens) {
         if (symbol instanceof Symbols.Field) {
             return symbol.identifier.text.toLocaleLowerCase();
         }

@@ -17,7 +17,7 @@ function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields:
     }
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
     const fieldLookup = getFieldComparisonLookup(fields);
-    for (let pattern of wiqlPatterns) {
+    for (const pattern of wiqlPatterns) {
         if (typeof pattern.match === "string" &&
             excludedSymbols.indexOf(pattern.token) < 0 &&
             (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0) &&
@@ -41,7 +41,7 @@ function includeKeywords(ctx: ICompletionContext, suggestions: monaco.languages.
     const field = ctx.prevToken instanceof Symbols.Identifier ? getField(ctx.prevToken.text, ctx.fields) : null;
     const refName = ctx.fieldRefName || (field ? field.referenceName : "");
     const symbolSuggestionMap = getSymbolSuggestionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
-    for (let token of ctx.parseNext.expectedTokens) {
+    for (const token of ctx.parseNext.expectedTokens) {
         if (symbolSuggestionMap[token]) {
             // TODO filter by value type symbols by type
             suggestions.push(symbolSuggestionMap[token]);
@@ -74,7 +74,7 @@ function pushStringSuggestions(
 ): Q.IPromise<monaco.languages.CompletionItem[]> {
     const inString = isInsideString(ctx);
     return strings.then(strings => {
-        for (let str of strings) {
+        for (const str of strings) {
             suggestions.push({
                 label: inString ? str : `"${str}"`,
                 kind: monaco.languages.CompletionItemKind.Text
@@ -83,7 +83,7 @@ function pushStringSuggestions(
         if (ctx.parseNext.errorToken instanceof Symbols.NonterminatingString) {
             const currentStr = ctx.parseNext.errorToken.text.substr(1);
             let charIdx = -1;
-            for (let char of ". \\-:<>") {
+            for (const char of ". \\-:<>") {
                 charIdx = Math.max(charIdx, currentStr.lastIndexOf(char));
             }
             if (charIdx >= 0) {

@@ -247,7 +247,7 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor): void {
     if (fields.isLoaded()) {
         fields.getValue().then(fields => {
             const fieldMap: FieldMap = {};
-            for (let field of fields) {
+            for (const field of fields) {
                 fieldMap[field.name.toLocaleLowerCase()] =
                     fieldMap[field.referenceName.toLocaleLowerCase()] = field;
             }

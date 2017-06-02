@@ -37,7 +37,7 @@ function getTreeStrings(nodes: CachedValue<ProjectNodes[]>) {
         while (toProcess.length > 0) {
             const {path, node} = toProcess.pop() as QueuedNode;
             paths[path] = undefined;
-            for (let child of node.children || []) {
+            for (const child of node.children || []) {
                 toProcess.push({
                     path: `${path}\\${child.name}`,
                     node: child

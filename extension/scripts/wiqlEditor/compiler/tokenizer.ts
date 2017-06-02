@@ -38,7 +38,7 @@ export function tokenize(lines: string[], patterns: TokenPattern[]) {
         let j = 0;
         nextToken: while (j < line.length) {
             const substr = line.substr(j);
-            for (let tokenPattern of states[states.length - 1]) {
+            for (const tokenPattern of states[states.length - 1]) {
                 let tokenText: string | undefined;
                 let match: RegExpMatchArray | null;
                 if (tokenPattern.match instanceof RegExp && (match = substr.match(tokenPattern.match))) {

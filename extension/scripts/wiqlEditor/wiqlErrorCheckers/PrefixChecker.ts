@@ -48,7 +48,7 @@ export class PrefixChecker implements IErrorChecker {
             return Q([]);
         }
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
-        for (let cond of <Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)) {
+        for (const cond of <Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)) {
             if (cond.field) {
                 if (cond.field.identifier.text.toLocaleLowerCase() === "link type") {
                     errors.push(toDecoration(cond.field, "Use reference name for link type"));

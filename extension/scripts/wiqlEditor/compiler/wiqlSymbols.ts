@@ -84,8 +84,8 @@ export abstract class SymbolTree extends Symbol {
         if (types instanceof Function) {
             types = [types];
         }
-        for (let input of this.inputs) {
-            for (let type of types) {
+        for (const input of this.inputs) {
+            for (const type of types) {
                 if (input instanceof type && ++count === occurance) {
                     return input;
                 }

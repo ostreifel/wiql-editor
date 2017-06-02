@@ -116,8 +116,8 @@ function closure(productions: Productions, state: State) {
     let change: boolean;
     do {
         change = false;
-        for (let pos of state.productionPositions) {
-            for (let prod of productions.getProductionsFor(pos.nextInput())) {
+        for (const pos of state.productionPositions) {
+            for (const prod of productions.getProductionsFor(pos.nextInput())) {
                 const nextSymbol = pos.advance().nextInput();
                 const followSymbols = nextSymbol ? productions.first(nextSymbol) : pos.followSymbols;
                 const newProdPos = new ProductionPosition(prod, 0, followSymbols);
@@ -131,7 +131,7 @@ function closure(productions: Productions, state: State) {
 }
 function goto(productions: Productions, state: State, symbolClass: string) {
     const nextProductions: ProductionPosition[] = [];
-    for (let pos of state.productionPositions) {
+    for (const pos of state.productionPositions) {
         if (pos.nextInput() === symbolClass) {
             nextProductions.push(pos.advance());
         }
@@ -154,7 +154,7 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
 
     { //States and transitions
         const startProductions: IProduction[] = [];
-        for (let startProd of productions.startSymbols) {
+        for (const startProd of productions.startSymbols) {
             startProductions.push(...productions.getProductionsFor(startProd));
         }
         const selectZeros = startProductions.map((p) => new ProductionPosition(p, 0, ["EOF"]));
@@ -164,7 +164,7 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
             change = false;
             for (let stateIdx in states) {
                 const state = states[stateIdx];
-                for (let prodPos of state.productionPositions.filter((pos) => !pos.isAtEnd())) {
+                for (const prodPos of state.productionPositions.filter((pos) => !pos.isAtEnd())) {
                     const symbolClass = prodPos.nextInput();
                     const nextState = goto(productions, state, symbolClass);
                     const [stateAdded, nextStateIdx] = addIfNotPresent(states, nextState);
@@ -183,8 +183,8 @@ export function calcDfa(productions: Productions): [State[], Transition[], Resol
         for (let stateIdx in states) {
             const state = states[stateIdx];
             const endPositions = state.productionPositions.filter((p) => p.isAtEnd());
-            for (let pos of endPositions) {
-                for (let symbolClass of pos.followSymbols) {
+            for (const pos of endPositions) {
+                for (const symbolClass of pos.followSymbols) {
                     const resolution = new Resolution(Number(stateIdx), symbolClass, pos.production);
                     addIfNotPresent(resolutions, resolution);
                 }

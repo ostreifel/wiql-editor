@@ -73,7 +73,7 @@ function peek(tokens: Token[], validTypes: Function | Function[], throwIfNot = t
     }
     const token = tokens[0];
     let match: Function | null = null;
-    for (let type of validTypes) {
+    for (const type of validTypes) {
         if (token instanceof type) {
             match = type;
         }

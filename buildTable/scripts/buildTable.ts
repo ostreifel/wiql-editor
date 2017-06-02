@@ -10,7 +10,7 @@ function computeTable(productions: Productions, states: State[], transitions: Tr
     for (let i = 0; i < states.length; i++) {
         table[i] = { tokens: {}, symbols: {} };
     }
-    for (let transition of transitions) {
+    for (const transition of transitions) {
         const symbolName = transition.symbolClass;
         if (productions.isTokenClass(transition.symbolClass)) {
             table[transition.from].tokens[symbolName] = { action: 'shift', state: transition.to };
@@ -18,7 +18,7 @@ function computeTable(productions: Productions, states: State[], transitions: Tr
             table[transition.from].symbols[symbolName] = transition.to;
         }
     }
-    for (let resolution of resolutions) {
+    for (const resolution of resolutions) {
         const symbolName = resolution.symbolClass;
         table[resolution.stateIdx].tokens[symbolName] = { 
             action: 'reduce', 
@@ -28,7 +28,7 @@ function computeTable(productions: Productions, states: State[], transitions: Tr
             } 
         };
     }
-    for (let acceptSymbol of productions.startSymbols) {
+    for (const acceptSymbol of productions.startSymbols) {
         table[0].symbols[acceptSymbol] = -1;
     }
     return table;

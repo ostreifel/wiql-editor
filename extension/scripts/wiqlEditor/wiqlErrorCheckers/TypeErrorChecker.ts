@@ -49,7 +49,7 @@ const compTypes: {[FieldType: number]: IComparisonType} = {};
  * For use specifically by getFieldComparisonLookup
  */
 function addCompTypes(types: FieldType[], literal: Function[], group: Function[], field: Function[]) {
-    for (let fieldType of types) {
+    for (const fieldType of types) {
         compTypes[fieldType] = {
             fieldType,
             field,
@@ -79,7 +79,7 @@ addCompTypes([FieldType.TreePath],
 
 export function getFieldComparisonLookup(fields: WorkItemField[]) {
     const fieldLookup: {[fieldName: string]: IComparisonType} = {};
-    for (let field of fields) {
+    for (const field of fields) {
         if ("System.Links.LinkType" === field.referenceName) {
             fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = {
                 fieldType: FieldType.String,
@@ -198,7 +198,7 @@ export class TypeErrorChecker implements IErrorChecker {
                 ...symbolsOfType<Symbols.ConditionalExpression>(parseResult, Symbols.ConditionalExpression),
                 ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
             ];
-            for (let condition of allConditions) {
+            for (const condition of allConditions) {
                 if (!condition.field || !(condition.field.identifier.text.toLocaleLowerCase() in fieldLookup)) {
                     continue;
                 }

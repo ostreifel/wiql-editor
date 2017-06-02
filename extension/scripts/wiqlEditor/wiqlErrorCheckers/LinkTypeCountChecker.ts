@@ -24,11 +24,11 @@ export class LinkTypeCountChecker implements IErrorChecker {
                 }
                 errors.push(toDecoration(symbols, "Tree query must contain at least 1 link type"));
             } else if (linkConditions.length > 1) {
-                for (let linkCondition of linkConditions.slice(1)) {
+                for (const linkCondition of linkConditions.slice(1)) {
                     errors.push(toDecoration(linkCondition, "Too many link types in tree query"));
                 }
             }
-            for (let linkCondition of linkConditions) {
+            for (const linkCondition of linkConditions) {
                 if (linkCondition.conditionalOperator) {
                     if (!(linkCondition.conditionalOperator.conditionToken instanceof Symbols.Equals)) {
                         errors.push(toDecoration(linkCondition.conditionalOperator, "Only equals is valid for link type in tree queries"));

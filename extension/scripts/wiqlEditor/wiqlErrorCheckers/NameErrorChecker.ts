@@ -11,7 +11,7 @@ export class NameErrorChecker implements IErrorChecker {
     private readonly validFieldIdentifiers: CachedValue<string[]> = new CachedValue(() => {
         return fields.getValue().then(fields => {
             const validFieldIdentifiers: string[] = [];
-            for (let field of fields) {
+            for (const field of fields) {
                 validFieldIdentifiers.push(field.name.toLocaleLowerCase());
                 validFieldIdentifiers.push(field.referenceName.toLocaleLowerCase());
             }
@@ -23,14 +23,14 @@ export class NameErrorChecker implements IErrorChecker {
             const errors: monaco.editor.IModelDeltaDecoration[] = [];
             // variable name errors
             const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
-            for (let variable of variables) {
+            for (const variable of variables) {
                 if (!(variable.text.toLocaleLowerCase() in definedVariables)) {
                     errors.push(toDecoration(variable, `Valid names are include {${Object.keys(definedVariables).join(", ")}}`));
                 }
             }
             // field name errors
             const identifiers = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Identifier);
-            for (let identifier of identifiers) {
+            for (const identifier of identifiers) {
                 if (validFieldIdentifiers.indexOf(identifier.text.toLocaleLowerCase()) < 0) {
                     errors.push(toDecoration(identifier, "Field does not exist"));
                 }

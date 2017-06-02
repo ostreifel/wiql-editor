@@ -14,7 +14,7 @@ export class CachedValue<T> {
             this.generator().then(value => {
                 this.value = value;
                 this.isValueSet = true;
-                for (let promise of this.deferred) {
+                for (const promise of this.deferred) {
                     promise.resolve(this.value);
                 }
             });

@@ -44,7 +44,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
 class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult }, void> {
     render() {
         const wiMap = {};
-        for (let wi of this.props.workItems) {
+        for (const wi of this.props.workItems) {
             wiMap[wi.id] = wi;
         }
         const workItems = this.props.result.workItems
@@ -66,7 +66,7 @@ class ResultCountDisclaimer extends React.Component<{ count: number }, void> {
 class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[] }, void> {
     render() {
         const wiMap: { [id: number]: WorkItem } = {};
-        for (let workitem of this.props.workItems) {
+        for (const workitem of this.props.workItems) {
             wiMap[workitem.id] = workitem;
         }
         const rows = this.props.result.workItemRelations
