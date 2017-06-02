@@ -42,7 +42,7 @@
         "scripts/wiqlEditor/wiqlDefinition.ts",
         "scripts/wiqlEditor/wiqlErrorCheckers/AllowedValuesChecker.ts",
         "scripts/wiqlEditor/wiqlErrorCheckers/ErrorChecker.ts",
-        "scripts/wiqlEditor/wiqlErrorCheckers/errorCheckUtils.ts",
+        "scripts/wiqlEditor/wiqlErrorCheckers/errorDecorations.ts",
         "scripts/wiqlEditor/wiqlErrorCheckers/IErrorChecker.ts",
         "scripts/wiqlEditor/wiqlErrorCheckers/LinkTypeCountChecker.ts",
         "scripts/wiqlEditor/wiqlErrorCheckers/NameErrorChecker.ts",

@@ -1,5 +1,5 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { symbolsOfType } from "./wiqlErrorCheckers/errorCheckUtils";
+import { symbolsOfType } from "./parseAnalysis/findSymbol";
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { definedVariables } from "./wiqlDefinition";

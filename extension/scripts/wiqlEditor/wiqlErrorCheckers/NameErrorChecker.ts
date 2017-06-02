@@ -2,9 +2,10 @@ import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/wiqlParser";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
-import { toDecoration, symbolsOfType } from "./errorCheckUtils";
+import { toDecoration } from "./errorDecorations";
 import { fields } from "../../cachedData/fields";
 import { CachedValue } from "../../cachedData/CachedValue";
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Q from "q";
 
 export class NameErrorChecker implements IErrorChecker {

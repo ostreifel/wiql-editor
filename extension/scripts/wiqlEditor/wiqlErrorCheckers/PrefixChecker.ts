@@ -1,6 +1,7 @@
 import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/wiqlParser";
-import { toDecoration, symbolsOfType } from "./errorCheckUtils";
+import { toDecoration } from "./errorDecorations";
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Symbols from "../compiler/wiqlSymbols";
 import * as Q from "q";
 

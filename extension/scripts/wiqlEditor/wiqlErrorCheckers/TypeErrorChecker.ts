@@ -1,7 +1,8 @@
 import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/wiqlParser";
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { symbolsOfType, toDecoration } from "./errorCheckUtils";
+import { toDecoration } from "./errorDecorations";
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
 import { fields } from "../../cachedData/fields";
@@ -44,7 +45,7 @@ interface IFieldLookup {
     [fieldName: string]: IComparisonType;
 }
 
-const compTypes: {[FieldType: number]: IComparisonType} = {};
+const compTypes: { [FieldType: number]: IComparisonType } = {};
 /** Map of field type to the valid comparisons for it, this works for most fields.
  * For use specifically by getFieldComparisonLookup
  */
@@ -59,26 +60,26 @@ function addCompTypes(types: FieldType[], literal: Function[], group: Function[]
     }
 }
 addCompTypes([FieldType.Html, FieldType.PlainText, FieldType.History],
-             [Symbols.Contains, Symbols.ContainsWords], [], []);
+    [Symbols.Contains, Symbols.ContainsWords], [], []);
 addCompTypes([FieldType.Double, FieldType.Integer, FieldType.DateTime, FieldType.Guid],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever],
-             [Symbols.In],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
+    [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever],
+    [Symbols.In],
+    [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
 addCompTypes([FieldType.String],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever, Symbols.Contains, Symbols.InGroup],
-             [Symbols.In],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
+    [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever, Symbols.Contains, Symbols.InGroup],
+    [Symbols.In],
+    [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq]);
 addCompTypes([FieldType.Boolean],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.Ever],
-             [],
-             [Symbols.Equals, Symbols.NotEquals]);
+    [Symbols.Equals, Symbols.NotEquals, Symbols.Ever],
+    [],
+    [Symbols.Equals, Symbols.NotEquals]);
 addCompTypes([FieldType.TreePath],
-             [Symbols.Equals, Symbols.NotEquals, Symbols.Under],
-             [Symbols.In],
-             []);
+    [Symbols.Equals, Symbols.NotEquals, Symbols.Under],
+    [Symbols.In],
+    []);
 
 export function getFieldComparisonLookup(fields: WorkItemField[]) {
-    const fieldLookup: {[fieldName: string]: IComparisonType} = {};
+    const fieldLookup: { [fieldName: string]: IComparisonType } = {};
     for (const field of fields) {
         if ("System.Links.LinkType" === field.referenceName) {
             fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = {
