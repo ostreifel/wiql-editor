@@ -1,6 +1,6 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { wiqlPatterns } from "../compiler/wiqlTokenPatterns";
-import { getField } from "../cachedData/fields";
+import { getField } from "../../cachedData/fields";
 import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
 import { ICompletionContext, conditionSymbols } from "./completionContext";
 import * as Symbols from "../compiler/wiqlSymbols";

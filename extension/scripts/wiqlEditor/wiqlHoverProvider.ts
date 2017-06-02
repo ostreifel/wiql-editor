@@ -3,8 +3,8 @@ import { symbolsOfType } from "./wiqlErrorCheckers/errorCheckUtils";
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { definedVariables } from "./wiqlDefinition";
-import { allProjectWits, getWitsByProjects } from "./cachedData/workItemTypes";
-import { getField, fields } from "./cachedData/fields";
+import { allProjectWits, getWitsByProjects } from "../cachedData/workItemTypes";
+import { getField, fields } from "../cachedData/fields";
 import * as Q from "q";
 import { getFilters } from "./parseAnalysis/whereClauses";
 

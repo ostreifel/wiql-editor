@@ -1,7 +1,7 @@
-import { setupEditor } from "./wiqlEditor";
+import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { IContextOptions, ICallbacks } from "./contextContracts";
+import { IContextOptions, ICallbacks } from "../queryContext/contextContracts";
 
 const configuration: IContextOptions = VSS.getConfiguration();
 const target = document.getElementById("wiql-box");

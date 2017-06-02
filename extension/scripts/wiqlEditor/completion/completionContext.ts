@@ -1,5 +1,5 @@
 import { ParseError, IParseResults, parse, ParseMode } from "../compiler/wiqlParser";
-import { getField } from "../cachedData/fields";
+import { getField } from "../../cachedData/fields";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";

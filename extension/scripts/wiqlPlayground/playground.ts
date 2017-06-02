@@ -1,7 +1,7 @@
 import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { setupEditor } from "./wiqlEditor";
+import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { AppInsights } from "applicationinsights-js";
 
 

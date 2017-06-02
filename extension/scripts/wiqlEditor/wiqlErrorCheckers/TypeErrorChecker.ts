@@ -4,8 +4,8 @@ import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { symbolsOfType, toDecoration } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { definedVariables } from "../wiqlDefinition";
-import { fields } from "../cachedData/fields";
-import { CachedValue } from "../cachedData/CachedValue";
+import { fields } from "../../cachedData/fields";
+import { CachedValue } from "../../cachedData/CachedValue";
 import * as Q from "q";
 
 const operationLookup: {

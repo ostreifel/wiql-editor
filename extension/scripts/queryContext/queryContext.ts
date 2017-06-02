@@ -1,4 +1,4 @@
-import { isSupportedQueryId, showDialog } from "./queryDialog";
+import { isSupportedQueryId, showDialog } from "../queryEditor/queryDialog";
 import { IQuery } from "./contextContracts";
 
 const menuAction: Partial<IContributedMenuSource> = {

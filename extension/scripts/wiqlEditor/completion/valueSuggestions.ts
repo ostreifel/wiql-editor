@@ -1,10 +1,10 @@
 import { ICompletionContext } from "./completionContext";
-import { isIdentityField, identities } from "../cachedData/identities";
-import { projects } from "../cachedData/projects";
-import { witNames, getWitNamesByProjects, getStatesByProjects } from "../cachedData/workItemTypes";
-import { iterationStrings, areaStrings } from "../cachedData/nodes";
-import { getTagsForProjects } from "../cachedData/tags";
-import { equalFields } from "../cachedData/fields";
+import { isIdentityField, identities } from "../../cachedData/identities";
+import { projects } from "../../cachedData/projects";
+import { witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
+import { iterationStrings, areaStrings } from "../../cachedData/nodes";
+import { getTagsForProjects } from "../../cachedData/tags";
+import { equalFields } from "../../cachedData/fields";
 import * as Q from "q";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { IParseResults } from "../compiler/wiqlParser";

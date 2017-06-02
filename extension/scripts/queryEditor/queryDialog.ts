@@ -1,4 +1,4 @@
-import { IQuery, IContextOptions, ICallbacks } from "./contextContracts";
+import { IQuery, IContextOptions, ICallbacks } from "../queryContext/contextContracts";
 import * as Q from "q";
 
 function saveErrorMessage(error: TfsError, query: IQuery) {

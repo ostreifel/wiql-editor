@@ -1,7 +1,7 @@
 import { parse } from "./compiler/wiqlParser";
 import * as Symbols from "./compiler/wiqlSymbols";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { fields } from "./cachedData/fields";
+import { fields } from "../cachedData/fields";
 
 type FieldMap = { [name: string]: WorkItemField };
 

@@ -42,7 +42,7 @@
         VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['build/queryEditor'], function() {
+                VSS.require(['build/queryEditor/queryEditor'], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });

@@ -3,10 +3,32 @@ import { parse } from "./compiler/wiqlParser";
 import { format } from "./wiqlFormatter";
 import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
 import * as Wiql from "./wiqlDefinition";
-import { setVersion } from "./queryResults";
 import { getHoverProvider } from "./wiqlHoverProvider";
 import { importWiq, exportWiq } from "./wiqImportExport";
 import { DelayedFunction } from "VSS/Utils/Core";
+import * as ReactDom from "react-dom";
+import * as React from "react";
+
+function setVersion() {
+    const elem = document.getElementById("header-bar");
+    if (!elem) {
+        return;
+    }
+    ReactDom.render(
+            <div className="header">
+                <span className="bowtie">
+                    <input className="wiq-input" accept=".wiq" type="file"/>
+                    <button onClick={() => $(".wiq-input").click()}>Import</button>
+                    <button className="wiq-export">Export</button>
+                </span>
+                <span className="links">
+                    <a href="https://marketplace.visualstudio.com/items?itemName=ottostreifel.wiql-editor" target="_blank">Review</a>{" | "}
+                    <a href="https://github.com/ostreifel/wiql-editor/issues" target="_blank">Report an issue</a>{" | "}
+                    <a href="mailto:wiqleditor@microsoft.com" target="_blank">Feedback and questions</a>
+                </span>
+            </div>
+        , elem);
+}
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
     setVersion();

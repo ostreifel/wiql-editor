@@ -1,10 +1,10 @@
 import { ICompletionContext } from "../completion/completionContext";
 import * as Symbols from "../compiler/wiqlSymbols";
-import { equalFields, fields } from "../cachedData/fields";
+import { equalFields, fields } from "../../cachedData/fields";
 import { IParseResults } from "../compiler/wiqlParser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { projects } from "../cachedData/projects";
-import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../cachedData/workItemTypes";
+import { projects } from "../../cachedData/projects";
+import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
 
 function getConditionalExpressions(logical: Symbols.LogicalExpression) {
     const conditionals: Symbols.ConditionalExpression[] = [];

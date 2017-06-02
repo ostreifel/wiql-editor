@@ -52,7 +52,7 @@
         VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['build/playground'], function() {
+                VSS.require(['build/wiqlPlayground/playground'], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });

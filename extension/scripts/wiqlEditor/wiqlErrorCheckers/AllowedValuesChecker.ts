@@ -1,7 +1,7 @@
 import { IParseResults } from "../compiler/wiqlParser";
 import { IErrorChecker } from "./IErrorChecker";
 import * as Q from "q";
-import { CachedValue } from "../cachedData/CachedValue";
+import { CachedValue } from "../../cachedData/CachedValue";
 import { symbolsOfType, toDecoration } from "./errorCheckUtils";
 import * as Symbols from "../compiler/wiqlSymbols";
 

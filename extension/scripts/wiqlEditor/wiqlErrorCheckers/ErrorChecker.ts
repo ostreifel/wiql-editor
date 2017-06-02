@@ -7,8 +7,8 @@ import { AllowedValuesChecker } from "./AllowedValuesChecker";
 import { PrefixChecker } from "./PrefixChecker";
 import { IParseResults} from "../compiler/wiqlParser";
 import * as Q from "q";
-import { iterationStrings, areaStrings } from "../cachedData/nodes";
-import { allTags } from "../cachedData/tags";
+import { iterationStrings, areaStrings } from "../../cachedData/nodes";
+import { allTags } from "../../cachedData/tags";
 
 export class ErrorChecker implements IErrorChecker {
     private readonly errorCheckers: IErrorChecker[];
