@@ -1,10 +1,10 @@
-import { IParseResults } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/parser";
 import { IErrorChecker } from "./IErrorChecker";
 import * as Q from "q";
 import { CachedValue } from "../../cachedData/CachedValue";
 import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
-import * as Symbols from "../compiler/wiqlSymbols";
+import * as Symbols from "../compiler/symbols";
 
 
 export class AllowedValuesChecker implements IErrorChecker {

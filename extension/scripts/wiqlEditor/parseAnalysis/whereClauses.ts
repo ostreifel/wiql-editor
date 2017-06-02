@@ -1,7 +1,7 @@
 import { ICompletionContext } from "../completion/completionContext";
-import * as Symbols from "../compiler/wiqlSymbols";
+import * as Symbols from "../compiler/symbols";
 import { equalFields, fields } from "../../cachedData/fields";
-import { IParseResults } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/parser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { projects } from "../../cachedData/projects";
 import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";

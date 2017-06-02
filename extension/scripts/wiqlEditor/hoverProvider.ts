@@ -1,7 +1,7 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { symbolsOfType } from "./parseAnalysis/findSymbol";
-import { parse } from "./compiler/wiqlParser";
-import * as Symbols from "./compiler/wiqlSymbols";
+import { parse } from "./compiler/parser";
+import * as Symbols from "./compiler/symbols";
 import { definedVariables } from "./wiqlDefinition";
 import { allProjectWits, getWitsByProjects } from "../cachedData/workItemTypes";
 import { getField, fields } from "../cachedData/fields";

@@ -1,9 +1,9 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { wiqlPatterns } from "../compiler/wiqlTokenPatterns";
+import { wiqlPatterns } from "../compiler/tokenPatterns";
 import { getField } from "../../cachedData/fields";
-import { getFieldComparisonLookup } from "../wiqlErrorCheckers/TypeErrorChecker";
+import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { ICompletionContext, conditionSymbols } from "./completionContext";
-import * as Symbols from "../compiler/wiqlSymbols";
+import * as Symbols from "../compiler/symbols";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
 import * as Q from "q";
 import { getStringValueSuggestions } from "./valueSuggestions";

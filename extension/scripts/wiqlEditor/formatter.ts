@@ -1,5 +1,5 @@
-import { parse } from "./compiler/wiqlParser";
-import * as Symbols from "./compiler/wiqlSymbols";
+import { parse } from "./compiler/parser";
+import * as Symbols from "./compiler/symbols";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { fields } from "../cachedData/fields";
 
@@ -23,7 +23,7 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap, tab: st
     const lines: string[] = [];
     let currFieldList: Symbols.FieldList | undefined = fieldList;
     while (currFieldList) {
-        let comma = currFieldList.restOfList ? "," : "";
+        const comma = currFieldList.restOfList ? "," : "";
         lines.push(tab + formatField(currFieldList.field, fields) + comma);
         currFieldList = currFieldList.restOfList;
     }

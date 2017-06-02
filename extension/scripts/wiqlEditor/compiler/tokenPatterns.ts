@@ -1,5 +1,5 @@
 import { TokenPattern } from "./tokenizer";
-import * as Symbols from "./wiqlSymbols";
+import * as Symbols from "./symbols";
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
 
 export const wiqlPatterns: TokenPattern[] = [

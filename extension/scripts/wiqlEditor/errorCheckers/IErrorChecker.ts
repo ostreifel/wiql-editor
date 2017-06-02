@@ -1,4 +1,4 @@
-import { IParseResults } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/parser";
 import * as Q from "q";
 
 export interface IErrorChecker {

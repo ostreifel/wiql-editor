@@ -1,6 +1,6 @@
 import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults } from "../compiler/wiqlParser";
-import * as Symbols from "../compiler/wiqlSymbols";
+import { IParseResults } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 import { definedVariables } from "../wiqlDefinition";
 import { toDecoration } from "./errorDecorations";
 import { fields } from "../../cachedData/fields";

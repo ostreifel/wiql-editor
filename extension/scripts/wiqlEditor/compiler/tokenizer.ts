@@ -1,5 +1,5 @@
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
-import * as Symbols from "./wiqlSymbols";
+import * as Symbols from "./symbols";
 
 export interface TokenPattern {
     match: string | RegExp;

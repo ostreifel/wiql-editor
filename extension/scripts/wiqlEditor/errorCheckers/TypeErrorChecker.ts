@@ -1,9 +1,9 @@
 import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/parser";
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
-import * as Symbols from "../compiler/wiqlSymbols";
+import * as Symbols from "../compiler/symbols";
 import { definedVariables } from "../wiqlDefinition";
 import { fields } from "../../cachedData/fields";
 import { CachedValue } from "../../cachedData/CachedValue";

@@ -1,5 +1,5 @@
-import * as Symbols from "../compiler/wiqlSymbols";
-import { parse, IParseResults, ParseError, ParseMode } from "../compiler/wiqlParser";
+import * as Symbols from "../compiler/symbols";
+import { parse, IParseResults, ParseError, ParseMode } from "../compiler/parser";
 import { fields } from "../../cachedData/fields";
 import { createContext, ICompletionContext } from "./completionContext";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";

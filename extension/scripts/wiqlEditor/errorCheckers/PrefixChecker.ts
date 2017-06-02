@@ -1,8 +1,8 @@
 import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults } from "../compiler/wiqlParser";
+import { IParseResults } from "../compiler/parser";
 import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
-import * as Symbols from "../compiler/wiqlSymbols";
+import * as Symbols from "../compiler/symbols";
 import * as Q from "q";
 
 type Prefix = null | "Source" | "Target";

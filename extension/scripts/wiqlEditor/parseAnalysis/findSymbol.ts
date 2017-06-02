@@ -1,5 +1,5 @@
-import * as Symbols from "../compiler/wiqlSymbols";
-import { IParseResults, ParseError } from "../compiler/wiqlParser";
+import * as Symbols from "../compiler/symbols";
+import { IParseResults, ParseError } from "../compiler/parser";
 
 /**
  * Recurse through each symbol as a tree and return the ones of type

@@ -1,10 +1,10 @@
-import { completionProvider } from "./completion/wiqlCompletion";
-import { parse } from "./compiler/wiqlParser";
-import { format } from "./wiqlFormatter";
-import { ErrorChecker } from "./wiqlErrorCheckers/ErrorChecker";
+import { completionProvider } from "./completion/completion";
+import { parse } from "./compiler/parser";
+import { format } from "./formatter";
+import { ErrorChecker } from "./errorCheckers/ErrorChecker";
 import * as Wiql from "./wiqlDefinition";
-import { getHoverProvider } from "./wiqlHoverProvider";
-import { importWiq, exportWiq } from "./wiqImportExport";
+import { getHoverProvider } from "./hoverProvider";
+import { importWiq, exportWiq } from "./importExport";
 import { DelayedFunction } from "VSS/Utils/Core";
 import * as ReactDom from "react-dom";
 import * as React from "react";

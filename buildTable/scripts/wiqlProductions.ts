@@ -1,4 +1,4 @@
-// import * as Symbols from './wiqlSymbols';
+// import * as Symbols from './symbols';
 import { Rule as EbnfRule, InputType, Grouping, Optionals } from './ebnfParser';
 
 export interface IProduction {

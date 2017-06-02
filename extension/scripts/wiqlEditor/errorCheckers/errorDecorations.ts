@@ -1,5 +1,5 @@
-import * as Symbols from "../compiler/wiqlSymbols";
-import { IParseResults, ParseError } from "../compiler/wiqlParser";
+import * as Symbols from "../compiler/symbols";
+import { IParseResults, ParseError } from "../compiler/parser";
 
 export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;

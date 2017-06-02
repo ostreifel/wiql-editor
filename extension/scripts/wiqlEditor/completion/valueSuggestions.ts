@@ -6,8 +6,8 @@ import { iterationStrings, areaStrings } from "../../cachedData/nodes";
 import { getTagsForProjects } from "../../cachedData/tags";
 import { equalFields } from "../../cachedData/fields";
 import * as Q from "q";
-import * as Symbols from "../compiler/wiqlSymbols";
-import { IParseResults } from "../compiler/wiqlParser";
+import * as Symbols from "../compiler/symbols";
+import { IParseResults } from "../compiler/parser";
 import { getFilters } from "../parseAnalysis/whereClauses";
 
 function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {

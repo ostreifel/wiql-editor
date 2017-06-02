@@ -1,6 +1,6 @@
-import * as Symbols from "./wiqlSymbols";
+import * as Symbols from "./symbols";
 import { tokenize } from "./tokenizer";
-import { wiqlPatterns } from "./wiqlTokenPatterns";
+import { wiqlPatterns } from "./tokenPatterns";
 
 import { table } from "./wiqlTable";
 
