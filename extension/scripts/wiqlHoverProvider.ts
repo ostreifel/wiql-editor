@@ -6,7 +6,7 @@ import { definedVariables } from "./wiqlDefinition";
 import { allProjectWits, getWitsByProjects } from "./cachedData/workItemTypes";
 import { getField, fields } from "./cachedData/fields";
 import * as Q from "q";
-import { getFilters } from "./compiler/parseAnalysis";
+import { getFilters } from "./parseAnalysis/whereClauses";
 
 function filterByPosition(tokens: Symbols.Token[], position: monaco.Position) {
     return tokens.filter(token =>

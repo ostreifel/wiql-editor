@@ -1,4 +1,5 @@
-import { FieldType } from "./vssContracts";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 export const definedVariables = {
     "@me": FieldType.String,
     "@currentiteration": FieldType.TreePath,
@@ -13,6 +14,7 @@ export const def: monaco.languages.ILanguageExtensionPoint = {
     extensions: [".wiql"],
     aliases: ["WIQL"],
 };
+
 export const conf: monaco.languages.LanguageConfiguration = {
     brackets: [["[", "]"], ["(", ")"]],
     autoClosingPairs: [

@@ -8,7 +8,7 @@ import { equalFields } from "../cachedData/fields";
 import * as Q from "q";
 import * as Symbols from "../compiler/wiqlSymbols";
 import { IParseResults } from "../compiler/wiqlParser";
-import { getFilters } from "../compiler/parseAnalysis";
+import { getFilters } from "../parseAnalysis/whereClauses";
 
 function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
     return getFilters(ctx.getAssumedParse()).then(({projects}) => {
