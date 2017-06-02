@@ -33,11 +33,3 @@ Note: To avoid `tfx` prompting for your token when publishing, login in beforeha
 #### VS Code ####
 
 The included `.vscode` config allows you to open and build the project using [VS Code](https://code.visualstudio.com/).
-
-#### Unit Testing ####
-
-The project is setup for unit testing using `mocha`, `chai`, and the `karma` test runner. A simple example unit test is included in `scripts/logic/messageHelper.tests.ts`. To run tests just execute:
-
-```
-grunt test
-```
