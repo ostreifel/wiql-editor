@@ -15,7 +15,7 @@ function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
     return getFilters(ctx.getAssumedParse()).then(({ projects }) => {
         if (ctx.prevToken instanceof Symbols.Group) {
             return getCategories(projects).then(categories =>
-                categories.map(c => c.name).concat(categories.map(c => c.referenceName)));
+                categories.map(c => c.referenceName));
         } else {
             if (projects.length === 0) {
                 return witNames.getValue();

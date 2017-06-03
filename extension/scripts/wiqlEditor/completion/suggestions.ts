@@ -58,7 +58,8 @@ function includeFields(ctx: ICompletionContext, suggestions: monaco.languages.Co
     }
 }
 function includeVariables(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
-    if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0) {
+    if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0 &&
+        !(ctx.prevToken instanceof Symbols.Group)) {
         suggestions.push(...getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null));
     }
 }

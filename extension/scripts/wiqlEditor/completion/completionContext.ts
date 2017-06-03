@@ -69,7 +69,12 @@ export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: Pa
     const fieldInstance = getField(fieldRefName, fields) || null;
     const fieldType = fieldInstance && fieldInstance.type;
     const isInCondition = isInConditionParse(parseNext);
-    const isFieldAllowed = !fieldInstance || !isInCondition || getFieldComparisonLookup(fields)[fieldRefName].field.length > 0;
+    const isFieldAllowed = !fieldInstance ||
+        !isInCondition ||
+        (
+            getFieldComparisonLookup(fields)[fieldRefName].field.length > 0 &&
+            !(prevToken instanceof Symbols.Group)
+        );
 
     let assumedParse: IParseResults | null = null;
     function getAssumedParse() {
