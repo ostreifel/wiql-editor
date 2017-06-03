@@ -18,6 +18,7 @@
         "scripts/cachedData/identities.ts",
         "scripts/cachedData/nodes.ts",
         "scripts/cachedData/projects.ts",
+        "scripts/cachedData/relationTypes.ts",
         "scripts/cachedData/tags.ts",
         "scripts/cachedData/workitemTypeCategories.ts",
         "scripts/cachedData/workItemTypes.ts",

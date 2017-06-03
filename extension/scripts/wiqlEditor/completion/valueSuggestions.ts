@@ -1,6 +1,7 @@
 import { ICompletionContext } from "./completionContext";
 import { isIdentityField, identities } from "../../cachedData/identities";
 import { projects } from "../../cachedData/projects";
+import { relationTypes } from "../../cachedData/relationTypes";
 import { witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "../../cachedData/nodes";
 import { getTagsForProjects } from "../../cachedData/tags";
@@ -59,6 +60,8 @@ export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<s
         return iterationStrings.getValue();
     } else if (equalFields("System.Tags", ctx.fieldRefName, ctx.fields) && expectingString) {
         return getTagSuggestions(ctx);
+    } else if (equalFields("System.Links.LinkType", ctx.fieldRefName, ctx.fields) && expectingString) {
+        return relationTypes.getValue().then(types => types.filter(t => t.attributes["usage"] === "workItemLink").map(t => t.referenceName));
     }
     return Q([]);
 }
