@@ -5,33 +5,39 @@ import { witNames, getWitNamesByProjects, getStatesByProjects } from "../../cach
 import { iterationStrings, areaStrings } from "../../cachedData/nodes";
 import { getTagsForProjects } from "../../cachedData/tags";
 import { equalFields } from "../../cachedData/fields";
+import { getCategories } from "../../cachedData/workitemTypeCategories";
 import * as Q from "q";
 import * as Symbols from "../compiler/symbols";
 import { IParseResults } from "../compiler/parser";
 import { getFilters } from "../parseAnalysis/whereClauses";
 
 function getWitSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
-    return getFilters(ctx.getAssumedParse()).then(({projects}) => {
-        if (projects.length === 0) {
+    return getFilters(ctx.getAssumedParse()).then(({ projects }) => {
+        if (ctx.prevToken instanceof Symbols.Group) {
+            return getCategories(projects).then(categories =>
+                categories.map(c => c.name).concat(categories.map(c => c.referenceName)));
+        } else {
+            if (projects.length === 0) {
                 return witNames.getValue();
+            }
+            return getWitNamesByProjects(projects);
         }
-        return getWitNamesByProjects(projects);
     });
 }
 
 function getStateSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
-    return getFilters(ctx.getAssumedParse()).then(({projects, workItemTypes}) => {
+    return getFilters(ctx.getAssumedParse()).then(({ projects, workItemTypes }) => {
         if (projects.length === 0) {
-                return witNames.getValue();
+            return witNames.getValue();
         }
         return getStatesByProjects(projects, workItemTypes);
     });
 }
 
 function getTagSuggestions(ctx: ICompletionContext) {
-    return getFilters(ctx.getAssumedParse()).then(({projects, workItemTypes}) => {
+    return getFilters(ctx.getAssumedParse()).then(({ projects, workItemTypes }) => {
         if (projects.length === 0) {
-                return witNames.getValue();
+            return witNames.getValue();
         }
         return getTagsForProjects(projects);
     });
