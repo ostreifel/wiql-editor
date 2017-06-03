@@ -15,12 +15,13 @@ Save changes to the query when finished.
 Be sure to leave a rating if you found this extension to be useful.
 
 # Change Log
-(06/01/17) 1.7.7 Detect custom identity fields as such.
+(06/02/17) 1.7.15 Work item type descriptions when filtering on wit  
+(06/01/17) 1.7.7 Detect custom identity fields as such.  
 (05/30/17) 1.7.5 Use query clauses to give better hover field descriptions  
 (05/29/17) 1.7.1 Filter work item type, state and tag completions based on common filters  
 (05/28/17) 1.6.49 Update to accomodate changes in loading menu items  
-(04/22/17) 1.6.34 Include wef fields
-(04/16/17) 1.6.22 Button on results menu bar    
+(04/22/17) 1.6.34 Include wef fields  
+(04/16/17) 1.6.22 Button on results menu bar  
 (03/27/17) 1.6.22 Allowed operator issue, block field suggestions when not allowed, dialog sizing  
 (03/26/17) 1.6.16 Decrease loading times  
 (03/19/17) 1.6.1 Completion for: workitemtypes, states, iteration paths, area paths, tags  

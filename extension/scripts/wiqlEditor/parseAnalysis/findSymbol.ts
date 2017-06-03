@@ -25,3 +25,35 @@ export function symbolsOfType<T extends Symbols.Symbol>(parseResult: IParseResul
     return matchingSymbols;
 }
 
+export function symbolsAtPosition(line: number, column: number, parseResult: IParseResults): Symbols.Symbol[] {
+    if (parseResult instanceof ParseError) {
+        for (const symbol of parseResult.parsedTokens) {
+            const match = symbolsAtPositionImpl(line, column, symbol);
+            if (match.length > 0) {
+                return match;
+            }
+        }
+    } else if (parseResult instanceof Symbols.SymbolTree) {
+        return symbolsAtPositionImpl(line, column, parseResult);
+    }
+    return [];
+}
+
+function symbolsAtPositionImpl(line: number, column: number, symbol: Symbols.Symbol): Symbols.Symbol[] {
+    if (symbol instanceof Symbols.Token) {
+        const isMatch = symbol.line === line - 1 &&
+            symbol.startColumn <= column &&
+            symbol.endColumn >= column;
+        if (isMatch) {
+            return [symbol];
+        }
+    } else if (symbol instanceof Symbols.SymbolTree) {
+        for (const input of symbol.inputs) {
+            const match = symbolsAtPositionImpl(line, column, input);
+            if (match.length > 0) {
+                return [...match, symbol];
+            }
+        }
+    }
+    return [];
+}
