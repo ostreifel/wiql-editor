@@ -68,8 +68,9 @@
 
         clean: {
             options: { force: true },
-            build: ["scripts/**/*.js", "*.vsix", "build", "../buildTable/build"]
-        }
+            build: ["scripts/**/*.js", "*.vsix", "build", "../buildTable/build"],
+            svg: ["build/**/*.svg"]
+        },
     });
 
     grunt.loadNpmTasks("grunt-ts");
@@ -77,7 +78,7 @@
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask("build", ["clean", "ts:build", "copy:scripts"]);
+    grunt.registerTask("build", ["clean:build", "ts:build", "copy:scripts", "clean:svg"]);
 
     grunt.registerTask("package-dev", ["build", "exec:package_dev"]);
     grunt.registerTask("package-release", ["build", "exec:package_release"]);
