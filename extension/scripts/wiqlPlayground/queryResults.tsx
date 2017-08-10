@@ -1,11 +1,21 @@
 import * as ReactDom from "react-dom";
 import * as React from "react";
 import {
-    WorkItemQueryResult, WorkItem, WorkItemFieldReference
+    WorkItemQueryResult, WorkItem, WorkItemFieldReference, WorkItemField, FieldType
 } from "TFS/WorkItemTracking/Contracts";
 import { HostNavigationService } from "VSS/SDK/Services/Navigation";
+import { localeFormat, parseDateString } from "VSS/Utils/Date";
+import { fields } from "../cachedData/fields";
 
-class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemFieldReference[], rel?: string }, void> {
+interface IFieldsMap {
+    [referenceName: string]: WorkItemField;
+}
+class WorkItemRow extends React.Component<{
+    wi: WorkItem,
+    columns: WorkItemFieldReference[],
+    rel?: string,
+    fields: IFieldsMap,
+}, void> {
     render() {
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
@@ -16,7 +26,12 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
             tds.push(<div className={"cell"} title={"Link Type"}>{this.props.rel}</div>);
         }
         for (const fieldRef of this.props.columns) {
-            tds.push(<div className={"cell"} title={fieldRef.name}>{this.props.wi.fields[fieldRef.referenceName]}</div>);
+            let value = this.props.wi.fields[fieldRef.referenceName];
+            if (this.props.fields[fieldRef.referenceName].type === FieldType.DateTime) {
+                const date = parseDateString(value);
+                value = localeFormat(date);
+            }
+            tds.push(<div className={"cell"} title={fieldRef.name}>{value}</div>);
         }
         return (
             <a
@@ -42,7 +57,7 @@ class WorkItemRow extends React.Component<{ wi: WorkItem, columns: WorkItemField
     }
 }
 
-class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult }, void> {
+class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: IFieldsMap }, void> {
     render() {
         const wiMap = {};
         for (const wi of this.props.workItems) {
@@ -51,7 +66,7 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
         const workItems = this.props.result.workItems
             .filter(wi => wi.id in wiMap)
             .map((wi) => wiMap[wi.id]);
-        const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} />);
+        const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} fields={this.props.fields} />);
         return <div className={"table"}>{rows}</div>;
     }
 }
@@ -64,7 +79,8 @@ class ResultCountDisclaimer extends React.Component<{ count: number }, void> {
 
 }
 
-class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[] }, void> {
+class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: IFieldsMap }, void> {
+
     render() {
         const wiMap: { [id: number]: WorkItem } = {};
         for (const workitem of this.props.workItems) {
@@ -77,7 +93,8 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
                 rel={rel.rel || "Source"}
                 columns={this.props.result.columns}
                 wi={wiMap[rel.target.id]}
-                />
+                fields={this.props.fields}
+            />
         );
         return <div className={"table"}>{rows}</div>;
     }
@@ -85,17 +102,24 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
 
 export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[]) {
     let table: JSX.Element;
-    if (result.workItems) {
-        table = <WorkItemTable workItems={workItems} result={result} />;
-    } else {
-        table = <WorkItemRelationsTable workItems={workItems} result={result} />;
-    }
-    ReactDom.render(
-        <div>
-            {table}
-            <ResultCountDisclaimer count={(result.workItems || result.workItemRelations).length} />
-        </div>
-        , document.getElementById("query-results") as HTMLElement);
+    fields.getValue().then(fields => {
+        const fieldMap: IFieldsMap = {};
+        for (const field of fields) {
+            fieldMap[field.referenceName] = field;
+        }
+        if (result.workItems) {
+            table = <WorkItemTable workItems={workItems} result={result} fields={fieldMap} />;
+        } else {
+            table = <WorkItemRelationsTable workItems={workItems} result={result} fields={fieldMap} />;
+        }
+        ReactDom.render(
+            <div>
+                {table}
+                <ResultCountDisclaimer count={(result.workItems || result.workItemRelations).length} />
+            </div>
+            , document.getElementById("query-results") as HTMLElement
+        );
+    });
 }
 
 export function setError(error: TfsError | string) {
