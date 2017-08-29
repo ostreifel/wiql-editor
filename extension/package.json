@@ -1,11 +1,11 @@
 {
   "devDependencies": {
-    "@types/applicationinsights-js": "^1.0.1",
+    "@types/applicationinsights-js": "^1.0.4",
     "@types/jquery": "^2.0.34",
     "@types/knockout": "^3.4.38",
     "@types/q": "0.0.32",
-    "@types/react": "^0.14.55",
-    "@types/react-dom": "^0.14.19",
+    "@types/react": "^16.0.5",
+    "@types/react-dom": "^15.5.4",
     "@types/requirejs": "^2.1.28",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
@@ -19,7 +19,7 @@
     "requirejs": "^2.3.2",
     "typescript": "^2.0.10",
     "typings": "^1.5.0",
-    "vss-web-extension-sdk": "^1.110.0"
+    "vss-web-extension-sdk": "^3.121.0"
   },
   "name": "wiql-editor",
   "private": true,

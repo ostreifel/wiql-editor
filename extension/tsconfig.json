@@ -22,6 +22,7 @@
         "scripts/cachedData/tags.ts",
         "scripts/cachedData/workitemTypeCategories.ts",
         "scripts/cachedData/workItemTypes.ts",
+        "scripts/events.ts",
         "scripts/queryContext/contextContracts.ts",
         "scripts/queryContext/queryContext.ts",
         "scripts/queryEditor/queryDialog.ts",

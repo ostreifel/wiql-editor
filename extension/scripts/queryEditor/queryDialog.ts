@@ -1,5 +1,6 @@
 import { IQuery, IContextOptions, ICallbacks } from "../queryContext/contextContracts";
 import * as Q from "q";
+import { trackEvent } from "../events";
 
 function saveErrorMessage(error: TfsError, query: IQuery) {
     if (!isSupportedQueryId(query.id)) {
@@ -32,10 +33,7 @@ export function showDialog(query: IQuery) {
                     dialogService.openMessageDialog(message, {
                         title: "Error saving query"
                     });
-                    if (window["appInsights"]) {
-                        window["appInsights"].trackEvent("SaveQueryFailure", {message});
-                        window["appInsights"].flush();
-                    }
+                    trackEvent("SaveQueryFailure", {message});
                 });
                 throw Error("Exception to block dialog close");
         }

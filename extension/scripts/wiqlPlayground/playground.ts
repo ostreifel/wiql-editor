@@ -3,8 +3,9 @@ import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { AppInsights } from "applicationinsights-js";
+import { trackPage, trackEvent } from "../events";
 
-
+trackPage();
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");
@@ -41,10 +42,7 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
     getWitClient().getWorkItems(ids, fieldRefNames, result.asOf).then(
         workitems => renderResult(result, workitems), error => {
             const message = typeof error === "string" ? error : (error.serverError || error)["message"];
-            if (window["appInsights"]) {
-                window["appInsights"].trackEvent("GetWorkItemFailure", { message });
-                window["appInsights"].flush();
-            }
+            trackEvent("GetWorkItemFailure", { message });
             setError(error);
         });
 }
@@ -64,10 +62,7 @@ function search() {
             }
         }, error => {
             const message = typeof error === "string" ? error : (error.serverError || error)["message"];
-            if (window["appInsights"]) {
-                window["appInsights"].trackEvent("RunQueryFailure", { message });
-                window["appInsights"].flush();
-            }
+            trackEvent("RunQueryFailure", { message });
             setError(error);
         });
 }
