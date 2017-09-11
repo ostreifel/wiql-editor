@@ -15,7 +15,7 @@ class WorkItemRow extends React.Component<{
     columns: WorkItemFieldReference[],
     rel?: string,
     fields: IFieldsMap,
-}, void> {
+}, {}> {
     render() {
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
@@ -57,7 +57,7 @@ class WorkItemRow extends React.Component<{
     }
 }
 
-class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: IFieldsMap }, void> {
+class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: IFieldsMap }, {}> {
     render() {
         const wiMap = {};
         for (const wi of this.props.workItems) {
@@ -71,7 +71,7 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
     }
 }
 
-class ResultCountDisclaimer extends React.Component<{ count: number }, void> {
+class ResultCountDisclaimer extends React.Component<{ count: number }, {}> {
     render() {
         const message = this.props.count < 50 ? `Found ${this.props.count} results` : `Showing first 50 results`;
         return <div>{message}</div>;
@@ -79,7 +79,7 @@ class ResultCountDisclaimer extends React.Component<{ count: number }, void> {
 
 }
 
-class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: IFieldsMap }, void> {
+class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: IFieldsMap }, {}> {
 
     render() {
         const wiMap: { [id: number]: WorkItem } = {};

@@ -4,49 +4,17 @@ import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { CachedValue } from "./CachedValue";
 import { getField } from "./fields";
+import { getIdentities } from "./identities/getIdentities";
 
-export const identities: CachedValue<string[]> = new CachedValue(getAllIdentitiesInAllProjects);
+export const identities: CachedValue<string[]> = new CachedValue(getIdentityStrings);
 
-function getTeamIdentities(project: { id: string, name: string }, team: WebApiTeam): IPromise<string[]> {
-    return getClient().getTeamMembers(project.id, team.id).then(members => {
-        return [team.name, ...members.map(m => m.isContainer ? m.displayName : `${m.displayName} <${m.uniqueName}>`)];
-    });
-}
-
-function getAllIdentitiesInAllProjectsImpl(project: { id: string, name: string }): IPromise<string[]> {
-    return getAllIdentitiesInProjectImpl(project, 0);
-}
-function getAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number): IPromise<string[]> {
-    return getClient().getTeams(project.id, 100, skip).then(teams => {
-        const promises = teams.map(t => getTeamIdentities(project, t));
-        if (teams.length === 100) {
-            promises.push(getAllIdentitiesInProjectImpl(project, skip + 100));
-        }
-        return Q.all(promises).then(identitiesArr => {
-            const projectIdentities = {};
-            for (const teamIdentities of identitiesArr) {
-                for (const identity of teamIdentities) {
-                    projectIdentities[identity] = void 0;
-                }
-            }
-            return Object.keys(projectIdentities).sort();
-        });
-    });
-}
-function getAllIdentitiesInAllProjects(): IPromise<string[]> {
-    return getClient().getProjects().then(projects =>
-        Q.all(projects.map(p => getAllIdentitiesInAllProjectsImpl(p))).then(
-            allProjectIdentities => {
-                const allIdentities = {};
-                for (const projectIdentities of allProjectIdentities) {
-                    for (const identity of projectIdentities) {
-                        allIdentities[identity] = void 0;
-                    }
-                }
-                return Object.keys(allIdentities).sort();
-            }
-        )
-    );
+function getIdentityStrings(): Q.IPromise<string[]> {
+    return getIdentities().then((identities) =>
+        identities.map((m) => m.isContainer ?
+            m.displayName :
+            `${m.displayName} <${m.uniqueName}>`
+        ),
+    )
 }
 
 /** No way to know if identity field from extension api, just hardcode the system ones */

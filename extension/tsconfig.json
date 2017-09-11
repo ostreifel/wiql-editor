@@ -3,7 +3,7 @@
         "module": "umd",
         "sourceMap": false,
         "rootDir": "./scripts",
-        "target": "es5",
+        "target": "es6",
         "jsx": "react",
         "strictNullChecks": true
     },
@@ -16,6 +16,9 @@
         "scripts/cachedData/CachedValue.ts",
         "scripts/cachedData/fields.ts",
         "scripts/cachedData/identities.ts",
+        "scripts/cachedData/identities/extensionCache.ts",
+        "scripts/cachedData/identities/getIdentities.ts",
+        "scripts/cachedData/identities/throttlePromises.ts",
         "scripts/cachedData/nodes.ts",
         "scripts/cachedData/projects.ts",
         "scripts/cachedData/relationTypes.ts",

@@ -18,12 +18,7 @@ class RParen extends Token { }
 class Unexpected extends Token { }
 
 export function getTokenName(symbolClass: Function): string {
-    const str: string = symbolClass.toString();
-    const match = str.match(/function (\S+)(?=\()/);
-    if (match) {
-        return match[1];
-    }
-    throw new Error('type is not a function');
+    return symbolClass.name;
 }
 
 const ebnfPatterns: TokenPattern[] = [
