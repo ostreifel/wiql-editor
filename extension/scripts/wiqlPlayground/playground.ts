@@ -5,7 +5,7 @@ import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { AppInsights } from "applicationinsights-js";
 import { trackPage, trackEvent } from "../events";
 
-trackPage();
+trackEvent("pageLoad");
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");

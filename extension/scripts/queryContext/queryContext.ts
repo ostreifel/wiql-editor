@@ -1,8 +1,8 @@
 import { isSupportedQueryId, showDialog } from "../queryEditor/queryDialog";
 import { IQuery } from "./contextContracts";
-import { trackPage } from "../events";
+import { trackEvent } from "../events";
 
-trackPage();
+trackEvent("pageLoad");
 const menuAction: Partial<IContributedMenuSource> = {
     getMenuItems: (context: {query: IQuery}): IContributedMenuItem[] => {
         if (!context || !context.query) {

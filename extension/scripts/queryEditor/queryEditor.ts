@@ -2,9 +2,9 @@ import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { IContextOptions, ICallbacks } from "../queryContext/contextContracts";
-import { trackPage } from "../events";
+import { trackEvent } from "../events";
 
-trackPage();
+trackEvent("pageLoad");
 const configuration: IContextOptions = VSS.getConfiguration();
 const target = document.getElementById("wiql-box");
 if (!target) {
