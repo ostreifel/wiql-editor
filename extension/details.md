@@ -12,7 +12,8 @@ Save changes to the query when finished.
  ![wiql dialog](img/dialog.png)
 
 
-Be sure to leave a rating if you found this extension to be useful.
+Be sure to leave a rating if you found this extension to be useful.  
+[![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)
 
 # Change Log
 (06/02/17) 1.7.15 Work item type descriptions when filtering on wit  
