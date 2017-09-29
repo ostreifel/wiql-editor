@@ -328,7 +328,12 @@ export class RecursiveSelect extends SymbolTree {
 // Link symbols not copied as workItemLink queries are not supported yet
 
 export function getSymbolName(symbolClass: Function): string {
-    return symbolClass.name;
+    const str: string = symbolClass.toString();
+    const match = str.match(/function (\S+)(?=\()/);
+    if (match) {
+        return match[1];
+    }
+    throw new Error("type is not a function");
 }
 export function isTokenClass(symbolClass: Function): boolean {
     return symbolClass.prototype.__proto__.constructor === Token;

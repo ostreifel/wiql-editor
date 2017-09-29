@@ -3,7 +3,7 @@
         "module": "umd",
         "sourceMap": false,
         "rootDir": "./scripts",
-        "target": "es6",
+        "target": "es5",
         "jsx": "react",
         "strictNullChecks": true
     },
