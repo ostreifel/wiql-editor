@@ -1,21 +1,22 @@
 import { CachedValue } from "./CachedValue";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { WorkItemClassificationNode, TreeStructureGroup, ProjectReference } from "TFS/WorkItemTracking/Contracts";
+import { WorkItemClassificationNode, TreeStructureGroup } from "TFS/WorkItemTracking/Contracts";
 import { projects } from "./projects";
 import * as Q from "q";
+import { TeamProjectReference } from "TFS/Core/Contracts";
 
 export interface ProjectNodes {
-    project: ProjectReference;
+    project: TeamProjectReference;
     iterationNode: WorkItemClassificationNode;
 }
 export const iterationNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Iterations));
 export const areaNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Areas));
-function getTreeNodes(type: TreeStructureGroup) {
-    return projects.getValue().then(projs => {
-        const projPromises = projs.map(project =>
-            getWitClient().getClassificationNode(project.name, type, undefined, 2147483647).then(iterationNode => {
-                return {project, iterationNode} as ProjectNodes;
-            })
+function getTreeNodes(type: TreeStructureGroup): Q.IPromise<ProjectNodes[]> {
+    return projects.getValue().then((projs): Q.IPromise<ProjectNodes[]> => {
+        const projPromises = projs.map((project): Q.IPromise<ProjectNodes> =>
+            getWitClient().getClassificationNode(project.name, type, undefined, 2147483647).then(
+                (iterationNode): ProjectNodes => ({project, iterationNode})
+            )
         );
         return Q.all(projPromises);
     });
@@ -31,7 +32,7 @@ function getTreeStrings(nodes: CachedValue<ProjectNodes[]>) {
     return nodes.getValue().then(nodesByProj => {
         const paths: {[iteration: string]: void} = {};
         const toProcess: QueuedNode[] = [];
-        for (let {iterationNode} of nodesByProj) {
+        for (const {iterationNode} of nodesByProj) {
             toProcess.push({path: iterationNode.name, node: iterationNode});
         }
         while (toProcess.length > 0) {

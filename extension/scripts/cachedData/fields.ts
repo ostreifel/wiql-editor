@@ -18,12 +18,12 @@ function getFields(): IPromise<WorkItemField[]> {
         return getFields(undefined, GetFieldsExpand.ExtensionFields);
     }
     // Older server -- fallback
-    return getWitClient().getFields(GetFieldsExpand && GetFieldsExpand.ExtensionFields);
+    return getWitClient().getFields(GetFieldsExpand && GetFieldsExpand.ExtensionFields as any);
 }
 
 export class FieldLookup {
     private static _counter: number = 0;
-    private readonly lookup: {[refOrName: string]: WorkItemField};
+    private readonly lookup: {[refOrName: string]: WorkItemField} = {};
     public readonly lookupId: number = FieldLookup._counter++;
     constructor(public readonly values: WorkItemField[]) {
         for (const field of values) {
