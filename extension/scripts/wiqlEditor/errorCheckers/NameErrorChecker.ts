@@ -12,7 +12,7 @@ export class NameErrorChecker implements IErrorChecker {
     private readonly validFieldIdentifiers: CachedValue<string[]> = new CachedValue(() => {
         return fields.getValue().then(fields => {
             const validFieldIdentifiers: string[] = [];
-            for (const field of fields) {
+            for (const field of fields.values) {
                 validFieldIdentifiers.push(field.name.toLocaleLowerCase());
                 validFieldIdentifiers.push(field.referenceName.toLocaleLowerCase());
             }

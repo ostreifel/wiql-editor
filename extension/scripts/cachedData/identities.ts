@@ -3,7 +3,7 @@ import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { CachedValue } from "./CachedValue";
-import { getField } from "./fields";
+import { FieldLookup } from "./fields";
 import { getIdentities } from "./identities/getIdentities";
 
 export const identities: CachedValue<string[]> = new CachedValue(getIdentityStrings);
@@ -57,12 +57,12 @@ const knownIdentities: string[] = [
     "Microsoft.VSTS.CMMI.ActualAttendee7",
     "Microsoft.VSTS.CMMI.ActualAttendee8",
 ];
-export function isIdentityField(fields: WorkItemField[], refNameOrName: string): boolean {
-    const field = getField(refNameOrName, fields);
+export function isIdentityField(fields: FieldLookup, refNameOrName: string): boolean {
+    const field = fields.getField(refNameOrName);
     if (!field) {
         return false;
     }
-    // Use the new field flag to detect if identity when available 
+    // Use the new field flag to detect if identity when available
     // this is the only way to detect if custom fields are identity fields
     return field["isIdentity"] || knownIdentities.indexOf(field.referenceName) >= 0;
 }

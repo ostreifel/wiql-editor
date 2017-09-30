@@ -1,5 +1,5 @@
 import { ParseError, IParseResults, parse, ParseMode } from "../compiler/parser";
-import { getField } from "../../cachedData/fields";
+import { FieldLookup } from "../../cachedData/fields";
 import * as Symbols from "../compiler/symbols";
 import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
@@ -9,7 +9,7 @@ import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
  */
 export interface ICompletionContext {
     readonly parseNext: ParseError;
-    readonly fields: WorkItemField[];
+    readonly fields: FieldLookup;
     /** Token before cursor */
     readonly prevToken: Symbols.Symbol;
     /** 2 Tokens (inclusive) before cursor */
@@ -60,13 +60,13 @@ function getFieldSymbolRefName(parseNext: ParseError): string {
     return "";
 }
 
-export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: ParseError, fields: WorkItemField[]): ICompletionContext {
+export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: ParseError, fields: FieldLookup): ICompletionContext {
     const parsedCount = parseNext.parsedTokens.length;
     const prevToken = parseNext.parsedTokens[parsedCount - 1];
 
     const prevToken2 = parseNext.parsedTokens[parsedCount - 2];
     const fieldRefName = getFieldSymbolRefName(parseNext);
-    const fieldInstance = getField(fieldRefName, fields) || null;
+    const fieldInstance = fields.getField(fieldRefName) || null;
     const fieldType = fieldInstance && fieldInstance.type;
     const isInCondition = isInConditionParse(parseNext);
     const isFieldAllowed = !fieldInstance ||

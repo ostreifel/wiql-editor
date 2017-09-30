@@ -24,9 +24,9 @@ function getCategoriesImpl(projects: string[]) {
     });
 }
 
-export function getCategories(searchProjects: string[] = []) {
+export function getCategories(searchProjects: string[] = []): Q.IPromise<WorkItemTypeCategory[]> {
     if (searchProjects.length === 0) {
-        return projects.getValue().then(projects => getCategoriesImpl(projects.map(p => p.name)));
+        return projects.getValue().then((projects): Q.IPromise<WorkItemTypeCategory[]> => getCategoriesImpl(projects.map(p => p.name)));
     }
     return getCategoriesImpl(searchProjects);
 }

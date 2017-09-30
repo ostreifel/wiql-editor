@@ -3,7 +3,7 @@ import { parse, IParseResults } from "./compiler/parser";
 import * as Symbols from "./compiler/symbols";
 import { definedVariables } from "./wiqlDefinition";
 import { allProjectWits, getWitsByProjects } from "../cachedData/workItemTypes";
-import { getField, fields } from "../cachedData/fields";
+import { fields } from "../cachedData/fields";
 import * as Q from "q";
 import { symbolsOfType, symbolsAtPosition } from "./parseAnalysis/findSymbol";
 import { getFilters } from "./parseAnalysis/whereClauses";
@@ -16,7 +16,7 @@ function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResult
     const id = hoverSymbols.filter(s => s instanceof Symbols.Identifier)[0] as Symbols.Identifier;
     if (id) {
         return Q.all([fields.getValue(), getFilters(parseResult)]).then(([fields, filters]) => {
-            const matchedField = getField(id.text, fields);
+            const matchedField = fields.getField(id.text);
             if (matchedField) {
                 const hovers: monaco.MarkedString[] = [FieldType[matchedField.type]];
                 const range = toRange(id);

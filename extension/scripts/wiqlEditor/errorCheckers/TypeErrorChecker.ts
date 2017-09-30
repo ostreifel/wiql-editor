@@ -5,7 +5,7 @@ import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Symbols from "../compiler/symbols";
 import { definedVariables } from "../wiqlDefinition";
-import { fields } from "../../cachedData/fields";
+import { fields, FieldLookup } from "../../cachedData/fields";
 import { CachedValue } from "../../cachedData/CachedValue";
 import * as Q from "q";
 
@@ -78,21 +78,29 @@ addCompTypes([FieldType.TreePath],
     [Symbols.In],
     []);
 
-export function getFieldComparisonLookup(fields: WorkItemField[]) {
-    const fieldLookup: { [fieldName: string]: IComparisonType } = {};
-    for (const field of fields) {
-        if ("System.Links.LinkType" === field.referenceName) {
-            fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = {
-                fieldType: FieldType.String,
-                group: [],
-                literal: [Symbols.Equals, Symbols.NotEquals],
-                field: []
-            };
-        } else {
-            fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
+export interface IFieldComparisonLookup {
+    [fieldName: string]: IComparisonType;
+}
+const comparisonLookupCache: {[id: number]: IFieldComparisonLookup} = {};
+
+export function getFieldComparisonLookup(fields: FieldLookup) {
+    if (!(fields.lookupId in comparisonLookupCache)) {
+        const fieldLookup: IFieldComparisonLookup = {};
+        for (const field of fields.values) {
+            if ("System.Links.LinkType" === field.referenceName) {
+                fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = {
+                    fieldType: FieldType.String,
+                    group: [],
+                    literal: [Symbols.Equals, Symbols.NotEquals],
+                    field: []
+                };
+            } else {
+                fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
+            }
         }
+        comparisonLookupCache[fields.lookupId] = fieldLookup;
     }
-    return fieldLookup;
+    return comparisonLookupCache[fields.lookupId];
 }
 export class TypeErrorChecker implements IErrorChecker {
     private readonly fieldLookup: CachedValue<IFieldLookup> = new CachedValue(() =>

@@ -5,7 +5,6 @@ import { relationTypes } from "../../cachedData/relationTypes";
 import { witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
 import { iterationStrings, areaStrings } from "../../cachedData/nodes";
 import { getTagsForProjects } from "../../cachedData/tags";
-import { equalFields } from "../../cachedData/fields";
 import { getCategories } from "../../cachedData/workitemTypeCategories";
 import * as Q from "q";
 import * as Symbols from "../compiler/symbols";
@@ -48,19 +47,19 @@ export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<s
     const expectingString = ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
     if (isIdentityField(ctx.fields, ctx.fieldRefName) && expectingString) {
         return identities.getValue();
-    } else if (equalFields("System.TeamProject", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.TeamProject", ctx.fieldRefName) && expectingString) {
         return projects.getValue().then(projs => projs.map(p => p.name));
-    } else if (equalFields("System.State", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.State", ctx.fieldRefName) && expectingString) {
         return getStateSuggestions(ctx);
-    } else if (equalFields("System.WorkItemType", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.WorkItemType", ctx.fieldRefName) && expectingString) {
         return getWitSuggestions(ctx);
-    } else if (equalFields("System.AreaPath", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.AreaPath", ctx.fieldRefName) && expectingString) {
         return areaStrings.getValue();
-    } else if (equalFields("System.IterationPath", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.IterationPath", ctx.fieldRefName) && expectingString) {
         return iterationStrings.getValue();
-    } else if (equalFields("System.Tags", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.Tags", ctx.fieldRefName) && expectingString) {
         return getTagSuggestions(ctx);
-    } else if (equalFields("System.Links.LinkType", ctx.fieldRefName, ctx.fields) && expectingString) {
+    } else if (ctx.fields.equalFields("System.Links.LinkType", ctx.fieldRefName) && expectingString) {
         return relationTypes.getValue().then(types => types.filter(t => t.attributes["usage"] === "workItemLink").map(t => t.referenceName));
     }
     return Q([]);

@@ -1,6 +1,6 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { wiqlPatterns } from "../compiler/tokenPatterns";
-import { getField } from "../../cachedData/fields";
+import { FieldLookup } from "../../cachedData/fields";
 import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { ICompletionContext, conditionSymbols } from "./completionContext";
 import * as Symbols from "../compiler/symbols";
@@ -8,7 +8,7 @@ import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./c
 import * as Q from "q";
 import { getStringValueSuggestions } from "./valueSuggestions";
 
-function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: WorkItemField[], fieldAllowed) {
+function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: FieldLookup, fieldAllowed) {
     refName = refName.toLocaleLowerCase();
     /** These symbols have their own suggestion logic */
     const excludedSymbols = [Symbols.Variable, Symbols.Field];
@@ -38,7 +38,7 @@ function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields:
 
 function includeKeywords(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
     // if right after identifier it will not have been reduced to a field yet.
-    const field = ctx.prevToken instanceof Symbols.Identifier ? getField(ctx.prevToken.text, ctx.fields) : null;
+    const field = ctx.prevToken instanceof Symbols.Identifier ? ctx.fields.getField(ctx.prevToken.text) : null;
     const refName = ctx.fieldRefName || (field ? field.referenceName : "");
     const symbolSuggestionMap = getSymbolSuggestionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
     for (const token of ctx.parseNext.expectedTokens) {

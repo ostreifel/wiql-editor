@@ -5,16 +5,13 @@ import {
 } from "TFS/WorkItemTracking/Contracts";
 import { HostNavigationService } from "VSS/SDK/Services/Navigation";
 import { localeFormat, parseDateString } from "VSS/Utils/Date";
-import { fields } from "../cachedData/fields";
+import { fields, FieldLookup } from "../cachedData/fields";
 
-interface IFieldsMap {
-    [referenceName: string]: WorkItemField;
-}
 class WorkItemRow extends React.Component<{
     wi: WorkItem,
     columns: WorkItemFieldReference[],
     rel?: string,
-    fields: IFieldsMap,
+    fields: FieldLookup,
 }, {}> {
     render() {
         const uri = VSS.getWebContext().host.uri;
@@ -57,7 +54,7 @@ class WorkItemRow extends React.Component<{
     }
 }
 
-class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: IFieldsMap }, {}> {
+class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: FieldLookup }, {}> {
     render() {
         const wiMap = {};
         for (const wi of this.props.workItems) {
@@ -79,7 +76,7 @@ class ResultCountDisclaimer extends React.Component<{ count: number }, {}> {
 
 }
 
-class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: IFieldsMap }, {}> {
+class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: FieldLookup }, {}> {
 
     render() {
         const wiMap: { [id: number]: WorkItem } = {};
@@ -103,14 +100,11 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
 export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[]) {
     let table: JSX.Element;
     fields.getValue().then(fields => {
-        const fieldMap: IFieldsMap = {};
-        for (const field of fields) {
-            fieldMap[field.referenceName] = field;
-        }
+        const props = {workItems, result, fields};
         if (result.workItems) {
-            table = <WorkItemTable workItems={workItems} result={result} fields={fieldMap} />;
+            table = <WorkItemTable {...props} />;
         } else {
-            table = <WorkItemRelationsTable workItems={workItems} result={result} fields={fieldMap} />;
+            table = <WorkItemRelationsTable {...props} />;
         }
         ReactDom.render(
             <div>

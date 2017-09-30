@@ -1,9 +1,7 @@
 import { parse } from "./compiler/parser";
 import * as Symbols from "./compiler/symbols";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { fields } from "../cachedData/fields";
-
-type FieldMap = { [name: string]: WorkItemField };
+import { fields, FieldLookup } from "../cachedData/fields";
 
 function insert(line: string, text: string) {
     const match = line.match(/(\s*)(.*)/);
@@ -15,11 +13,11 @@ function insert(line: string, text: string) {
 function tabs(tab: string, indent: number) {
     return Array(indent + 1).join(tab);
 }
-function formatField(field: Symbols.Field, fields: FieldMap): string {
+function formatField(field: Symbols.Field, fields: FieldLookup): string {
     const foundField = fields[field.identifier.text.toLocaleLowerCase()];
     return `[${foundField ? foundField.referenceName : field.identifier.text}]`;
 }
-function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap, tab: string): string[] {
+function formatFieldList(fieldList: Symbols.FieldList, fields: FieldLookup, tab: string): string[] {
     const lines: string[] = [];
     let currFieldList: Symbols.FieldList | undefined = fieldList;
     while (currFieldList) {
@@ -32,7 +30,7 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldMap, tab: st
 function formatNumber(num: Symbols.Number) {
     return (num.minus ? "-" : "") + num.digits.text;
 }
-function formatValue(value: Symbols.Value, fields: FieldMap): string {
+function formatValue(value: Symbols.Value, fields: FieldLookup): string {
     if (value.value instanceof Symbols.Number) {
         return formatNumber(value.value);
     } else if (value.value instanceof Symbols.String) {
@@ -55,7 +53,7 @@ function formatValue(value: Symbols.Value, fields: FieldMap): string {
     }
     throw new Error("Unkown value");
 }
-function formatValueList(valueList: Symbols.ValueList, fields: FieldMap): string {
+function formatValueList(valueList: Symbols.ValueList, fields: FieldLookup): string {
     const valueStrs: string[] = [];
     let currValueList: Symbols.ValueList | undefined = valueList;
     while (currValueList) {
@@ -93,7 +91,7 @@ function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
     throw new Error("Unexpected conditional operator");
 }
 function formatCondition(condition: Symbols.ConditionalExpression | Symbols.LinkCondition,
-                         tab: string, indent: number, fields: FieldMap): string[] {
+                         tab: string, indent: number, fields: FieldLookup): string[] {
     if (condition.expression) {
         return [
             tabs(tab, indent) + "(",
@@ -119,7 +117,7 @@ function formatCondition(condition: Symbols.ConditionalExpression | Symbols.Link
     return [];
 }
 function formatExpression(logicalExpression: Symbols.LogicalExpression | Symbols.LinkExpression,
-                          tab: string, indent: number, fields: FieldMap): string[] {
+                          tab: string, indent: number, fields: FieldLookup): string[] {
     const lines: string[] = formatCondition(logicalExpression.condition, tab, indent, fields);
     if (logicalExpression.everNot instanceof Symbols.Ever) {
         lines[0] = insert(lines[0], "EVER ");
@@ -135,8 +133,8 @@ function formatExpression(logicalExpression: Symbols.LogicalExpression | Symbols
     return lines;
 }
 function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList,
-                                fields: FieldMap, tab: string): string[] {
-    let lines: string[] = [];
+                                fields: FieldLookup, tab: string): string[] {
+    const lines: string[] = [];
     let currOrderBy: Symbols.OrderByFieldList | Symbols.LinkOrderByFieldList | undefined = orderBy;
     while (currOrderBy) {
         const field = formatField(currOrderBy.field, fields);
@@ -170,7 +168,7 @@ function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.Link
 }
 function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbols.RecursiveSelect,
                       tab: string,
-                      fields: FieldMap): string[] {
+                      fields: FieldLookup): string[] {
     const lines: string[] = [];
     lines.push("SELECT");
     lines.push(...formatFieldList(select.fieldList, fields, tab));
@@ -218,7 +216,7 @@ function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbol
     return lines;
 }
 
-function formatSync(editor: monaco.editor.IStandaloneCodeEditor, fieldMap: FieldMap) {
+function formatSync(editor: monaco.editor.IStandaloneCodeEditor, FieldLookup: FieldLookup) {
     const model = editor.getModel();
     const tab = model.getOneIndent();
 
@@ -227,7 +225,7 @@ function formatSync(editor: monaco.editor.IStandaloneCodeEditor, fieldMap: Field
     if (parseTree instanceof Symbols.FlatSelect ||
         parseTree instanceof Symbols.OneHopSelect ||
         parseTree instanceof Symbols.RecursiveSelect) {
-        lines = formatSelect(parseTree, tab, fieldMap);
+        lines = formatSelect(parseTree, tab, FieldLookup);
     } else {
         // syntax error, not going to format
         return;
@@ -246,15 +244,10 @@ export function format(editor: monaco.editor.IStandaloneCodeEditor): void {
     // Don't wait for fields but use if available
     if (fields.isLoaded()) {
         fields.getValue().then(fields => {
-            const fieldMap: FieldMap = {};
-            for (const field of fields) {
-                fieldMap[field.name.toLocaleLowerCase()] =
-                    fieldMap[field.referenceName.toLocaleLowerCase()] = field;
-            }
-            formatSync(editor, fieldMap);
+            formatSync(editor, fields);
         });
     } else {
-        formatSync(editor, {});
+        formatSync(editor, new FieldLookup([]));
         // Queue fields get now;
         fields.getValue();
     }

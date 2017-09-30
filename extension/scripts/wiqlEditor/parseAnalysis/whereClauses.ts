@@ -1,6 +1,6 @@
 import { ICompletionContext } from "../completion/completionContext";
 import * as Symbols from "../compiler/symbols";
-import { equalFields, fields } from "../../cachedData/fields";
+import { fields, FieldLookup } from "../../cachedData/fields";
 import { IParseResults } from "../compiler/parser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { projects } from "../../cachedData/projects";
@@ -29,8 +29,8 @@ function getConditionalExpressions(logical: Symbols.LogicalExpression) {
     return conditionals;
 }
 
-function getProjects(fields: WorkItemField[], conditionals: Symbols.ConditionalExpression[]): string[] {
-    const projectConditions = conditionals.filter(c => c.field && equalFields("System.TeamProject", c.field.identifier.text, fields));
+function getProjects(fields: FieldLookup, conditionals: Symbols.ConditionalExpression[]): string[] {
+    const projectConditions = conditionals.filter(c => c.field && fields.equalFields("System.TeamProject", c.field.identifier.text));
     if (projectConditions.some(c =>
         !c.conditionalOperator ||
         !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
@@ -52,8 +52,8 @@ function getProjects(fields: WorkItemField[], conditionals: Symbols.ConditionalE
     });
 }
 
-function getWits(fields: WorkItemField[], conditionals: Symbols.ConditionalExpression[]): string[] {
-    const witConditions = conditionals.filter(c => c.field && equalFields("System.WorkItemType", c.field.identifier.text, fields));
+function getWits(fields: FieldLookup, conditionals: Symbols.ConditionalExpression[]): string[] {
+    const witConditions = conditionals.filter(c => c.field && fields.equalFields("System.WorkItemType", c.field.identifier.text));
     if (witConditions.some(c =>
         !c.conditionalOperator ||
         // TODO also allow in group
