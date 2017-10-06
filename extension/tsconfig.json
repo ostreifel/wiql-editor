@@ -15,7 +15,6 @@
     "files": [
         "scripts/cachedData/CachedValue.ts",
         "scripts/cachedData/fields.ts",
-        "scripts/cachedData/fullWorkItemTypes.ts",
         "scripts/cachedData/identities.ts",
         "scripts/cachedData/identities/extensionCache.ts",
         "scripts/cachedData/identities/getIdentities.ts",

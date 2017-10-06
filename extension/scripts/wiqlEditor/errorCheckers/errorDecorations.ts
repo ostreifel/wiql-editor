@@ -4,7 +4,7 @@ import { IParseResults, ParseError } from "../compiler/parser";
 export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;
     let endToken: Symbols.Token | null = null;
-    const symbols = [symbol];
+    const symbols = symbol instanceof Array ? symbol : [symbol];
     while (symbols.length > 0) {
         const sym = symbols.pop();
         if (sym instanceof Symbols.Token) {

@@ -23,7 +23,9 @@ export class LinkTypeCountChecker implements IErrorChecker {
                 if (parseResult.matchingChildren) {
                     symbols.push(parseResult.matchingChildren);
                 }
-                errors.push(toDecoration(symbols, "Tree query must contain at least 1 link type"));
+                if (symbols.length > 0) {
+                    errors.push(toDecoration(symbols, "Tree query must contain at least 1 link type"));
+                }
             } else if (linkConditions.length > 1) {
                 for (const linkCondition of linkConditions.slice(1)) {
                     errors.push(toDecoration(linkCondition, "Too many link types in tree query"));
