@@ -4,11 +4,9 @@ import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { AppInsights } from "applicationinsights-js";
 import { trackPage, trackEvent } from "../events";
-// import { getFullWorkItemType } from "../cachedData/fullWorkItemTypes";
 
 trackEvent("pageLoad");
 
-// getFullWorkItemType(VSS.getWebContext().project.name, "Bug");
 function loadWorkItems(result: WorkItemQueryResult) {
     if (result.workItems.length === 0) {
         setMessage("No work items found");
