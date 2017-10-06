@@ -14,17 +14,20 @@ class WorkItemRow extends React.Component<{
     fields: FieldLookup,
 }, {}> {
     render() {
+        const { fields, columns, wi, rel} = this.props;
+
         const uri = VSS.getWebContext().host.uri;
         const project = VSS.getWebContext().project.name;
-        const wiUrl = `${uri}${project}/_workitems?id=${this.props.wi.id}&_a=edit&fullScreen=true`;
+        const wiUrl = `${uri}${project}/_workitems?id=${wi.id}&_a=edit&fullScreen=true`;
 
         const tds: JSX.Element[] = [];
-        if (this.props.rel) {
-            tds.push(<div className={"cell"} title={"Link Type"}>{this.props.rel}</div>);
+        if (rel) {
+            tds.push(<div className={"cell"} title={"Link Type"}>{rel}</div>);
         }
-        for (const fieldRef of this.props.columns) {
-            let value = this.props.wi.fields[fieldRef.referenceName];
-            if (this.props.fields[fieldRef.referenceName].type === FieldType.DateTime) {
+        for (const fieldRef of columns) {
+            let value = wi.fields[fieldRef.referenceName];
+            const field = fields.getField(fieldRef.referenceName);
+            if (field && field.type === FieldType.DateTime) {
                 const date = parseDateString(value);
                 value = localeFormat(date);
             }

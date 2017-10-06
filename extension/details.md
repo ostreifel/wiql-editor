@@ -16,6 +16,8 @@ Be sure to leave a rating if you found this extension to be useful.
 [![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)
 
 # Change Log
+(10/05/17) 1.7.47 Fix issue running queries  
+(09/30/17) 1.7.46 Improve completion speed  
 (06/02/17) 1.7.15 Work item type descriptions when filtering on wit  
 (06/01/17) 1.7.7 Detect custom identity fields as such.  
 (05/30/17) 1.7.5 Use query clauses to give better hover field descriptions  
