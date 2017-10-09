@@ -19,6 +19,10 @@ export class SyntaxErrorChecker implements IErrorChecker {
         let errorToken: Symbols.Token;
         let hoverMessage: string;
         if (parseResult.errorToken instanceof Symbols.EOF) {
+            // Query === "", don't try to highlight
+            if (!parseResult.errorToken.prev) {
+                return Q([]);
+            }
             errorToken = parseResult.errorToken.prev;
             hoverMessage = parseResult.expectedTokens.length === 1 ?
                 `Should be followed by ${parseResult.expectedTokens[0]}` :

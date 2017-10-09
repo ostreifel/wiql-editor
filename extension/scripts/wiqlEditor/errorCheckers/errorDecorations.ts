@@ -19,7 +19,7 @@ export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
         }
     }
     if (!startToken || !endToken) {
-        throw new Error("Could not find token in symbol");
+        throw new Error("Could not find token in symbol " + JSON.stringify(symbol));
     }
     return new monaco.Range(
         startToken.line + 1,
