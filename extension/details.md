@@ -1,3 +1,5 @@
+[![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)  
+
 Search work items with a the expressiveness of the work item query language.
 
 Explore the wiql syntax on the wiql playground  
@@ -12,8 +14,6 @@ Save changes to the query when finished.
  ![wiql dialog](img/dialog.png)
 
 
-Be sure to leave a rating if you found this extension to be useful.  
-[![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)
 
 # Change Log
 (10/05/17) 1.7.47 Fix issue running queries  

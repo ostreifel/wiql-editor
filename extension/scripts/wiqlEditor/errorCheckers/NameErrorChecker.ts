@@ -1,7 +1,7 @@
 import { IErrorChecker } from "./IErrorChecker";
 import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
-import { definedVariables } from "../wiqlDefinition";
+import { definedVariables, lowerDefinedVariables } from "../wiqlDefinition";
 import { toDecoration } from "./errorDecorations";
 import { fields } from "../../cachedData/fields";
 import { CachedValue } from "../../cachedData/CachedValue";
@@ -25,7 +25,7 @@ export class NameErrorChecker implements IErrorChecker {
             // variable name errors
             const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
             for (const variable of variables) {
-                if (!(variable.text.toLocaleLowerCase() in definedVariables)) {
+                if (!(variable.text.toLocaleLowerCase() in lowerDefinedVariables)) {
                     errors.push(toDecoration(variable, `Valid names are include {${Object.keys(definedVariables).join(", ")}}`));
                 }
             }

@@ -4,7 +4,7 @@ import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Symbols from "../compiler/symbols";
-import { definedVariables } from "../wiqlDefinition";
+import { lowerDefinedVariables } from "../wiqlDefinition";
 import { fields, FieldLookup } from "../../cachedData/fields";
 import { CachedValue } from "../../cachedData/CachedValue";
 import * as Q from "q";
@@ -146,7 +146,7 @@ export class TypeErrorChecker implements IErrorChecker {
         const error = toDecoration(value.value, `Expected value of type ${Symbols.getSymbolName(symbolType)}`);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
         if (value.value instanceof Symbols.Variable) {
-            const varType = this.mapType(definedVariables[value.value.text.toLocaleLowerCase()]);
+            const varType = this.mapType(lowerDefinedVariables[value.value.text.toLocaleLowerCase()]);
             return varType === symbolType ? [] : [error];
         }
         switch (expectedType) {

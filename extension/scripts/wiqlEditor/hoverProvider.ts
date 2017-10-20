@@ -1,7 +1,7 @@
 import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 import { parse, IParseResults } from "./compiler/parser";
 import * as Symbols from "./compiler/symbols";
-import { definedVariables } from "./wiqlDefinition";
+import { lowerDefinedVariables } from "./wiqlDefinition";
 import { allProjectWits, getWitsByProjects } from "../cachedData/workItemTypes";
 import { fields } from "../cachedData/fields";
 import * as Q from "q";
@@ -48,10 +48,10 @@ function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResult
 function getVariableHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): monaco.languages.Hover | undefined {
     const variable = hoverSymbols.filter(s => s instanceof Symbols.Variable)[0] as Symbols.Variable;
     if (variable) {
-        const matchedVariable = variable.text.toLocaleLowerCase() in definedVariables;
+        const matchedVariable = variable.text.toLocaleLowerCase() in lowerDefinedVariables;
         if (matchedVariable) {
             const hovers: monaco.MarkedString[] = [];
-            hovers.push(FieldType[definedVariables[variable.text.toLocaleLowerCase()]]);
+            hovers.push(FieldType[lowerDefinedVariables[variable.text.toLocaleLowerCase()]]);
             const range = toRange(variable);
             return { contents: hovers, range };
         }

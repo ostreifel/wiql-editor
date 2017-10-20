@@ -6,8 +6,11 @@ export const definedVariables = {
     "@project": FieldType.String,
     "@today": FieldType.DateTime,
     "@follows": FieldType.Integer,
+    "@RecentMentions": FieldType.Integer,
     "[any]": FieldType.String
 };
+export const lowerDefinedVariables: {[lowerName: string]: FieldType} = Object.keys(definedVariables)
+.reduce((arr, val) => {arr[val.toLocaleLowerCase()] = definedVariables[val]; return arr; }, {});
 
 export const def: monaco.languages.ILanguageExtensionPoint = {
     id: "wiql",
