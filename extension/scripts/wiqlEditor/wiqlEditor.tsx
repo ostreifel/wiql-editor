@@ -8,6 +8,7 @@ import { importWiq, exportWiq } from "./importExport";
 import { DelayedFunction } from "VSS/Utils/Core";
 import * as ReactDom from "react-dom";
 import * as React from "react";
+import { trackEvent } from "../events";
 
 function renderToolbar(callback: () => void) {
     const elem = document.getElementById("header-bar");
@@ -38,6 +39,7 @@ export function setupEditor(target: HTMLElement, onChange?: (errorCount: number)
         }
         $(".open-in-queries").show().click(() => {
             const wiql = editor.getModel().getValue();
+            trackEvent("openInQueries", {wiqlLength: String(wiql.length)});
             const {host, project} = VSS.getWebContext();
             const url = `${host.uri}/${project.id}/_queries/query/?wiql=${encodeURIComponent(wiql)}`;
             window.open(url, "_blank");

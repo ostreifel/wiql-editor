@@ -1,3 +1,5 @@
+import { trackEvent } from "../events";
+
 function toDocument(wiql: string): string {
     const rootDoc = jQuery.parseXML(`<WorkItemQuery Version="1"/>`);
     const root = rootDoc.documentElement;
@@ -41,6 +43,7 @@ export function importWiq(editor: monaco.editor.IStandaloneCodeEditor) {
                 forceMoveMarkers: true,
             };
             model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
+            trackEvent("importWiq", {wiqlLength: String(wiql.length)});
         };
         reader.readAsText(files[0]);
         $(".wiq-input").val("");
@@ -52,6 +55,7 @@ export function exportWiq(editor: monaco.editor.IStandaloneCodeEditor, queryName
     if (name.toLocaleLowerCase().indexOf(".wiq", name.length - 4) < 0) {
         name += ".wiq";
     }
+    trackEvent("exportWiq", {wiqlLength: String(documentStr.length)});
 
     // IE workaround
     if (navigator.msSaveBlob) {
