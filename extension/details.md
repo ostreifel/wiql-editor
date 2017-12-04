@@ -9,13 +9,14 @@ Use the wiql editor to modify existing queries
 
 ![context menu](img/contextMenu.png) ![Results menu bar](img/resultsBar.png)
 
-Save changes to the query when finished.
+Save changes to the query when finished.  
 
  ![wiql dialog](img/dialog.png)
 
 
 
 # Change Log
+(12/03/17) 1.7.61 Add open in queries button to playground  
 (10/05/17) 1.7.47 Fix issue running queries  
 (09/30/17) 1.7.46 Improve completion speed  
 (06/02/17) 1.7.15 Work item type descriptions when filtering on wit  

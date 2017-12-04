@@ -25,7 +25,7 @@ export function showDialog(query: IQuery) {
         function save() {
                 console.log(this);
                 okCallback().then(() => {
-                    VSS.getService(VSS.ServiceIds   .Navigation).then(function (navigationService: IHostNavigationService) {
+                    VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
                         navigationService.reload();
                     });
                 }, (error: TfsError) => {

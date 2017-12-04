@@ -9,7 +9,7 @@ import { DelayedFunction } from "VSS/Utils/Core";
 import * as ReactDom from "react-dom";
 import * as React from "react";
 
-function setVersion() {
+function renderToolbar(callback: () => void) {
     const elem = document.getElementById("header-bar");
     if (!elem) {
         return;
@@ -20,6 +20,7 @@ function setVersion() {
                     <input className="wiq-input" accept=".wiq" type="file"/>
                     <button onClick={() => $(".wiq-input").click()}>Import</button>
                     <button className="wiq-export">Export</button>
+                    <button className="open-in-queries" hidden>Open in queries</button>
                 </span>
                 <span className="links">
                     <a href="https://marketplace.visualstudio.com/items?itemName=ottostreifel.wiql-editor" target="_blank">Review</a>{" | "}
@@ -27,11 +28,21 @@ function setVersion() {
                     <a href="mailto:wiqleditor@microsoft.com" target="_blank">Feedback and questions</a>
                 </span>
             </div>
-        , elem);
+        , elem, callback);
 }
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
-    setVersion();
+    renderToolbar(() => {
+        if (queryName) {
+            return;
+        }
+        $(".open-in-queries").show().click(() => {
+            const wiql = editor.getModel().getValue();
+            const {host, project} = VSS.getWebContext();
+            const url = `${host.uri}/${project.id}/_queries/query/?wiql=${encodeURIComponent(wiql)}`;
+            window.open(url, "_blank");
+        });
+    });
     monaco.languages.register(Wiql.def);
     monaco.languages.onLanguage(Wiql.def.id, () => {
         monaco.languages.setMonarchTokensProvider(Wiql.def.id, Wiql.language);
