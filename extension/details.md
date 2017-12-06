@@ -16,6 +16,7 @@ Save changes to the query when finished.
 
 
 # Change Log
+(12/06/17) 1.7.68 update version of monaco editor  
 (12/03/17) 1.7.61 Add open in queries button to playground  
 (10/05/17) 1.7.47 Fix issue running queries  
 (09/30/17) 1.7.46 Improve completion speed  
