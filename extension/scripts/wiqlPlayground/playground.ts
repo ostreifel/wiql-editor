@@ -97,7 +97,7 @@ editor.addAction({
     }
 });
 function getAction(id: string) {
-    return () => editor.getActions().filter(a => a.id === id)[0].run();
+    return () => editor.getActions().filter(a => a.id.match(`:${id}$`))[0].run();
 }
 $(".run-button").click(getAction("run"));
 $(".format-button").click(getAction("format"));
