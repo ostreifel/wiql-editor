@@ -23,6 +23,9 @@
     cursor: pointer;
     color: initial;
 }
+#query-results div.table a.row:nth-child(even):not(:hover) {
+    background: #F2F2F2;
+}
 #query-results .cell {
     display: table-cell;
     padding-right: 20px;
