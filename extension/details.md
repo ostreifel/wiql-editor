@@ -1,6 +1,6 @@
 [![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)  
 
-Search work items with a the expressiveness of the work item query language.
+Search work items with the expressiveness of the work item query language.
 
 Explore the wiql syntax on the wiql playground  
 ![query playground](img/playground.png)
