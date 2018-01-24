@@ -1,4 +1,3 @@
-[![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)  
 
 Search work items with the expressiveness of the work item query language.
 
@@ -14,6 +13,7 @@ Save changes to the query when finished.
  ![wiql dialog](img/dialog.png)
 
 
+[![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)  
 
 # Change Log
 (12/08/17) 1.7.70 Fix bug in run/format buttons on playground  

@@ -6,7 +6,7 @@
     width: 5px !important;
 }
 #query-results {
-    font-size: 20px;
+    font-size: 15px;
 }
 #query-results .error-message {
     color: red;
