@@ -50,6 +50,7 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
 function search() {
     const wiqlText = editor.getValue();
     setMessage("Running query...");
+    trackEvent("RunQuery", {wiqlLength: "" + wiqlText.length});
     const context = VSS.getWebContext();
     getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(
         result => {

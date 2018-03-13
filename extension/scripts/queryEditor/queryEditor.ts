@@ -33,6 +33,7 @@ function saveQuery(): IPromise<any> {
         path: configuration.query.path,
         name: configuration.query.name,
     };
+    trackEvent("SaveQuery", {wiqlLength: "" + editor.getValue().length, isNew: "" + !configuration.query.id});
     if (configuration.query.id) {
         return getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
     } else {
