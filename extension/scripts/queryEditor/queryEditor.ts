@@ -2,7 +2,8 @@ import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { IContextOptions, ICallbacks } from "../queryContext/contextContracts";
-import { trackEvent } from "../events";
+import { trackEvent, flushNow } from "../events";
+import { delay } from "VSS/Utils/Core";
 
 trackEvent("pageLoad");
 const configuration: IContextOptions = VSS.getConfiguration();
@@ -22,6 +23,15 @@ editor.addAction({
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
     run: e => {
         configuration.save();
+        return null as any;
+    }
+});
+editor.addAction({
+    id: "exit",
+    contextMenuGroupId: "navigation",
+    label: "Exit",
+    run: e => {
+        configuration.close();
         return null as any;
     }
 });

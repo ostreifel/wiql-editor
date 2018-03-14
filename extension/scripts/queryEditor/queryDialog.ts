@@ -12,7 +12,6 @@ function saveErrorMessage(error: TfsError, query: IQuery) {
 }
 
 export function showDialog(query: IQuery) {
-
     VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
         console.log(query);
         let okCallback: () => IPromise<any> = () => {
@@ -22,6 +21,10 @@ export function showDialog(query: IQuery) {
         let closeDialog = () => {
             console.log("could not find close dialog function");
         };
+        function close() {
+            trackEvent("keyboardExit");
+            closeDialog();
+        }
         function save() {
                 console.log(this);
                 okCallback().then(() => {
@@ -39,7 +42,8 @@ export function showDialog(query: IQuery) {
         }
         const context: IContextOptions = {
             query: query,
-            save
+            save,
+            close,
         };
         const dialogOptions: IHostDialogOptions = {
             title: query.name,

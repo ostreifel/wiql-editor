@@ -8,6 +8,7 @@ export interface IQuery {
 export interface IContextOptions {
     query: IQuery;
     save: () => void;
+    close: () => void;
 }
 
 export interface ICallbacks {
