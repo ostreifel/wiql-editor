@@ -68,11 +68,11 @@ function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
-function pushStringSuggestions(
+async function pushStringSuggestions(
     ctx: ICompletionContext,
-    strings: Q.IPromise<string[]>,
+    strings: PromiseLike<string[]>,
     suggestions: monaco.languages.CompletionItem[]
-): Q.IPromise<monaco.languages.CompletionItem[]> {
+): Promise<monaco.languages.CompletionItem[]> {
     const inString = isInsideString(ctx);
     return strings.then(strings => {
         for (const str of strings) {
@@ -105,10 +105,10 @@ function pushStringSuggestions(
 /**
  * Suggestions not related to completing the currentIdentifier
  */
-export function getSuggestions(
+export async function getSuggestions(
     ctx: ICompletionContext,
     position: monaco.Position
-): Q.IPromise<monaco.languages.CompletionItem[]> {
+): Promise<monaco.languages.CompletionItem[]> {
     const suggestions: monaco.languages.CompletionItem[] = [];
     // Don't symbols complete inside strings
     if (!isInsideString(ctx)) {

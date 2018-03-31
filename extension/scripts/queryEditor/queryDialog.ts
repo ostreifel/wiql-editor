@@ -14,9 +14,8 @@ function saveErrorMessage(error: TfsError, query: IQuery) {
 export function showDialog(query: IQuery) {
     VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
         console.log(query);
-        let okCallback: () => IPromise<any> = () => {
+        let okCallback: () => Promise<any> = async () => {
             console.log("ok callback not set");
-            return Q(null);
         };
         let closeDialog = () => {
             console.log("could not find close dialog function");
@@ -26,7 +25,6 @@ export function showDialog(query: IQuery) {
             closeDialog();
         }
         function save() {
-                console.log(this);
                 okCallback().then(() => {
                     VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
                         navigationService.reload();

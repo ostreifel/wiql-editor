@@ -1,8 +1,6 @@
 {
   "globalDependencies": {
-    "monaco-editor": "github:Microsoft/monaco-editor/monaco.d.ts#25e381f6f912f9a94171263a7792d897458f0d07",
-    "tfs": "npm:vss-web-extension-sdk/typings/tfs.d.ts",
-    "vss": "npm:vss-web-extension-sdk/typings/vss.d.ts"
+    "monaco-editor": "github:Microsoft/monaco-editor/monaco.d.ts#25e381f6f912f9a94171263a7792d897458f0d07"
   },
   "dependencies": {}
 }

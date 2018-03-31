@@ -8,7 +8,7 @@ import { getIdentities } from "./identities/getIdentities";
 
 export const identities: CachedValue<string[]> = new CachedValue(getIdentityStrings);
 
-function getIdentityStrings(): Q.IPromise<string[]> {
+async function getIdentityStrings(): Promise<string[]> {
     return getIdentities().then((identities) =>
         identities.map((m) => m.isContainer ?
             m.displayName :

@@ -9,7 +9,7 @@ import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Q from "q";
 
 export class NameErrorChecker implements IErrorChecker {
-    private readonly validFieldIdentifiers: CachedValue<string[]> = new CachedValue(() => {
+    private readonly validFieldIdentifiers: CachedValue<string[]> = new CachedValue(async () => {
         return fields.getValue().then(fields => {
             const validFieldIdentifiers: string[] = [];
             for (const field of fields.values) {

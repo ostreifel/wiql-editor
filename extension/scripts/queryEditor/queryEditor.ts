@@ -1,3 +1,5 @@
+/// <reference types="vss-web-extension-sdk" />
+
 import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
@@ -35,7 +37,7 @@ editor.addAction({
         return null as any;
     }
 });
-function saveQuery(): IPromise<any> {
+async function saveQuery(): Promise<any> {
     console.log("saving query");
     const context = VSS.getWebContext();
     const queryItem = <QueryHierarchyItem>{
@@ -45,10 +47,10 @@ function saveQuery(): IPromise<any> {
     };
     trackEvent("SaveQuery", {wiqlLength: "" + editor.getValue().length, isNew: "" + !configuration.query.id});
     if (configuration.query.id) {
-        return getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
+        return await getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
     } else {
         const path = configuration.query.isPublic ? "Shared Queries" : "My Queries";
-        return getWitClient().createQuery(queryItem, context.project.name, path);
+        return await getWitClient().createQuery(queryItem, context.project.name, path);
     }
 }
 const callbacks: ICallbacks = {

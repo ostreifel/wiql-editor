@@ -1,4 +1,4 @@
-import { IdentityRef } from "VSS/WebApi/Contracts";
+import { IdentityRef, TeamMember } from "VSS/WebApi/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { WebApiTeam } from "TFS/Core/Contracts";
 import * as Q from "q";
@@ -17,82 +17,78 @@ interface IProjectIdentities {
 }
 
 
-function hardGetAllIdentitiesInTeam(project: { id: string, name: string }, team: WebApiTeam): IPromise<ITeamIdentities> {
+async function hardGetAllIdentitiesInTeam(project: { id: string, name: string }, team: WebApiTeam): Promise<ITeamIdentities> {
     const teamIdentity = <IdentityRef>{ displayName: `[${project.name}]\\${team.name}`, id: team.id, isContainer: true };
-    return getClient().getTeamMembers(project.id, team.id).then(members => {
-        const team: ITeamIdentities = {
-            team: teamIdentity,
-            members,
-        };
-        return team;
-    });
+    const members = await getClient().getTeamMembersWithExtendedProperties(project.id, team.id);
+    const teamIdentities: ITeamIdentities = {
+        team: teamIdentity,
+        members: members.map(m => m.identity),
+    };
+    return teamIdentities;
 }
 
-function hardGetAllIdentitiesInProject(project: { id: string, name: string }): IPromise<IProjectIdentities> {
-    function hardGetAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number): Q.IPromise<IProjectIdentities> {
-        return getClient().getTeams(project.id, 100, skip).then(teams => {
-            const teamPromises = throttlePromises(teams, t => hardGetAllIdentitiesInTeam(project, t), 10) as Q.IPromise<ITeamIdentities[]>;
-            let moreTeams: Q.IPromise<IProjectIdentities | null> = Q(null);
-            if (teams.length === 100) {
-                moreTeams = hardGetAllIdentitiesInProjectImpl(project, skip + 100);
-            }
+async function hardGetAllIdentitiesInProject(project: { id: string, name: string }): Promise<IProjectIdentities> {
+    async function hardGetAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number): Promise<IProjectIdentities> {
+        const teamIds = await getClient().getTeams(project.id, false, 100, skip);
+        const teamPromises = throttlePromises(teamIds, t => hardGetAllIdentitiesInTeam(project, t), 10) as Promise<ITeamIdentities[]>;
+        let moreTeamsPromise: Promise<IProjectIdentities | null> = Promise.resolve(null);
+        if (teamIds.length === 100) {
+            moreTeamsPromise = hardGetAllIdentitiesInProjectImpl(project, skip + 100);
+        }
 
-            return Q.all([teamPromises, moreTeams]).then(([teams, moreTeams]): IProjectIdentities => ({
-                id: project.id,
-                name: project.name,
-                teams: [...teams, ...(moreTeams ? moreTeams.teams : [])],
-            }));
-        });
+        const [teams, moreTeams] = await Promise.all([teamPromises, moreTeamsPromise]);
+        return {
+            id: project.id,
+            name: project.name,
+            teams: [...teams, ...(moreTeams ? moreTeams.teams : [])],
+        };
     }
     return hardGetAllIdentitiesInProjectImpl(project, 0);
 }
 
 function hardGetAllIdentitiesInAllProjects(): IPromise<IProjectIdentities[]> {
     return getClient().getProjects().then(projects =>
-        Q.all(projects.map(p => hardGetAllIdentitiesInProject(p)))
+        Promise.all(projects.map(p => hardGetAllIdentitiesInProject(p)))
     );
 }
 
 const identities: { [key: string]: CachedValue<IdentityRef[]> } = {};
 const identitiesKey = "identities";
-export function getIdentities(project?: { id: string, name: string }): Q.IPromise<IdentityRef[]> {
+export async function getIdentities(project?: { id: string, name: string }): Promise<IdentityRef[]> {
     const key = `${identitiesKey}-${project ? project.name : ""}`;
     if (key in identities) {
         return identities[key].getValue();
     }
-    function tryGetIdentities() {
+    async function tryGetIdentities() {
         function toIdentityArr(projects: IProjectIdentities[]): IdentityRef[] {
             const idMap: { [id: string]: IdentityRef } = {};
             for (const { teams } of projects) {
                 for (const {team, members} of teams) {
                     idMap[team.id] = team;
-                    for(const member of members) {
+                    for (const member of members) {
                         idMap[member.id] = member;
                     }
                 }
             }
             return Object.keys(idMap).map(id => idMap[id]);
         }
-        return ExtensionCache.get<IProjectIdentities[]>(key).then(
-            (identities): Q.IPromise<IdentityRef[]> | IdentityRef[] => {
-                if (identities) {
-                    return toIdentityArr(identities);
-                }
-                const expiration = new Date();
-                expiration.setDate(expiration.getDate() + 7);
-                if (project) {
-                    return hardGetAllIdentitiesInProject(project).then((project): IdentityRef[] => {
-                        ExtensionCache.store(key, [project]);
-                        return toIdentityArr([project])
-                    });
-                } else {
-                    return hardGetAllIdentitiesInAllProjects().then((projects) => {
-                        ExtensionCache.store(key, projects);
-                        return toIdentityArr(projects);
-                    });
-                }
-            }
-        );
+        const identities = await ExtensionCache.get<IProjectIdentities[]>(key)
+        if (identities) {
+            return toIdentityArr(identities);
+        }
+        const expiration = new Date();
+        expiration.setDate(expiration.getDate() + 7);
+        if (project) {
+            return hardGetAllIdentitiesInProject(project).then((project): IdentityRef[] => {
+                ExtensionCache.store(key, [project]);
+                return toIdentityArr([project])
+            });
+        } else {
+            return hardGetAllIdentitiesInAllProjects().then((projects) => {
+                ExtensionCache.store(key, projects);
+                return toIdentityArr(projects);
+            });
+        }
     }
     if (!(key in identities)) {
         identities[key] = new CachedValue(tryGetIdentities);

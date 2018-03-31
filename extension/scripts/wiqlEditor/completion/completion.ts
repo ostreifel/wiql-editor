@@ -57,23 +57,21 @@ function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco
     return null;
 }
 
-function provideCompletionItems(
+async function provideCompletionItems(
     model: monaco.editor.IReadOnlyModel,
     position: monaco.Position,
     token: monaco.CancellationToken
-): Q.IPromise<monaco.languages.CompletionItem[]> {
-    return fields.getValue().then(fields => {
-        const parseNext = parseFromPosition(model, position);
-        console.log(parseNext);
-        if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
-            // valid query, can't suggest
-            return [];
-        }
-        const ctx = createContext(model, parseNext, fields);
-        return getCurrentIdentifierSuggestions(ctx, position) ||
-            getCurrentVariableSuggestions(ctx, position) ||
-            getSuggestions(ctx, position);
-    });
+): Promise<monaco.languages.CompletionItem[]> {
+    const parseNext = parseFromPosition(model, position);
+    console.log(parseNext);
+    if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
+        // valid query, can't suggest
+        return [];
+    }
+    const ctx = createContext(model, parseNext, await fields.getValue());
+    return getCurrentIdentifierSuggestions(ctx, position) ||
+        getCurrentVariableSuggestions(ctx, position) ||
+        getSuggestions(ctx, position);
 }
 
 export const completionProvider: monaco.languages.CompletionItemProvider = {

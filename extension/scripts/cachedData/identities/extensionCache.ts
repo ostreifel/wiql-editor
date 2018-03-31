@@ -13,7 +13,7 @@ interface IExtensionCacheEntry<T> {
 }
 const formatVersion = 2;
 
-export function store<T>(key: string, value: T, expiration?: Date): Q.IPromise<void> {
+export async function store<T>(key: string, value: T, expiration?: Date): Promise<void> {
     const entry: IExtensionCacheEntry<T> = {
         id: key,
         value,
@@ -21,12 +21,11 @@ export function store<T>(key: string, value: T, expiration?: Date): Q.IPromise<v
         expiration: expiration ? expiration.toJSON() : "",
         __etag: -1,
     };
-    return service.getValue().then((dataService): Q.IPromise<void> =>
-        dataService.setDocument(collection, entry).then(() => Q())
-    );
+    const dataService = await service.getValue();
+    await dataService.setDocument(collection, entry);
 }
 
-export function get<T>(key: string): Q.IPromise<T | null> {
+export async function get<T>(key: string): Promise<T | null> {
     return VSS.getService(VSS.ServiceIds.ExtensionData).then((dataService: IExtensionDataService) => {
         return dataService.getDocument(collection, key).then((doc: IExtensionCacheEntry<T>) => {
             if (doc.formatVersion !== formatVersion) {

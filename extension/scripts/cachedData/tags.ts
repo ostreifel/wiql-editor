@@ -4,10 +4,8 @@ import * as Q from "q";
 import { callApi } from "../RestCall";
 
 export const allTags: CachedValue<string[]> = new CachedValue(getAllTags);
-function getAllTags() {
-    return projects.getValue().then(projects =>
-        getTagsForProjects(projects.map(p => p.name)
-        ));
+async function getAllTags() {
+    return await getTagsForProjects((await projects.getValue()).map(p => p.name));
 }
 
 const tagsMap: { [projectId: string]: CachedValue<string[]> } = {};
@@ -20,7 +18,7 @@ export function getTagsForProjects(projectIds: string[]) {
             tagsMap[projectId] = new CachedValue(() => getTagsForProject(projectId));
         }
     }
-    return Q.all(projectIds.map(p => getTagsForProject(p))).then(tagsArr => {
+    return Promise.all(projectIds.map(p => getTagsForProject(p))).then(tagsArr => {
         const allTags: { [tag: string]: void } = {};
         for (const tags of tagsArr) {
             for (const tag of tags) {
@@ -42,7 +40,7 @@ interface ITag {
     url: string;
 }
 
-function getTagsForProject(project: string): Q.IPromise<string[]> {
+async function getTagsForProject(project: string): Promise<string[]> {
     const webContext = VSS.getWebContext();
     const tagsUrl = webContext.account.uri + "DefaultCollection/_apis/tagging/scopes/" + project + "/tags?api-version=1.0";
     const deferredTags = Q.defer<string[]>();
@@ -51,5 +49,5 @@ function getTagsForProject(project: string): Q.IPromise<string[]> {
     }, (error, errorThrown, status) => {
         deferredTags.reject(error);
     });
-    return deferredTags.promise;
+    return await deferredTags.promise;
 }

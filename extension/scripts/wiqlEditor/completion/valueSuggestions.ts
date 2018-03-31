@@ -34,16 +34,15 @@ function getStateSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
     });
 }
 
-function getTagSuggestions(ctx: ICompletionContext) {
-    return getFilters(ctx.getAssumedParse()).then(({ projects, workItemTypes }) => {
-        if (projects.length === 0) {
-            return witNames.getValue();
-        }
-        return getTagsForProjects(projects);
-    });
+async function getTagSuggestions(ctx: ICompletionContext) {
+    const { projects, workItemTypes } = await getFilters(ctx.getAssumedParse())
+    if (projects.length === 0) {
+        return witNames.getValue();
+    }
+    return getTagsForProjects(projects);
 }
 
-export function getStringValueSuggestions(ctx: ICompletionContext): Q.IPromise<string[]> {
+export async function getStringValueSuggestions(ctx: ICompletionContext): Promise<string[]> {
     const expectingString = ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
     if (isIdentityField(ctx.fields, ctx.fieldRefName) && expectingString) {
         return identities.getValue();

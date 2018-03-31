@@ -1,63 +1,16 @@
 {
     "compilerOptions": {
-        "module": "umd",
-        "sourceMap": false,
+        "module": "es6",
+        "moduleResolution": "node",
         "rootDir": "./scripts",
         "target": "es5",
+        "noImplicitAny": false,
         "jsx": "react",
-        "strictNullChecks": true
-    },
-    "filesGlob": [
-        "./scripts/**/*.ts",
-        "!**/*.tests.ts",
-        "./typings/index.d.ts"
-    ],
-    "files": [
-        "scripts/cachedData/CachedValue.ts",
-        "scripts/cachedData/fields.ts",
-        "scripts/cachedData/identities.ts",
-        "scripts/cachedData/identities/extensionCache.ts",
-        "scripts/cachedData/identities/getIdentities.ts",
-        "scripts/cachedData/identities/throttlePromises.ts",
-        "scripts/cachedData/nodes.ts",
-        "scripts/cachedData/projects.ts",
-        "scripts/cachedData/relationTypes.ts",
-        "scripts/cachedData/tags.ts",
-        "scripts/cachedData/workitemTypeCategories.ts",
-        "scripts/cachedData/workItemTypes.ts",
-        "scripts/events.ts",
-        "scripts/queryContext/contextContracts.ts",
-        "scripts/queryContext/queryContext.ts",
-        "scripts/queryEditor/queryDialog.ts",
-        "scripts/queryEditor/queryEditor.ts",
-        "scripts/RestCall.ts",
-        "scripts/wiqlEditor/compiler/parser.ts",
-        "scripts/wiqlEditor/compiler/symbols.ts",
-        "scripts/wiqlEditor/compiler/tokenizer.ts",
-        "scripts/wiqlEditor/compiler/tokenPatterns.ts",
-        "scripts/wiqlEditor/compiler/wiqlTable.ts",
-        "scripts/wiqlEditor/compiler/wiqlTableContracts.ts",
-        "scripts/wiqlEditor/completion/commonCompletions.ts",
-        "scripts/wiqlEditor/completion/completion.ts",
-        "scripts/wiqlEditor/completion/completionContext.ts",
-        "scripts/wiqlEditor/completion/suggestions.ts",
-        "scripts/wiqlEditor/completion/valueSuggestions.ts",
-        "scripts/wiqlEditor/errorCheckers/AllowedValuesChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/ErrorChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/errorDecorations.ts",
-        "scripts/wiqlEditor/errorCheckers/IErrorChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/LinkTypeCountChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/NameErrorChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/PrefixChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/SyntaxErrorChecker.ts",
-        "scripts/wiqlEditor/errorCheckers/TypeErrorChecker.ts",
-        "scripts/wiqlEditor/formatter.ts",
-        "scripts/wiqlEditor/hoverProvider.ts",
-        "scripts/wiqlEditor/importExport.ts",
-        "scripts/wiqlEditor/parseAnalysis/findSymbol.ts",
-        "scripts/wiqlEditor/parseAnalysis/whereClauses.ts",
-        "scripts/wiqlEditor/wiqlDefinition.ts",
-        "scripts/wiqlPlayground/playground.ts",
-        "typings/index.d.ts"
-    ]
+        "sourceMap": true,
+        "lib": [
+            "es2015.promise",
+            "dom",
+            "es5"
+        ]
+    }
 }

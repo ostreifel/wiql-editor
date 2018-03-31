@@ -4,7 +4,7 @@ export class CachedValue<T> {
     private value: T;
     private isValueSet: boolean = false;
     private readonly deferred: Q.Deferred<T>[] = [];
-    constructor(private readonly generator: () => Q.IPromise<T>) {}
+    constructor(private readonly generator: () => PromiseLike<T>) {}
     public getValue(): Q.IPromise<T> {
         if (this.isValueSet) {
             return Q(this.value);

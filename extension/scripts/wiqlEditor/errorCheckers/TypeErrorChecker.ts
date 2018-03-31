@@ -103,10 +103,8 @@ export function getFieldComparisonLookup(fields: FieldLookup) {
     return comparisonLookupCache[fields.lookupId];
 }
 export class TypeErrorChecker implements IErrorChecker {
-    private readonly fieldLookup: CachedValue<IFieldLookup> = new CachedValue(() =>
-        fields.getValue().then(fields =>
-            getFieldComparisonLookup(fields)
-        )
+    private readonly fieldLookup: CachedValue<IFieldLookup> = new CachedValue(async () =>
+        getFieldComparisonLookup(await fields.getValue()),
     );
     private checkComparisonOperator(fieldLookup: IFieldLookup, comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
         const operatorToken = comp.conditionToken;

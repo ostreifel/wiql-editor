@@ -11,20 +11,19 @@ export interface ProjectNodes {
 }
 export const iterationNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Iterations));
 export const areaNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Areas));
-function getTreeNodes(type: TreeStructureGroup): Q.IPromise<ProjectNodes[]> {
-    return projects.getValue().then((projs): Q.IPromise<ProjectNodes[]> => {
-        const projPromises = projs.map((project): Q.IPromise<ProjectNodes> =>
-            getWitClient().getClassificationNode(project.name, type, undefined, 2147483647).then(
-                (iterationNode): ProjectNodes => ({project, iterationNode})
-            )
-        );
-        return Q.all(projPromises);
-    });
+async function getTreeNodes(type: TreeStructureGroup): Promise<ProjectNodes[]> {
+    const projs = await projects.getValue();
+    const projPromises = projs.map(async (project): Promise<ProjectNodes> =>
+        getWitClient().getClassificationNode(project.name, type, undefined, 2147483647).then(
+            (iterationNode): ProjectNodes => ({project, iterationNode})
+        )
+    );
+    return Promise.all(projPromises);
 }
 
 export const iterationStrings: CachedValue<string[]> = new CachedValue(() => getTreeStrings(iterationNodesByProject));
 export const areaStrings: CachedValue<string[]> = new CachedValue(() => getTreeStrings(areaNodesByProject));
-function getTreeStrings(nodes: CachedValue<ProjectNodes[]>) {
+async function getTreeStrings(nodes: CachedValue<ProjectNodes[]>) {
     interface QueuedNode {
         path: string;
         node: WorkItemClassificationNode;

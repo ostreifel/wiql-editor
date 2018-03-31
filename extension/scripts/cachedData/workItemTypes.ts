@@ -10,15 +10,13 @@ export interface ProjectWorkItemsTypes {
     workItemTypes: WorkItemType[];
 }
 export const allProjectWits: CachedValue<ProjectWorkItemsTypes[]> = new CachedValue(getWits);
-function getWits() {
-    return projects.getValue().then(projects => {
-        const witPromises = projects.map(project =>
-            getWitsByProjects([project.name]).then(workItemTypes => {
-                return { project, workItemTypes } as ProjectWorkItemsTypes;
-            })
-        );
-        return Q.all(witPromises);
-    });
+async function getWits() {
+    const witPromises = (await projects.getValue()).map(project =>
+        getWitsByProjects([project.name]).then(workItemTypes => {
+            return { project, workItemTypes } as ProjectWorkItemsTypes;
+        })
+    );
+    return await Q.all(witPromises);
 }
 
 const projectsToWit: { [project: string]: CachedValue<WorkItemType[]> } = {};
@@ -70,8 +68,8 @@ export function getStatesByProjects(projects: string[], searchWits: string[]): Q
 }
 
 export const states: CachedValue<string[]> = new CachedValue(getStates);
-function getStates() {
-    return allProjectWits.getValue().then(witsByProj => {
+async function getStates() {
+    return await allProjectWits.getValue().then(witsByProj => {
         const states: { [state: string]: void } = {};
         for (const { workItemTypes } of witsByProj) {
             for (const { transitions } of workItemTypes) {
@@ -92,8 +90,8 @@ function getStates() {
 }
 
 export const witNames: CachedValue<string[]> = new CachedValue(getWitNames);
-function getWitNames() {
-    return allProjectWits.getValue().then(witsByProj => {
+async function getWitNames() {
+    return await allProjectWits.getValue().then(witsByProj => {
         const wits: { [name: string]: void } = {};
         for (const { workItemTypes } of witsByProj) {
             for (const { name } of workItemTypes) {
