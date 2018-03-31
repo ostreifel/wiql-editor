@@ -31,7 +31,7 @@
     <div id="header-bar"></div>
     <div id="wiql-box"></div>
 
-    <script src="build/VSS.SDK.min.js"></script>
+    <script src="dist/VSS.SDK.min.js"></script>
     <script type="text/javascript">
         // Initialize framework 
         VSS.init({
@@ -40,12 +40,12 @@
             configureModuleLoader: true,
             moduleLoaderConfig: {waitSeconds: 15}
         });
-        var require = { paths: { 'vs': 'build/node_modules/monaco-editor/min/vs' } };
+        var require = { paths: { 'vs': 'dist/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 
-        VSS.require(['build/node_modules/monaco-editor/min/vs/loader'], function () {
+        VSS.require(['dist/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['build/queryEditor/queryEditor'], function() {
+                VSS.require(['dist/queryEditor'], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });

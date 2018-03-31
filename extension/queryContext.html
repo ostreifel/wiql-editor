@@ -21,7 +21,7 @@
 
 <body>
 
-    <script src="build/VSS.SDK.min.js"></script>
+    <script src="dist/VSS.SDK.min.js"></script>
     <script type="text/javascript">
         // Initialize framework 
         VSS.init({
@@ -30,7 +30,7 @@
             configureModuleLoader: true
         });
 
-        VSS.require(['build/queryContext/queryContext'], function() {
+        VSS.require(['dist/queryContext'], function() {
             // Loading succeeded
             VSS.notifyLoadSucceeded();
         });
