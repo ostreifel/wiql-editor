@@ -1,11 +1,10 @@
 import { CachedValue } from "./CachedValue";
-import { projects } from "./projects";
-import * as Q from "q";
+import { projectsVal } from "./projects";
 import { callApi } from "../RestCall";
 
 export const allTags: CachedValue<string[]> = new CachedValue(getAllTags);
 async function getAllTags() {
-    return await getTagsForProjects((await projects.getValue()).map(p => p.name));
+    return await getTagsForProjects((await projectsVal.getValue()).map(p => p.name));
 }
 
 const tagsMap: { [projectId: string]: CachedValue<string[]> } = {};
@@ -43,11 +42,11 @@ interface ITag {
 async function getTagsForProject(project: string): Promise<string[]> {
     const webContext = VSS.getWebContext();
     const tagsUrl = webContext.account.uri + "DefaultCollection/_apis/tagging/scopes/" + project + "/tags?api-version=1.0";
-    const deferredTags = Q.defer<string[]>();
-    callApi(tagsUrl, "GET", undefined, undefined, (tags: ITagsResponse) => {
-        deferredTags.resolve(tags.value.map(t => t.name));
-    }, (error, errorThrown, status) => {
-        deferredTags.reject(error);
+    return new Promise<string[]>((resolve, reject) => {
+        callApi(tagsUrl, "GET", undefined, undefined, (tags: ITagsResponse) => {
+            resolve(tags.value.map(t => t.name));
+        }, (error, errorThrown, status) => {
+            reject(error);
+        });
     });
-    return await deferredTags.promise;
 }

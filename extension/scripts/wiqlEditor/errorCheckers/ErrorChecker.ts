@@ -6,7 +6,6 @@ import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
 import { AllowedValuesChecker } from "./AllowedValuesChecker";
 import { PrefixChecker } from "./PrefixChecker";
 import { IParseResults} from "../compiler/parser";
-import * as Q from "q";
 import { iterationStrings, areaStrings } from "../../cachedData/nodes";
 import { allTags } from "../../cachedData/tags";
 
@@ -24,14 +23,13 @@ export class ErrorChecker implements IErrorChecker {
             new AllowedValuesChecker("System.Tags", "Tags", allTags),
         ];
     }
-    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
+    public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
         const promises = this.errorCheckers.map(checker => checker.check(parseResult));
-        return Q.all(promises).then(allErrorArrs => {
-            const allErrors: monaco.editor.IModelDeltaDecoration[] = [];
-            for (const errors of allErrorArrs) {
-                allErrors.push(...errors);
-            }
-            return allErrors;
-        });
+        const allErrorArrs = await Promise.all(promises);
+        const allErrors: monaco.editor.IModelDeltaDecoration[] = [];
+        for (const errors of allErrorArrs) {
+            allErrors.push(...errors);
+        }
+        return allErrors;
     }
 };

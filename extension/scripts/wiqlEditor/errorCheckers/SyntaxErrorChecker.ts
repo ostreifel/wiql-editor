@@ -2,7 +2,6 @@ import { IParseResults, ParseError } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { toDecoration } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
-import * as Q from "q";
 
 enum ComparisonType {
     Literal,
@@ -12,16 +11,16 @@ enum ComparisonType {
 }
 
 export class SyntaxErrorChecker implements IErrorChecker {
-    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
+    public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
         if (!(parseResult instanceof ParseError)) {
-            return Q([]);
+            return [];
         }
         let errorToken: Symbols.Token;
         let hoverMessage: string;
         if (parseResult.errorToken instanceof Symbols.EOF) {
             // Query === "", don't try to highlight
             if (!parseResult.errorToken.prev) {
-                return Q([]);
+                return [];
             }
             errorToken = parseResult.errorToken.prev;
             hoverMessage = parseResult.expectedTokens.length === 1 ?
@@ -35,6 +34,6 @@ export class SyntaxErrorChecker implements IErrorChecker {
         }
         const decoration = toDecoration(errorToken, hoverMessage);
         decoration.range = decoration.range.setEndPosition(Infinity, Infinity);
-        return Q([decoration]);
+        return [decoration];
     }
 }

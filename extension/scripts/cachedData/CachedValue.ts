@@ -1,26 +1,18 @@
-import * as Q from "q";
-
 export class CachedValue<T> {
     private value: T;
     private isValueSet: boolean = false;
-    private readonly deferred: Q.Deferred<T>[] = [];
+    private promise: PromiseLike<T>;
     constructor(private readonly generator: () => PromiseLike<T>) {}
-    public getValue(): Q.IPromise<T> {
+    public async getValue(): Promise<T> {
         if (this.isValueSet) {
-            return Q(this.value);
+            return this.value;
         }
-        const defer = Q.defer<T>();
-        if (this.deferred.length === 0) {
-            this.generator().then(value => {
-                this.value = value;
-                this.isValueSet = true;
-                for (const promise of this.deferred) {
-                    promise.resolve(this.value);
-                }
-            });
+        if (this.promise) {
+            this.promise = this.generator();
         }
-        this.deferred.push(defer);
-        return defer.promise;
+        this.value = await this.promise;
+        this.isValueSet = true;
+        return this.value;
     }
     public isLoaded() {
         return this.isValueSet;

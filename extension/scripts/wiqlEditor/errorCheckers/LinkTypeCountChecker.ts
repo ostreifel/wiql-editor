@@ -3,10 +3,9 @@ import { IParseResults } from "../compiler/parser";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import { toDecoration } from "./errorDecorations";
 import * as Symbols from "../compiler/symbols";
-import * as Q from "q";
 
 export class LinkTypeCountChecker implements IErrorChecker {
-    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
+    public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         if (parseResult instanceof Symbols.RecursiveSelect) {
             const linkConditions = (<Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)).filter(c =>
@@ -41,6 +40,6 @@ export class LinkTypeCountChecker implements IErrorChecker {
                 }
             }
         }
-        return Q(errors);
+        return errors;
     }
 }

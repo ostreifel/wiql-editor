@@ -1,4 +1,3 @@
-import * as Q from "q";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
@@ -9,12 +8,11 @@ import { getIdentities } from "./identities/getIdentities";
 export const identities: CachedValue<string[]> = new CachedValue(getIdentityStrings);
 
 async function getIdentityStrings(): Promise<string[]> {
-    return getIdentities().then((identities) =>
-        identities.map((m) => m.isContainer ?
-            m.displayName :
-            `${m.displayName} <${m.uniqueName}>`
-        ),
-    )
+    const identities = await getIdentities();
+    return identities.map((m) => m.isContainer ?
+        m.displayName :
+        `${m.displayName} <${m.uniqueName}>`
+    );
 }
 
 /** No way to know if identity field from extension api, just hardcode the system ones */

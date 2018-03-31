@@ -1,7 +1,7 @@
 import { parse } from "./compiler/parser";
 import * as Symbols from "./compiler/symbols";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { fields, FieldLookup } from "../cachedData/fields";
+import { fieldsVal, FieldLookup } from "../cachedData/fields";
 
 function insert(line: string, text: string) {
     const match = line.match(/(\s*)(.*)/);
@@ -240,16 +240,14 @@ function formatSync(editor: monaco.editor.IStandaloneCodeEditor, FieldLookup: Fi
         (edits) => [new monaco.Selection(1, 1, 1, 1)]);
 }
 
-export function format(editor: monaco.editor.IStandaloneCodeEditor): void {
+export async function format(editor: monaco.editor.IStandaloneCodeEditor) {
     // Don't wait for fields but use if available
-    if (fields.isLoaded()) {
-        fields.getValue().then(fields => {
-            formatSync(editor, fields);
-        });
+    if (fieldsVal.isLoaded()) {
+        const fields = await fieldsVal.getValue();
+        formatSync(editor, fields);
     } else {
         formatSync(editor, new FieldLookup([]));
         // Queue fields get now;
-        fields.getValue();
+        fieldsVal.getValue();
     }
-
 }

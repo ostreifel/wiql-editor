@@ -1,10 +1,9 @@
 import * as Symbols from "../compiler/symbols";
 import { parse, IParseResults, ParseError, ParseMode } from "../compiler/parser";
-import { fields } from "../../cachedData/fields";
+import { fieldsVal } from "../../cachedData/fields";
 import { createContext, ICompletionContext } from "./completionContext";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
 import { getSuggestions } from "./suggestions";
-import * as Q from "q";
 
 function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco.Position): IParseResults {
     const lines = model.getLinesContent().slice(0, position.lineNumber);
@@ -14,7 +13,7 @@ function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco
     return parse(lines, ParseMode.Suggest);
 }
 
-function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position: monaco.Position): Q.IPromise<monaco.languages.CompletionItem[]> | null {
+async function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[] | null> {
     if (ctx.isFieldAllowed && ctx.prevToken instanceof Symbols.Identifier
         && position.column - 1 === ctx.prevToken.endColumn) {
         // In process of typing field name
@@ -37,22 +36,22 @@ function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position: mona
                     };
                 });
         }
-        return Q(suggestions);
+        return suggestions;
     }
     return null;
 }
 
 
-function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco.Position): Q.IPromise<monaco.languages.CompletionItem[]> | null {
+async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[] | null> {
     if (ctx.prevToken instanceof Symbols.Variable
         && position.column - 1 === ctx.prevToken.endColumn) {
-        return Q(getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map(s => {
+        return getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map(s => {
             return {
                 label: s.label,
                 kind: monaco.languages.CompletionItemKind.Variable,
                 insertText: s.label.replace("@", "")
             } as monaco.languages.CompletionItem;
-        }));
+        });
     }
     return null;
 }
@@ -68,9 +67,9 @@ async function provideCompletionItems(
         // valid query, can't suggest
         return [];
     }
-    const ctx = createContext(model, parseNext, await fields.getValue());
-    return getCurrentIdentifierSuggestions(ctx, position) ||
-        getCurrentVariableSuggestions(ctx, position) ||
+    const ctx = createContext(model, parseNext, await fieldsVal.getValue());
+    return await getCurrentIdentifierSuggestions(ctx, position) ||
+        await getCurrentVariableSuggestions(ctx, position) ||
         getSuggestions(ctx, position);
 }
 

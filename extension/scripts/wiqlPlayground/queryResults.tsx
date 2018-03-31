@@ -5,7 +5,7 @@ import {
 } from "TFS/WorkItemTracking/Contracts";
 import { HostNavigationService } from "VSS/SDK/Services/Navigation";
 import { localeFormat, parseDateString } from "VSS/Utils/Date";
-import { fields, FieldLookup } from "../cachedData/fields";
+import { fieldsVal, FieldLookup } from "../cachedData/fields";
 
 class WorkItemRow extends React.Component<{
     wi: WorkItem,
@@ -102,7 +102,7 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
 
 export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[]) {
     let table: JSX.Element;
-    fields.getValue().then(fields => {
+    fieldsVal.getValue().then(fields => {
         const props = {workItems, result, fields};
         if (result.workItems) {
             table = <WorkItemTable {...props} />;

@@ -1,5 +1,3 @@
-import * as Q from "q";
-
 /** Need to implement b/c ie doesn't support */
 class IterableIterator<T> {
     constructor(

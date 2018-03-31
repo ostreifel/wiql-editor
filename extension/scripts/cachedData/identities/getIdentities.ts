@@ -1,7 +1,6 @@
 import { IdentityRef, TeamMember } from "VSS/WebApi/Contracts";
 import { getClient } from "TFS/Core/RestClient";
 import { WebApiTeam } from "TFS/Core/Contracts";
-import * as Q from "q";
 import { CachedValue } from "../CachedValue";
 import * as ExtensionCache from "./extensionCache";
 import { throttlePromises } from "./throttlePromises";
@@ -46,10 +45,9 @@ async function hardGetAllIdentitiesInProject(project: { id: string, name: string
     return hardGetAllIdentitiesInProjectImpl(project, 0);
 }
 
-function hardGetAllIdentitiesInAllProjects(): IPromise<IProjectIdentities[]> {
-    return getClient().getProjects().then(projects =>
-        Promise.all(projects.map(p => hardGetAllIdentitiesInProject(p)))
-    );
+async function hardGetAllIdentitiesInAllProjects(): Promise<IProjectIdentities[]> {
+    const projects = await getClient().getProjects();
+    return Promise.all(projects.map(p => hardGetAllIdentitiesInProject(p)))
 }
 
 const identities: { [key: string]: CachedValue<IdentityRef[]> } = {};
@@ -79,15 +77,13 @@ export async function getIdentities(project?: { id: string, name: string }): Pro
         const expiration = new Date();
         expiration.setDate(expiration.getDate() + 7);
         if (project) {
-            return hardGetAllIdentitiesInProject(project).then((project): IdentityRef[] => {
-                ExtensionCache.store(key, [project]);
-                return toIdentityArr([project])
-            });
+            const projectIdents = await hardGetAllIdentitiesInProject(project);
+            ExtensionCache.store(key, [projectIdents]);
+            return toIdentityArr([projectIdents])
         } else {
-            return hardGetAllIdentitiesInAllProjects().then((projects) => {
-                ExtensionCache.store(key, projects);
-                return toIdentityArr(projects);
-            });
+            const projectIdents = await hardGetAllIdentitiesInAllProjects()
+            ExtensionCache.store(key, projectIdents);
+            return toIdentityArr(projectIdents);
         }
     }
     if (!(key in identities)) {

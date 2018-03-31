@@ -3,7 +3,6 @@ import { IParseResults } from "../compiler/parser";
 import { toDecoration } from "./errorDecorations";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import * as Symbols from "../compiler/symbols";
-import * as Q from "q";
 
 type Prefix = null | "Source" | "Target";
 export class PrefixChecker implements IErrorChecker {
@@ -43,10 +42,10 @@ export class PrefixChecker implements IErrorChecker {
         }
         return expectedPrefix;
     }
-    public check(parseResult: IParseResults): Q.IPromise<monaco.editor.IModelDeltaDecoration[]> {
+    public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
         const linksKeyword = symbolsOfType(parseResult, Symbols.WorkItemLinks);
         if (linksKeyword.length === 0) {
-            return Q([]);
+            return [];
         }
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         for (const cond of <Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)) {
@@ -66,6 +65,6 @@ export class PrefixChecker implements IErrorChecker {
             && parseResult.whereExp) {
             this.checkExpression(parseResult.whereExp, errors);
         }
-        return Q(errors);
+        return errors;
     }
 }

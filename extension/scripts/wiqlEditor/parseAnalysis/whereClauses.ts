@@ -1,9 +1,9 @@
 import { ICompletionContext } from "../completion/completionContext";
 import * as Symbols from "../compiler/symbols";
-import { fields, FieldLookup } from "../../cachedData/fields";
+import { fieldsVal, FieldLookup } from "../../cachedData/fields";
 import { IParseResults } from "../compiler/parser";
 import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { projects } from "../../cachedData/projects";
+import { projectsVal } from "../../cachedData/projects";
 import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
 
 function getConditionalExpressions(logical: Symbols.LogicalExpression) {
@@ -94,35 +94,32 @@ export interface IQueryFilters {
     workItemTypes: string[];
 }
 
-export function getFilters(parse: IParseResults): Q.IPromise<IQueryFilters> {
-    return fields.getValue().then(fields => {
-        const foundProjects: string[] = [];
-        const foundWits: string[] = [];
-        if (
-            (
-                parse instanceof Symbols.FlatSelect ||
-                parse instanceof Symbols.OneHopSelect ||
-                parse instanceof Symbols.RecursiveSelect
-            ) &&
-            parse.whereExp
-        ) {
-            const conditionalExpressions = getConditionalExpressions(parse.whereExp);
-            foundProjects.push(...getProjects(fields, conditionalExpressions));
-            foundWits.push(...getWits(fields, conditionalExpressions));
+export async function getFilters(parse: IParseResults): Promise<IQueryFilters> {
+    const fields = await fieldsVal.getValue();
+    const foundProjects: string[] = [];
+    const foundWits: string[] = [];
+    if (
+        (
+            parse instanceof Symbols.FlatSelect ||
+            parse instanceof Symbols.OneHopSelect ||
+            parse instanceof Symbols.RecursiveSelect
+        ) &&
+        parse.whereExp
+    ) {
+        const conditionalExpressions = getConditionalExpressions(parse.whereExp);
+        foundProjects.push(...getProjects(fields, conditionalExpressions));
+        foundWits.push(...getWits(fields, conditionalExpressions));
 
-        }
+    }
 
-        return projects.getValue().then(projects => {
-            const projectNames = projects.map(p => p.name);
-            const uniqueProjects = toServerCasing(foundProjects, projectNames);
-            return getWitNamesByProjects(uniqueProjects).then(witNames => {
-                const uniqueWits = toServerCasing(foundWits, witNames);
-                const filters: IQueryFilters = {
-                    projects: uniqueProjects,
-                    workItemTypes: uniqueWits
-                };
-                return filters;
-            })
-        });
-    });
+    const projects = await projectsVal.getValue();
+    const projectNames = projects.map(p => p.name);
+    const uniqueProjects = toServerCasing(foundProjects, projectNames);
+    const witNames = await getWitNamesByProjects(uniqueProjects);
+    const uniqueWits = toServerCasing(foundWits, witNames);
+    const filters: IQueryFilters = {
+        projects: uniqueProjects,
+        workItemTypes: uniqueWits
+    };
+    return filters;
 }

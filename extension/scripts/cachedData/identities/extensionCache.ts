@@ -1,4 +1,3 @@
-import * as Q from "q";
 import { CachedValue } from "../CachedValue";
 
 const collection = "extension-cache";
@@ -26,24 +25,23 @@ export async function store<T>(key: string, value: T, expiration?: Date): Promis
 }
 
 export async function get<T>(key: string): Promise<T | null> {
-    return VSS.getService(VSS.ServiceIds.ExtensionData).then((dataService: IExtensionDataService) => {
-        return dataService.getDocument(collection, key).then((doc: IExtensionCacheEntry<T>) => {
-            if (doc.formatVersion !== formatVersion) {
-                return null;
-            }
-            if (doc.expiration && new Date(doc.expiration) < new Date()) {
-                return null;
-            }
-            return doc.value;
-        }, (error: TfsError): T | null => {
-            const status = Number(error.status);
-            // If collection has not been created yet;
-            if (status === 404 ||
-                // User does not have permissions
-                status === 401) {
-                return null;
-            }
-            throw error;
-        });
+    const dataService = await VSS.getService<IExtensionDataService>(VSS.ServiceIds.ExtensionData);
+    return dataService.getDocument(collection, key).then((doc: IExtensionCacheEntry<T>) => {
+        if (doc.formatVersion !== formatVersion) {
+            return null;
+        }
+        if (doc.expiration && new Date(doc.expiration) < new Date()) {
+            return null;
+        }
+        return doc.value;
+    }, (error: TfsError): T | null => {
+        const status = Number(error.status);
+        // If collection has not been created yet;
+        if (status === 404 ||
+            // User does not have permissions
+            status === 401) {
+            return null;
+        }
+        throw error;
     });
 }

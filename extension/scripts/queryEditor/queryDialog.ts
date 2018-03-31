@@ -1,5 +1,4 @@
 import { IQuery, IContextOptions, ICallbacks } from "../queryContext/contextContracts";
-import * as Q from "q";
 import { trackEvent } from "../events";
 
 function saveErrorMessage(error: TfsError, query: IQuery) {
@@ -11,57 +10,55 @@ function saveErrorMessage(error: TfsError, query: IQuery) {
     return message;
 }
 
-export function showDialog(query: IQuery) {
-    VSS.getService(VSS.ServiceIds.Dialog).then(function (dialogService: IHostDialogService) {
-        console.log(query);
-        let okCallback: () => Promise<any> = async () => {
-            console.log("ok callback not set");
-        };
-        let closeDialog = () => {
-            console.log("could not find close dialog function");
-        };
-        function close() {
-            trackEvent("keyboardExit");
-            closeDialog();
-        }
-        function save() {
-                okCallback().then(() => {
-                    VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
-                        navigationService.reload();
-                    });
-                }, (error: TfsError) => {
-                    const message = saveErrorMessage(error, query);
-                    dialogService.openMessageDialog(message, {
-                        title: "Error saving query"
-                    });
-                    trackEvent("SaveQueryFailure", {message});
-                });
-                throw Error("Exception to block dialog close");
-        }
-        const context: IContextOptions = {
-            query: query,
-            save,
-            close,
-        };
-        const dialogOptions: IHostDialogOptions = {
-            title: query.name,
-            width: Number.MAX_VALUE,
-            height: Number.MAX_VALUE,
-            getDialogResult: save,
-            okText: "Save Query",
-            resizable: true,
-        };
-        const extInfo = VSS.getExtensionContext();
-
-        const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
-        dialogService.openDialog(contentContribution, dialogOptions, context).then((dialog) => {
-            closeDialog = () => dialog.close();
-            dialog.getContributionInstance("contextForm").then((callbacks: ICallbacks) => {
-                okCallback = callbacks.okCallback;
-                callbacks.setUpdateSaveButton((enabled) => {
-                    dialog.updateOkButton(enabled);
-                });
+export async function showDialog(query: IQuery) {
+    const dialogService = await VSS.getService<IHostDialogService>(VSS.ServiceIds.Dialog);
+    console.log(query);
+    let okCallback: () => Promise<any> = async () => {
+        console.log("ok callback not set");
+    };
+    let closeDialog = () => {
+        console.log("could not find close dialog function");
+    };
+    function close() {
+        trackEvent("keyboardExit");
+        closeDialog();
+    }
+    function save() {
+        okCallback().then(() => {
+            VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
+                navigationService.reload();
             });
+        }, (error: TfsError) => {
+            const message = saveErrorMessage(error, query);
+            dialogService.openMessageDialog(message, {
+                title: "Error saving query"
+            });
+            trackEvent("SaveQueryFailure", {message});
+        });
+        throw Error("Exception to block dialog close");
+    }
+    const context: IContextOptions = {
+        query: query,
+        save,
+        close,
+    };
+    const dialogOptions: IHostDialogOptions = {
+        title: query.name,
+        width: Number.MAX_VALUE,
+        height: Number.MAX_VALUE,
+        getDialogResult: save,
+        okText: "Save Query",
+        resizable: true,
+    };
+    const extInfo = VSS.getExtensionContext();
+
+    const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
+    const dialog = await dialogService.openDialog(contentContribution, dialogOptions, context);
+    closeDialog = () => dialog.close();
+    dialog.getContributionInstance("contextForm").then((callbacks: ICallbacks) => {
+        okCallback = callbacks.okCallback;
+        callbacks.setUpdateSaveButton((enabled) => {
+            dialog.updateOkButton(enabled);
         });
     });
 }

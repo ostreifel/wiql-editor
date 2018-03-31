@@ -2,15 +2,13 @@ import { WorkItemField, GetFieldsExpand } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { CachedValue } from "./CachedValue";
 
-export const fields: CachedValue<FieldLookup> = new CachedValue<FieldLookup>(getFieldLookup);
+export const fieldsVal: CachedValue<FieldLookup> = new CachedValue<FieldLookup>(getFieldLookup);
 
-function getFieldLookup() {
-    return getFields().then(fields =>
-        new FieldLookup(fields)
-    );
+async function getFieldLookup() {
+    return new FieldLookup(await getFields());
 }
 
-function getFields(): IPromise<WorkItemField[]> {
+async function getFields(): Promise<WorkItemField[]> {
     const client = getWitClient();
     /** The type definition for fields in the sdk is wrong, this is the actual type if the server is at the latest version */
     const getFields: (projectId?: string, expand?: GetFieldsExpand) => IPromise<WorkItemField[]> = <any>client.getFields.bind(client);

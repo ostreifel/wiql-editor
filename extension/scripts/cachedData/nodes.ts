@@ -1,8 +1,7 @@
 import { CachedValue } from "./CachedValue";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 import { WorkItemClassificationNode, TreeStructureGroup } from "TFS/WorkItemTracking/Contracts";
-import { projects } from "./projects";
-import * as Q from "q";
+import { projectsVal } from "./projects";
 import { TeamProjectReference } from "TFS/Core/Contracts";
 
 export interface ProjectNodes {
@@ -12,7 +11,7 @@ export interface ProjectNodes {
 export const iterationNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Iterations));
 export const areaNodesByProject: CachedValue<ProjectNodes[]> = new CachedValue(() => getTreeNodes(TreeStructureGroup.Areas));
 async function getTreeNodes(type: TreeStructureGroup): Promise<ProjectNodes[]> {
-    const projs = await projects.getValue();
+    const projs = await projectsVal.getValue();
     const projPromises = projs.map(async (project): Promise<ProjectNodes> =>
         getWitClient().getClassificationNode(project.name, type, undefined, 2147483647).then(
             (iterationNode): ProjectNodes => ({project, iterationNode})
