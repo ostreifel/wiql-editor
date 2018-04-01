@@ -5,9 +5,9 @@ function saveErrorMessage(error: TfsError, query: IQuery) {
     if (!isSupportedQueryId(query.id)) {
         return "Only queries in saved in My Queries or Shared Queries can be updated with this extension";
     }
-    const exception = (error.serverError || error);
+    const exception = (error.serverError || error) as any;
     // tslint:disable-next-line:no-string-literal
-    const message = exception["message"] || exception["value"]["Message"];
+    const message = (exception["message"] || exception["value"]["Message"]) as string;
     return message;
 }
 

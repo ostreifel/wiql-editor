@@ -5,7 +5,7 @@ import { table } from "./wiqlTable";
 
 const symbolContructors: { [name: string]: any } = {};
 for (const idx in Symbols) {
-    const symbol = Symbols[idx];
+    const symbol = (Symbols as any)[idx] as Function;
     const symbolName = Symbols.getSymbolName(symbol);
     symbolContructors[symbolName] = symbol;
 }

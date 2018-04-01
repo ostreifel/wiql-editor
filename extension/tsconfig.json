@@ -3,7 +3,7 @@
         "module": "es6",
         "moduleResolution": "node",
         "target": "es5",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "jsx": "react",
         "sourceMap": true,
         "lib": [

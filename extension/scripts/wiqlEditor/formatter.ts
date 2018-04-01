@@ -13,7 +13,7 @@ function tabs(tab: string, indent: number) {
     return Array(indent + 1).join(tab);
 }
 function formatField(field: Symbols.Field, fields: FieldLookup): string {
-    const foundField = fields[field.identifier.text.toLocaleLowerCase()];
+    const foundField = fields.getField(field.identifier.text.toLocaleLowerCase());
     return `[${foundField ? foundField.referenceName : field.identifier.text}]`;
 }
 function formatFieldList(fieldList: Symbols.FieldList, fields: FieldLookup, tab: string): string[] {

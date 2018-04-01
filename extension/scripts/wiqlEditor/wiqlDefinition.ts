@@ -1,6 +1,6 @@
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
 
-export const definedVariables = {
+export const definedVariables: {[name: string]: FieldType} = {
     "@me": FieldType.String,
     "@currentiteration": FieldType.TreePath,
     "@project": FieldType.String,
@@ -10,7 +10,7 @@ export const definedVariables = {
     "[any]": FieldType.String,
 };
 export const lowerDefinedVariables: {[lowerName: string]: FieldType} = Object.keys(definedVariables)
-.reduce((arr, val) => {arr[val.toLocaleLowerCase()] = definedVariables[val]; return arr; }, {});
+.reduce((arr, val) => {arr[val.toLocaleLowerCase()] = definedVariables[val]; return arr; }, {} as {[lowerName: string]: FieldType});
 
 export const def: monaco.languages.ILanguageExtensionPoint = {
     id: "wiql",

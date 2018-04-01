@@ -58,7 +58,7 @@ class WorkItemRow extends React.Component<{
 
 class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: FieldLookup }, {}> {
     public render() {
-        const wiMap = {};
+        const wiMap = {} as {[id: string]: WorkItem};
         for (const wi of this.props.workItems) {
             wiMap[wi.id] = wi;
         }
@@ -118,8 +118,7 @@ export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[])
 }
 
 export function setError(error: TfsError | string) {
-    // tslint:disable-next-line:no-string-literal
-    const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+    const message = typeof error === "string" ? error : ((error.serverError || error) as any).message as string;
     ReactDom.render(<div className={"error-message"}>{message}</div>, document.getElementById("query-results") as HTMLElement);
 }
 

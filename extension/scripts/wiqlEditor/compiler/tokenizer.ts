@@ -3,8 +3,7 @@ import * as Symbols from "./symbols";
 
 export interface ITokenPattern {
     match: string | RegExp;
-    /** (i,j,text) => void */
-    token?;
+    token?: new (i: number, j: number, text: string) => Symbols.Token;
     pushState?: ITokenPattern[];
     popState?: boolean;
 

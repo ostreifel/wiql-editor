@@ -8,11 +8,11 @@ import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./c
 import { conditionSymbols, ICompletionContext } from "./completionContext";
 import { getStringValueSuggestions } from "./valueSuggestions";
 
-function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: FieldLookup, fieldAllowed) {
+function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: FieldLookup, isFieldAllowed: boolean) {
     refName = refName.toLocaleLowerCase();
     /** These symbols have their own suggestion logic */
     const excludedSymbols = [Symbols.Variable, Symbols.Field];
-    if (!fieldAllowed) {
+    if (!isFieldAllowed) {
         excludedSymbols.push(Symbols.LSqBracket);
     }
     const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};

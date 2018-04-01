@@ -1,10 +1,12 @@
 import { authTokenManager } from "VSS/Authentication/Services";
-export function callApi(url: string,
-                        method: string,
-                        headers: {[header: string]: string} | undefined,
-                        data: any | undefined,
-                        success: (response) => void,
-                        failure: (error: TfsError, errorThrown: string, status: number) => void) {
+export function callApi<T>(
+    url: string,
+    method: string,
+    headers: {[header: string]: string} | undefined,
+    data: any | undefined,
+    success: (response: T) => void,
+    failure: (error: TfsError, errorThrown: string, status: number) => void,
+) {
     VSS.getAccessToken().then((sessionToken) => {
         const authorizationHeaderValue = authTokenManager.getAuthorizationHeader(sessionToken);
         $.ajax({

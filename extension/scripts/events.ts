@@ -28,8 +28,7 @@ export function trackEvent(name: string, properties?: IProperties, measurements?
         properties = {
             ...(properties || {}),
             host: VSS.getWebContext().host.authority,
-            // tslint:disable-next-line:no-string-literal
-            location: window["extensionLocation"],
+            location: (window as any).extensionLocation as string,
         };
         insights.trackEvent(name, properties, measurements);
         flush.reset();
@@ -44,7 +43,7 @@ export function trackPage(properties?: IProperties, measurements?: IMeasurements
         flush.reset();
     }
 }
+
 function getInsights(): Microsoft.ApplicationInsights.IAppInsights | undefined {
-    // tslint:disable-next-line:no-string-literal
-    return window["appInsights"];
+    return (window as any).appInsights;
 }
