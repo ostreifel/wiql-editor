@@ -23,6 +23,7 @@ gulp.task('tslint', [], () => {
         "!scripts/wiqlEditor/compiler/wiqlTable.ts"
     ])
         .pipe(tslint({
+            fix: true,
             formatter: "stylish",
             program,
         }))

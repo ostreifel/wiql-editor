@@ -1,4 +1,5 @@
 import { projectsVal } from "../../cachedData/projects";
+import { getTeams } from "../../cachedData/teams";
 import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
@@ -24,7 +25,7 @@ export class VariableParametersChecker implements IErrorChecker {
             errors.push(decorationFromSym("Team must be of format '[project]\\team'", variable.args.value));
             return errors;
         }
-        const [, project] = teamMatch;
+        const [, project, team] = teamMatch;
         const projects = (await projectsVal.getValue()).map(({name: projName}) => projName);
         const lower = (s: string) => s.toLocaleLowerCase();
         if (projects.map(lower).indexOf(lower(project)) < 0) {
@@ -33,6 +34,16 @@ export class VariableParametersChecker implements IErrorChecker {
                 variable.args.value,
                 1,
                 project.length + 2,
+            ));
+        }
+
+        const teams = (await getTeams(lower(project))).map(({name: teamName}) => teamName);
+        if (teams.map(lower).indexOf(lower(team)) < 0) {
+            errors.push(decorationFromString(
+                `Team does not exist - expecting one of\n\n ${teams.join(", ")}`,
+                variable.args.value,
+                3 + project.length,
+                team.length + 1,
             ));
         }
 
