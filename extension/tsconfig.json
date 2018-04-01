@@ -5,6 +5,8 @@
         "target": "es5",
         "noImplicitAny": true,
         "noUnusedParameters": true,
+        "noImplicitThis": true,
+        "pretty": true,
         "noUnusedLocals": true,
         "jsx": "react",
         "sourceMap": true,
