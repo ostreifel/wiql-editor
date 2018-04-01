@@ -6,7 +6,7 @@ import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import { lowerDefinedVariables } from "../wiqlDefinition";
-import { toDecoration } from "./errorDecorations";
+import { decorationFromSym } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
 export interface IComparisonType {
@@ -84,22 +84,22 @@ export class TypeErrorChecker implements IErrorChecker {
         const operatorToken = comp.conditionToken;
         const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
-            return [toDecoration(`There is no valid operation for ${field.identifier.text} and ${rhsType}`, operatorToken)];
+            return [decorationFromSym(`There is no valid operation for ${field.identifier.text} and ${rhsType}`, operatorToken)];
         }
         if (validOps.filter((op) => operatorToken instanceof op).length === 0) {
             const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(", ")}`;
-            return [toDecoration(message, operatorToken)];
+            return [decorationFromSym(message, operatorToken)];
         }
         return [];
     }
     private checkAllowsGroup(fieldLookup: IFieldLookup, comp: Symbols.In, field: Symbols.Field): monaco.editor.IModelDeltaDecoration[] {
         const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()].group;
         if (validOps.length === 0) {
-            return [toDecoration(`${field.identifier.text} does not support group comparisons`, comp)];
+            return [decorationFromSym(`${field.identifier.text} does not support group comparisons`, comp)];
         }
         if (validOps.filter((op) => comp instanceof op).length === 0) {
             const message = `Valid comparisons are ${validOps.map((op) => Symbols.getSymbolName(op)).join(", ")}`;
-            return [toDecoration(message, comp)];
+            return [decorationFromSym(message, comp)];
         }
         return [];
     }
@@ -115,7 +115,7 @@ export class TypeErrorChecker implements IErrorChecker {
     }
     private checkRhsValue({value}: Symbols.Value, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
         const symbolType = this.mapType(expectedType);
-        const error = toDecoration(`Expected value of type ${Symbols.getSymbolName(symbolType)}`, value);
+        const error = decorationFromSym(`Expected value of type ${Symbols.getSymbolName(symbolType)}`, value);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
         if (value instanceof Symbols.VariableExpression) {
             const varType = this.mapType(lowerDefinedVariables[value.name.text.toLocaleLowerCase()]);
@@ -142,7 +142,7 @@ export class TypeErrorChecker implements IErrorChecker {
                 return value instanceof symbolType ? [] : [error];
             case FieldType.Boolean:
                 return value instanceof Symbols.True || value instanceof Symbols.False ? [] :
-                    [toDecoration(`Expected value of type BOOLEAN`, value)];
+                    [decorationFromSym(`Expected value of type BOOLEAN`, value)];
         }
         throw new Error(`Unexpected field type ${expectedType}`);
     }
@@ -151,7 +151,7 @@ export class TypeErrorChecker implements IErrorChecker {
         let currList: Symbols.ValueList | undefined = valueList;
         while (currList) {
             if (currList.value.value instanceof Symbols.Field) {
-                errors.push(toDecoration("Values in list must be literals", currList.value.value));
+                errors.push(decorationFromSym("Values in list must be literals", currList.value.value));
             } else {
                 errors.push(...this.checkRhsValue(currList.value, expectedType));
             }
@@ -162,7 +162,7 @@ export class TypeErrorChecker implements IErrorChecker {
     private checkRhsField(fieldLookup: IFieldLookup, targetField: Symbols.Field, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
         if (targetField.identifier.text.toLocaleLowerCase() in fieldLookup
             && fieldLookup[targetField.identifier.text.toLocaleLowerCase()].fieldType !== expectedType) {
-            return [toDecoration(`Expected field of type ${FieldType[expectedType]}`, targetField.identifier)];
+            return [decorationFromSym(`Expected field of type ${FieldType[expectedType]}`, targetField.identifier)];
         }
         return [];
     }

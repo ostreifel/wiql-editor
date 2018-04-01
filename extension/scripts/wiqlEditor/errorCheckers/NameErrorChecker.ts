@@ -4,7 +4,7 @@ import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import { definedVariables, lowerDefinedVariables } from "../wiqlDefinition";
-import { toDecoration } from "./errorDecorations";
+import { decorationFromSym } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
 export class NameErrorChecker implements IErrorChecker {
@@ -24,14 +24,14 @@ export class NameErrorChecker implements IErrorChecker {
         const variables = symbolsOfType<Symbols.Variable>(parseResult, Symbols.Variable);
         for (const variable of variables) {
             if (!(variable.text.toLocaleLowerCase() in lowerDefinedVariables)) {
-                errors.push(toDecoration(`Valid names are include {${Object.keys(definedVariables).join(", ")}}`, variable));
+                errors.push(decorationFromSym(`Valid names are include {${Object.keys(definedVariables).join(", ")}}`, variable));
             }
         }
         // field name errors
         const identifiers = symbolsOfType<Symbols.Identifier>(parseResult, Symbols.Identifier);
         for (const identifier of identifiers) {
             if (validFieldIdentifiers.indexOf(identifier.text.toLocaleLowerCase()) < 0) {
-                errors.push(toDecoration("Field does not exist", identifier));
+                errors.push(decorationFromSym("Field does not exist", identifier));
             }
         }
         return errors;

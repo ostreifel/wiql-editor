@@ -2,7 +2,7 @@ import { projectsVal } from "../../cachedData/projects";
 import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
-import { toDecoration, toStringDecoration } from "./errorDecorations";
+import { decorationFromString, decorationFromSym } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
 export class VariableParametersChecker implements IErrorChecker {
@@ -13,25 +13,26 @@ export class VariableParametersChecker implements IErrorChecker {
             return errors;
         }
         if (variable.args.args) {
-            errors.push(toDecoration(`${name} only takes 1 argument`, variable.args));
+            errors.push(decorationFromSym(`${name} only takes 1 argument`, variable.args));
         }
         if (!(variable.args.value instanceof Symbols.String)) {
-            errors.push(toDecoration(`Team must be a string`, variable.args.value));
+            errors.push(decorationFromSym(`Team must be a string`, variable.args.value));
             return errors;
         }
         const teamMatch = variable.args.value.text.match(/['"]\[(.*)\]\\(.*)( <.*>)?['"]/);
         if (!teamMatch) {
-            errors.push(toDecoration("Team must be of format '[project]\\team'", variable.args.value));
+            errors.push(decorationFromSym("Team must be of format '[project]\\team'", variable.args.value));
             return errors;
         }
         const [, project] = teamMatch;
         const projects = (await projectsVal.getValue()).map(({name: projName}) => projName);
-        if (projects.indexOf(project) < 0) {
-            errors.push(toStringDecoration(
+        const lower = (s: string) => s.toLocaleLowerCase();
+        if (projects.map(lower).indexOf(lower(project)) < 0) {
+            errors.push(decorationFromString(
                 `Project does not exist - expecting one of\n\n ${projects.join(", ")}`,
                 variable.args.value,
-                2,
-                project.length,
+                1,
+                project.length + 2,
             ));
         }
 
@@ -39,7 +40,7 @@ export class VariableParametersChecker implements IErrorChecker {
     }
     private async checkToday(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
         if (variable.args) {
-            return [toDecoration("@Today does not accept arguments", variable.args)];
+            return [decorationFromSym("@Today does not accept arguments", variable.args)];
         }
         return [];
     }
@@ -47,10 +48,10 @@ export class VariableParametersChecker implements IErrorChecker {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         const name = variable.name.text;
         if (variable.args) {
-            errors.push(toDecoration(`${name} does not accept arguments`, variable.args));
+            errors.push(decorationFromSym(`${name} does not accept arguments`, variable.args));
         }
         if (variable.operator && variable.num) {
-            errors.push(toDecoration(`${name} does not accept an offset`, [variable.operator, variable.num]));
+            errors.push(decorationFromSym(`${name} does not accept an offset`, [variable.operator, variable.num]));
         }
         return errors;
     }

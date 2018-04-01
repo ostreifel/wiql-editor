@@ -1,6 +1,6 @@
 import { IParseResults, ParseError } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
-import { toDecoration } from "./errorDecorations";
+import { decorationFromSym } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
 export class SyntaxErrorChecker implements IErrorChecker {
@@ -25,7 +25,7 @@ export class SyntaxErrorChecker implements IErrorChecker {
                 `Expected ${parseResult.expectedTokens[0]}` :
                 `Expected one of {${parseResult.expectedTokens.join(", ")}}`;
         }
-        const decoration = toDecoration(hoverMessage, errorToken);
+        const decoration = decorationFromSym(hoverMessage, errorToken);
         decoration.range = decoration.range.setEndPosition(Infinity, Infinity);
         return [decoration];
     }

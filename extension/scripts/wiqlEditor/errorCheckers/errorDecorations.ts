@@ -1,6 +1,6 @@
 import * as Symbols from "../compiler/symbols";
 
-export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
+export function rangeFromSymbol(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;
     let endToken: Symbols.Token | null = null;
     const symbols = symbol instanceof Array ? symbol : [symbol];
@@ -28,29 +28,48 @@ export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     );
 }
 
-export function toStringDecoration(message: string, str: Symbols.String, offset: number, length: number) {
+export interface IWiqlDecoration extends monaco.editor.IModelDeltaDecoration {
+    range: monaco.Range;
+}
+
+function decorationFromRange(
+    hoverMessage: string,
+    range: monaco.Range,
+    type: "error" | "warn",
+): IWiqlDecoration {
     return {
-        range: new monaco.Range(
+        range,
+        options: {
+            hoverMessage,
+            className: `underline wiql-${type}`,
+            linesDecorationsClassName: `column-color wiql-${type}`,
+        },
+    };
+}
+
+export function decorationFromString(
+    message: string,
+    str: Symbols.String,
+    offset: number,
+    length: number,
+    type: "error" | "warn" = "error",
+): IWiqlDecoration {
+    return decorationFromRange(
+        message,
+        new monaco.Range(
             str.line + 1,
             str.startColumn + 1 + offset,
             str.line + 1,
             str.startColumn + 1 + offset + length,
         ),
-        options: {
-            hoverMessage: message,
-            className: "wiql-error",
-            linesDecorationsClassName: "wiql-error-margin",
-        },
-    };
+        type,
+    );
 }
 
-export function toDecoration(message: string, symbol: Symbols.Symbol | Symbols.Symbol[]) {
-    return {
-        range: toPosition(symbol),
-        options: {
-            hoverMessage: message,
-            className: "wiql-error",
-            linesDecorationsClassName: "wiql-error-margin",
-        },
-    };
+export function decorationFromSym(
+    message: string,
+    symbol: Symbols.Symbol | Symbols.Symbol[],
+    type: "error" | "warn" = "error",
+): IWiqlDecoration {
+    return decorationFromRange(message, rangeFromSymbol(symbol), type);
 }

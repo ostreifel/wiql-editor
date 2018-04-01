@@ -9,10 +9,10 @@ const {Linter} = require("tslint");
 const tslint = require('gulp-tslint');
 
 const args =  yargs.argv;
-const contentFolder = 'dist';
+const distFolder = 'dist';
 
 gulp.task('clean', () => {
-    return del([contentFolder, '*.vsix']);
+    return del([distFolder, '*.vsix']);
 });
 
 gulp.task('tslint', [], () => {
@@ -28,27 +28,32 @@ gulp.task('tslint', [], () => {
         }))
         .pipe(tslint.report());
 });
+gulp.task('styles', ['clean'], () => {
+    return gulp.src("styles/**/*scss")
+        .pipe(sass())
+        .pipe(gulp.dest(distFolder));
+});
 
-gulp.task('copy', ['clean'], () => {
+gulp.task('copy', ['styles'], () => {
     gulp.src([
         'node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js',
     ])
-        .pipe(gulp.dest(contentFolder));
+        .pipe(gulp.dest(distFolder));
     gulp.src([
         "node_modules/monaco-editor/min/vs/base/**/*",
         "!**/*.svg",
-    ]).pipe(gulp.dest(contentFolder + '/node_modules/monaco-editor/min/vs/base'));
+    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/base'));
     gulp.src([
         "node_modules/monaco-editor/min/vs/basic-languages/**/*",
         "!**/*.svg",
-    ]).pipe(gulp.dest(contentFolder + '/node_modules/monaco-editor/min/vs/basic-languages'));
+    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/basic-languages'));
     gulp.src([
         "node_modules/monaco-editor/min/vs/editor/**/*",
         "!**/*.svg",
-    ]).pipe(gulp.dest(contentFolder + '/node_modules/monaco-editor/min/vs/editor'));
+    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/editor'));
     gulp.src([
         "node_modules/monaco-editor/min/vs/loader.js",
-    ]).pipe(gulp.dest(contentFolder + '/node_modules/monaco-editor/min/vs'));
+    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs'));
 });
 
 gulp.task('webpack', ['copy', 'tslint'], () => {
@@ -67,7 +72,7 @@ gulp.task('package', ['webpack'], () => {
         overrides.id = manifest.id + "-dev";
     }
     const overridesArg = `--override "${JSON.stringify(overrides).replace(/"/g, '\\"')}"`;
-    const rootArg = `--root ${contentFolder}`;
+    const rootArg = `--root ${distFolder}`;
     const manifestsArg = `--manifests ..\\vss-extension.json`;
 
     exec(

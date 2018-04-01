@@ -1,0 +1,61 @@
+#wiql-box .monaco-editor {
+    $error-color: red;
+    $warn-color: orange;
+    .underline {
+        border-bottom: 2px dotted;
+        &.wiql-error {
+            border-bottom-color: $error-color;
+        }
+        &.wiql-warn {
+            border-bottom-color: $warn-color;
+        }
+    }
+    .column-color {
+        width: 5px !important;
+        &.wiql-error {
+            background: $error-color;
+        }
+        &.wiql-warn {
+            border-bottom-color: $warn-color;
+        }
+    }
+}
+#query-results {
+    font-size: 15px;
+    .error-message {
+        color: red;
+    }
+    .table {
+        display: table;
+    }
+    .row {
+        display: table-row;
+        cursor: pointer;
+        color: initial;
+        &:hover {
+            text-decoration: underline;
+            background: azure;
+        }
+    }
+    div.table a.row:nth-child(even):not(:hover) {
+        background: #F2F2F2;
+    }
+    .cell {
+        display: table-cell;
+        padding-right: 20px;
+    }
+}
+/*Need to override icon height width attributes from parent frame icon class*/
+.action-label.icon {
+    height: initial;
+    width: initial;
+}
+
+#header-bar .header {
+    .wiq-input {
+      display: none;
+    }
+    .links {
+      float: right;
+    }
+}
