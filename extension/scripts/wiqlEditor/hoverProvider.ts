@@ -43,7 +43,7 @@ async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParse
     }
 }
 
-function getVariableHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): monaco.languages.Hover | undefined {
+function getVariableHover(hoverSymbols: Symbols.Symbol[]): monaco.languages.Hover | undefined {
     const variable = hoverSymbols.filter((s) => s instanceof Symbols.VariableExpression)[0] as Symbols.VariableExpression;
     if (variable) {
         const matchedVariable = variable.name.text.toLocaleLowerCase() in lowerDefinedVariables;
@@ -85,14 +85,14 @@ async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRe
 
 export function getHoverProvider(): monaco.languages.HoverProvider {
     return {
-        provideHover: async (model, position, token) => {
+        provideHover: async (model, position) => {
             const lines = model.getLinesContent();
 
             const parseResult = parse(lines);
             const hoverSymbols = symbolsAtPosition(position.lineNumber, position.column, parseResult);
 
             return await getFieldHover(hoverSymbols, parseResult) ||
-                await getVariableHover(hoverSymbols, parseResult) ||
+                await getVariableHover(hoverSymbols) ||
                 await getWitHover(hoverSymbols, parseResult) ||
                 null;
         },

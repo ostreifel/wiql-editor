@@ -45,8 +45,6 @@ async function getTagsForProject(project: string): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
         callApi(tagsUrl, "GET", undefined, undefined, (tags: ITagsResponse) => {
             resolve(tags.value.map((t) => t.name));
-        }, (error, errorThrown, status) => {
-            reject(error);
-        });
+        }, reject);
     });
 }

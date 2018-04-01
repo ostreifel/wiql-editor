@@ -258,7 +258,7 @@ function formatSync(editor: monaco.editor.IStandaloneCodeEditor, fieldLookup: Fi
     };
     model.pushEditOperations(editor.getSelections(), [edit],
         // TODO actually calculate the new position
-        (edits) => [new monaco.Selection(1, 1, 1, 1)]);
+        () => [new monaco.Selection(1, 1, 1, 1)]);
 }
 
 export async function format(editor: monaco.editor.IStandaloneCodeEditor) {

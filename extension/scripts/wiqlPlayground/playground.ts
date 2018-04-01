@@ -80,14 +80,14 @@ editor.addAction({
     keybindings: [monaco.KeyMod.Shift | monaco.KeyCode.Enter],
     keybindingContext: undefined,
     contextMenuOrder: 1,
-    run: (e) => { search(); return <any> null; },
+    run: () => { search(); return <any> null; },
 });
 editor.addAction({
     id: "focus-results",
     label: "Focus Results",
     contextMenuGroupId: "results",
     keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KEY_R],
-    run: (e) => {
+    run: () => {
         const trs = $(".row");
         if (trs.length > 0) {
             trs.first().focus();

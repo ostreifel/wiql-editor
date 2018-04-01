@@ -12,17 +12,17 @@ const target = document.getElementById("wiql-box");
 if (!target) {
     throw new Error("Could not find wiql editor div");
 }
-let updateSaveButton = (enabled: boolean): void => {
+let updateSaveButton: (enabled: boolean) => void = () => {
     throw new Error("update button not set");
 };
 
-const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql, configuration.query.name);
+const editor = setupEditor(target, () => updateSaveButton(true), configuration.query.wiql, configuration.query.name);
 editor.addAction({
     id: "save",
     contextMenuGroupId: "modification",
     label: "Save",
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
-    run: (e) => {
+    run: () => {
         configuration.save();
         return null as any;
     },
@@ -31,7 +31,7 @@ editor.addAction({
     id: "exit",
     contextMenuGroupId: "navigation",
     label: "Exit",
-    run: (e) => {
+    run: () => {
         configuration.close();
         return null as any;
     },

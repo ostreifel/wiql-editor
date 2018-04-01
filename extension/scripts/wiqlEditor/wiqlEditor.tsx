@@ -78,7 +78,7 @@ ORDER BY [System.ChangedDate] DESC
             monaco.KeyMod.Alt | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
             monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
         ],
-        run: (e) => { format(editor); return null as any; },
+        run: () => { format(editor); return null as any; },
     });
     $(".wiq-input").change(() => importWiq(editor));
     $(".wiq-export").click(() => exportWiq(editor, queryName));

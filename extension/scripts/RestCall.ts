@@ -13,10 +13,8 @@ export function callApi<T>(
             url,
             method,
             data: data || "",
-            success: (respData, textStatus, jqueryXHR) => {
-                success(respData);
-            },
-            error: (jqXHR, textStatus, errorThrown) => {
+            success,
+            error: (jqXHR, _, errorThrown) => {
                 if (jqXHR.responseJSON || 401 !== jqXHR.status && 403 !== jqXHR.status) {
                     if (jqXHR.responseJSON) {
                         failure(jqXHR.responseJSON, errorThrown, jqXHR.status);

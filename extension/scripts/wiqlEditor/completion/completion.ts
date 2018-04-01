@@ -58,7 +58,7 @@ async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: 
 async function provideCompletionItems(
     model: monaco.editor.IReadOnlyModel,
     position: monaco.Position,
-    token: monaco.CancellationToken,
+    // token: monaco.CancellationToken,
 ): Promise<monaco.languages.CompletionItem[]> {
     const parseNext = parseFromPosition(model, position);
     if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
@@ -68,7 +68,7 @@ async function provideCompletionItems(
     const ctx = createContext(model, parseNext, await fieldsVal.getValue());
     return await getCurrentIdentifierSuggestions(ctx, position) ||
         await getCurrentVariableSuggestions(ctx, position) ||
-        getSuggestions(ctx, position);
+        getSuggestions(ctx);
 }
 
 export const completionProvider: monaco.languages.CompletionItemProvider = {

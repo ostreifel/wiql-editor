@@ -106,7 +106,7 @@ async function pushStringSuggestions(
  */
 export async function getSuggestions(
     ctx: ICompletionContext,
-    position: monaco.Position,
+    // position: monaco.Position,
 ): Promise<monaco.languages.CompletionItem[]> {
     const suggestions: monaco.languages.CompletionItem[] = [];
     // Don't symbols complete inside strings
