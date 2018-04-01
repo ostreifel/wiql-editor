@@ -1,18 +1,18 @@
 export class CachedValue<T> {
-    private value: T;
     private isValueSet: boolean = false;
     private promise: PromiseLike<T>;
     constructor(private readonly generator: () => PromiseLike<T>) {}
     public async getValue(): Promise<T> {
         if (this.isValueSet) {
-            return this.value;
+            return this.promise;
         }
-        if (this.promise) {
-            this.promise = this.generator();
+        if (!this.promise) {
+            this.promise = this.generator().then((v) => {
+                this.isValueSet = true;
+                return v;
+            });
         }
-        this.value = await this.promise;
-        this.isValueSet = true;
-        return this.value;
+        return await this.promise;
     }
     public isLoaded() {
         return this.isValueSet;

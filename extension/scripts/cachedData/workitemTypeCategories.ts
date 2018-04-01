@@ -12,14 +12,13 @@ async function getCategoriesForProject(project: string): Promise<WorkItemTypeCat
     return categories[project].getValue();
 }
 
-function getCategoriesImpl(projects: string[]) {
-    return Promise.all(projects.map(p => getCategoriesForProject(p))).then(categoriesArr => {
-        const categories: WorkItemTypeCategory[] = [];
-        for (const arr of categoriesArr) {
-            categories.push(...arr);
-        }
-        return categories;
-    });
+async function getCategoriesImpl(projects: string[]) {
+    const categoriesArr = await Promise.all(projects.map(p => getCategoriesForProject(p)));
+    const categories: WorkItemTypeCategory[] = [];
+    for (const arr of categoriesArr) {
+        categories.push(...arr);
+    }
+    return categories;
 }
 
 export async function getCategories(searchProjects: string[] = []): Promise<WorkItemTypeCategory[]> {

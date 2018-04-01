@@ -10,8 +10,7 @@ async function getFieldLookup() {
 
 async function getFields(): Promise<WorkItemField[]> {
     const client = getWitClient();
-    /** The type definition for fields in the sdk is wrong, this is the actual type if the server is at the latest version */
-    const getFields: (projectId?: string, expand?: GetFieldsExpand) => IPromise<WorkItemField[]> = <any>client.getFields.bind(client);
+    const getFields: (projectId?: string, expand?: GetFieldsExpand) => IPromise<WorkItemField[]> = client.getFields.bind(client);
     if (getFields.length === 2) {
         return getFields(undefined, GetFieldsExpand.ExtensionFields);
     }
