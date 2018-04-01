@@ -30,28 +30,50 @@ function formatFieldList(fieldList: Symbols.FieldList, fields: FieldLookup, tab:
 function formatNumber(num: Symbols.Number) {
     return (num.minus ? "-" : "") + num.digits.text;
 }
-function formatValue(value: Symbols.Value, fields: FieldLookup): string {
-    if (value.value instanceof Symbols.Number) {
-        return formatNumber(value.value);
-    } else if (value.value instanceof Symbols.String) {
-        return value.value.text;
-    } else if (value.value instanceof Symbols.DateTime) {
-        return value.value.dateString.text;
-    } else if (value.value instanceof Symbols.Variable) {
-        if (value.operator && value.num) {
-            const opStr = value.operator instanceof Symbols.Minus ? " - " : " + ";
-            return value.value.text + opStr + formatNumber(value.num);
-        } else {
-            return value.value.text;
+function formatVariable(exp: Symbols.VariableExpression) {
+    let str = exp.name.text;
+    if (exp.args) {
+        str += "(";
+        for (let args = exp.args; args; args = args.args) {
+            const {value} = args;
+            if (value instanceof Symbols.String) {
+                str += value.text;
+            } else if (value instanceof Symbols.Number) {
+                str += formatNumber(value);
+            } else if (value instanceof Symbols.True) {
+                str += "true";
+            } else if (value instanceof Symbols.False) {
+                str += "false"
+            }
+            if (args.args) {
+                str += ", ";
+            }
         }
-    } else if (value.value instanceof Symbols.True) {
-        return "true";
-    } else if (value.value instanceof Symbols.False) {
-        return "false";
-    } else if (value.value instanceof Symbols.Field) {
-        return formatField(value.value, fields);
+        str += ")";
     }
-    throw new Error("Unkown value");
+    if (exp.operator && exp.num) {
+        const opStr = exp.operator instanceof Symbols.Minus ? " - " : " + ";
+        str += opStr + formatNumber(exp.num);
+    }
+    return str;
+}
+function formatValue({value}: Symbols.Value, fields: FieldLookup): string {
+    if (value instanceof Symbols.Number) {
+        return formatNumber(value);
+    } else if (value instanceof Symbols.String) {
+        return value.text;
+    } else if (value instanceof Symbols.DateTime) {
+        return value.dateString.text;
+    } else if (value instanceof Symbols.VariableExpression) {
+        return formatVariable(value);
+    } else if (value instanceof Symbols.True) {
+        return "true";
+    } else if (value instanceof Symbols.False) {
+        return "false";
+    } else if (value instanceof Symbols.Field) {
+        return formatField(value, fields);
+    }
+    throw new Error("Format Error: Unkown value: " + value);
 }
 function formatValueList(valueList: Symbols.ValueList, fields: FieldLookup): string {
     const valueStrs: string[] = [];

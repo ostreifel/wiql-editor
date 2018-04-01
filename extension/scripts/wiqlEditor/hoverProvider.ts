@@ -43,13 +43,13 @@ async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParse
 }
 
 function getVariableHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): monaco.languages.Hover | undefined {
-    const variable = hoverSymbols.filter(s => s instanceof Symbols.Variable)[0] as Symbols.Variable;
+    const variable = hoverSymbols.filter(s => s instanceof Symbols.VariableExpression)[0] as Symbols.VariableExpression;
     if (variable) {
-        const matchedVariable = variable.text.toLocaleLowerCase() in lowerDefinedVariables;
+        const matchedVariable = variable.name.text.toLocaleLowerCase() in lowerDefinedVariables;
         if (matchedVariable) {
             const hovers: monaco.MarkedString[] = [];
-            hovers.push(FieldType[lowerDefinedVariables[variable.text.toLocaleLowerCase()]]);
-            const range = toRange(variable);
+            hovers.push(FieldType[lowerDefinedVariables[variable.name.text.toLocaleLowerCase()]]);
+            const range = toRange(variable.name);
             return { contents: hovers, range };
         }
     }
@@ -84,15 +84,15 @@ async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRe
 
 export function getHoverProvider(): monaco.languages.HoverProvider {
     return {
-        provideHover: (model, position, token) => {
+        provideHover: async (model, position, token) => {
             const lines = model.getLinesContent();
 
             const parseResult = parse(lines);
             const hoverSymbols = symbolsAtPosition(position.lineNumber, position.column, parseResult);
 
-            return getFieldHover(hoverSymbols, parseResult) ||
-                getVariableHover(hoverSymbols, parseResult) ||
-                getWitHover(hoverSymbols, parseResult) ||
+            return await getFieldHover(hoverSymbols, parseResult) ||
+                await getVariableHover(hoverSymbols, parseResult) ||
+                await getWitHover(hoverSymbols, parseResult) ||
                 null;
         }
     };

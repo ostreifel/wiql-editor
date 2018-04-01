@@ -14,8 +14,8 @@ export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
             if (!endToken || sym.line > endToken.line || sym.endColumn > endToken.endColumn) {
                 endToken = sym;
             }
-        } else if (symbol instanceof Symbols.SymbolTree) {
-            symbols.push(...symbol.inputs);
+        } else if (sym instanceof Symbols.SymbolTree) {
+            symbols.push(...sym.inputs);
         }
     }
     if (!startToken || !endToken) {

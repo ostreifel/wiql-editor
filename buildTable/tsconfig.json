@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "umd",
-        "sourceMap": false,
+        "sourceMap": true,
         "target": "es6",
         "strictNullChecks": true,
         "rootDir": "./scripts",

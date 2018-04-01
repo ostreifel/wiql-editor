@@ -11,7 +11,9 @@ ConditionalExpression = LParen LogicalExpression RParen
 | Field ConditionalOperator Value
 | Field [Not] In LParen ValueList RParen;
 Number = [Minus] Digits;
-Value = Number | String | DateTime | Field | Variable [(Plus | Minus) Number] | True | False;
+VariableArguments = (String | Number | True | False) [Comma VariableArguments];
+VariableExpression = Variable [LParen VariableArguments RParen] [(Plus | Minus) Number];
+Value = Number | String | DateTime | Field | VariableExpression | True | False;
 DateTime = String;
 ValueList = Value [Comma ValueList];
 ConditionalOperator = Equals | NotEquals | LessThan | LessOrEq | GreaterThan 

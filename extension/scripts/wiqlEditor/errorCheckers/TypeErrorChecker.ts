@@ -138,36 +138,36 @@ export class TypeErrorChecker implements IErrorChecker {
                 return Symbols.String;
         }
     }
-    private checkRhsValue(value: Symbols.Value, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
+    private checkRhsValue({value}: Symbols.Value, expectedType: FieldType): monaco.editor.IModelDeltaDecoration[] {
         const symbolType = this.mapType(expectedType);
-        const error = toDecoration(value.value, `Expected value of type ${Symbols.getSymbolName(symbolType)}`);
+        const error = toDecoration(value, `Expected value of type ${Symbols.getSymbolName(symbolType)}`);
         // Potentially additonal checkers to validate value formats here: ex date and guid validators
-        if (value.value instanceof Symbols.Variable) {
-            const varType = this.mapType(lowerDefinedVariables[value.value.text.toLocaleLowerCase()]);
+        if (value instanceof Symbols.VariableExpression) {
+            const varType = this.mapType(lowerDefinedVariables[value.name.text.toLocaleLowerCase()]);
             return varType === symbolType ? [] : [error];
         }
         switch (expectedType) {
             case FieldType.String:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.Integer:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.DateTime:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.PlainText:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.Html:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.TreePath:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.History:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.Double:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.Guid:
-                return value.value instanceof symbolType ? [] : [error];
+                return value instanceof symbolType ? [] : [error];
             case FieldType.Boolean:
-                return value.value instanceof Symbols.True || value.value instanceof Symbols.False ? [] :
-                    [toDecoration(value.value, `Expected value of type BOOLEAN`)];
+                return value instanceof Symbols.True || value instanceof Symbols.False ? [] :
+                    [toDecoration(value, `Expected value of type BOOLEAN`)];
         }
         throw new Error(`Unexpected field type ${expectedType}`);
     }

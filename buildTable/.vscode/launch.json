@@ -11,7 +11,7 @@
             "program": "${workspaceRoot}\\build\\buildTable.js",
             "args": [
                 "..\\extension\\wiql.ebnf",
-                "table.ts"
+                "..\\extension\\scripts\\wiqlEditor\\compiler\\wiqlTable.ts"
             ],
             "cwd": "${workspaceRoot}",
             "outFiles": [],

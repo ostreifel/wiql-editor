@@ -160,15 +160,33 @@ export class ConditionalOperator extends SymbolTree {
         this.not = super.getInput([Not]);
     }
 }
-export class Value extends SymbolTree {
-    public readonly value: Number | String | DateTime | Variable | True | False | Field;
+export class VariableArguments extends SymbolTree {
+    public readonly value: Number | String | True | False;
+    public readonly args?: VariableArguments;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.value = super.getInput([Number, String, True, False]);
+        this.args = super.getInput(VariableArguments);
+    }
+}
+export class VariableExpression extends SymbolTree {
+    public readonly name: Variable;
+    public readonly args?: VariableArguments;
     public readonly operator?: Plus | Minus;
     public readonly num?: Number;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.value = super.getInput([Number, String, DateTime, Variable, True, False, Field]);
+        this.name = super.getInput(Variable);
+        this.args = super.getInput(VariableArguments);
         this.operator = super.getInput([Plus, Minus]);
         this.num = super.getInput(Number);
+    }
+}
+export class Value extends SymbolTree {
+    public readonly value: Number | String | DateTime | VariableExpression | True | False | Field;
+    constructor(inputs: Symbol[]) {
+        super(inputs);
+        this.value = super.getInput([Number, String, DateTime, VariableExpression, True, False, Field]);
     }
 }
 export class ValueList extends SymbolTree {

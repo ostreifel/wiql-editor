@@ -10,7 +10,7 @@ const args =  yargs.argv;
 const contentFolder = 'dist';
 
 gulp.task('clean', () => {
-    return del([contentFolder, '*.vsix', "../buildTable/build"]);
+    return del([contentFolder, '*.vsix']);
 })
 
 gulp.task('copy', ['clean'], () => {
@@ -74,9 +74,13 @@ gulp.task('default', ['package']);
 
 
 gulp.task('build-table', [], () => {
-    // command: "tsc --p ../buildTable/tsconfig.json"
+    execSync("tsc --p ../buildTable/tsconfig.json", {
+        stdio: [null, process.stdout, process.stderr]
+    });
 });
 
 gulp.task('generate-table', ['build-table'], () => {
-    execSync('node ../buildTable/build/buildTable.js ./wiql.ebnf ./scripts/compiler/wiqlTable.ts');
+    execSync('node ../buildTable/build/buildTable.js ./wiql.ebnf ./scripts/wiqlEditor/compiler/wiqlTable.ts', {
+        stdio: [null, process.stdout, process.stderr]
+    });
 });
