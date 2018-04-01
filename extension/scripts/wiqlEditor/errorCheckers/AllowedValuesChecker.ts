@@ -25,13 +25,13 @@ export class AllowedValuesChecker implements IErrorChecker {
         for (const condition of fieldConditions) {
             if (condition.value && condition.value.value instanceof Symbols.String &&
                 allowedValues.indexOf(condition.value.value.text.toLocaleLowerCase()) < 0) {
-                errors.push(toDecoration(condition.value, this.errorMessage || `Invalid ${this.fieldName} value`));
+                errors.push(toDecoration(this.errorMessage || `Invalid ${this.fieldName} value`, condition.value));
             }
             let valueList = condition.valueList;
             while (valueList && valueList.value) {
                 if (valueList.value.value instanceof Symbols.String &&
                     allowedValues.indexOf(valueList.value.value.text.toLocaleLowerCase()) < 0) {
-                    errors.push(toDecoration(valueList.value, this.errorMessage || `Invalid ${this.fieldName} value`));
+                    errors.push(toDecoration(this.errorMessage || `Invalid ${this.fieldName} value`, valueList.value));
                 }
                 valueList = valueList.restOfList;
             }

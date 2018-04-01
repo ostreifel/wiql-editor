@@ -13,15 +13,15 @@ export class VariableParametersChecker implements IErrorChecker {
             return errors;
         }
         if (variable.args.args) {
-            errors.push(toDecoration(variable.args, `${name} only takes 1 argument`));
+            errors.push(toDecoration(`${name} only takes 1 argument`, variable.args));
         }
         if (!(variable.args.value instanceof Symbols.String)) {
-            errors.push(toDecoration(variable.args.value, `Team must be a string`));
+            errors.push(toDecoration(`Team must be a string`, variable.args.value));
             return errors;
         }
         const teamMatch = variable.args.value.text.match(/['"]\[(.*)\]\\(.*)( <.*>)?['"]/);
         if (!teamMatch) {
-            errors.push(toDecoration(variable.args.value, "Team must be of format '[project]\\team'"));
+            errors.push(toDecoration("Team must be of format '[project]\\team'", variable.args.value));
             return errors;
         }
         const [, project, team] = teamMatch;
@@ -39,7 +39,7 @@ export class VariableParametersChecker implements IErrorChecker {
     }
     private async checkToday(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
         if (variable.args) {
-            return [toDecoration(variable.args, "@Today does not accept arguments")];
+            return [toDecoration("@Today does not accept arguments", variable.args)];
         }
         return [];
     }
@@ -47,10 +47,10 @@ export class VariableParametersChecker implements IErrorChecker {
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         const name = variable.name.text;
         if (variable.args) {
-            errors.push(toDecoration(variable.args, `${name} does not accept arguments`));
+            errors.push(toDecoration(`${name} does not accept arguments`, variable.args));
         }
         if (variable.operator && variable.num) {
-            errors.push(toDecoration([variable.operator, variable.num], `${name} does not accept an offset`));
+            errors.push(toDecoration(`${name} does not accept an offset`, [variable.operator, variable.num]));
         }
         return errors;
     }

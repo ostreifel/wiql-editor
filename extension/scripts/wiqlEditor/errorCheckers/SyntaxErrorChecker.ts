@@ -32,7 +32,7 @@ export class SyntaxErrorChecker implements IErrorChecker {
                 `Expected ${parseResult.expectedTokens[0]}` :
                 `Expected one of {${parseResult.expectedTokens.join(", ")}}`;
         }
-        const decoration = toDecoration(errorToken, hoverMessage);
+        const decoration = toDecoration(hoverMessage, errorToken);
         decoration.range = decoration.range.setEndPosition(Infinity, Infinity);
         return [decoration];
     }

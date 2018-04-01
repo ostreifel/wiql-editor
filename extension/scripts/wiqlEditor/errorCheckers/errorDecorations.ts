@@ -45,7 +45,7 @@ export function toStringDecoration(message: string, str: Symbols.String, offset:
     };
 }
 
-export function toDecoration(symbol: Symbols.Symbol | Symbols.Symbol[], message: string) {
+export function toDecoration(message: string, symbol: Symbols.Symbol | Symbols.Symbol[]) {
     return {
         range: toPosition(symbol),
         options: {

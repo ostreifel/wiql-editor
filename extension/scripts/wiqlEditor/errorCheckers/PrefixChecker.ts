@@ -11,9 +11,9 @@ export class PrefixChecker implements IErrorChecker {
                            expectedPrefix: Prefix, isTop: boolean): Prefix {
         if (condition.prefix) {
             if (expectedPrefix === "Source" && !(condition.prefix instanceof Symbols.SourcePrefix)) {
-                errors.push(toDecoration(condition.prefix, "Expected Source prefix"));
+                errors.push(toDecoration("Expected Source prefix", condition.prefix));
             } else if (expectedPrefix === "Target" && !(condition.prefix instanceof Symbols.TargetPrefix)) {
-                errors.push(toDecoration(condition.prefix, "Expected target prefix"));
+                errors.push(toDecoration("Expected target prefix", condition.prefix));
             } else if (!expectedPrefix) {
                 expectedPrefix = condition.prefix instanceof Symbols.SourcePrefix ? "Source" : "Target";
             }
@@ -51,13 +51,13 @@ export class PrefixChecker implements IErrorChecker {
         for (const cond of <Symbols.LinkCondition[]>symbolsOfType(parseResult, Symbols.LinkCondition)) {
             if (cond.field) {
                 if (cond.field.identifier.text.toLocaleLowerCase() === "link type") {
-                    errors.push(toDecoration(cond.field, "Use reference name for link type"));
+                    errors.push(toDecoration("Use reference name for link type", cond.field));
                 } else if (cond.field.identifier.text.toLocaleLowerCase() === "system.links.linktype") {
                     if (cond.prefix) {
-                        errors.push(toDecoration(cond.prefix, "Link type cannot be prefixed"));
+                        errors.push(toDecoration("Link type cannot be prefixed", cond.prefix));
                     }
                 } else if (!cond.prefix) {
-                    errors.push(toDecoration(cond.field, "Fields must be prefixed in link queries"));
+                    errors.push(toDecoration("Fields must be prefixed in link queries", cond.field));
                 }
             }
         }
