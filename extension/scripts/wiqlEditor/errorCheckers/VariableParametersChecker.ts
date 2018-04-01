@@ -20,7 +20,7 @@ export class VariableParametersChecker implements IErrorChecker {
             errors.push(decorationFromSym(`Team must be a string`, variable.args.value));
             return errors;
         }
-        const teamMatch = variable.args.value.text.match(/['"]\[(.*)\]\\(.*)( <.*>)?['"]/);
+        const teamMatch = variable.args.value.text.match(/['"]\[(.+)\]\\(.+)( <.*>)?['"]/);
         if (!teamMatch) {
             errors.push(decorationFromSym("Team must be of format '[project]\\team'", variable.args.value));
             return errors;
@@ -32,9 +32,10 @@ export class VariableParametersChecker implements IErrorChecker {
             errors.push(decorationFromString(
                 `Project does not exist - expecting one of\n\n ${projects.join(", ")}`,
                 variable.args.value,
-                1,
-                project.length + 2,
+                2,
+                project.length,
             ));
+            return errors;
         }
 
         const teams = (await getTeams(lower(project))).map(({name: teamName}) => teamName);
@@ -42,8 +43,8 @@ export class VariableParametersChecker implements IErrorChecker {
             errors.push(decorationFromString(
                 `Team does not exist - expecting one of\n\n ${teams.join(", ")}`,
                 variable.args.value,
-                3 + project.length,
-                team.length + 1,
+                4 + project.length,
+                team.length,
             ));
         }
 

@@ -72,6 +72,6 @@ async function provideCompletionItems(
 }
 
 export const completionProvider: monaco.languages.CompletionItemProvider = {
-    triggerCharacters: [" ", "\t", "[", ".", "@", "\"", "'"],
+    triggerCharacters: [" ", "\t", "[", ".", "@", "\"", "'", "\\"],
     provideCompletionItems,
 };
