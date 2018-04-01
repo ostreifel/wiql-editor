@@ -1,4 +1,3 @@
-import { IParseResults, ParseError } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 
 export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
