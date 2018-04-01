@@ -1,4 +1,5 @@
-import { FieldType, WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 import { FieldLookup } from "../../cachedData/fields";
 import * as Symbols from "../compiler/symbols";
 import { wiqlPatterns } from "../compiler/tokenPatterns";

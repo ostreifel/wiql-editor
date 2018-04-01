@@ -1,9 +1,8 @@
 /// <reference types="vss-web-extension-sdk" />
-
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { delay } from "VSS/Utils/Core";
-import { flushNow, trackEvent } from "../events";
+
+import { trackEvent } from "../events";
 import { ICallbacks, IContextOptions } from "../queryContext/contextContracts";
 import { setupEditor } from "../wiqlEditor/wiqlEditor";
 

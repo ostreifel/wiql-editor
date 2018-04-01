@@ -9,32 +9,6 @@ import { lowerDefinedVariables } from "../wiqlDefinition";
 import { toDecoration } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
-const operationLookup: {
-    [opName: string]: {
-        target: "literal" | "field" | "group",
-        class: Function,
-    },
-} = {
-        "=": { target: "literal", class: Symbols.Equals },
-        "<>": { target: "literal", class: Symbols.NotEquals },
-        ">": { target: "literal", class: Symbols.GreaterThan },
-        "<": { target: "literal", class: Symbols.LessThan },
-        ">=": { target: "literal", class: Symbols.GreaterOrEq },
-        "<=": { target: "literal", class: Symbols.LessOrEq },
-        "In Group": { target: "literal", class: Symbols.InGroup },
-        "Was Ever": { target: "literal", class: Symbols.Ever },
-        "Contains": { target: "literal", class: Symbols.Contains },
-        "Contains Words": { target: "literal", class: Symbols.ContainsWords },
-        "Under": { target: "literal", class: Symbols.Under },
-        "In": { target: "group", class: Symbols.In },
-        "= [Field]": { target: "field", class: Symbols.Equals },
-        "<> [Field]": { target: "field", class: Symbols.NotEquals },
-        "> [Field]": { target: "field", class: Symbols.GreaterThan },
-        "< [Field]": { target: "field", class: Symbols.LessThan },
-        ">= [Field]": { target: "field", class: Symbols.GreaterOrEq },
-        "<= [Field]": { target: "field", class: Symbols.LessOrEq },
-    };
-
 export interface IComparisonType {
     fieldType: FieldType;
     literal: Function[];

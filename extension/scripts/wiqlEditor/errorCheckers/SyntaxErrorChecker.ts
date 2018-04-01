@@ -3,13 +3,6 @@ import * as Symbols from "../compiler/symbols";
 import { toDecoration } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
-enum ComparisonType {
-    Literal,
-    Field,
-    Group,
-    Invalid,
-}
-
 export class SyntaxErrorChecker implements IErrorChecker {
     public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
         if (!(parseResult instanceof ParseError)) {

@@ -73,7 +73,7 @@ async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRe
         const witText = firstSymbol.text;
         // "Type" => Type
         const searchWit = witText.substr(1, witText.length - 2);
-        const [fields, filters] = await Promise.all([fieldsVal.getValue(), getFilters(parseResult)]);
+        const filters = await getFilters(parseResult);
         const workItemTypes = await getWitsByProjects(filters.projects, filters.workItemTypes);
         const matchingWits = workItemTypes.filter((w) => w.name.toLocaleLowerCase() === searchWit.toLocaleLowerCase());
         if (matchingWits.length !== 1) {

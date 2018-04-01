@@ -13,7 +13,9 @@
         "ban-types": false,
         "member-ordering": false,
         "forin": false,
-        "no-namespace": false
+        "no-namespace": false,
+        "no-unused-variable": true,
+        "no-unused-expression": true
     },
     "rulesDirectory": []
 }

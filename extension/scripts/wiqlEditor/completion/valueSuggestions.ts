@@ -31,7 +31,7 @@ async function getStateSuggestions(ctx: ICompletionContext): Promise<string[]> {
 }
 
 async function getTagSuggestions(ctx: ICompletionContext) {
-    const { projects, workItemTypes } = await getFilters(ctx.getAssumedParse());
+    const { projects } = await getFilters(ctx.getAssumedParse());
     if (projects.length === 0) {
         return witNames.getValue();
     }

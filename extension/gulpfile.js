@@ -5,6 +5,7 @@ const {exec, execSync} = require('child_process');
 const sass = require('gulp-sass');
 const del = require("del");
 const ts = require("gulp-typescript");
+const {Linter} = require("tslint");
 const tslint = require('gulp-tslint');
 
 const args =  yargs.argv;
@@ -15,13 +16,15 @@ gulp.task('clean', () => {
 });
 
 gulp.task('tslint', [], () => {
+    const program = Linter.createProgram("./tsconfig.json");
     return gulp.src([
         "scripts/**/*ts",
         "scripts/**/*tsx",
         "!scripts/wiqlEditor/compiler/wiqlTable.ts"
     ])
         .pipe(tslint({
-            formatter: "verbose"
+            formatter: "stylish",
+            program,
         }))
         .pipe(tslint.report());
 });

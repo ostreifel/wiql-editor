@@ -24,7 +24,7 @@ export class VariableParametersChecker implements IErrorChecker {
             errors.push(toDecoration("Team must be of format '[project]\\team'", variable.args.value));
             return errors;
         }
-        const [, project, team] = teamMatch;
+        const [, project] = teamMatch;
         const projects = (await projectsVal.getValue()).map(({name: projName}) => projName);
         if (projects.indexOf(project) < 0) {
             errors.push(toStringDecoration(

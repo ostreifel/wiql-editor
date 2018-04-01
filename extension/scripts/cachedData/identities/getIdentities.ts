@@ -1,6 +1,7 @@
 import { WebApiTeam } from "TFS/Core/Contracts";
 import { getClient } from "TFS/Core/RestClient";
-import { IdentityRef, TeamMember } from "VSS/WebApi/Contracts";
+import { IdentityRef } from "VSS/WebApi/Contracts";
+
 import { CachedValue } from "../CachedValue";
 import * as ExtensionCache from "./extensionCache";
 import { throttlePromises } from "./throttlePromises";
