@@ -1,6 +1,6 @@
-import { DelayedFunction } from "VSS/Utils/Core"
+import { DelayedFunction } from "VSS/Utils/Core";
 
-export interface ValueWithTimings<T> {
+export interface IValueWithTimings<T> {
     value: T;
     properties: IProperties;
     measurements: IMeasurements;
@@ -28,6 +28,7 @@ export function trackEvent(name: string, properties?: IProperties, measurements?
         properties = {
             ...(properties || {}),
             host: VSS.getWebContext().host.authority,
+            // tslint:disable-next-line:no-string-literal
             location: window["extensionLocation"],
         };
         insights.trackEvent(name, properties, measurements);
@@ -44,5 +45,6 @@ export function trackPage(properties?: IProperties, measurements?: IMeasurements
     }
 }
 function getInsights(): Microsoft.ApplicationInsights.IAppInsights | undefined {
+    // tslint:disable-next-line:no-string-literal
     return window["appInsights"];
 }

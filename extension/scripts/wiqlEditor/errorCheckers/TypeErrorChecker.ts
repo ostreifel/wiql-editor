@@ -1,18 +1,19 @@
-import { IErrorChecker } from "./IErrorChecker";
-import { IParseResults } from "../compiler/parser";
-import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { toDecoration } from "./errorDecorations";
-import { symbolsOfType } from "../parseAnalysis/findSymbol";
-import * as Symbols from "../compiler/symbols";
-import { lowerDefinedVariables } from "../wiqlDefinition";
-import { fieldsVal, FieldLookup } from "../../cachedData/fields";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 import { CachedValue } from "../../cachedData/CachedValue";
+import { FieldLookup, fieldsVal } from "../../cachedData/fields";
+import { IParseResults } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
+import { lowerDefinedVariables } from "../wiqlDefinition";
+import { toDecoration } from "./errorDecorations";
+import { IErrorChecker } from "./IErrorChecker";
 
 const operationLookup: {
     [opName: string]: {
         target: "literal" | "field" | "group",
-        class: Function
-    }
+        class: Function,
+    },
 } = {
         "=": { target: "literal", class: Symbols.Equals },
         "<>": { target: "literal", class: Symbols.NotEquals },
@@ -54,7 +55,7 @@ function addCompTypes(types: FieldType[], literal: Function[], group: Function[]
             fieldType,
             field,
             group,
-            literal
+            literal,
         };
     }
 }
@@ -91,7 +92,7 @@ export function getFieldComparisonLookup(fields: FieldLookup) {
                     fieldType: FieldType.String,
                     group: [],
                     literal: [Symbols.Equals, Symbols.NotEquals],
-                    field: []
+                    field: [],
                 };
             } else {
                 fieldLookup[field.name.toLocaleLowerCase()] = fieldLookup[field.referenceName.toLocaleLowerCase()] = compTypes[field.type];
@@ -118,7 +119,7 @@ export class TypeErrorChecker implements IErrorChecker {
         return [];
     }
     private checkAllowsGroup(fieldLookup: IFieldLookup, comp: Symbols.In, field: Symbols.Field): monaco.editor.IModelDeltaDecoration[] {
-        const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()]["group"];
+        const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()].group;
         if (validOps.length === 0) {
             return [toDecoration(`${field.identifier.text} does not support group comparisons`, comp)];
         }

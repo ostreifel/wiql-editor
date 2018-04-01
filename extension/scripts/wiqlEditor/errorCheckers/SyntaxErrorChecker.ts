@@ -7,7 +7,7 @@ enum ComparisonType {
     Literal,
     Field,
     Group,
-    Invalid
+    Invalid,
 }
 
 export class SyntaxErrorChecker implements IErrorChecker {

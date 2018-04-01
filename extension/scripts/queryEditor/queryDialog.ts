@@ -1,44 +1,43 @@
-import { IQuery, IContextOptions, ICallbacks } from "../queryContext/contextContracts";
 import { trackEvent } from "../events";
+import { ICallbacks, IContextOptions, IQuery } from "../queryContext/contextContracts";
 
 function saveErrorMessage(error: TfsError, query: IQuery) {
     if (!isSupportedQueryId(query.id)) {
         return "Only queries in saved in My Queries or Shared Queries can be updated with this extension";
     }
     const exception = (error.serverError || error);
+    // tslint:disable-next-line:no-string-literal
     const message = exception["message"] || exception["value"]["Message"];
     return message;
 }
 
 export async function showDialog(query: IQuery) {
     const dialogService = await VSS.getService<IHostDialogService>(VSS.ServiceIds.Dialog);
-    console.log(query);
     let okCallback: () => Promise<any> = async () => {
-        console.log("ok callback not set");
+        throw new Error("ok callback not set");
     };
-    let closeDialog = () => {
-        console.log("could not find close dialog function");
+    let closeDialog = (): void => {
+        throw new Error("could not find close dialog function");
     };
     function close() {
         trackEvent("keyboardExit");
         closeDialog();
     }
     function save() {
-        okCallback().then(() => {
-            VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: IHostNavigationService) {
-                navigationService.reload();
-            });
+        okCallback().then(async () => {
+            const navigationService = await VSS.getService(VSS.ServiceIds.Navigation) as IHostNavigationService;
+            navigationService.reload();
         }, (error: TfsError) => {
             const message = saveErrorMessage(error, query);
             dialogService.openMessageDialog(message, {
-                title: "Error saving query"
+                title: "Error saving query",
             });
             trackEvent("SaveQueryFailure", {message});
         });
         throw Error("Exception to block dialog close");
     }
     const context: IContextOptions = {
-        query: query,
+        query,
         save,
         close,
     };

@@ -1,8 +1,8 @@
-import * as Symbols from "../compiler/symbols";
-import { parse, IParseResults, ParseError, ParseMode } from "../compiler/parser";
 import { fieldsVal } from "../../cachedData/fields";
-import { createContext, ICompletionContext } from "./completionContext";
+import { IParseResults, parse, ParseError, ParseMode } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
+import { createContext, ICompletionContext } from "./completionContext";
 import { getSuggestions } from "./suggestions";
 
 function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco.Position): IParseResults {
@@ -32,7 +32,7 @@ async function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position
                     return {
                         label: s.label,
                         kind: monaco.languages.CompletionItemKind.Variable,
-                        insertText: s.label.substr(charIdx + 1)
+                        insertText: s.label.substr(charIdx + 1),
                     };
                 });
         }
@@ -41,15 +41,14 @@ async function getCurrentIdentifierSuggestions(ctx: ICompletionContext, position
     return null;
 }
 
-
 async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[] | null> {
     if (ctx.prevToken instanceof Symbols.Variable
         && position.column - 1 === ctx.prevToken.endColumn) {
-        return getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map(s => {
+        return getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map((s) => {
             return {
                 label: s.label,
                 kind: monaco.languages.CompletionItemKind.Variable,
-                insertText: s.label.replace("@", "")
+                insertText: s.label.replace("@", ""),
             } as monaco.languages.CompletionItem;
         });
     }
@@ -59,10 +58,9 @@ async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: 
 async function provideCompletionItems(
     model: monaco.editor.IReadOnlyModel,
     position: monaco.Position,
-    token: monaco.CancellationToken
+    token: monaco.CancellationToken,
 ): Promise<monaco.languages.CompletionItem[]> {
     const parseNext = parseFromPosition(model, position);
-    console.log(parseNext);
     if (!(parseNext instanceof ParseError) || parseNext.remainingTokens.length > 2) {
         // valid query, can't suggest
         return [];
@@ -75,5 +73,5 @@ async function provideCompletionItems(
 
 export const completionProvider: monaco.languages.CompletionItemProvider = {
     triggerCharacters: [" ", "\t", "[", ".", "@", "\"", "'"],
-    provideCompletionItems
+    provideCompletionItems,
 };

@@ -1,10 +1,9 @@
-import { IParseResults } from "../compiler/parser";
-import { IErrorChecker } from "./IErrorChecker";
 import { CachedValue } from "../../cachedData/CachedValue";
-import { toDecoration } from "./errorDecorations";
-import { symbolsOfType } from "../parseAnalysis/findSymbol";
+import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
-
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
+import { toDecoration } from "./errorDecorations";
+import { IErrorChecker } from "./IErrorChecker";
 
 export class AllowedValuesChecker implements IErrorChecker {
     constructor(readonly fieldRefName: string, readonly fieldName: string, readonly allowedValuesVal: CachedValue<string[]>, readonly errorMessage?: string) {
@@ -15,12 +14,12 @@ export class AllowedValuesChecker implements IErrorChecker {
             ...symbolsOfType<Symbols.LinkCondition>(parseResult, Symbols.LinkCondition),
         ];
         const fieldIds = [this.fieldName.toLocaleLowerCase(), this.fieldRefName.toLocaleLowerCase()];
-        const fieldConditions = allConditions.filter(c => c.field && fieldIds.indexOf(c.field.identifier.text.toLocaleLowerCase()) >= 0);
+        const fieldConditions = allConditions.filter((c) => c.field && fieldIds.indexOf(c.field.identifier.text.toLocaleLowerCase()) >= 0);
         if (fieldConditions.length === 0) {
             return [];
         }
         let allowedValues = await this.allowedValuesVal.getValue();
-        allowedValues = [...allowedValues.map(v => `"${v.toLocaleLowerCase()}"`), ...allowedValues.map(v => `'${v.toLocaleLowerCase()}'`)];
+        allowedValues = [...allowedValues.map((v) => `"${v.toLocaleLowerCase()}"`), ...allowedValues.map((v) => `'${v.toLocaleLowerCase()}'`)];
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         for (const condition of fieldConditions) {
             if (condition.value && condition.value.value instanceof Symbols.String &&

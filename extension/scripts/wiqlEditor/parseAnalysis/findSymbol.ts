@@ -1,5 +1,5 @@
-import * as Symbols from "../compiler/symbols";
 import { IParseResults, ParseError } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 
 /**
  * Recurse through each symbol as a tree and return the ones of type
@@ -14,7 +14,7 @@ export function symbolsOfType<T extends Symbols.Symbol>(parseResult: IParseResul
     }
     const matchingSymbols: T[] = [];
     while (stack.length) {
-        const symbol = <Symbols.Symbol>stack.pop();
+        const symbol = <Symbols.Symbol> stack.pop();
         if (symbol instanceof type) {
             matchingSymbols.push(symbol as T);
         }

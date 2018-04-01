@@ -1,17 +1,14 @@
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { WebApiTeam } from "TFS/Core/Contracts";
-import { getClient } from "TFS/Core/RestClient";
 import { CachedValue } from "./CachedValue";
 import { FieldLookup } from "./fields";
 import { getIdentities } from "./identities/getIdentities";
 
-export const identities: CachedValue<string[]> = new CachedValue(getIdentityStrings);
+export const identitiesVal: CachedValue<string[]> = new CachedValue(getIdentityStrings);
 
 async function getIdentityStrings(): Promise<string[]> {
     const identities = await getIdentities();
     return identities.map((m) => m.isContainer ?
         m.displayName :
-        `${m.displayName} <${m.uniqueName}>`
+        `${m.displayName} <${m.uniqueName}>`,
     );
 }
 
@@ -62,5 +59,5 @@ export function isIdentityField(fields: FieldLookup, refNameOrName: string): boo
     }
     // Use the new field flag to detect if identity when available
     // this is the only way to detect if custom fields are identity fields
-    return field["isIdentity"] || knownIdentities.indexOf(field.referenceName) >= 0;
+    return field.isIdentity || knownIdentities.indexOf(field.referenceName) >= 0;
 }

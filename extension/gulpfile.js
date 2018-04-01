@@ -5,13 +5,26 @@ const {exec, execSync} = require('child_process');
 const sass = require('gulp-sass');
 const del = require("del");
 const ts = require("gulp-typescript");
+const tslint = require('gulp-tslint');
 
 const args =  yargs.argv;
 const contentFolder = 'dist';
 
 gulp.task('clean', () => {
     return del([contentFolder, '*.vsix']);
-})
+});
+
+gulp.task('tslint', [], () => {
+    return gulp.src([
+        "scripts/**/*ts",
+        "scripts/**/*tsx",
+        "!scripts/wiqlEditor/compiler/wiqlTable.ts"
+    ])
+        .pipe(tslint({
+            formatter: "verbose"
+        }))
+        .pipe(tslint.report());
+});
 
 gulp.task('copy', ['clean'], () => {
     gulp.src([
@@ -35,8 +48,7 @@ gulp.task('copy', ['clean'], () => {
     ]).pipe(gulp.dest(contentFolder + '/node_modules/monaco-editor/min/vs'));
 });
 
-
-gulp.task('webpack', ['copy'], () => {
+gulp.task('webpack', ['copy', 'tslint'], () => {
     return execSync('webpack', {
         stdio: [null, process.stdout, process.stderr]
     });

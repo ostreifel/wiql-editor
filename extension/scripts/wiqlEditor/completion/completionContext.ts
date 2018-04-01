@@ -1,8 +1,9 @@
-import { ParseError, IParseResults, parse, ParseMode } from "../compiler/parser";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 import { FieldLookup } from "../../cachedData/fields";
+import { IParseResults, parse, ParseError, ParseMode } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
-import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
 
 /**
  * Common values that would otherwise need to be repeatedly recalcualted while providing completion tokens
@@ -21,7 +22,6 @@ export interface ICompletionContext {
     readonly getAssumedParse: () => IParseResults;
 }
 
-
 export const conditionSymbols = [
     Symbols.Equals,
     Symbols.NotEquals,
@@ -33,7 +33,7 @@ export const conditionSymbols = [
     Symbols.Under,
     Symbols.Contains,
     Symbols.Ever,
-    Symbols.In
+    Symbols.In,
 ];
 
 /**
@@ -93,6 +93,6 @@ export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: Pa
         fieldType,
         isInCondition,
         isFieldAllowed,
-        getAssumedParse
+        getAssumedParse,
     };
 }

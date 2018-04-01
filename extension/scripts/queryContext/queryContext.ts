@@ -1,6 +1,6 @@
-import { isSupportedQueryId, showDialog } from "../queryEditor/queryDialog";
-import { IQuery } from "./contextContracts";
 import { trackEvent } from "../events";
+import { showDialog } from "../queryEditor/queryDialog";
+import { IQuery } from "./contextContracts";
 
 trackEvent("pageLoad");
 const menuAction: Partial<IContributedMenuSource> = {
@@ -8,14 +8,14 @@ const menuAction: Partial<IContributedMenuSource> = {
         if (!context || !context.query) {
             return [];
         }
-        return [<IContributedMenuItem>{
+        return [<IContributedMenuItem> {
             text: "Edit query wiql",
             icon: "img/smallLogo.png",
-            action: function (actionContext) {
+            action: (actionContext) => {
                 showDialog(actionContext.query);
-            }
+            },
         }];
-    }
+    },
 };
 
 const extensionContext = VSS.getExtensionContext();

@@ -9,11 +9,11 @@ class IterableIterator<T> {
 function batchGenerator<T>(
     promiseGenerator: IterableIterator<PromiseLike<T>>,
     batchsize: number,
-): IterableIterator<PromiseLike<T>[]> {
-    return new IterableIterator<PromiseLike<T>[]>(
+): IterableIterator<Array<PromiseLike<T>>> {
+    return new IterableIterator<Array<PromiseLike<T>>>(
         () => promiseGenerator.hasNext(),
         () => {
-            const arr: PromiseLike<T>[] = [];
+            const arr: Array<PromiseLike<T>> = [];
             while (promiseGenerator.hasNext()) {
                 arr.push(promiseGenerator.next());
                 if (arr.length >= batchsize) {
@@ -22,7 +22,7 @@ function batchGenerator<T>(
             }
             return arr;
 
-        }
+        },
     );
 }
 /** It is important to only create the promises as needed by the generator or they will all run at once */
@@ -34,11 +34,11 @@ export function throttlePromises<A, T>(arr: A[], convert: (val: A) => PromiseLik
         function queueNext() {
             if (batcher.hasNext()) {
                 Promise.all(batcher.next()).then(
-                    vals => {
+                    (vals) => {
                         results.push(...vals);
                         queueNext();
                     },
-                    error => { reject(error); }
+                    (error) => { reject(error); },
                 );
             } else {
                 resolve(results);
@@ -56,4 +56,3 @@ function createPromiseGenerator<A, T>(arr: A[], convert: (val: A) => PromiseLike
     );
     return a;
 }
-

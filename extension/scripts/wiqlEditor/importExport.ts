@@ -28,16 +28,16 @@ function fromDocument(documentStr: string) {
 }
 
 export function importWiq(editor: monaco.editor.IStandaloneCodeEditor) {
-        const files = $(".wiq-input")[0]["files"];
+        const files = ($(".wiq-input")[0] as HTMLInputElement).files;
         if (!files || files.length === 0) {
-            console.log("No file selected");
+            return;
         }
         const reader = new FileReader();
         const model = editor.getModel();
         reader.onload = () => {
             const documentText: string = reader.result;
             const wiql = fromDocument(documentText);
-            const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+            const edit = <monaco.editor.IIdentifiedSingleEditOperation> {
                 text: wiql,
                 range: model.getFullModelRange(),
                 forceMoveMarkers: true,

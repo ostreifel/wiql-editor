@@ -1,11 +1,10 @@
-import * as ReactDom from "react-dom";
 import * as React from "react";
-import {
-    WorkItemQueryResult, WorkItem, WorkItemFieldReference, WorkItemField, FieldType
-} from "TFS/WorkItemTracking/Contracts";
+import * as ReactDom from "react-dom";
+import { FieldType, WorkItem, WorkItemFieldReference, WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { HostNavigationService } from "VSS/SDK/Services/Navigation";
 import { localeFormat, parseDateString } from "VSS/Utils/Date";
-import { fieldsVal, FieldLookup } from "../cachedData/fields";
+
+import { FieldLookup, fieldsVal } from "../cachedData/fields";
 
 class WorkItemRow extends React.Component<{
     wi: WorkItem,
@@ -13,7 +12,7 @@ class WorkItemRow extends React.Component<{
     rel?: string,
     fields: FieldLookup,
 }, {}> {
-    render() {
+    public render() {
         const { fields, columns, wi, rel} = this.props;
 
         const uri = VSS.getWebContext().host.uri;
@@ -40,7 +39,7 @@ class WorkItemRow extends React.Component<{
                 href={wiUrl}
                 target={"_blank"}
                 rel={"noreferrer"}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                     if (e.keyCode === 40) {
                         $(":focus").next().focus();
 
@@ -58,13 +57,13 @@ class WorkItemRow extends React.Component<{
 }
 
 class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: WorkItemQueryResult, fields: FieldLookup }, {}> {
-    render() {
+    public render() {
         const wiMap = {};
         for (const wi of this.props.workItems) {
             wiMap[wi.id] = wi;
         }
         const workItems = this.props.result.workItems
-            .filter(wi => wi.id in wiMap)
+            .filter((wi) => wi.id in wiMap)
             .map((wi) => wiMap[wi.id]);
         const rows = workItems.map((wi) => <WorkItemRow wi={wi} columns={this.props.result.columns} fields={this.props.fields} />);
         return <div className={"table"}>{rows}</div>;
@@ -72,7 +71,7 @@ class WorkItemTable extends React.Component<{ workItems: WorkItem[], result: Wor
 }
 
 class ResultCountDisclaimer extends React.Component<{ count: number }, {}> {
-    render() {
+    public render() {
         const message = this.props.count < 50 ? `Found ${this.props.count} results` : `Showing first 50 results`;
         return <div>{message}</div>;
     }
@@ -80,21 +79,20 @@ class ResultCountDisclaimer extends React.Component<{ count: number }, {}> {
 }
 
 class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResult, workItems: WorkItem[], fields: FieldLookup }, {}> {
-
-    render() {
+    public render() {
         const wiMap: { [id: number]: WorkItem } = {};
         for (const workitem of this.props.workItems) {
             wiMap[workitem.id] = workitem;
         }
         const rows = this.props.result.workItemRelations
-            .filter(wi => wi.target.id in wiMap)
-            .map(rel =>
+            .filter((wi) => wi.target.id in wiMap)
+            .map((rel) =>
             <WorkItemRow
                 rel={rel.rel || "Source"}
                 columns={this.props.result.columns}
                 wi={wiMap[rel.target.id]}
                 fields={this.props.fields}
-            />
+            />,
         );
         return <div className={"table"}>{rows}</div>;
     }
@@ -102,7 +100,7 @@ class WorkItemRelationsTable extends React.Component<{ result: WorkItemQueryResu
 
 export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[]) {
     let table: JSX.Element;
-    fieldsVal.getValue().then(fields => {
+    fieldsVal.getValue().then((fields) => {
         const props = {workItems, result, fields};
         if (result.workItems) {
             table = <WorkItemTable {...props} />;
@@ -114,12 +112,13 @@ export function renderResult(result: WorkItemQueryResult, workItems: WorkItem[])
                 {table}
                 <ResultCountDisclaimer count={(result.workItems || result.workItemRelations).length} />
             </div>
-            , document.getElementById("query-results") as HTMLElement
+            , document.getElementById("query-results") as HTMLElement,
         );
     });
 }
 
 export function setError(error: TfsError | string) {
+    // tslint:disable-next-line:no-string-literal
     const message = typeof error === "string" ? error : (error.serverError || error)["message"];
     ReactDom.render(<div className={"error-message"}>{message}</div>, document.getElementById("query-results") as HTMLElement);
 }
@@ -153,7 +152,7 @@ export function setVersion() {
         , elem);
 }
 
-VSS.getService(VSS.ServiceIds.Navigation).then(function (navigationService: HostNavigationService) {
+VSS.getService(VSS.ServiceIds.Navigation).then((navigationService: HostNavigationService) => {
     $("body").on("click", "a[href]", (e) => {
         if (!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
             const href = $(e.target).closest("a[href]").attr("href");

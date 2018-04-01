@@ -1,11 +1,11 @@
-import { IErrorChecker } from "./IErrorChecker";
+import { CachedValue } from "../../cachedData/CachedValue";
+import { fieldsVal } from "../../cachedData/fields";
 import { IParseResults } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
+import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import { definedVariables, lowerDefinedVariables } from "../wiqlDefinition";
 import { toDecoration } from "./errorDecorations";
-import { fieldsVal } from "../../cachedData/fields";
-import { CachedValue } from "../../cachedData/CachedValue";
-import { symbolsOfType } from "../parseAnalysis/findSymbol";
+import { IErrorChecker } from "./IErrorChecker";
 
 export class NameErrorChecker implements IErrorChecker {
     private readonly validFieldIdentifiers: CachedValue<string[]> = new CachedValue(async () => {

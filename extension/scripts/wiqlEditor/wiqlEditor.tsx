@@ -1,14 +1,14 @@
-import { completionProvider } from "./completion/completion";
-import { parse } from "./compiler/parser";
-import { format } from "./formatter";
-import { ErrorChecker } from "./errorCheckers/ErrorChecker";
-import * as Wiql from "./wiqlDefinition";
-import { getHoverProvider } from "./hoverProvider";
-import { importWiq, exportWiq } from "./importExport";
-import { DelayedFunction } from "VSS/Utils/Core";
-import * as ReactDom from "react-dom";
 import * as React from "react";
+import * as ReactDom from "react-dom";
+import { DelayedFunction } from "VSS/Utils/Core";
 import { trackEvent } from "../events";
+import { parse } from "./compiler/parser";
+import { completionProvider } from "./completion/completion";
+import { ErrorChecker } from "./errorCheckers/ErrorChecker";
+import { format } from "./formatter";
+import { getHoverProvider } from "./hoverProvider";
+import { exportWiq, importWiq } from "./importExport";
+import * as Wiql from "./wiqlDefinition";
 
 function renderToolbar(callback: () => void) {
     const elem = document.getElementById("header-bar");
@@ -66,7 +66,7 @@ ORDER BY [System.ChangedDate] DESC
     const editor = monaco.editor.create(target, {
         language: Wiql.def.id,
         value: intialValue || defaultVal,
-        automaticLayout: true
+        automaticLayout: true,
     });
 
     format(editor);
@@ -76,9 +76,9 @@ ORDER BY [System.ChangedDate] DESC
         label: "Format",
         keybindings: [
             monaco.KeyMod.Alt | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
-            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F
+            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
         ],
-        run: e => { format(editor); return null as any; }
+        run: (e) => { format(editor); return null as any; },
     });
     $(".wiq-input").change(() => importWiq(editor));
     $(".wiq-export").click(() => exportWiq(editor, queryName));
@@ -89,10 +89,10 @@ ORDER BY [System.ChangedDate] DESC
     const errorChecker = new ErrorChecker();
     let oldDecorations: string[] = [];
 
-    function checkErrors(): Q.IPromise<number> {
+    function checkErrors(): Promise<number> {
         const lines = model.getLinesContent();
         const parseResult = parse(lines);
-        return errorChecker.check(parseResult).then(errors => {
+        return errorChecker.check(parseResult).then((errors) => {
             oldDecorations = model.deltaDecorations(oldDecorations, errors);
             return errors.length;
         });
@@ -100,7 +100,7 @@ ORDER BY [System.ChangedDate] DESC
     checkErrors();
 
     const updateErrors = new DelayedFunction(null, 200, "CheckErrors", () => {
-        checkErrors().then(errorCount => {
+        checkErrors().then((errorCount) => {
             if (onChange) {
                 onChange(errorCount);
             }

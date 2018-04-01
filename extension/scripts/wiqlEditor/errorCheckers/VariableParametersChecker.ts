@@ -1,9 +1,9 @@
-import * as Symbols from "../compiler/symbols";
-import { IErrorChecker } from "./IErrorChecker";
+import { projectsVal } from "../../cachedData/projects";
 import { IParseResults } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 import { symbolsOfType } from "../parseAnalysis/findSymbol";
 import { toDecoration, toStringDecoration } from "./errorDecorations";
-import { projectsVal } from "../../cachedData/projects";
+import { IErrorChecker } from "./IErrorChecker";
 
 export class VariableParametersChecker implements IErrorChecker {
     private async checkCurrentIteration(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
@@ -25,7 +25,7 @@ export class VariableParametersChecker implements IErrorChecker {
             return errors;
         }
         const [, project, team] = teamMatch;
-        const projects = (await projectsVal.getValue()).map(({name}) => name);
+        const projects = (await projectsVal.getValue()).map(({name: projName}) => projName);
         if (projects.indexOf(project) < 0) {
             errors.push(toStringDecoration(
                 `Project does not exist - expecting one of\n\n ${projects.join(", ")}`,

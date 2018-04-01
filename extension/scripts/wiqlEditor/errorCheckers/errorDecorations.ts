@@ -1,5 +1,5 @@
-import * as Symbols from "../compiler/symbols";
 import { IParseResults, ParseError } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 
 export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
     let startToken: Symbols.Token | null = null;
@@ -41,7 +41,7 @@ export function toStringDecoration(message: string, str: Symbols.String, offset:
             hoverMessage: message,
             className: "wiql-error",
             linesDecorationsClassName: "wiql-error-margin",
-        }
+        },
     };
 }
 
@@ -52,6 +52,6 @@ export function toDecoration(message: string, symbol: Symbols.Symbol | Symbols.S
             hoverMessage: message,
             className: "wiql-error",
             linesDecorationsClassName: "wiql-error-margin",
-        }
+        },
     };
 }

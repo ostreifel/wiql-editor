@@ -1,18 +1,18 @@
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
 import * as Symbols from "./symbols";
 
-export interface TokenPattern {
+export interface ITokenPattern {
     match: string | RegExp;
     /** (i,j,text) => void */
     token?;
-    pushState?: TokenPattern[];
+    pushState?: ITokenPattern[];
     popState?: boolean;
 
     /** For completion logic */
     valueTypes?: FieldType[];
 }
 
-function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
+function makeRegexesAtStart(patterns: ITokenPattern[]): ITokenPattern[] {
     return patterns.map((p) => {
         let match;
         if (p.match instanceof RegExp) {
@@ -21,15 +21,15 @@ function makeRegexesAtStart(patterns: TokenPattern[]): TokenPattern[] {
             match = p.match;
         }
         return {
-            match: match,
+            match,
             token: p.token,
             pushState: p.pushState && makeRegexesAtStart(p.pushState),
-            popState: p.popState
+            popState: p.popState,
         };
     });
 }
 
-export function tokenize(lines: string[], patterns: TokenPattern[]) {
+export function tokenize(lines: string[], patterns: ITokenPattern[]) {
     patterns = makeRegexesAtStart(patterns);
     const tokens: Symbols.Token[] = [];
     const states = [patterns];
@@ -41,6 +41,7 @@ export function tokenize(lines: string[], patterns: TokenPattern[]) {
             for (const tokenPattern of states[states.length - 1]) {
                 let tokenText: string | undefined;
                 let match: RegExpMatchArray | null;
+                // tslint:disable-next-line:no-conditional-assignment
                 if (tokenPattern.match instanceof RegExp && (match = substr.match(tokenPattern.match))) {
                     // Preserve case of matching chars
                     tokenText = lines[i].substring(j, j + match[0].length);

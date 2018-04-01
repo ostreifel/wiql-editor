@@ -7,7 +7,7 @@ export const definedVariables = {
     "@today": FieldType.DateTime,
     "@follows": FieldType.Integer,
     "@RecentMentions": FieldType.Integer,
-    "[any]": FieldType.String
+    "[any]": FieldType.String,
 };
 export const lowerDefinedVariables: {[lowerName: string]: FieldType} = Object.keys(definedVariables)
 .reduce((arr, val) => {arr[val.toLocaleLowerCase()] = definedVariables[val]; return arr; }, {});
@@ -26,10 +26,10 @@ export const conf: monaco.languages.LanguageConfiguration = {
         { open: "\"", close: "\"", notIn: ["string"] },
         { open: "[", close: "]", notIn: ["string"] },
         { open: "(", close: ")", notIn: ["string"] },
-    ]
+    ],
 };
 
-export const language = <monaco.languages.IMonarchLanguage>{
+export const language = <monaco.languages.IMonarchLanguage> {
     ignoreCase: true,
     tokenPostfix: ".wiql",
 
@@ -38,7 +38,7 @@ export const language = <monaco.languages.IMonarchLanguage>{
 
     brackets: [
         { open: "[", close: "]", token: "delimiter.square" },
-        { open: "(", close: ")", token: "delimiter.parenthesis" }
+        { open: "(", close: ")", token: "delimiter.parenthesis" },
     ],
     tokenizer: {
         root: [
@@ -47,30 +47,30 @@ export const language = <monaco.languages.IMonarchLanguage>{
             { include: "@strings" },
             [/\[/, { token: "bracket.square", bracket: "@open", next: "@bracketedIdentifier" }],
             [/[()[\]]/, "@brackets"],
-            { include: "@number" }
+            { include: "@number" },
         ],
         bracketedIdentifier: [
             [/[^\]]+/, "identifier"],
-            [/\]/, { token: "bracket.square", bracket: "@close", next: "@pop" }]
+            [/\]/, { token: "bracket.square", bracket: "@close", next: "@pop" }],
         ],
         strings: [
             [/"/, { token: "string.quote", bracket: "@open", next: "@string1" }],
-            [/'/, { token: "string.quote", bracket: "@open", next: "@string2" }]
+            [/'/, { token: "string.quote", bracket: "@open", next: "@string2" }],
         ],
         string1: [
             [/[^"]+/, "string"],
             [/""/, "string"],
-            [/"/, { token: "string.quote", bracket: "@close", next: "@pop" }]
+            [/"/, { token: "string.quote", bracket: "@close", next: "@pop" }],
         ],
         string2: [
             [/[^']+/, "string"],
             [/''/, "string"],
-            [/'/, { token: "string.quote", bracket: "@close", next: "@pop" }]
+            [/'/, { token: "string.quote", bracket: "@close", next: "@pop" }],
         ],
         number: [
             [/-?\d+(?:\.\d*)(?:e-?\d+)?/, "number.float"],
             [/-?\d+(?:\.\d*)?(?:e-?\d+)/, "number.float"],
-            [/-?\d+?/, "number"]
-        ]
-    }
+            [/-?\d+?/, "number"],
+        ],
+    },
 };

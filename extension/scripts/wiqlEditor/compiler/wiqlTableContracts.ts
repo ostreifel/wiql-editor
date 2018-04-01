@@ -8,10 +8,10 @@ export interface IParseTable {
             [symbolName: string]:
             { action: "shift", state: number } |
             { action: "reduce", production: IProduction } |
-            undefined
+            undefined,
         },
         symbols: {
-            [symbolName: string]: number | undefined
-        }
+            [symbolName: string]: number | undefined,
+        },
     };
-};
+}

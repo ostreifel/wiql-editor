@@ -1,11 +1,11 @@
 /// <reference types="vss-web-extension-sdk" />
 
-import { setupEditor } from "../wiqlEditor/wiqlEditor";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
-import { IContextOptions, ICallbacks } from "../queryContext/contextContracts";
-import { trackEvent, flushNow } from "../events";
 import { delay } from "VSS/Utils/Core";
+import { flushNow, trackEvent } from "../events";
+import { ICallbacks, IContextOptions } from "../queryContext/contextContracts";
+import { setupEditor } from "../wiqlEditor/wiqlEditor";
 
 trackEvent("pageLoad");
 const configuration: IContextOptions = VSS.getConfiguration();
@@ -13,8 +13,8 @@ const target = document.getElementById("wiql-box");
 if (!target) {
     throw new Error("Could not find wiql editor div");
 }
-let updateSaveButton = (enabled: boolean) => {
-    console.log("update button not set");
+let updateSaveButton = (enabled: boolean): void => {
+    throw new Error("update button not set");
 };
 
 const editor = setupEditor(target, (count) => updateSaveButton(true), configuration.query.wiql, configuration.query.name);
@@ -23,24 +23,23 @@ editor.addAction({
     contextMenuGroupId: "modification",
     label: "Save",
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
-    run: e => {
+    run: (e) => {
         configuration.save();
         return null as any;
-    }
+    },
 });
 editor.addAction({
     id: "exit",
     contextMenuGroupId: "navigation",
     label: "Exit",
-    run: e => {
+    run: (e) => {
         configuration.close();
         return null as any;
-    }
+    },
 });
 async function saveQuery(): Promise<any> {
-    console.log("saving query");
     const context = VSS.getWebContext();
-    const queryItem = <QueryHierarchyItem>{
+    const queryItem = <QueryHierarchyItem> {
         wiql: editor.getValue(),
         path: configuration.query.path,
         name: configuration.query.name,
@@ -55,7 +54,6 @@ async function saveQuery(): Promise<any> {
 }
 const callbacks: ICallbacks = {
     okCallback: saveQuery,
-    setUpdateSaveButton: (callback) => updateSaveButton = callback
+    setUpdateSaveButton: (callback) => updateSaveButton = callback,
 };
 VSS.register("contextForm", callbacks);
-

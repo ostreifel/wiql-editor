@@ -12,7 +12,7 @@ export interface IContextOptions {
 }
 
 export interface ICallbacks {
-    /** To be set by consumer and read by provider*/
+    /** To be set by consumer and read by provider */
     okCallback: () => Promise<any>;
     /** Not set until after dialog created */
     setUpdateSaveButton: (callback: (enabled: boolean) => void) => void;

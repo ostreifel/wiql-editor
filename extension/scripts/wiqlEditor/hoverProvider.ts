@@ -1,18 +1,19 @@
-import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { parse, IParseResults } from "./compiler/parser";
-import * as Symbols from "./compiler/symbols";
-import { lowerDefinedVariables } from "./wiqlDefinition";
-import { allProjectWits, getWitsByProjects } from "../cachedData/workItemTypes";
+import { FieldType } from "TFS/WorkItemTracking/Contracts";
+
 import { fieldsVal } from "../cachedData/fields";
-import { symbolsOfType, symbolsAtPosition } from "./parseAnalysis/findSymbol";
+import { getWitsByProjects } from "../cachedData/workItemTypes";
+import { IParseResults, parse } from "./compiler/parser";
+import * as Symbols from "./compiler/symbols";
+import { symbolsAtPosition } from "./parseAnalysis/findSymbol";
 import { getFilters } from "./parseAnalysis/whereClauses";
+import { lowerDefinedVariables } from "./wiqlDefinition";
 
 function toRange(token: Symbols.Token) {
     return new monaco.Range(token.line + 1, token.startColumn + 1, token.line + 1, token.endColumn + 1);
 }
 
 async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover> {
-    const id = hoverSymbols.filter(s => s instanceof Symbols.Identifier)[0] as Symbols.Identifier;
+    const id = hoverSymbols.filter((s) => s instanceof Symbols.Identifier)[0] as Symbols.Identifier;
     if (id) {
         const [fields, filters] = await Promise.all([fieldsVal.getValue(), getFilters(parseResult)]);
         const matchedField = fields.getField(id.text);
@@ -43,7 +44,7 @@ async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParse
 }
 
 function getVariableHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): monaco.languages.Hover | undefined {
-    const variable = hoverSymbols.filter(s => s instanceof Symbols.VariableExpression)[0] as Symbols.VariableExpression;
+    const variable = hoverSymbols.filter((s) => s instanceof Symbols.VariableExpression)[0] as Symbols.VariableExpression;
     if (variable) {
         const matchedVariable = variable.name.text.toLocaleLowerCase() in lowerDefinedVariables;
         if (matchedVariable) {
@@ -56,13 +57,13 @@ function getVariableHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRes
 }
 
 async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover> {
-    const witExpression = hoverSymbols.filter(s =>
+    const witExpression = hoverSymbols.filter((s) =>
         s instanceof Symbols.ConditionalExpression &&
         s.field &&
         (
             s.field.identifier.text.toLocaleLowerCase() === "system.workitemtype" ||
             s.field.identifier.text.toLocaleLowerCase() === "work item type"
-        )
+        ),
     )[0] as Symbols.ConditionalExpression;
     const firstSymbol = hoverSymbols[0];
     if (
@@ -74,7 +75,7 @@ async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRe
         const searchWit = witText.substr(1, witText.length - 2);
         const [fields, filters] = await Promise.all([fieldsVal.getValue(), getFilters(parseResult)]);
         const workItemTypes = await getWitsByProjects(filters.projects, filters.workItemTypes);
-        const matchingWits = workItemTypes.filter(w => w.name.toLocaleLowerCase() === searchWit.toLocaleLowerCase());
+        const matchingWits = workItemTypes.filter((w) => w.name.toLocaleLowerCase() === searchWit.toLocaleLowerCase());
         if (matchingWits.length !== 1) {
             return null;
         }
@@ -94,6 +95,6 @@ export function getHoverProvider(): monaco.languages.HoverProvider {
                 await getVariableHover(hoverSymbols, parseResult) ||
                 await getWitHover(hoverSymbols, parseResult) ||
                 null;
-        }
+        },
     };
 }

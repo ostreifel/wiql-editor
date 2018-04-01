@@ -1,5 +1,6 @@
-import { WorkItemField, GetFieldsExpand } from "TFS/WorkItemTracking/Contracts";
+import { GetFieldsExpand, WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
+
 import { CachedValue } from "./CachedValue";
 
 export const fieldsVal: CachedValue<FieldLookup> = new CachedValue<FieldLookup>(getFieldLookup);
@@ -9,19 +10,17 @@ async function getFieldLookup() {
 }
 
 async function getFields(): Promise<WorkItemField[]> {
-    const client = getWitClient();
-    const getFields: (projectId?: string, expand?: GetFieldsExpand) => IPromise<WorkItemField[]> = client.getFields.bind(client);
-    if (getFields.length === 2) {
-        return getFields(undefined, GetFieldsExpand.ExtensionFields);
+    if (getWitClient().getFields.length === 2) {
+        return getWitClient().getFields(undefined, GetFieldsExpand.ExtensionFields);
     }
     // Older server -- fallback
     return getWitClient().getFields(GetFieldsExpand && GetFieldsExpand.ExtensionFields as any);
 }
 
 export class FieldLookup {
-    private static _counter: number = 0;
+    private static counter: number = 0;
     private readonly lookup: {[refOrName: string]: WorkItemField} = {};
-    public readonly lookupId: number = FieldLookup._counter++;
+    public readonly lookupId: number = FieldLookup.counter++;
     constructor(public readonly values: WorkItemField[]) {
         for (const field of values) {
             this.lookup[field.referenceName.toLocaleLowerCase()] = field;

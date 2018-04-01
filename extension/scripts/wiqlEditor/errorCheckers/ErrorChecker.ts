@@ -1,13 +1,13 @@
-import { IErrorChecker } from "./IErrorChecker";
-import { SyntaxErrorChecker } from "./SyntaxErrorChecker";
-import { NameErrorChecker } from "./NameErrorChecker";
-import { TypeErrorChecker } from "./TypeErrorChecker";
-import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
+import { areaStrings, iterationStrings } from "../../cachedData/nodes";
+import { allTagsVal } from "../../cachedData/tags";
+import { IParseResults } from "../compiler/parser";
 import { AllowedValuesChecker } from "./AllowedValuesChecker";
+import { IErrorChecker } from "./IErrorChecker";
+import { LinkTypeCountChecker } from "./LinkTypeCountChecker";
+import { NameErrorChecker } from "./NameErrorChecker";
 import { PrefixChecker } from "./PrefixChecker";
-import { IParseResults} from "../compiler/parser";
-import { iterationStrings, areaStrings } from "../../cachedData/nodes";
-import { allTags } from "../../cachedData/tags";
+import { SyntaxErrorChecker } from "./SyntaxErrorChecker";
+import { TypeErrorChecker } from "./TypeErrorChecker";
 import { VariableParametersChecker } from "./VariableParametersChecker";
 
 export class ErrorChecker implements IErrorChecker {
@@ -21,12 +21,12 @@ export class ErrorChecker implements IErrorChecker {
             new LinkTypeCountChecker(),
             new AllowedValuesChecker("System.IterationPath", "Iteration Path", iterationStrings),
             new AllowedValuesChecker("System.AreaPath", "Area Path", areaStrings),
-            new AllowedValuesChecker("System.Tags", "Tags", allTags),
+            new AllowedValuesChecker("System.Tags", "Tags", allTagsVal),
             new VariableParametersChecker(),
         ];
     }
     public async check(parseResult: IParseResults): Promise<monaco.editor.IModelDeltaDecoration[]> {
-        const promises = this.errorCheckers.map(checker => checker.check(parseResult));
+        const promises = this.errorCheckers.map((checker) => checker.check(parseResult));
         const allErrorArrs = await Promise.all(promises);
         const allErrors: monaco.editor.IModelDeltaDecoration[] = [];
         for (const errors of allErrorArrs) {
@@ -34,4 +34,4 @@ export class ErrorChecker implements IErrorChecker {
         }
         return allErrors;
     }
-};
+}

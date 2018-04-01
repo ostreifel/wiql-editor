@@ -1,10 +1,8 @@
-import { ICompletionContext } from "../completion/completionContext";
-import * as Symbols from "../compiler/symbols";
-import { fieldsVal, FieldLookup } from "../../cachedData/fields";
-import { IParseResults } from "../compiler/parser";
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
+import { FieldLookup, fieldsVal } from "../../cachedData/fields";
 import { projectsVal } from "../../cachedData/projects";
-import { states, witNames, getWitNamesByProjects, getStatesByProjects } from "../../cachedData/workItemTypes";
+import { getWitNamesByProjects } from "../../cachedData/workItemTypes";
+import { IParseResults } from "../compiler/parser";
+import * as Symbols from "../compiler/symbols";
 
 function getConditionalExpressions(logical: Symbols.LogicalExpression) {
     const conditionals: Symbols.ConditionalExpression[] = [];
@@ -30,8 +28,8 @@ function getConditionalExpressions(logical: Symbols.LogicalExpression) {
 }
 
 function getProjects(fields: FieldLookup, conditionals: Symbols.ConditionalExpression[]): string[] {
-    const projectConditions = conditionals.filter(c => c.field && fields.equalFields("System.TeamProject", c.field.identifier.text));
-    if (projectConditions.some(c =>
+    const projectConditions = conditionals.filter((c) => c.field && fields.equalFields("System.TeamProject", c.field.identifier.text));
+    if (projectConditions.some((c) =>
         !c.conditionalOperator ||
         !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
         (
@@ -40,7 +38,7 @@ function getProjects(fields: FieldLookup, conditionals: Symbols.ConditionalExpre
         ))) {
         return [];
     }
-    return projectConditions.map(c => {
+    return projectConditions.map((c) => {
         if (c.value && c.value.value instanceof Symbols.String) {
             const str = c.value.value.text;
             // Remove the quotes on the string text
@@ -53,16 +51,16 @@ function getProjects(fields: FieldLookup, conditionals: Symbols.ConditionalExpre
 }
 
 function getWits(fields: FieldLookup, conditionals: Symbols.ConditionalExpression[]): string[] {
-    const witConditions = conditionals.filter(c => c.field && fields.equalFields("System.WorkItemType", c.field.identifier.text));
-    if (witConditions.some(c =>
+    const witConditions = conditionals.filter((c) => c.field && fields.equalFields("System.WorkItemType", c.field.identifier.text));
+    if (witConditions.some((c) =>
         !c.conditionalOperator ||
         // TODO also allow in group
         !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
-        !(c.value && c.value.value instanceof Symbols.String)
+        !(c.value && c.value.value instanceof Symbols.String),
     )) {
         return [];
     }
-    return witConditions.map(c => {
+    return witConditions.map((c) => {
         if (c.value && c.value.value instanceof Symbols.String) {
             const str = c.value.value.text;
             // Remove the quotes on the string text
@@ -71,8 +69,6 @@ function getWits(fields: FieldLookup, conditionals: Symbols.ConditionalExpressio
         throw new Error("Value is unexpected type when reading wits");
     });
 }
-
-
 
 function toServerCasing(values: string[], serverValues: string[]): string[] {
     const serverValueMap: { [key: string]: string } = {};
@@ -113,13 +109,13 @@ export async function getFilters(parse: IParseResults): Promise<IQueryFilters> {
     }
 
     const projects = await projectsVal.getValue();
-    const projectNames = projects.map(p => p.name);
+    const projectNames = projects.map((p) => p.name);
     const uniqueProjects = toServerCasing(foundProjects, projectNames);
     const witNames = await getWitNamesByProjects(uniqueProjects);
     const uniqueWits = toServerCasing(foundWits, witNames);
     const filters: IQueryFilters = {
         projects: uniqueProjects,
-        workItemTypes: uniqueWits
+        workItemTypes: uniqueWits,
     };
     return filters;
 }

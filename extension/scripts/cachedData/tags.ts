@@ -1,23 +1,23 @@
+import { callApi } from "../RestCall";
 import { CachedValue } from "./CachedValue";
 import { projectsVal } from "./projects";
-import { callApi } from "../RestCall";
 
-export const allTags: CachedValue<string[]> = new CachedValue(getAllTags);
+export const allTagsVal: CachedValue<string[]> = new CachedValue(getAllTags);
 async function getAllTags() {
-    return await getTagsForProjects((await projectsVal.getValue()).map(p => p.name));
+    return await getTagsForProjects((await projectsVal.getValue()).map((p) => p.name));
 }
 
 const tagsMap: { [projectId: string]: CachedValue<string[]> } = {};
 export function getTagsForProjects(projectIds: string[]) {
     if (projectIds.length === 0) {
-        return allTags.getValue();
+        return allTagsVal.getValue();
     }
     for (const projectId of projectIds) {
         if (!(projectId in tagsMap)) {
             tagsMap[projectId] = new CachedValue(() => getTagsForProject(projectId));
         }
     }
-    return Promise.all(projectIds.map(p => getTagsForProject(p))).then(tagsArr => {
+    return Promise.all(projectIds.map((p) => getTagsForProject(p))).then((tagsArr) => {
         const allTags: { [tag: string]: void } = {};
         for (const tags of tagsArr) {
             for (const tag of tags) {
@@ -44,7 +44,7 @@ async function getTagsForProject(project: string): Promise<string[]> {
     const tagsUrl = webContext.account.uri + "DefaultCollection/_apis/tagging/scopes/" + project + "/tags?api-version=1.0";
     return new Promise<string[]>((resolve, reject) => {
         callApi(tagsUrl, "GET", undefined, undefined, (tags: ITagsResponse) => {
-            resolve(tags.value.map(t => t.name));
+            resolve(tags.value.map((t) => t.name));
         }, (error, errorThrown, status) => {
             reject(error);
         });

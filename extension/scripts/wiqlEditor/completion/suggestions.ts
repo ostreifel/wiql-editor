@@ -1,10 +1,10 @@
-import { WorkItemField, FieldType } from "TFS/WorkItemTracking/Contracts";
-import { wiqlPatterns } from "../compiler/tokenPatterns";
+import { FieldType, WorkItemField } from "TFS/WorkItemTracking/Contracts";
 import { FieldLookup } from "../../cachedData/fields";
-import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
-import { ICompletionContext, conditionSymbols } from "./completionContext";
 import * as Symbols from "../compiler/symbols";
+import { wiqlPatterns } from "../compiler/tokenPatterns";
+import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
+import { conditionSymbols, ICompletionContext } from "./completionContext";
 import { getStringValueSuggestions } from "./valueSuggestions";
 
 function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: FieldLookup, fieldAllowed) {
@@ -28,7 +28,7 @@ function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields:
             const symName = Symbols.getSymbolName(pattern.token);
             symbolSuggestionMap[symName] = {
                 label: pattern.match,
-                kind: monaco.languages.CompletionItemKind.Keyword
+                kind: monaco.languages.CompletionItemKind.Keyword,
             };
         }
     }
@@ -70,14 +70,14 @@ function isInsideString(ctx: ICompletionContext) {
 async function pushStringSuggestions(
     ctx: ICompletionContext,
     stringsPromise: PromiseLike<string[]>,
-    suggestions: monaco.languages.CompletionItem[]
+    suggestions: monaco.languages.CompletionItem[],
 ): Promise<monaco.languages.CompletionItem[]> {
     const inString = isInsideString(ctx);
     const strings = await stringsPromise;
     for (const str of strings) {
         suggestions.push({
             label: inString ? str : `"${str}"`,
-            kind: monaco.languages.CompletionItemKind.Text
+            kind: monaco.languages.CompletionItemKind.Text,
         } as monaco.languages.CompletionItem);
     }
     if (ctx.parseNext.errorToken instanceof Symbols.NonterminatingString) {
@@ -88,12 +88,12 @@ async function pushStringSuggestions(
         }
         if (charIdx >= 0) {
             const prefix = currentStr.substr(0, charIdx).toLocaleLowerCase();
-            return suggestions.filter(s => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map(s =>
+            return suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map((s) =>
                 ({
                     label: s.label,
                     kind: monaco.languages.CompletionItemKind.Text,
-                    insertText: s.label.substr(charIdx + 1)
-                } as monaco.languages.CompletionItem)
+                    insertText: s.label.substr(charIdx + 1),
+                } as monaco.languages.CompletionItem),
             );
         }
     }
@@ -105,7 +105,7 @@ async function pushStringSuggestions(
  */
 export async function getSuggestions(
     ctx: ICompletionContext,
-    position: monaco.Position
+    position: monaco.Position,
 ): Promise<monaco.languages.CompletionItem[]> {
     const suggestions: monaco.languages.CompletionItem[] = [];
     // Don't symbols complete inside strings

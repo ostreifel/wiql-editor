@@ -1,9 +1,9 @@
 import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
-import { renderResult, setError, setMessage } from "./queryResults";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
+
+import { trackEvent } from "../events";
 import { setupEditor } from "../wiqlEditor/wiqlEditor";
-import { AppInsights } from "applicationinsights-js";
-import { trackPage, trackEvent } from "../events";
+import { renderResult, setError, setMessage } from "./queryResults";
 
 trackEvent("pageLoad");
 
@@ -19,7 +19,7 @@ function loadWorkItems(result: WorkItemQueryResult) {
         result.columns.map((col) => col.referenceName)
         : undefined;
     getWitClient().getWorkItems(wiIds, fieldRefNames, result.asOf).then(
-        workItems => renderResult(result, workItems), setError);
+        (workItems) => renderResult(result, workItems), setError);
 }
 function loadWorkItemRelations(result: WorkItemQueryResult) {
     if (result.workItemRelations.length === 0) {
@@ -41,8 +41,8 @@ function loadWorkItemRelations(result: WorkItemQueryResult) {
         result.columns.map((col) => col.referenceName)
         : undefined;
     getWitClient().getWorkItems(ids, fieldRefNames, result.asOf).then(
-        workitems => renderResult(result, workitems), error => {
-            const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+        (workitems) => renderResult(result, workitems), (error) => {
+            const message = typeof error === "string" ? error : (error.serverError || error).message;
             trackEvent("GetWorkItemFailure", { message });
             setError(error);
         });
@@ -53,22 +53,20 @@ function search() {
     trackEvent("RunQuery", {wiqlLength: "" + wiqlText.length});
     const context = VSS.getWebContext();
     getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(
-        result => {
+        (result) => {
             result.workItems = result.workItems && result.workItems.splice(0, 50);
             result.workItemRelations = result.workItemRelations && result.workItemRelations.splice(0, 50);
             if (result.workItems) {
                 loadWorkItems(result);
-            }
-            else {
+            } else {
                 loadWorkItemRelations(result);
             }
-        }, error => {
-            const message = typeof error === "string" ? error : (error.serverError || error)["message"];
+        }, (error) => {
+            const message = typeof error === "string" ? error : (error.serverError || error).message;
             trackEvent("RunQueryFailure", { message });
             setError(error);
         });
 }
-
 
 const target = document.getElementById("wiql-box");
 if (!target) {
@@ -82,23 +80,23 @@ editor.addAction({
     keybindings: [monaco.KeyMod.Shift | monaco.KeyCode.Enter],
     keybindingContext: undefined,
     contextMenuOrder: 1,
-    run: e => { search(); return <any>null; }
+    run: (e) => { search(); return <any> null; },
 });
 editor.addAction({
     id: "focus-results",
     label: "Focus Results",
     contextMenuGroupId: "results",
     keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.KEY_R],
-    run: e => {
+    run: (e) => {
         const trs = $(".row");
         if (trs.length > 0) {
             trs.first().focus();
         }
         return null as any;
-    }
+    },
 });
 function getAction(id: string) {
-    return () => editor.getActions().filter(a => a.id.match(`:${id}$`))[0].run();
+    return () => editor.getActions().filter((a) => a.id.match(`:${id}$`))[0].run();
 }
 $(".run-button").click(getAction("run"));
 $(".format-button").click(getAction("format"));
@@ -107,7 +105,7 @@ setMessage([
     "Key bindings:",
     "Shift + Enter : Run",
     "Alt + Shift + F or Ctr + Shift + F : Format",
-    "Alt + R : Apply focus to first result"
+    "Alt + R : Apply focus to first result",
 ]);
 
 // Register context menu action provider

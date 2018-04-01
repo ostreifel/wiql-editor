@@ -1,50 +1,19 @@
 {
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
     "rules": {
-        "class-name": true,
-		"no-unused-expression": true,
-        "comment-format": [true, "check-space"],
-		"curly": true,
-        "indent": [true, "spaces"],
-        "no-duplicate-variable": true,
-        "no-eval": true,
-        "no-internal-module": true,
-        "no-trailing-whitespace": true,
-        "no-var-keyword": true,
-        "one-line": [true, "check-open-brace", "check-whitespace"],
-        "quotemark": [true, "double"],
-        "semicolon": ["always"],
-        "triple-equals": [true, "allow-null-check"],
-        "no-unused-variable": [ true ],
-        "typedef-whitespace": [true, {
-            "call-signature": "nospace",
-            "index-signature": "nospace",
-            "parameter": "nospace",
-            "property-declaration": "nospace",
-            "variable-declaration": "nospace"
-        }],
-        "variable-name": [true, "ban-keywords"],
-        "whitespace": [true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ],
-		"align": [
-			"arguments",
-			"parameters",
-			"statements"			
-		],
-        "max-file-line-count": [
-            true, 400
-        ],
-		"array-type": [
-			"array"
-		],
-		"eofline": true,
-        "no-invalid-this": [
-            true
-        ],
-        "prefer-const": true
-    }
+        "max-line-length": [true, 200],
+        "no-angle-bracket-type-assertion": false,
+        "object-literal-sort-keys": false,
+        "max-classes-per-file": false,
+        "no-bitwise": false,
+        "ban-types": false,
+        "member-ordering": false,
+        "forin": false,
+        "no-namespace": false
+    },
+    "rulesDirectory": []
 }

@@ -1,7 +1,6 @@
+import { FieldLookup, fieldsVal } from "../cachedData/fields";
 import { parse } from "./compiler/parser";
 import * as Symbols from "./compiler/symbols";
-import { WorkItemField } from "TFS/WorkItemTracking/Contracts";
-import { fieldsVal, FieldLookup } from "../cachedData/fields";
 
 function insert(line: string, text: string) {
     const match = line.match(/(\s*)(.*)/);
@@ -43,7 +42,7 @@ function formatVariable(exp: Symbols.VariableExpression) {
             } else if (value instanceof Symbols.True) {
                 str += "true";
             } else if (value instanceof Symbols.False) {
-                str += "false"
+                str += "false";
             }
             if (args.args) {
                 str += ", ";
@@ -143,7 +142,7 @@ function formatExpression(logicalExpression: Symbols.LogicalExpression | Symbols
     const lines: string[] = formatCondition(logicalExpression.condition, tab, indent, fields);
     if (logicalExpression.everNot instanceof Symbols.Ever) {
         lines[0] = insert(lines[0], "EVER ");
-    } else if (<Symbols.Not | undefined>logicalExpression.everNot instanceof Symbols.Not) {
+    } else if (<Symbols.Not | undefined> logicalExpression.everNot instanceof Symbols.Not) {
         lines[0] = insert(lines[0], "NOT ");
     }
     if (logicalExpression.orAnd && logicalExpression.expression) {
@@ -163,7 +162,7 @@ function formatOrderByFieldList(orderBy: Symbols.OrderByFieldList | Symbols.Link
         let order: string = "";
         if (currOrderBy.ascDesc instanceof Symbols.Asc) {
             order = " ASC";
-        } else if (<Symbols.Desc | undefined>currOrderBy.ascDesc instanceof Symbols.Desc) {
+        } else if (<Symbols.Desc | undefined> currOrderBy.ascDesc instanceof Symbols.Desc) {
             order = " DESC";
         }
         let prefix: string = "";
@@ -238,7 +237,7 @@ function formatSelect(select: Symbols.FlatSelect | Symbols.OneHopSelect | Symbol
     return lines;
 }
 
-function formatSync(editor: monaco.editor.IStandaloneCodeEditor, FieldLookup: FieldLookup) {
+function formatSync(editor: monaco.editor.IStandaloneCodeEditor, fieldLookup: FieldLookup) {
     const model = editor.getModel();
     const tab = model.getOneIndent();
 
@@ -247,12 +246,12 @@ function formatSync(editor: monaco.editor.IStandaloneCodeEditor, FieldLookup: Fi
     if (parseTree instanceof Symbols.FlatSelect ||
         parseTree instanceof Symbols.OneHopSelect ||
         parseTree instanceof Symbols.RecursiveSelect) {
-        lines = formatSelect(parseTree, tab, FieldLookup);
+        lines = formatSelect(parseTree, tab, fieldLookup);
     } else {
         // syntax error, not going to format
         return;
     }
-    const edit = <monaco.editor.IIdentifiedSingleEditOperation>{
+    const edit = <monaco.editor.IIdentifiedSingleEditOperation> {
         text: lines.join("\r\n"),
         range: model.getFullModelRange(),
         forceMoveMarkers: true,

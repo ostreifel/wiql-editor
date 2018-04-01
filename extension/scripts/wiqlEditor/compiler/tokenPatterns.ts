@@ -1,8 +1,8 @@
-import { TokenPattern } from "./tokenizer";
-import * as Symbols from "./symbols";
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
+import * as Symbols from "./symbols";
+import { ITokenPattern } from "./tokenizer";
 
-export const wiqlPatterns: TokenPattern[] = [
+export const wiqlPatterns: ITokenPattern[] = [
     { match: /[ \r\t\n]+/ },
     { match: "SELECT", token: Symbols.Select },
     { match: "FROM", token: Symbols.From },
@@ -45,8 +45,8 @@ export const wiqlPatterns: TokenPattern[] = [
             { match: /source(?=])/, token: Symbols.Source},
             { match: /target(?=])/, token: Symbols.Target},
             { match: /[^\]]+/, token: Symbols.Identifier },
-            { match: /]/, token: Symbols.RSqBracket, popState: true }
-        ]
+            { match: /]/, token: Symbols.RSqBracket, popState: true },
+        ],
     },
     { match: /[a-z_][\w\.]*/, token: Symbols.Identifier },
     { match: "]", token: Symbols.RSqBracket },
@@ -64,5 +64,5 @@ export const wiqlPatterns: TokenPattern[] = [
     { match: /'(?:[^']|'')*/, token: Symbols.NonterminatingString },
     { match: /"(?:[^"]|"")*"/, token: Symbols.String },
     { match: /"(?:[^"]|"")*/, token: Symbols.NonterminatingString },
-    { match: /./, token: Symbols.UnexpectedToken}
+    { match: /./, token: Symbols.UnexpectedToken},
 ];
