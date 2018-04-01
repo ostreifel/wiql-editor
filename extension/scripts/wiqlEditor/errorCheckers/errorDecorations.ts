@@ -28,6 +28,23 @@ export function toPosition(symbol: Symbols.Symbol | Symbols.Symbol[]) {
         endToken.endColumn + 1,
     );
 }
+
+export function toStringDecoration(message: string, str: Symbols.String, offset: number, length: number) {
+    return {
+        range: new monaco.Range(
+            str.line + 1,
+            str.startColumn + 1 + offset,
+            str.line + 1,
+            str.startColumn + 1 + offset + length,
+        ),
+        options: {
+            hoverMessage: message,
+            className: "wiql-error",
+            linesDecorationsClassName: "wiql-error-margin",
+        }
+    };
+}
+
 export function toDecoration(symbol: Symbols.Symbol | Symbols.Symbol[], message: string) {
     return {
         range: toPosition(symbol),
