@@ -12,7 +12,7 @@ function toRange(token: Symbols.Token) {
     return new monaco.Range(token.line + 1, token.startColumn + 1, token.line + 1, token.endColumn + 1);
 }
 
-async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover> {
+async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover | null> {
     const id = hoverSymbols.filter((s) => s instanceof Symbols.Identifier)[0] as Symbols.Identifier;
     if (id) {
         const [fields, filters] = await Promise.all([fieldsVal.getValue(), getFilters(parseResult)]);
@@ -39,8 +39,8 @@ async function getFieldHover(hoverSymbols: Symbols.Symbol[], parseResult: IParse
             }
             return { contents: hovers, range };
         }
-        return null;
     }
+    return null;
 }
 
 function getVariableHover(hoverSymbols: Symbols.Symbol[]): monaco.languages.Hover | undefined {
@@ -56,7 +56,7 @@ function getVariableHover(hoverSymbols: Symbols.Symbol[]): monaco.languages.Hove
     }
 }
 
-async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover> {
+async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseResults): Promise<monaco.languages.Hover | null> {
     const witExpression = hoverSymbols.filter((s) =>
         s instanceof Symbols.ConditionalExpression &&
         s.field &&
@@ -81,6 +81,7 @@ async function getWitHover(hoverSymbols: Symbols.Symbol[], parseResult: IParseRe
         }
         return { contents: [matchingWits[0].description], range: toRange(firstSymbol) };
     }
+    return null;
 }
 
 export function getHoverProvider(): monaco.languages.HoverProvider {

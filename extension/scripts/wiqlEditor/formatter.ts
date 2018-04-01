@@ -33,7 +33,7 @@ function formatVariable(exp: Symbols.VariableExpression) {
     let str = exp.name.text;
     if (exp.args) {
         str += "(";
-        for (let args = exp.args; args; args = args.args) {
+        for (let args: Symbols.VariableArguments | undefined = exp.args; args; args = args.args) {
             const {value} = args;
             if (value instanceof Symbols.String) {
                 str += value.text;

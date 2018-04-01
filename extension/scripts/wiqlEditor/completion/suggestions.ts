@@ -19,6 +19,7 @@ function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields:
     const fieldLookup = getFieldComparisonLookup(fields);
     for (const pattern of wiqlPatterns) {
         if (typeof pattern.match === "string" &&
+            pattern.token &&
             excludedSymbols.indexOf(pattern.token) < 0 &&
             (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0) &&
             (conditionSymbols.indexOf(pattern.token) < 0 || !refName || !(refName in fieldLookup) ||

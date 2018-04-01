@@ -10,6 +10,7 @@
         "noUnusedLocals": true,
         "jsx": "react",
         "sourceMap": true,
+        "strictNullChecks": true,
         "lib": [
             "es2015.promise",
             "dom",
