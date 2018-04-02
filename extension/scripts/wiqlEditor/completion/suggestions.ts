@@ -1,19 +1,9 @@
 import * as Symbols from "../compiler/symbols";
 import { ICompletionContext } from "./completionContext";
-import { getStandardFieldSuggestions } from "./fieldCompletion";
+import { includeFields } from "./fieldCompletion";
 import { includeKeywords } from "./keywordCompletion";
 import { getStringValueSuggestions } from "./valueSuggestions";
 import { includeVariables } from "./variableCompletion";
-
-function includeFields(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
-    if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && ctx.isFieldAllowed) {
-        let fieldSuggestions = getStandardFieldSuggestions(ctx.fields, ctx.isInCondition ? ctx.fieldType : null);
-        if (!(ctx.prevToken instanceof Symbols.LSqBracket)) {
-            fieldSuggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);
-        }
-        suggestions.push(...fieldSuggestions);
-    }
-}
 
 function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
