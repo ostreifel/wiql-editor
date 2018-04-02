@@ -16,6 +16,7 @@ Save changes to the query when finished.
 [![Donate](img/donate.png)](https://www.paypal.me/OttoStreifel/5)  
 
 # Change Log
+(04/01/18) 2.0.1 Rewrite internals, support current iteration parameter parsing and error checking
 (12/08/17) 1.7.70 Fix bug in run/format buttons on playground  
 (12/06/17) 1.7.68 update version of monaco editor  
 (12/03/17) 1.7.61 Add open in queries button to playground  
