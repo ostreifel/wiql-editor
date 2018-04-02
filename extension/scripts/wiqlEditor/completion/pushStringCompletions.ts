@@ -1,9 +1,6 @@
 import * as Symbols from "../compiler/symbols";
 import { ICompletionContext } from "./completionContext";
-
-function isInsideString(ctx: ICompletionContext) {
-    return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
-}
+import { isInsideString } from "./isIn";
 
 export function pushStringCompletions(
     ctx: ICompletionContext,

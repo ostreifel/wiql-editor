@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-editor",
-    "version": "2.0.1",
+    "version": "2.0.7",
     "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "description": "Search work items with wiql queries.",

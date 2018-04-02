@@ -5,6 +5,7 @@ import * as Symbols from "../compiler/symbols";
 import { wiqlPatterns } from "../compiler/tokenPatterns";
 import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { conditionSymbols, ICompletionContext } from "./completionContext";
+import { isInVariable, IVariableContext } from "./isIn";
 
 interface ISymbolCompletionMap {
     [symbolName: string]: monaco.languages.CompletionItem;
@@ -43,16 +44,10 @@ function getSymbolCompletionMap(
     return symbolCompletionMap;
 }
 
-function getLastVar(ctx: ICompletionContext): string {
-    for (const token of ctx.parsedTokens) {
-        if (token instanceof Symbols.Variable) {
-            return token.text;
-        }
+function isBlockedVarToken(varCtx: IVariableContext | null, token: string) {
+    if (!varCtx) {
+        return false;
     }
-    return "";
-}
-
-function isBlockedVarToken(lastVar: string, token: string) {
     const offsetVars: {[token: string]: boolean} = {
         "@currentiteration": true,
         "@today": true,
@@ -65,8 +60,8 @@ function isBlockedVarToken(lastVar: string, token: string) {
         Minus: true,
         Plus: true,
     };
-    lastVar = lastVar.toLocaleLowerCase();
-    return !offsetVars[lastVar] && offsetTokens[token] || !parameterVars[lastVar] && token === "LParen";
+    const name = varCtx.name.toLocaleLowerCase();
+    return !offsetVars[name] && offsetTokens[token] || !parameterVars[name] && token === "LParen";
 }
 
 export function getKeywordCompletions(ctx: ICompletionContext): monaco.languages.CompletionItem[] {
@@ -74,7 +69,7 @@ export function getKeywordCompletions(ctx: ICompletionContext): monaco.languages
     const field = ctx.prevToken instanceof Symbols.Identifier ? ctx.fields.getField(ctx.prevToken.text) : null;
     const refName = ctx.fieldRefName || (field ? field.referenceName : "");
     const symbolCompletionMap = getSymbolCompletionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
-    const lastVar = getLastVar(ctx);
+    const lastVar = isInVariable(ctx);
     const completions: monaco.languages.CompletionItem[] = [];
     for (const token of ctx.parseNext.expectedTokens) {
         if (

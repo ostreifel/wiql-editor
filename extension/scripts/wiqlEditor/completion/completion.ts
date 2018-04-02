@@ -1,12 +1,13 @@
 import { fieldsVal } from "../../cachedData/fields";
 import { IParseResults, parse, ParseError, ParseMode } from "../compiler/parser";
-import * as Symbols from "../compiler/symbols";
-import { createContext, ICompletionContext } from "./completionContext";
+import { createContext } from "./completionContext";
 import { getFieldCompletions } from "./fieldCompletion";
 import { getCurrentIdentifierCompletions } from "./identifierCompletion";
+import { isInsideString } from "./isIn";
 import { getKeywordCompletions } from "./keywordCompletion";
 import { pushStringCompletions } from "./pushStringCompletions";
 import { getStringValueCompletions } from "./valueCompletions";
+import { getVariableParameterCompletions } from "./variableArgumentCompletion";
 import { getCurrentVariableCompletions, getVariableCompletions } from "./variableCompletion";
 
 function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco.Position): IParseResults {
@@ -15,10 +16,6 @@ function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco
         lines[lines.length - 1] = lines[lines.length - 1].substr(0, position.column - 1);
     }
     return parse(lines, ParseMode.Suggest);
-}
-
-function isInsideString(ctx: ICompletionContext) {
-    return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
 async function provideCompletionItems(
@@ -36,6 +33,9 @@ async function provideCompletionItems(
         ...await getCurrentIdentifierCompletions(ctx, position),
         ...await getCurrentVariableCompletions(ctx, position),
     ];
+    if (completions.length > 0) {
+        return completions;
+    }
     // Don't symbols complete inside strings
     if (!isInsideString(ctx)) {
         completions.push(
@@ -43,6 +43,13 @@ async function provideCompletionItems(
             ...getFieldCompletions(ctx),
             ...getVariableCompletions(ctx),
         );
+    }
+    if (completions.length > 0) {
+        return completions;
+    }
+    completions.push(...await getVariableParameterCompletions(ctx));
+    if (completions.length > 0) {
+        return completions;
     }
     // Field Values
     if (ctx.fieldRefName && ctx.isInCondition) {
