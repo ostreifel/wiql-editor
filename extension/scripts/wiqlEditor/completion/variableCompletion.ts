@@ -23,3 +23,17 @@ export function includeVariables(ctx: ICompletionContext, suggestions: monaco.la
         suggestions.push(...getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null));
     }
 }
+
+export async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[] | null> {
+    if (ctx.prevToken instanceof Symbols.Variable
+        && position.column - 1 === ctx.prevToken.endColumn) {
+        return getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map((s) => {
+            return {
+                label: s.label,
+                kind: monaco.languages.CompletionItemKind.Variable,
+                insertText: s.label.replace("@", ""),
+            } as monaco.languages.CompletionItem;
+        });
+    }
+    return null;
+}
