@@ -1,9 +1,10 @@
 import { fieldsVal } from "../../cachedData/fields";
 import { IParseResults, parse, ParseError, ParseMode } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
-import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
 import { createContext, ICompletionContext } from "./completionContext";
+import { getStandardFieldSuggestions } from "./fieldCompletion";
 import { getSuggestions } from "./suggestions";
+import { getStandardVariableSuggestions } from "./variableCompletion";
 
 function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco.Position): IParseResults {
     const lines = model.getLinesContent().slice(0, position.lineNumber);

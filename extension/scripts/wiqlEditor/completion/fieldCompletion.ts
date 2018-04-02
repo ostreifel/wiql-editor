@@ -1,7 +1,8 @@
 import { FieldType } from "TFS/WorkItemTracking/Contracts";
 
 import { FieldLookup } from "../../cachedData/fields";
-import { definedVariables } from "../wiqlDefinition";
+import * as Symbols from "../compiler/symbols";
+import { ICompletionContext } from "./completionContext";
 
 export function getStandardFieldSuggestions(fields: FieldLookup, type: FieldType | null): monaco.languages.CompletionItem[] {
     const matchingFields = fields.values.filter((f) => type === null || type === f.type);
@@ -17,15 +18,13 @@ export function getStandardFieldSuggestions(fields: FieldLookup, type: FieldType
         } as monaco.languages.CompletionItem;
     }));
 }
-export function getStandardVariableSuggestions(type: FieldType | null) {
-    const suggestions: monaco.languages.CompletionItem[] = [];
-    for (const variable in definedVariables) {
-        if (type === null || definedVariables[variable] === type) {
-            suggestions.push({
-                label: variable,
-                kind: monaco.languages.CompletionItemKind.Variable,
-            } as monaco.languages.CompletionItem);
+
+export function includeFields(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
+    if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && ctx.isFieldAllowed) {
+        let fieldSuggestions = getStandardFieldSuggestions(ctx.fields, ctx.isInCondition ? ctx.fieldType : null);
+        if (!(ctx.prevToken instanceof Symbols.LSqBracket)) {
+            fieldSuggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);
         }
+        suggestions.push(...fieldSuggestions);
     }
-    return suggestions;
 }
