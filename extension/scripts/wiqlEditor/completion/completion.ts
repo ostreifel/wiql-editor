@@ -2,12 +2,12 @@ import { fieldsVal } from "../../cachedData/fields";
 import { IParseResults, parse, ParseError, ParseMode } from "../compiler/parser";
 import * as Symbols from "../compiler/symbols";
 import { createContext, ICompletionContext } from "./completionContext";
-import { includeFields } from "./fieldCompletion";
-import { getCurrentIdentifierSuggestions } from "./identifierCompletion";
-import { includeKeywords } from "./keywordCompletion";
-import { pushStringSuggestions } from "./pushStringSuggestions";
-import { getStringValueSuggestions } from "./valueSuggestions";
-import { getCurrentVariableSuggestions, includeVariables } from "./variableCompletion";
+import { getFieldCompletions } from "./fieldCompletion";
+import { getCurrentIdentifierCompletions } from "./identifierCompletion";
+import { getKeywordCompletions } from "./keywordCompletion";
+import { pushStringCompletions } from "./pushStringCompletions";
+import { getStringValueCompletions } from "./valueCompletions";
+import { getCurrentVariableCompletions, getVariableCompletions } from "./variableCompletion";
 
 function parseFromPosition(model: monaco.editor.IReadOnlyModel, position: monaco.Position): IParseResults {
     const lines = model.getLinesContent().slice(0, position.lineNumber);
@@ -32,21 +32,25 @@ async function provideCompletionItems(
         return [];
     }
     const ctx = createContext(model, parseNext, await fieldsVal.getValue());
-    const suggestions: monaco.languages.CompletionItem[] = await getCurrentIdentifierSuggestions(ctx, position) ||
-        await getCurrentVariableSuggestions(ctx, position) || [];
+    const completions: monaco.languages.CompletionItem[] = [
+        ...await getCurrentIdentifierCompletions(ctx, position),
+        ...await getCurrentVariableCompletions(ctx, position),
+    ];
     // Don't symbols complete inside strings
     if (!isInsideString(ctx)) {
-        includeKeywords(ctx, suggestions);
-        includeFields(ctx, suggestions);
-        includeVariables(ctx, suggestions);
+        completions.push(
+            ...getKeywordCompletions(ctx),
+            ...getFieldCompletions(ctx),
+            ...getVariableCompletions(ctx),
+        );
     }
     // Field Values
     if (ctx.fieldRefName && ctx.isInCondition) {
-        const values = getStringValueSuggestions(ctx);
-        return pushStringSuggestions(ctx, values, suggestions);
+        const values = getStringValueCompletions(ctx);
+        return pushStringCompletions(ctx, values, completions);
     }
 
-    return suggestions;
+    return completions;
 }
 
 export const completionProvider: monaco.languages.CompletionItemProvider = {

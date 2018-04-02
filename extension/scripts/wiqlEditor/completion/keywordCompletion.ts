@@ -6,22 +6,22 @@ import { wiqlPatterns } from "../compiler/tokenPatterns";
 import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { conditionSymbols, ICompletionContext } from "./completionContext";
 
-interface ISymbolSuggestionMap {
+interface ISymbolCompletionMap {
     [symbolName: string]: monaco.languages.CompletionItem;
 }
-function getSymbolSuggestionMap(
+function getSymbolCompletionMap(
     refName: string,
     type: FieldType | null,
     fields: FieldLookup,
     isFieldAllowed: boolean,
-): ISymbolSuggestionMap {
+): ISymbolCompletionMap {
     refName = refName.toLocaleLowerCase();
-    /** These symbols have their own suggestion logic */
+    /** These symbols have their own completion logic */
     const excludedSymbols = [Symbols.Variable, Symbols.Field];
     if (!isFieldAllowed) {
         excludedSymbols.push(Symbols.LSqBracket);
     }
-    const symbolSuggestionMap: ISymbolSuggestionMap = {};
+    const symbolCompletionMap: ISymbolCompletionMap = {};
     const fieldLookup = getFieldComparisonLookup(fields);
     for (const pattern of wiqlPatterns) {
         if (typeof pattern.match === "string" &&
@@ -34,13 +34,13 @@ function getSymbolSuggestionMap(
                     fieldLookup[refName].group.indexOf(pattern.token) >= 0))
         ) {
             const symName = Symbols.getSymbolName(pattern.token);
-            symbolSuggestionMap[symName] = {
+            symbolCompletionMap[symName] = {
                 label: pattern.match,
                 kind: monaco.languages.CompletionItemKind.Keyword,
             };
         }
     }
-    return symbolSuggestionMap;
+    return symbolCompletionMap;
 }
 
 function getLastVar(ctx: ICompletionContext): string {
@@ -69,19 +69,21 @@ function isBlockedVarToken(lastVar: string, token: string) {
     return !offsetVars[lastVar] && offsetTokens[token] || !parameterVars[lastVar] && token === "LParen";
 }
 
-export function includeKeywords(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
+export function getKeywordCompletions(ctx: ICompletionContext): monaco.languages.CompletionItem[] {
     // if right after identifier it will not have been reduced to a field yet.
     const field = ctx.prevToken instanceof Symbols.Identifier ? ctx.fields.getField(ctx.prevToken.text) : null;
     const refName = ctx.fieldRefName || (field ? field.referenceName : "");
-    const symbolSuggestionMap = getSymbolSuggestionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
+    const symbolCompletionMap = getSymbolCompletionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
     const lastVar = getLastVar(ctx);
+    const completions: monaco.languages.CompletionItem[] = [];
     for (const token of ctx.parseNext.expectedTokens) {
         if (
             !isBlockedVarToken(lastVar, token) &&
-            symbolSuggestionMap[token]
+            symbolCompletionMap[token]
         ) {
             // TODO filter by value type symbols by type
-            suggestions.push(symbolSuggestionMap[token]);
+            completions.push(symbolCompletionMap[token]);
         }
     }
+    return completions;
 }

@@ -4,30 +4,31 @@ import * as Symbols from "../compiler/symbols";
 import { definedVariables } from "../wiqlDefinition";
 import { ICompletionContext } from "./completionContext";
 
-export function getStandardVariableSuggestions(type: FieldType | null) {
-    const suggestions: monaco.languages.CompletionItem[] = [];
+export function getStandardVariableCompletions(type: FieldType | null) {
+    const completions: monaco.languages.CompletionItem[] = [];
     for (const variable in definedVariables) {
         if (type === null || definedVariables[variable] === type) {
-            suggestions.push({
+            completions.push({
                 label: variable,
                 kind: monaco.languages.CompletionItemKind.Variable,
             } as monaco.languages.CompletionItem);
         }
     }
-    return suggestions;
+    return completions;
 }
 
-export function includeVariables(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
+export function getVariableCompletions(ctx: ICompletionContext): monaco.languages.CompletionItem[] {
     if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Variable)) >= 0 &&
         !(ctx.prevToken instanceof Symbols.Group)) {
-        suggestions.push(...getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null));
+        return getStandardVariableCompletions(ctx.isInCondition ? ctx.fieldType : null);
     }
+    return [];
 }
 
-export async function getCurrentVariableSuggestions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[] | null> {
+export async function getCurrentVariableCompletions(ctx: ICompletionContext, position: monaco.Position): Promise<monaco.languages.CompletionItem[]> {
     if (ctx.prevToken instanceof Symbols.Variable
         && position.column - 1 === ctx.prevToken.endColumn) {
-        return getStandardVariableSuggestions(ctx.isInCondition ? ctx.fieldType : null).map((s) => {
+        return getStandardVariableCompletions(ctx.isInCondition ? ctx.fieldType : null).map((s) => {
             return {
                 label: s.label,
                 kind: monaco.languages.CompletionItemKind.Variable,
@@ -35,5 +36,5 @@ export async function getCurrentVariableSuggestions(ctx: ICompletionContext, pos
             } as monaco.languages.CompletionItem;
         });
     }
-    return null;
+    return [];
 }

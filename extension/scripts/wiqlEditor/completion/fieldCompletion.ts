@@ -4,7 +4,7 @@ import { FieldLookup } from "../../cachedData/fields";
 import * as Symbols from "../compiler/symbols";
 import { ICompletionContext } from "./completionContext";
 
-export function getStandardFieldSuggestions(fields: FieldLookup, type: FieldType | null): monaco.languages.CompletionItem[] {
+export function getStandardFieldCompletions(fields: FieldLookup, type: FieldType | null): monaco.languages.CompletionItem[] {
     const matchingFields = fields.values.filter((f) => type === null || type === f.type);
     return matchingFields.map((f) => {
         return {
@@ -19,12 +19,13 @@ export function getStandardFieldSuggestions(fields: FieldLookup, type: FieldType
     }));
 }
 
-export function includeFields(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
+export function getFieldCompletions(ctx: ICompletionContext): monaco.languages.CompletionItem[] {
     if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && ctx.isFieldAllowed) {
-        let fieldSuggestions = getStandardFieldSuggestions(ctx.fields, ctx.isInCondition ? ctx.fieldType : null);
+        let fieldCompletions = getStandardFieldCompletions(ctx.fields, ctx.isInCondition ? ctx.fieldType : null);
         if (!(ctx.prevToken instanceof Symbols.LSqBracket)) {
-            fieldSuggestions = fieldSuggestions.filter((s) => s.label.indexOf(" ") < 0);
+            fieldCompletions = fieldCompletions.filter((s) => s.label.indexOf(" ") < 0);
         }
-        suggestions.push(...fieldSuggestions);
+        return fieldCompletions;
     }
+    return [];
 }

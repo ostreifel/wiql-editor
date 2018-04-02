@@ -5,15 +5,15 @@ function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
-export async function pushStringSuggestions(
+export async function pushStringCompletions(
     ctx: ICompletionContext,
     stringsPromise: PromiseLike<string[]>,
-    suggestions: monaco.languages.CompletionItem[],
+    completions: monaco.languages.CompletionItem[],
 ): Promise<monaco.languages.CompletionItem[]> {
     const inString = isInsideString(ctx);
     const strings = await stringsPromise;
     for (const str of strings) {
-        suggestions.push({
+        completions.push({
             label: inString ? str : `"${str}"`,
             kind: monaco.languages.CompletionItemKind.Text,
         } as monaco.languages.CompletionItem);
@@ -26,7 +26,7 @@ export async function pushStringSuggestions(
         }
         if (charIdx >= 0) {
             const prefix = currentStr.substr(0, charIdx).toLocaleLowerCase();
-            return suggestions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map((s) =>
+            return completions.filter((s) => s.label.toLocaleLowerCase().indexOf(prefix) === 0).map((s) =>
                 ({
                     label: s.label,
                     kind: monaco.languages.CompletionItemKind.Text,
@@ -35,5 +35,5 @@ export async function pushStringSuggestions(
             );
         }
     }
-    return suggestions;
+    return completions;
 }

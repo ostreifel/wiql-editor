@@ -9,7 +9,7 @@ import * as Symbols from "../compiler/symbols";
 import { getFilters } from "../parseAnalysis/whereClauses";
 import { ICompletionContext } from "./completionContext";
 
-async function getWitSuggestions(ctx: ICompletionContext): Promise<string[]> {
+async function getWitCompletions(ctx: ICompletionContext): Promise<string[]> {
     const { projects } = await getFilters(ctx.getAssumedParse());
     if (ctx.prevToken instanceof Symbols.Group) {
         const categories = await getCategories(projects);
@@ -22,7 +22,7 @@ async function getWitSuggestions(ctx: ICompletionContext): Promise<string[]> {
     }
 }
 
-async function getStateSuggestions(ctx: ICompletionContext): Promise<string[]> {
+async function getStateCompletions(ctx: ICompletionContext): Promise<string[]> {
     const { projects, workItemTypes } = await getFilters(ctx.getAssumedParse());
     if (projects.length === 0) {
         return witNames.getValue();
@@ -30,7 +30,7 @@ async function getStateSuggestions(ctx: ICompletionContext): Promise<string[]> {
     return getStatesByProjects(projects, workItemTypes);
 }
 
-async function getTagSuggestions(ctx: ICompletionContext) {
+async function getTagCompletions(ctx: ICompletionContext) {
     const { projects } = await getFilters(ctx.getAssumedParse());
     if (projects.length === 0) {
         return witNames.getValue();
@@ -38,7 +38,7 @@ async function getTagSuggestions(ctx: ICompletionContext) {
     return getTagsForProjects(projects);
 }
 
-export async function getStringValueSuggestions(ctx: ICompletionContext): Promise<string[]> {
+export async function getStringValueCompletions(ctx: ICompletionContext): Promise<string[]> {
     const expectingString = ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.String)) >= 0;
     if (isIdentityField(ctx.fields, ctx.fieldRefName) && expectingString) {
         return identitiesVal.getValue();
@@ -46,15 +46,15 @@ export async function getStringValueSuggestions(ctx: ICompletionContext): Promis
         const projects = await projectsVal.getValue();
         return projects.map(({name}) => name);
     } else if (ctx.fields.equalFields("System.State", ctx.fieldRefName) && expectingString) {
-        return getStateSuggestions(ctx);
+        return getStateCompletions(ctx);
     } else if (ctx.fields.equalFields("System.WorkItemType", ctx.fieldRefName) && expectingString) {
-        return getWitSuggestions(ctx);
+        return getWitCompletions(ctx);
     } else if (ctx.fields.equalFields("System.AreaPath", ctx.fieldRefName) && expectingString) {
         return areaStrings.getValue();
     } else if (ctx.fields.equalFields("System.IterationPath", ctx.fieldRefName) && expectingString) {
         return iterationStrings.getValue();
     } else if (ctx.fields.equalFields("System.Tags", ctx.fieldRefName) && expectingString) {
-        return getTagSuggestions(ctx);
+        return getTagCompletions(ctx);
     } else if (ctx.fields.equalFields("System.Links.LinkType", ctx.fieldRefName) && expectingString) {
         const types = await relationTypes.getValue();
         return types.filter((t) => t.attributes.usage === "workItemLink").map((t) => t.referenceName);
