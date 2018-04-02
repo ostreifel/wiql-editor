@@ -6,8 +6,8 @@ module.exports = {
     mode: "development",
     entry: {
         playground: "./scripts/wiqlPlayground/playground.ts",
-        boardContext: "./scripts/queryContext/queryContext.ts",
-        bulkBoardContext: "./scripts/queryEditor/queryEditor.ts"
+        queryContext: "./scripts/queryContext/queryContext.ts",
+        queryEditor: "./scripts/queryEditor/queryEditor.ts"
     },
     output: {
         libraryTarget: "amd",

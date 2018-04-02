@@ -18,17 +18,28 @@ interface IProjectIdentities {
 
 async function hardGetAllIdentitiesInTeam(project: { id: string, name: string }, team: WebApiTeam): Promise<ITeamIdentities> {
     const teamIdentity = <IdentityRef> { displayName: `[${project.name}]\\${team.name}`, id: team.id, isContainer: true };
-    const members = await getClient().getTeamMembersWithExtendedProperties(project.id, team.id);
+    const members = await getClient().getTeamMembers(project.id, team.id);
     const teamIdentities: ITeamIdentities = {
         team: teamIdentity,
-        members: members.map((m) => m.identity),
+        members: members.map((m) => m),
     };
     return teamIdentities;
 }
 
+async function getTeamsRest(project: string, top: number, skip: number): Promise<WebApiTeam[]> {
+    const client = getClient();
+    const get = client.getTeams.bind(client);
+    if (get.length === 3) {
+        // fallback
+        return get(project, top, skip);
+    }
+    // latest version
+    return get(project, false, top, skip);
+}
+
 async function hardGetAllIdentitiesInProject(proj: { id: string, name: string }): Promise<IProjectIdentities> {
     async function hardGetAllIdentitiesInProjectImpl(project: { id: string, name: string }, skip: number): Promise<IProjectIdentities> {
-        const teamIds = await getClient().getTeams(project.id, false, 100, skip);
+        const teamIds = await getTeamsRest(project.id, 100, skip);
         const teamPromises = throttlePromises(teamIds, (t) => hardGetAllIdentitiesInTeam(project, t), 10) as Promise<ITeamIdentities[]>;
         let moreTeamsPromise: Promise<IProjectIdentities | null> = Promise.resolve(null);
         if (teamIds.length === 100) {
