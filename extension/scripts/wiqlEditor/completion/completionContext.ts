@@ -15,6 +15,7 @@ export interface ICompletionContext {
     readonly prevToken: Symbols.Symbol;
     /** 2 Tokens (inclusive) before cursor */
     readonly prevToken2: Symbols.Symbol;
+    readonly parsedTokens: Symbols.Symbol[];
     readonly fieldRefName: string;
     readonly fieldType: FieldType | null;
     readonly isInCondition: boolean;
@@ -87,6 +88,7 @@ export function createContext(model: monaco.editor.IReadOnlyModel, parseNext: Pa
     return {
         parseNext,
         fields,
+        parsedTokens: parseNext.parsedTokens,
         prevToken2,
         prevToken,
         fieldRefName,

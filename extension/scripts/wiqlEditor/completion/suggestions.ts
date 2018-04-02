@@ -1,54 +1,9 @@
-import { FieldType } from "TFS/WorkItemTracking/Contracts";
-
-import { FieldLookup } from "../../cachedData/fields";
 import * as Symbols from "../compiler/symbols";
-import { wiqlPatterns } from "../compiler/tokenPatterns";
-import { getFieldComparisonLookup } from "../errorCheckers/TypeErrorChecker";
 import { getStandardFieldSuggestions, getStandardVariableSuggestions } from "./commonCompletions";
-import { conditionSymbols, ICompletionContext } from "./completionContext";
+import { ICompletionContext } from "./completionContext";
+import { includeKeywords } from "./keywordCompletion";
 import { getStringValueSuggestions } from "./valueSuggestions";
 
-function getSymbolSuggestionMap(refName: string, type: FieldType | null, fields: FieldLookup, isFieldAllowed: boolean) {
-    refName = refName.toLocaleLowerCase();
-    /** These symbols have their own suggestion logic */
-    const excludedSymbols = [Symbols.Variable, Symbols.Field];
-    if (!isFieldAllowed) {
-        excludedSymbols.push(Symbols.LSqBracket);
-    }
-    const symbolSuggestionMap: { [symbolName: string]: monaco.languages.CompletionItem } = {};
-    const fieldLookup = getFieldComparisonLookup(fields);
-    for (const pattern of wiqlPatterns) {
-        if (typeof pattern.match === "string" &&
-            pattern.token &&
-            excludedSymbols.indexOf(pattern.token) < 0 &&
-            (!pattern.valueTypes || type === null || pattern.valueTypes.indexOf(type) >= 0) &&
-            (conditionSymbols.indexOf(pattern.token) < 0 || !refName || !(refName in fieldLookup) ||
-                (fieldLookup[refName].field.indexOf(pattern.token) >= 0 ||
-                    fieldLookup[refName].literal.indexOf(pattern.token) >= 0 ||
-                    fieldLookup[refName].group.indexOf(pattern.token) >= 0))
-        ) {
-            const symName = Symbols.getSymbolName(pattern.token);
-            symbolSuggestionMap[symName] = {
-                label: pattern.match,
-                kind: monaco.languages.CompletionItemKind.Keyword,
-            };
-        }
-    }
-    return symbolSuggestionMap;
-}
-
-function includeKeywords(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
-    // if right after identifier it will not have been reduced to a field yet.
-    const field = ctx.prevToken instanceof Symbols.Identifier ? ctx.fields.getField(ctx.prevToken.text) : null;
-    const refName = ctx.fieldRefName || (field ? field.referenceName : "");
-    const symbolSuggestionMap = getSymbolSuggestionMap(refName, ctx.isInCondition ? ctx.fieldType : null, ctx.fields, ctx.isFieldAllowed);
-    for (const token of ctx.parseNext.expectedTokens) {
-        if (symbolSuggestionMap[token]) {
-            // TODO filter by value type symbols by type
-            suggestions.push(symbolSuggestionMap[token]);
-        }
-    }
-}
 function includeFields(ctx: ICompletionContext, suggestions: monaco.languages.CompletionItem[]): void {
     if (ctx.parseNext.expectedTokens.indexOf(Symbols.getSymbolName(Symbols.Identifier)) >= 0 && ctx.isFieldAllowed) {
         let fieldSuggestions = getStandardFieldSuggestions(ctx.fields, ctx.isInCondition ? ctx.fieldType : null);
