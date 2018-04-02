@@ -1,15 +1,11 @@
 import * as Symbols from "../compiler/symbols";
 import { ICompletionContext } from "./completionContext";
-import { includeFields } from "./fieldCompletion";
-import { includeKeywords } from "./keywordCompletion";
-import { getStringValueSuggestions } from "./valueSuggestions";
-import { includeVariables } from "./variableCompletion";
 
 function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
-async function pushStringSuggestions(
+export async function pushStringSuggestions(
     ctx: ICompletionContext,
     stringsPromise: PromiseLike<string[]>,
     suggestions: monaco.languages.CompletionItem[],
@@ -39,28 +35,5 @@ async function pushStringSuggestions(
             );
         }
     }
-    return suggestions;
-}
-
-/**
- * Suggestions not related to completing the currentIdentifier
- */
-export async function getSuggestions(
-    ctx: ICompletionContext,
-    // position: monaco.Position,
-): Promise<monaco.languages.CompletionItem[]> {
-    const suggestions: monaco.languages.CompletionItem[] = [];
-    // Don't symbols complete inside strings
-    if (!isInsideString(ctx)) {
-        includeKeywords(ctx, suggestions);
-        includeFields(ctx, suggestions);
-        includeVariables(ctx, suggestions);
-    }
-    // Field Values
-    if (ctx.fieldRefName && ctx.isInCondition) {
-        const values = getStringValueSuggestions(ctx);
-        return pushStringSuggestions(ctx, values, suggestions);
-    }
-
     return suggestions;
 }
