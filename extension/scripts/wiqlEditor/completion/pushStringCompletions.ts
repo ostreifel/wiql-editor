@@ -5,13 +5,12 @@ function isInsideString(ctx: ICompletionContext) {
     return ctx.parseNext.errorToken instanceof Symbols.NonterminatingString;
 }
 
-export async function pushStringCompletions(
+export function pushStringCompletions(
     ctx: ICompletionContext,
-    stringsPromise: PromiseLike<string[]>,
+    strings: string[],
     completions: monaco.languages.CompletionItem[],
-): Promise<monaco.languages.CompletionItem[]> {
+): monaco.languages.CompletionItem[] {
     const inString = isInsideString(ctx);
-    const strings = await stringsPromise;
     for (const str of strings) {
         completions.push({
             label: inString ? str : `"${str}"`,

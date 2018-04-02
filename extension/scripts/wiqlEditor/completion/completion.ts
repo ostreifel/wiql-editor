@@ -46,7 +46,7 @@ async function provideCompletionItems(
     }
     // Field Values
     if (ctx.fieldRefName && ctx.isInCondition) {
-        const values = getStringValueCompletions(ctx);
+        const values = await getStringValueCompletions(ctx);
         return pushStringCompletions(ctx, values, completions);
     }
 
