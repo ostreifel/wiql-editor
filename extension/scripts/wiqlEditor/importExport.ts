@@ -5,15 +5,15 @@ function toDocument(wiql: string): string {
     const root = rootDoc.documentElement;
 
     const server = rootDoc.createElement("TeamFoundationServer");
-    server.appendChild(document.createTextNode(VSS.getWebContext().collection.uri));
+    server.appendChild(rootDoc.createTextNode(VSS.getWebContext().collection.uri));
     root.appendChild(server);
 
     const project = rootDoc.createElement("TeamProject");
-    project.appendChild(document.createTextNode(VSS.getWebContext().project.name));
+    project.appendChild(rootDoc.createTextNode(VSS.getWebContext().project.name));
     root.appendChild(project);
 
     const wiqlNode = rootDoc.createElement("Wiql");
-    wiqlNode.appendChild(document.createTextNode(wiql));
+    wiqlNode.appendChild(rootDoc.createTextNode(wiql));
     root.appendChild(wiqlNode);
 
     return new XMLSerializer().serializeToString(rootDoc);
