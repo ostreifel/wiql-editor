@@ -1,5 +1,5 @@
 import { WebApiTeam } from "TFS/Core/Contracts";
-import { getClient } from "TFS/Core/RestClient";
+import { CoreHttpClient4, getClient } from "TFS/Core/RestClient";
 import { IdentityRef } from "VSS/WebApi/Contracts";
 
 import { CachedValue } from "../CachedValue";
@@ -18,12 +18,24 @@ interface IProjectIdentities {
 
 async function hardGetAllIdentitiesInTeam(project: { id: string, name: string }, team: WebApiTeam): Promise<ITeamIdentities> {
     const teamIdentity = <IdentityRef> { displayName: `[${project.name}]\\${team.name}`, id: team.id, isContainer: true };
-    const members = await getClient().getTeamMembers(project.id, team.id);
-    const teamIdentities: ITeamIdentities = {
-        team: teamIdentity,
-        members: members.map((m) => m),
-    };
-    return teamIdentities;
+    const client = getClient();
+
+    if ("getTeamMembers" in client) {
+        const members = await (client as any as CoreHttpClient4).getTeamMembers(project.id, team.id);
+        const teamId: ITeamIdentities = {
+            team: teamIdentity,
+            members,
+        };
+        return teamId;
+
+    } else {
+        const members = await client.getTeamMembersWithExtendedProperties(project.id, team.id);
+        const teamId: ITeamIdentities = {
+            team: teamIdentity,
+            members: members.map(({identity}) => identity),
+        };
+        return teamId;
+    }
 }
 
 async function getTeamsRest(project: string, top: number, skip: number): Promise<WebApiTeam[]> {
