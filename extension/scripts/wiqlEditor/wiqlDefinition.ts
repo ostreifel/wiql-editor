@@ -3,6 +3,7 @@ import { FieldType } from "TFS/WorkItemTracking/Contracts";
 export const definedVariables: {[name: string]: FieldType} = {
     "@me": FieldType.String,
     "@currentiteration": FieldType.TreePath,
+    "@teamareas": FieldType.TreePath,
     "@project": FieldType.String,
     "@today": FieldType.DateTime,
     "@follows": FieldType.Integer,

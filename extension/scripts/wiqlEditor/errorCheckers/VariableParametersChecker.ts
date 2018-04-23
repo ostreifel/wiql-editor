@@ -7,7 +7,7 @@ import { decorationFromString, decorationFromSym } from "./errorDecorations";
 import { IErrorChecker } from "./IErrorChecker";
 
 export class VariableParametersChecker implements IErrorChecker {
-    private async checkCurrentIteration(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
+    private async checkSingleParameterVariable(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
         const name = variable.name.text;
         const errors: monaco.editor.IModelDeltaDecoration[] = [];
         if (!variable.args) {
@@ -70,7 +70,8 @@ export class VariableParametersChecker implements IErrorChecker {
     private checkVariable(variable: Symbols.VariableExpression): Promise<monaco.editor.IModelDeltaDecoration[]> {
         switch (variable.name.text.toLocaleLowerCase()) {
             case "@currentiteration":
-                return this.checkCurrentIteration(variable);
+            case "@teamareas":
+                return this.checkSingleParameterVariable(variable);
             case "@today":
                 return this.checkToday(variable);
             default:

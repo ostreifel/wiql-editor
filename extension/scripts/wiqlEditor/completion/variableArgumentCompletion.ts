@@ -5,7 +5,7 @@ import { ICompletionContext } from "./completionContext";
 import { isInVariable, IVariableContext } from "./isIn";
 import { pushStringCompletions } from "./pushStringCompletions";
 
-async function getCurrentIterationParmeterCompletions(ctx: ICompletionContext, {args}: IVariableContext): Promise<string[]> {
+async function getSingleTeamArgumentCompletion(ctx: ICompletionContext, {args}: IVariableContext): Promise<string[]> {
     if (!args || args.length !== 0) {
         return [];
     }
@@ -36,7 +36,8 @@ export async function getVariableParameterCompletions(ctx: ICompletionContext): 
     const strings: string[] = [];
     switch (varCtx.name.toLocaleLowerCase()) {
         case "@currentiteration":
-        strings.push(...await getCurrentIterationParmeterCompletions(ctx, varCtx));
+        case "@teamareas":
+        strings.push(...await getSingleTeamArgumentCompletion(ctx, varCtx));
         break;
     }
 
