@@ -58,7 +58,7 @@ gulp.task('copy', ['styles'], () => {
 });
 
 gulp.task('webpack', ['copy', 'tslint'], () => {
-    return execSync('webpack', {
+    return execSync('node node_modules/webpack/bin/webpack.js', {
         stdio: [null, process.stdout, process.stderr]
     });
 });
