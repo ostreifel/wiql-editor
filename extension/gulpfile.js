@@ -63,7 +63,7 @@ gulp.task('webpack', ['copy', 'tslint'], () => {
     });
 });
 
-gulp.task('package', ['webpack'], () => {
+function vsix(action) {
     const overrides = {}
     if (yargs.argv.release) {
         overrides.public = true;
@@ -76,19 +76,20 @@ gulp.task('package', ['webpack'], () => {
     const rootArg = `--root ${distFolder}`;
     const manifestsArg = `--manifests ..\\vss-extension.json`;
 
-    exec(
-        `tfx extension create ${overridesArg} --rev-version`,
-        (err, stdout, stderr) => {
-            if (err) {
-                console.log(err);
-            }
-
-            console.log(stdout);
-            console.log(stderr);
-            
+    execSync(
+        `tfx extension ${action} ${overridesArg} --rev-version`,
+        {
+            stdio: [null, process.stdout, process.stderr]
         }
     );
+}
 
+gulp.task('package', ['webpack'], () => {
+    vsix('create')
+});
+
+gulp.task('publish', ['webpack'], () => {
+    vsix('publish')
 });
 
 gulp.task('default', ['package']);

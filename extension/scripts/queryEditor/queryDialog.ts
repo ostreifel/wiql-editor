@@ -54,11 +54,10 @@ export async function showDialog(query: IQuery) {
     const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
     const dialog = await dialogService.openDialog(contentContribution, dialogOptions, context);
     closeDialog = () => dialog.close();
-    dialog.getContributionInstance("contextForm").then((callbacks: ICallbacks) => {
-        okCallback = callbacks.okCallback;
-        callbacks.setUpdateSaveButton((enabled) => {
-            dialog.updateOkButton(enabled);
-        });
+    const callbacks: ICallbacks = await dialog.getContributionInstance<ICallbacks>("contextForm");
+    okCallback = callbacks.okCallback;
+    callbacks.setUpdateSaveButton((enabled) => {
+        dialog.updateOkButton(enabled);
     });
 }
 

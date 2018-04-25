@@ -27,23 +27,32 @@ function fromDocument(documentStr: string) {
     return $(jQuery.parseXML(documentStr)).find("Wiql").text();
 }
 
-export function importWiq(editor: monaco.editor.IStandaloneCodeEditor) {
+export async function importWiq(editor: monaco.editor.IStandaloneCodeEditor) {
         const files = ($(".wiq-input")[0] as HTMLInputElement).files;
         if (!files || files.length === 0) {
             return;
         }
         const reader = new FileReader();
         const model = editor.getModel();
-        reader.onload = () => {
-            const documentText: string = reader.result;
-            const wiql = fromDocument(documentText);
-            const edit = <monaco.editor.IIdentifiedSingleEditOperation> {
-                text: wiql,
-                range: model.getFullModelRange(),
-                forceMoveMarkers: true,
-            };
-            model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
-            trackEvent("importWiq", {wiqlLength: String(wiql.length)});
+        reader.onload = async () => {
+            try {
+                const documentText: string = reader.result;
+                const wiql = fromDocument(documentText);
+                const edit = <monaco.editor.IIdentifiedSingleEditOperation> {
+                    text: wiql,
+                    range: model.getFullModelRange(),
+                    forceMoveMarkers: true,
+                };
+                model.pushEditOperations(editor.getSelections(), [edit], () => [new monaco.Selection(1, 1, 1, 1)]);
+                trackEvent("importWiq", {wiqlLength: String(wiql.length)});
+            } catch (e) {
+                const dialogService = await VSS.getService<IHostDialogService>(VSS.ServiceIds.Dialog);
+                const message = e.message || e + "";
+                dialogService.openMessageDialog(message, {
+                    title: "Error importing query",
+                });
+                trackEvent("importError", {message});
+            }
         };
         reader.readAsText(files[0]);
         $(".wiq-input").val("");
