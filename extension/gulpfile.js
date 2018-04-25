@@ -41,19 +41,8 @@ gulp.task('copy', ['styles'], () => {
     ])
         .pipe(gulp.dest(distFolder));
     gulp.src([
-        "node_modules/monaco-editor/min/vs/base/**/*",
+        "node_modules/monaco-editor/min/vs/**/*",
         "!**/*.svg",
-    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/base'));
-    gulp.src([
-        "node_modules/monaco-editor/min/vs/basic-languages/**/*",
-        "!**/*.svg",
-    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/basic-languages'));
-    gulp.src([
-        "node_modules/monaco-editor/min/vs/editor/**/*",
-        "!**/*.svg",
-    ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs/editor'));
-    gulp.src([
-        "node_modules/monaco-editor/min/vs/loader.js",
     ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs'));
 });
 

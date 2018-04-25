@@ -56,9 +56,7 @@ export async function showDialog(query: IQuery) {
     closeDialog = () => dialog.close();
     const callbacks: ICallbacks = await dialog.getContributionInstance<ICallbacks>("contextForm");
     okCallback = callbacks.okCallback;
-    callbacks.setUpdateSaveButton((enabled) => {
-        dialog.updateOkButton(enabled);
-    });
+    dialog.updateOkButton(true);
 }
 
 namespace WellKnownQueries {
