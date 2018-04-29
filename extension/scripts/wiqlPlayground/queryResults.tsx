@@ -154,8 +154,9 @@ export function setVersion() {
 VSS.getService(VSS.ServiceIds.Navigation).then((navigationService: HostNavigationService) => {
     $("body").on("click", "a[href]", (e) => {
         if (!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
-            const href = $(e.target).closest("a[href]").attr("href");
-            if (href) {
+            const link = $(e.target).closest("a[href]");
+            const href = link.attr("href");
+            if (href && !link.attr("download")) {
                 navigationService.openNewWindow(href, "");
                 e.stopPropagation();
                 e.preventDefault();

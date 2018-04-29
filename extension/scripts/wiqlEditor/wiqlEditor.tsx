@@ -67,6 +67,7 @@ ORDER BY [System.ChangedDate] DESC
         language: Wiql.def.id,
         value: intialValue || defaultVal,
         automaticLayout: true,
+        wordWrap: true,
     });
 
     format(editor);

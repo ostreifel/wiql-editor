@@ -40,7 +40,7 @@ gulp.task('copy', ['styles'], () => {
         'node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js',
     ])
         .pipe(gulp.dest(distFolder));
-    gulp.src([
+    return gulp.src([
         "node_modules/monaco-editor/min/vs/**/*",
         "!**/*.svg",
     ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs'));
