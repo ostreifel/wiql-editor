@@ -35,6 +35,8 @@ export const conditionSymbols = [
     Symbols.Contains,
     Symbols.Ever,
     Symbols.In,
+    Symbols.IsEmpty,
+    Symbols.IsNotEmpty,
 ];
 
 /**

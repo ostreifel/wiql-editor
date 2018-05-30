@@ -31,6 +31,7 @@ function getProjects(fields: FieldLookup, conditionals: Symbols.ConditionalExpre
     const projectConditions = conditionals.filter((c) => c.field && fields.equalFields("System.TeamProject", c.field.identifier.text));
     if (projectConditions.some((c) =>
         !c.conditionalOperator ||
+        !(c.conditionalOperator instanceof Symbols.ConditionalOperator) ||
         !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
         (
             !(c.value && c.value.value instanceof Symbols.String) &&
@@ -55,6 +56,7 @@ function getWits(fields: FieldLookup, conditionals: Symbols.ConditionalExpressio
     if (witConditions.some((c) =>
         !c.conditionalOperator ||
         // TODO also allow in group
+        !(c.conditionalOperator instanceof Symbols.ConditionalOperator) ||
         !(c.conditionalOperator.conditionToken instanceof Symbols.Equals) ||
         !(c.value && c.value.value instanceof Symbols.String),
     )) {

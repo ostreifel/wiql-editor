@@ -83,8 +83,12 @@ function formatValueList(valueList: Symbols.ValueList, fields: FieldLookup): str
     }
     return valueStrs.join(", ");
 }
-function formatConditionalOperator(cond: Symbols.ConditionalOperator): string {
-    if (cond.conditionToken instanceof Symbols.Equals) {
+function formatConditionalOperator(cond: Symbols.ConditionalOperator | Symbols.IsEmpty | Symbols.IsNotEmpty): string {
+    if (cond instanceof Symbols.IsEmpty) {
+        return "IS EMPTY";
+    } else if (cond instanceof Symbols.IsNotEmpty) {
+        return "IS NOT EMPTY";
+    } else if (cond.conditionToken instanceof Symbols.Equals) {
         return "=";
     } else if (cond.conditionToken instanceof Symbols.NotEquals) {
         return "<>";

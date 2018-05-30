@@ -33,6 +33,8 @@ export const wiqlPatterns: ITokenPattern[] = [
     { match: "ReturnMatchingChildren", token: Symbols.ReturnMatchingChildren },
     { match: "Source", token: Symbols.Source },
     { match: "Target", token: Symbols.Target },
+    { match: "IS EMPTY", token: Symbols.IsEmpty },
+    { match: "IS NOT EMPTY", token: Symbols.IsNotEmpty },
     { match: ".", token: Symbols.Dot },
     { match: "(", token: Symbols.LParen },
     { match: ")", token: Symbols.RParen },

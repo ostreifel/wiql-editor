@@ -51,6 +51,8 @@ export class NonterminatingString extends Token { }
 export class Identifier extends Token { }
 export class Digits extends Token { }
 export class Variable extends Token { }
+export class IsEmpty extends Token { }
+export class IsNotEmpty extends Token { }
 
 export class Mode extends Token { }
 export class MustContain extends Token { }
@@ -206,7 +208,7 @@ export class LogicalExpression extends SymbolTree {
     public readonly expression?: LogicalExpression;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.condition = super.getInput(ConditionalExpression);
+        this.condition = super.getInput([ConditionalExpression]);
         this.everNot = super.getInput([Ever, Not]);
         this.orAnd = super.getInput([And, Or]);
         this.expression = super.getInput(LogicalExpression);
@@ -217,7 +219,7 @@ export class ConditionalExpression extends SymbolTree {
 
     public readonly field?: Field;
 
-    public readonly conditionalOperator?: ConditionalOperator;
+    public readonly conditionalOperator?: ConditionalOperator | IsEmpty | IsNotEmpty;
     public readonly inOperator?: In;
     public readonly value?: Value;
 
@@ -227,7 +229,7 @@ export class ConditionalExpression extends SymbolTree {
         super(inputs);
         this.expression = super.getInput(LogicalExpression);
         this.field = super.getInput(Field);
-        this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.conditionalOperator = super.getInput([ConditionalOperator, IsEmpty, IsNotEmpty]);
         this.inOperator = super.getInput(In);
         this.value = super.getInput(Value);
         this.not = super.getInput(Not);
@@ -267,7 +269,7 @@ export class LinkCondition extends SymbolTree {
     public readonly prefix?: SourcePrefix | TargetPrefix;
     public readonly field?: Field;
 
-    public readonly conditionalOperator?: ConditionalOperator;
+    public readonly conditionalOperator?: ConditionalOperator | IsEmpty | IsNotEmpty;
     public readonly inOperator?: In;
     public readonly value?: Value;
 
@@ -278,7 +280,7 @@ export class LinkCondition extends SymbolTree {
         this.expression = super.getInput(LinkExpression);
         this.prefix = super.getInput([SourcePrefix, TargetPrefix]);
         this.field = super.getInput(Field);
-        this.conditionalOperator = super.getInput(ConditionalOperator);
+        this.conditionalOperator = super.getInput([ConditionalOperator, IsEmpty, IsNotEmpty]);
         this.inOperator = super.getInput(In);
         this.value = super.getInput(Value);
         this.not = super.getInput(Not);
@@ -292,7 +294,7 @@ export class LinkExpression extends SymbolTree {
     public readonly expression?: LinkExpression;
     constructor(inputs: Symbol[]) {
         super(inputs);
-        this.condition = super.getInput(LinkCondition);
+        this.condition = super.getInput([LinkCondition]);
         this.everNot = super.getInput([Ever, Not]);
         this.orAnd = super.getInput([And, Or]);
         this.expression = super.getInput(LinkExpression);

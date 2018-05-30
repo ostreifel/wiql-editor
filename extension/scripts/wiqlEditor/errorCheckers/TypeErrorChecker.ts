@@ -33,8 +33,10 @@ function addCompTypes(types: FieldType[], literal: Function[], group: Function[]
         };
     }
 }
-addCompTypes([FieldType.Html, FieldType.PlainText, FieldType.History],
+addCompTypes([FieldType.History],
     [Symbols.Contains, Symbols.ContainsWords], [], []);
+addCompTypes([FieldType.Html, FieldType.PlainText],
+    [Symbols.Contains, Symbols.ContainsWords, Symbols.IsEmpty, Symbols.IsNotEmpty], [], []);
 addCompTypes([FieldType.Double, FieldType.Integer, FieldType.DateTime, FieldType.Guid],
     [Symbols.Equals, Symbols.NotEquals, Symbols.GreaterThan, Symbols.LessThan, Symbols.GreaterOrEq, Symbols.LessOrEq, Symbols.Ever],
     [Symbols.In],
@@ -80,8 +82,12 @@ export class TypeErrorChecker implements IErrorChecker {
     private readonly fieldLookup: CachedValue<IFieldLookup> = new CachedValue(async () =>
         getFieldComparisonLookup(await fieldsVal.getValue()),
     );
-    private checkComparisonOperator(fieldLookup: IFieldLookup, comp: Symbols.ConditionalOperator, field: Symbols.Field, rhsType: "literal" | "field"): monaco.editor.IModelDeltaDecoration[] {
-        const operatorToken = comp.conditionToken;
+    private checkComparisonOperator(
+        fieldLookup: IFieldLookup, comp: Symbols.ConditionalOperator | Symbols.IsEmpty | Symbols.IsNotEmpty,
+        field: Symbols.Field,
+        rhsType: "literal" | "field",
+    ): monaco.editor.IModelDeltaDecoration[] {
+        const operatorToken = comp instanceof Symbols.ConditionalOperator ? comp.conditionToken : comp;
         const validOps: Function[] = fieldLookup[field.identifier.text.toLocaleLowerCase()][rhsType];
         if (validOps.length === 0) {
             return [decorationFromSym(`There is no valid operation for ${field.identifier.text} and ${rhsType}`, operatorToken)];
@@ -166,7 +172,7 @@ export class TypeErrorChecker implements IErrorChecker {
         }
         return [];
     }
-    private getRhsType(value: Symbols.Value): "field" | "literal" {
+    private getRhsType(value?: Symbols.Value): "field" | "literal" {
         if (value && value.value instanceof Symbols.Field) {
             return "field";
         }
@@ -184,7 +190,7 @@ export class TypeErrorChecker implements IErrorChecker {
                 continue;
             }
             const type = fieldLookup[condition.field.identifier.text.toLocaleLowerCase()].fieldType;
-            if (condition.conditionalOperator && condition.value) {
+            if (condition.conditionalOperator) {
                 const rhsType = this.getRhsType(condition.value);
 
                 const compErrors = this.checkComparisonOperator(fieldLookup, condition.conditionalOperator, condition.field, rhsType);
@@ -192,11 +198,13 @@ export class TypeErrorChecker implements IErrorChecker {
                     errors.push(...compErrors);
                     continue;
                 }
-                if (condition.value.value instanceof Symbols.Field) {
-                    const targetField: Symbols.Field = condition.value.value;
-                    errors.push(...this.checkRhsField(fieldLookup, targetField, type));
-                } else {
-                    errors.push(...this.checkRhsValue(condition.value, type));
+                if (condition.value) {
+                    if (condition.value.value instanceof Symbols.Field) {
+                        const targetField: Symbols.Field = condition.value.value;
+                        errors.push(...this.checkRhsField(fieldLookup, targetField, type));
+                    } else {
+                        errors.push(...this.checkRhsValue(condition.value, type));
+                    }
                 }
             } else if (condition.valueList && condition.inOperator) {
                 errors.push(...this.checkRhsGroup(condition.valueList, type));

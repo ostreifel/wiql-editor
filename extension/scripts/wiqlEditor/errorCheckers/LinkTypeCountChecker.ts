@@ -32,7 +32,10 @@ export class LinkTypeCountChecker implements IErrorChecker {
             }
             for (const linkCondition of linkConditions) {
                 if (linkCondition.conditionalOperator) {
-                    if (!(linkCondition.conditionalOperator.conditionToken instanceof Symbols.Equals)) {
+                    if (
+                        !(linkCondition.conditionalOperator instanceof Symbols.ConditionalOperator) ||
+                        !(linkCondition.conditionalOperator.conditionToken instanceof Symbols.Equals)
+                    ) {
                         errors.push(decorationFromSym("Only equals is valid for link type in tree queries", linkCondition.conditionalOperator));
                     }
                 } else {

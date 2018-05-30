@@ -9,6 +9,8 @@ Field = Identifier | LSqBracket Identifier RSqBracket;
 LogicalExpression = [Not| Ever] ConditionalExpression [(And | Or) LogicalExpression];
 ConditionalExpression = LParen LogicalExpression RParen 
 | Field ConditionalOperator Value
+| Field IsEmpty
+| Field IsNotEmpty
 | Field [Not] In LParen ValueList RParen;
 Number = [Minus] Digits;
 VariableArguments = (String | Number | True | False) [Comma VariableArguments];
@@ -38,6 +40,8 @@ SourcePrefix = Source Dot | LSqBracket Source RSqBracket Dot;
 TargetPrefix = Target Dot | LSqBracket Target RSqBracket Dot;
 LinkCondition = LParen LinkExpression RParen 
 | [SourcePrefix | TargetPrefix] Field ConditionalOperator Value
+| [SourcePrefix | TargetPrefix] Field IsEmpty
+| [SourcePrefix | TargetPrefix] Field IsNotEmpty
 | (SourcePrefix | TargetPrefix) Field [Not] In LParen ValueList RParen;
 
 RecursiveSelect = Select FieldList
