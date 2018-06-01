@@ -32,12 +32,13 @@
 
     <script src="dist/VSS.SDK.min.js"></script>
     <script type="text/javascript">
+        VSS.notifyLoadSucceeded();
         // Initialize framework 
         VSS.init({
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
             configureModuleLoader: true,
-            moduleLoaderConfig: {waitSeconds: 15}
+            moduleLoaderConfig: {waitSeconds: 120}
         });
         var require = { paths: { 'vs': 'dist/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 
@@ -46,7 +47,6 @@
                 // Load main entry point for extension
                 VSS.require(['dist/queryEditor'], function() {
                     // Loading succeeded
-                    VSS.notifyLoadSucceeded();
                 });
             });
         });

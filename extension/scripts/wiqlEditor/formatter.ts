@@ -136,8 +136,12 @@ function formatCondition(condition: Symbols.ConditionalExpression | Symbols.Link
         const op = condition.not ? " NOT IN " : " IN ";
         return [tabs(tab, indent) + prefix + formatField(condition.field, fields) + op + "(" + formatValueList(condition.valueList, fields) + ")"];
     }
-    if (condition.field && condition.conditionalOperator && condition.value) {
-        return [`${tabs(tab, indent)}${prefix}${formatField(condition.field, fields)} ${formatConditionalOperator(condition.conditionalOperator)} ${formatValue(condition.value, fields)}`];
+    if (condition.field && condition.conditionalOperator) {
+        let condStr = `${tabs(tab, indent)}${prefix}${formatField(condition.field, fields)} ${formatConditionalOperator(condition.conditionalOperator)}`;
+        if (condition.value) {
+            condStr += ` ${formatValue(condition.value, fields)}`;
+        }
+        return [condStr];
     }
     return [];
 }
