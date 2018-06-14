@@ -7,6 +7,7 @@ const del = require("del");
 const ts = require("gulp-typescript");
 const {Linter} = require("tslint");
 const tslint = require('gulp-tslint');
+const rename = require('gulp-rename');
 
 const args =  yargs.argv;
 const distFolder = 'dist';
@@ -36,10 +37,18 @@ gulp.task('styles', ['clean'], () => {
 });
 
 gulp.task('copy', ['styles'], () => {
-    gulp.src([
-        'node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js',
-    ])
+    if (yargs.argv.release) {
+        gulp.src([
+            'node_modules/vss-web-extension-sdk/lib/VSS.SDK.min.js',
+        ])
         .pipe(gulp.dest(distFolder));
+    } else {
+        gulp.src([
+            'node_modules/vss-web-extension-sdk/lib/VSS.SDK.js',
+        ])
+        .pipe(rename("VSS.SDK.min.js"))
+        .pipe(gulp.dest(distFolder));
+    }
     return gulp.src([
         "node_modules/monaco-editor/min/vs/**/*",
         "!**/*.svg",

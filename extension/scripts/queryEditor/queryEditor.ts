@@ -51,4 +51,4 @@ async function saveQuery(): Promise<any> {
 const callbacks: ICallbacks = {
     okCallback: saveQuery,
 };
-VSS.register("contextForm", callbacks);
+configuration.loaded(callbacks);

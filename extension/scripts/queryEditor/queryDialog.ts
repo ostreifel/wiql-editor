@@ -1,5 +1,5 @@
 import { trackEvent } from "../events";
-import { ICallbacks, IContextOptions, IQuery } from "../queryContext/contextContracts";
+import { IContextOptions, IQuery } from "../queryContext/contextContracts";
 
 function saveErrorMessage(error: TfsError, query: IQuery) {
     if (!isSupportedQueryId(query.id)) {
@@ -40,6 +40,10 @@ export async function showDialog(query: IQuery) {
         query,
         save,
         close,
+        loaded: async (callbacks) => {
+            okCallback = callbacks.okCallback;
+            dialog.updateOkButton(true);
+        },
     };
     const dialogOptions: IHostDialogOptions = {
         title: query.name,
@@ -54,9 +58,6 @@ export async function showDialog(query: IQuery) {
     const contentContribution = `${extInfo.publisherId}.${extInfo.extensionId}.contextForm`;
     const dialog = await dialogService.openDialog(contentContribution, dialogOptions, context);
     closeDialog = () => dialog.close();
-    const callbacks: ICallbacks = await dialog.getContributionInstance<ICallbacks>("contextForm");
-    okCallback = callbacks.okCallback;
-    dialog.updateOkButton(true);
 }
 
 namespace WellKnownQueries {
