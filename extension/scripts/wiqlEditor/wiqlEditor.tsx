@@ -33,16 +33,17 @@ function renderToolbar(callback: () => void) {
 }
 
 export function setupEditor(target: HTMLElement, onChange?: (errorCount: number) => void, intialValue?: string, queryName?: string): monaco.editor.IStandaloneCodeEditor {
-    renderToolbar(() => {
+    renderToolbar(async () => {
         if (queryName) {
             return;
         }
+        const navigationService = await VSS.getService(VSS.ServiceIds.Navigation) as IHostNavigationService;
         $(".open-in-queries").show().click(() => {
             const wiql = editor.getModel().getValue();
             trackEvent("openInQueries", {wiqlLength: String(wiql.length)});
             const {host, project} = VSS.getWebContext();
             const url = `${host.uri}/${project.id}/_queries/query/?wiql=${encodeURIComponent(wiql)}`;
-            window.open(url, "_blank");
+            navigationService.openNewWindow(url, "");
         });
     });
     monaco.languages.register(Wiql.def);
