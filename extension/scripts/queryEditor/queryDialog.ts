@@ -24,9 +24,16 @@ export async function showDialog(query: IQuery) {
         closeDialog();
     }
     function save() {
-        okCallback().then(async () => {
+        okCallback().then(async (result) => {
+            if (typeof result !== "string") {
+                return;
+            }
             const navigationService = await VSS.getService(VSS.ServiceIds.Navigation) as IHostNavigationService;
-            navigationService.reload();
+            if (result === "") {
+                navigationService.reload();
+            } else {
+                navigationService.navigate(result);
+            }
         }, (error: TfsError) => {
             const message = saveErrorMessage(error, query);
             dialogService.openMessageDialog(message, {

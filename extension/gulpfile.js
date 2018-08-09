@@ -68,7 +68,7 @@ function vsix(action) {
     } else {
         const manifest = require('./vss-extension.json');
         overrides.name = manifest.name + ": Development Edition";
-        overrides.id = manifest.id + "-dev";
+        overrides.id = manifest.id + "-dev2";
     }
     const overridesArg = `--override "${JSON.stringify(overrides).replace(/"/g, '\\"')}"`;
     const rootArg = `--root ${distFolder}`;
