@@ -38,7 +38,8 @@ export function trackEvent(name: string, properties?: IProperties, measurements?
 export function trackPage(properties?: IProperties, measurements?: IMeasurements) {
     const insights = getInsights();
     if (insights) {
-        properties = { ...(properties || {}), host: VSS.getWebContext().host.authority };
+        const { host } = VSS.getWebContext();
+        properties = { ...(properties || {}), host: host.name || host.authority };
         insights.trackPageView(undefined, undefined, properties, measurements);
         flush.reset();
     }
