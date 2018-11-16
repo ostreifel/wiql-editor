@@ -43,7 +43,7 @@ async function saveQuery(): Promise<string | null> {
     trackEvent("SaveQuery", {wiqlLength: "" + editor.getValue().length, isNew: "" + !configuration.query.id});
     if (configuration.query.id && configuration.query.id !== "00000000-0000-0000-0000-000000000000") {
         const updated = await getWitClient().updateQuery(queryItem, context.project.name, configuration.query.id);
-        const html = updated._links.html;
+        const html = updated._links ? updated._links.html : null;
         return html ? html.href : "";
     } else {
         const path = configuration.query.isPublic ? "Shared Queries" : "My Queries";
@@ -51,7 +51,7 @@ async function saveQuery(): Promise<string | null> {
         if (name) {
             queryItem.name = name;
             const created = await getWitClient().createQuery(queryItem, context.project.name, path);
-            const html = created._links.html;
+            const html = created._links ? created._links.html : null;
             return html ? html.href : "";
         }
     }
