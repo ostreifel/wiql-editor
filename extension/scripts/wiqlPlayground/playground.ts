@@ -1,3 +1,4 @@
+import "promise-polyfill/src/polyfill";
 import { WorkItemQueryResult } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 

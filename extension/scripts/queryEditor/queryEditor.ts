@@ -1,4 +1,5 @@
 /// <reference types="vss-web-extension-sdk" />
+import "promise-polyfill/src/polyfill";
 import { QueryHierarchyItem } from "TFS/WorkItemTracking/Contracts";
 import { getClient as getWitClient } from "TFS/WorkItemTracking/RestClient";
 

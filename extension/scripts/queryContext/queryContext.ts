@@ -1,3 +1,4 @@
+import "promise-polyfill/src/polyfill";
 import { trackEvent } from "../events";
 import { showDialog } from "../queryEditor/queryDialog";
 import { IQuery } from "./contextContracts";
