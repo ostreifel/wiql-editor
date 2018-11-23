@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "postinstall": "typings install",
+    "package-dev": "node ./node_modules/gulp/bin/gulp.js",
+    "package-release": "node ./node_modules/gulp/bin/gulp.js --release"
+  },
   "devDependencies": {
     "@types/applicationinsights-js": "^1.0.4",
     "@types/jquery": "^2.0.34",
@@ -26,8 +31,5 @@
   "name": "wiql-editor",
   "private": true,
   "version": "0.6.0",
-  "scripts": {
-    "postinstall": "typings install"
-  },
   "dependencies": {}
 }
