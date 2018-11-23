@@ -6,6 +6,7 @@ const sass = require('gulp-sass');
 const del = require("del");
 const {Linter} = require("tslint");
 const tslint = require('gulp-tslint');
+const inlinesource = require('gulp-inline-source');
 
 const distFolder = 'dist';
 
@@ -58,13 +59,19 @@ gulp.task('copy', gulp.parallel(() => {
     ]).pipe(gulp.dest(distFolder + '/node_modules/monaco-editor/min/vs'));
 }));
 
+gulp.task('html', gulp.series(gulp.parallel('copy', 'styles'), () => {
+    return gulp.src("*.html")
+        .pipe(inlinesource())
+        .pipe(gulp.dest(distFolder));
+}));
+
 gulp.task('webpack', gulp.series(async () => {
     return execSync('webpack', {
         stdio: [null, process.stdout, process.stderr]
     });
 }));
 
-gulp.task('build', gulp.parallel('copy', 'styles', 'tslint', 'webpack'));
+gulp.task('build', gulp.parallel('html', 'tslint', 'webpack'));
 
 gulp.task('package', gulp.series('clean', 'build', async () => {
     const overrides = {}

@@ -73,7 +73,7 @@
             ],
             "properties": {
                 "name": "Wiql Playground",
-                "uri": "playground.html"
+                "uri": "dist/playground.html"
             }
         },
         {
@@ -85,7 +85,7 @@
             ],
             "properties": {
                 "group": "contributed",
-                "uri": "queryContext.html"
+                "uri": "dist/queryContext.html"
             }
         },
         {
@@ -97,7 +97,7 @@
             ],
             "properties": {
                 "group": "contributed",
-                "uri": "queryContext.html"
+                "uri": "dist/queryContext.html"
             }
         },
         {
@@ -107,7 +107,7 @@
             "targets": [ ],
             "properties": {
                 "uri": "queryEditor.html",
-                "registeredObjectId": "dialogCallbacks"
+                "registeredObjectId": "dist/dialogCallbacks"
             }
         }
     ]
