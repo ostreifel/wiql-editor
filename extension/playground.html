@@ -53,7 +53,16 @@
         VSS.require(['dist/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['dist/playground'], function() {
+                VSS.require([
+                    'react',
+                    'react-dom',
+                    'TFS/Core/Contracts',
+                    'TFS/Core/RestClient',
+                    'TFS/WorkItemTracking/Contracts',
+                    'TFS/WorkItemTracking/RestClient',
+                    'VSS/Operations/Contracts',
+                    'dist/playground',
+                ], function() {
                     // Loading succeeded
                     VSS.notifyLoadSucceeded();
                 });
