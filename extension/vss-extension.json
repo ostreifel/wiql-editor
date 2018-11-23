@@ -73,7 +73,8 @@
             ],
             "properties": {
                 "name": "Wiql Playground",
-                "uri": "dist/playground.html"
+                "uri": "dist/playground.html",
+                "icon": "asset://img/logo.png"
             }
         },
         {
