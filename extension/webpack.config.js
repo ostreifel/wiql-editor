@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require("path");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
     // Don't want symbols.ts to be minified - renaming the class names 
@@ -27,6 +28,13 @@ module.exports = {
         // alias: { "office-ui-fabric-react": path.join(process.cwd(), 'node_modules', 'office-ui-fabric-react', 'lib-amd') },
         extensions: [".ts", ".tsx", ".js"],
     },
+    plugins: [
+      new BundleAnalyzerPlugin({
+        openAnalyzer: false,
+        reportFilename: "bundle-analysis.html",
+        analyzerMode: "static"
+      })
+    ],
     devtool: "source-map",
     module: {
       rules: [
