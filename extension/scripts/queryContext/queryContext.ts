@@ -1,5 +1,6 @@
 import "promise-polyfill/src/polyfill";
 import { trackEvent } from "../events";
+import { getCurrentTheme } from "../getCurrentTheme";
 import { showDialog } from "../queryEditor/queryDialog";
 import { IQuery } from "./contextContracts";
 
@@ -11,7 +12,7 @@ const menuAction: Partial<IContributedMenuSource> = {
         }
         return [<IContributedMenuItem> {
             text: "Edit query wiql",
-            icon: "img/smallLogo.png",
+            icon: getCurrentTheme() === "dark" ? "img/smallDarkThemeLogo.png" : "img/smallLogo.png",
             action: (actionContext) => {
                 showDialog(actionContext.query);
             },
