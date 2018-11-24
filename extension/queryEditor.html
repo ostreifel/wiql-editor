@@ -44,7 +44,12 @@
         VSS.require(['dist/node_modules/monaco-editor/min/vs/loader'], function () {
             require(['vs/editor/editor.main'], function() {
                 // Load main entry point for extension
-                VSS.require(['dist/queryEditor'], function() {
+                VSS.require([
+                    'TFS/WorkItemTracking/Contracts',
+                    'TFS/WorkItemTracking/RestClient',
+                    'VSS/Utils/Core',
+                    'dist/queryEditor'
+                ], function() {
                     // Loading succeeded
                 });
             });
