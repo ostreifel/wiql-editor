@@ -55,6 +55,10 @@ $colors: (
     outline: $style $width getColorLiteral($colorName);
     outline: $style $width getColorVariable($colorName);
 }
+@mixin border-bottom-color($colorName) {
+    border-bottom-color: getColorLiteral($colorName);
+    border-bottom-color: getColorVariable($colorName);
+}
 @mixin background-color($colorName) {
     background-color: getColorLiteral($colorName);
     background-color: getColorVariable($colorName);
