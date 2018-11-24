@@ -37,7 +37,8 @@
             explicitNotifyLoaded: true,
             usePlatformScripts: true,
             configureModuleLoader: true,
-            moduleLoaderConfig: {waitSeconds: 120}
+            moduleLoaderConfig: {waitSeconds: 120},
+            applyTheme: true,
         });
         var require = { paths: { 'vs': 'dist/node_modules/monaco-editor/min/vs' } };
         // Loader needs to be done async or it errors with vss sdk 

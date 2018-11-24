@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import { DelayedFunction } from "VSS/Utils/Core";
 import { trackEvent } from "../events";
+import { getCurrentTheme } from "../getCurrentTheme";
 import { parse } from "./compiler/parser";
 import { completionProvider } from "./completion/completion";
 import { ErrorChecker } from "./errorCheckers/ErrorChecker";
@@ -25,8 +26,7 @@ function renderToolbar(callback: () => void) {
                 </span>
                 <span className="links">
                     <a href="https://marketplace.visualstudio.com/items?itemName=ottostreifel.wiql-editor" target="_blank">Review</a>{" | "}
-                    <a href="https://github.com/ostreifel/wiql-editor/issues" target="_blank">Report an issue</a>{" | "}
-                    <a href="mailto:wiqleditor@microsoft.com" target="_blank">Feedback and questions</a>
+                    <a href="https://github.com/ostreifel/wiql-editor/issues" target="_blank">Report an issue</a>
                 </span>
             </div>
         , elem, callback);
@@ -69,6 +69,7 @@ ORDER BY [System.ChangedDate] DESC
         value: intialValue || defaultVal,
         automaticLayout: true,
         wordWrap: true,
+        theme: getCurrentTheme() === "dark" ? "vs-dark" : "vs",
     });
 
     format(editor);

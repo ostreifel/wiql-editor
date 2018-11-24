@@ -32,7 +32,7 @@
     .row {
         display: table-row;
         cursor: pointer;
-        color: initial;
+        @include color(palette-neutral-100);
         &:hover {
             text-decoration: underline;
             @include background-color(palette-primary-tint-40);

@@ -2,7 +2,7 @@ import { trackEvent } from "../events";
 
 function toDocument(wiql: string): string {
     const rootDoc = jQuery.parseXML(`<WorkItemQuery Version="1"/>`);
-    const root = rootDoc.documentElement;
+    const root = rootDoc.documentElement as HTMLElement;
 
     const server = rootDoc.createElement("TeamFoundationServer");
     server.appendChild(rootDoc.createTextNode(VSS.getWebContext().collection.uri));

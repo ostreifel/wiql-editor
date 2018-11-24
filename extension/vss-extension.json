@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "wiql-editor",
-    "version": "2.0.68",
+    "version": "2.0.71",
     "name": "Wiql Editor",
     "scopes": [ "vso.work", "vso.work_write" ],
     "public": false,
