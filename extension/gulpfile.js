@@ -66,7 +66,8 @@ gulp.task('html', gulp.series(gulp.parallel('copy', 'styles'), () => {
 }));
 
 gulp.task('webpack', gulp.series(async () => {
-    const option = yargs.argv.release ? "-p" : "-d";
+    // const option = yargs.argv.release ? "-p" : "-d";
+    const option = "-d";
     execSync(`node ./node_modules/webpack-cli/bin/cli.js ${option}`, {
         stdio: [null, process.stdout, process.stderr]
     });
