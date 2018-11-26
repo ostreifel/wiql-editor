@@ -5,7 +5,7 @@ export function getCurrentTheme(): "light" | "dark" {
         return "light";
     }
     /** given the rgb values of the background color grab the red value */
-    const backgroundRed = themeStyle.match(/(?<=--palette-neutral-0: )\d+/);
-    const amountofRed = backgroundRed && +backgroundRed[0];
+    const backgroundRed = themeStyle.match(/--palette-neutral-0: (\d+)/);
+    const amountofRed = backgroundRed && +backgroundRed[1];
     return amountofRed === 255 ? "light" : "dark";
 }
