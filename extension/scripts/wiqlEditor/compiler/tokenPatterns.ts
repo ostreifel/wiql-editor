@@ -2,6 +2,12 @@ import { FieldType } from "TFS/WorkItemTracking/Contracts";
 import * as Symbols from "./symbols";
 import { ITokenPattern } from "./tokenizer";
 
+const IDENTIFIER_REGEX = /[a-z_][\w\.]*/;
+
+export function validIdentifier(token: Symbols.Token): boolean {
+    return !!(token && token.text && token.text.match(IDENTIFIER_REGEX));
+}
+
 export const wiqlPatterns: ITokenPattern[] = [
     { match: /[ \r\t\n]+/ },
     { match: "SELECT", token: Symbols.Select },
@@ -16,7 +22,11 @@ export const wiqlPatterns: ITokenPattern[] = [
     { match: "IN", token: Symbols.In },
     { match: "LIKE", token: Symbols.Like },
     { match: "UNDER", token: Symbols.Under },
+    { match: "issue", token: Symbols.WorkItems },
+    { match: "issues", token: Symbols.WorkItems },
+    { match: "workitem", token: Symbols.WorkItems },
     { match: "workitems", token: Symbols.WorkItems },
+    { match: "links", token: Symbols.WorkItemLinks },
     { match: "workitemlinks", token: Symbols.WorkItemLinks },
     { match: "AND", token: Symbols.And },
     { match: "OR", token: Symbols.Or },
@@ -50,7 +60,7 @@ export const wiqlPatterns: ITokenPattern[] = [
             { match: /]/, token: Symbols.RSqBracket, popState: true },
         ],
     },
-    { match: /[a-z_][\w\.]*/, token: Symbols.Identifier },
+    { match: IDENTIFIER_REGEX, token: Symbols.Identifier },
     { match: "]", token: Symbols.RSqBracket },
     { match: ",", token: Symbols.Comma },
     { match: "=", token: Symbols.Equals },

@@ -47,7 +47,7 @@ export function tokenize(lines: string[], patterns: ITokenPattern[]) {
                 } else if (typeof tokenPattern.match === "string"
                     && substr.indexOf(tokenPattern.match.toLocaleLowerCase()) === 0
                     // Make sure string matches are on word boundries
-                    && (j + tokenPattern.match.length === line.length - 1
+                    && (j + tokenPattern.match.length === line.length
                         || tokenPattern.match[tokenPattern.match.length - 1].match(/\W/)
                         || substr[tokenPattern.match.length] === undefined
                         || substr[tokenPattern.match.length].match(/\W/)

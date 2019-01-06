@@ -1,6 +1,6 @@
 import * as Symbols from "./symbols";
 import { tokenize } from "./tokenizer";
-import { wiqlPatterns } from "./tokenPatterns";
+import { validIdentifier, wiqlPatterns } from "./tokenPatterns";
 import { table } from "./wiqlTable";
 
 const symbolContructors: { [name: string]: any } = {};
@@ -40,7 +40,17 @@ export function parse(lines: string[], mode = ParseMode.Default): IParseResults 
         const state = currState();
         let nextToken = peekToken();
         let nextTokenName = symbolName(nextToken);
+        // sometimes keywords are used as identifiers
         if (
+            !(nextTokenName in table[state].tokens) &&
+            Symbols.getSymbolName(Symbols.Identifier) in table[state].tokens &&
+            validIdentifier(nextToken)
+        ) {
+            tokens.pop();
+            tokens.push(new Symbols.Identifier(nextToken.line, nextToken.startColumn, nextTokenName));
+            nextToken = peekToken();
+            nextTokenName = symbolName(nextToken);
+        } else if (
             mode === ParseMode.AssumeString &&
             !(nextTokenName in table[state].tokens) &&
             Symbols.getSymbolName(Symbols.String) in table[state].tokens
