@@ -16,9 +16,7 @@ function loadWorkItems(result: WorkItemQueryResult) {
     setMessage("Loading workitems...");
 
     const wiIds = result.workItems.map((wi) => wi.id);
-    const fieldRefNames = result.columns.length < 10 ?
-        result.columns.map((col) => col.referenceName)
-        : undefined;
+    const fieldRefNames = result.columns.map((col) => col.referenceName);
     getWitClient().getWorkItems(wiIds, fieldRefNames, result.asOf).then(
         (workItems) => renderResult(result, workItems), setError);
 }
