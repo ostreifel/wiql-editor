@@ -51,7 +51,7 @@ function search() {
     setMessage("Running query...");
     trackEvent("RunQuery", {wiqlLength: "" + wiqlText.length});
     const context = VSS.getWebContext();
-    getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, undefined, 50).then(
+    getWitClient().queryByWiql({ query: wiqlText }, context.project.name, context.team.name, true, 50).then(
         (result) => {
             result.workItems = result.workItems && result.workItems.splice(0, 50);
             result.workItemRelations = result.workItemRelations && result.workItemRelations.splice(0, 50);
