@@ -15,7 +15,6 @@ Save changes to the query when finished.
 # Why?
 - Access hidden wiql features
   - asof queries
-  - ever contains tag
   - ever contains words
 - Bulk move/copy/paste query clauses
 - Easier to read queries with lots of clauses or heavily nested clauses.
