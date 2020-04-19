@@ -33,7 +33,7 @@ async function getStateCompletions(ctx: ICompletionContext): Promise<string[]> {
 async function getTagCompletions(ctx: ICompletionContext) {
     const { projects } = await getFilters(ctx.getAssumedParse());
     if (projects.length === 0) {
-        return witNames.getValue();
+        projects.push(VSS.getWebContext().project.id);
     }
     return getTagsForProjects(projects);
 }

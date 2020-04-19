@@ -1,4 +1,3 @@
-import { getClient } from "TFS/WorkItemTracking/RestClient";
 import { callApi } from "../RestCall";
 import { CachedValue } from "./CachedValue";
 import { projectsVal } from "./projects";
@@ -41,7 +40,13 @@ interface ITag {
 }
 
 async function getTagsForProject(project: string): Promise<string[]> {
-    getClient();
+    for (const ref of await projectsVal.getValue()) {
+        if (ref.name.toLocaleLowerCase() === project.toLocaleLowerCase()) {
+            project = ref.id;
+            break;
+        }
+    }
+
     const webContext = VSS.getWebContext();
     let tagsUrl = webContext.account.uri;
     if (!tagsUrl.match(/DefaultCollection/i)) {
